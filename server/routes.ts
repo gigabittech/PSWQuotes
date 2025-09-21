@@ -37,7 +37,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create a new quote
   app.post("/api/quotes", upload.single('switchboardPhoto'), async (req, res) => {
     try {
-      const validatedData = insertQuoteSchema.parse(req.body);
+      // Parse JSON stringified arrays from FormData
+      const requestBody = { ...req.body };
+      
+      // Parse selectedSystems if it's a JSON string
+      if (requestBody.selectedSystems && typeof requestBody.selectedSystems === 'string') {
+        try {
+          requestBody.selectedSystems = JSON.parse(requestBody.selectedSystems);
+        } catch (e) {
+          console.error('Error parsing selectedSystems:', e);
+          requestBody.selectedSystems = [];
+        }
+      }
+      
+      const validatedData = insertQuoteSchema.parse(requestBody);
       
       // Handle file upload if present
       if (req.file) {

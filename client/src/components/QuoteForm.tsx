@@ -97,11 +97,18 @@ export default function QuoteForm() {
   const handleSubmitQuote = () => {
     const submitData = new FormData();
     
-    // Add all form fields
+    // Ensure selectedSystems is always included, even if empty
+    const selectedSystems = formData.systems || [];
+    submitData.append('selectedSystems', JSON.stringify(selectedSystems));
+    
+    // Add all other form fields
     Object.entries(formData).forEach(([key, value]) => {
+      // Skip 'systems' since we already handled it as 'selectedSystems'
+      if (key === 'systems') return;
+      
       if (Array.isArray(value)) {
         submitData.append(key, JSON.stringify(value));
-      } else {
+      } else if (value !== undefined && value !== null) {
         submitData.append(key, value.toString());
       }
     });
