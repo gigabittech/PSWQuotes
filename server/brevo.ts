@@ -1,11 +1,12 @@
 import { TransactionalEmailsApi, TransactionalEmailsApiApiKeys } from '@getbrevo/brevo';
 
-if (!process.env.BREVO_API_KEY) {
-  throw new Error("BREVO_API_KEY environment variable must be set");
-}
-
 const brevoApi = new TransactionalEmailsApi();
-brevoApi.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+
+if (process.env.BREVO_API_KEY) {
+  brevoApi.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+} else {
+  console.warn("BREVO_API_KEY environment variable not set - email functionality disabled");
+}
 
 interface EmailParams {
   to: string;
@@ -24,6 +25,11 @@ export async function sendEmail(
   apiKey: string,
   params: EmailParams
 ): Promise<boolean> {
+  if (!process.env.BREVO_API_KEY) {
+    console.log('Brevo not configured - email not sent');
+    return false;
+  }
+  
   try {
     await brevoApi.sendTransacEmail({
       to: [{ email: params.to }],

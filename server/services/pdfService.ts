@@ -37,7 +37,7 @@ class PDFService {
   }
 
   private generateHTMLTemplate(quote: Quote): string {
-    const systemTypes = (quote.systemTypes as string[]).join(', ');
+    const systemTypes = quote.selectedSystems.join(', ');
     
     return `
 <!DOCTYPE html>
@@ -65,9 +65,9 @@ class PDFService {
     <div class="quote-details">
         <h3>Customer Information</h3>
         <p><strong>Name:</strong> ${quote.customerName}</p>
-        <p><strong>Email:</strong> ${quote.customerEmail}</p>
-        <p><strong>Phone:</strong> ${quote.customerPhone || 'Not provided'}</p>
-        <p><strong>Installation Address:</strong> ${quote.streetAddress}, ${quote.suburb}, ${quote.state} ${quote.postcode}</p>
+        <p><strong>Email:</strong> ${quote.email}</p>
+        <p><strong>Phone:</strong> ${quote.phone || 'Not provided'}</p>
+        <p><strong>Installation Address:</strong> ${quote.address}, ${quote.suburb}, ${quote.state} ${quote.postcode}</p>
         <p><strong>Power Supply:</strong> ${quote.powerSupply}</p>
         <p><strong>System Types:</strong> ${systemTypes}</p>
         
@@ -86,8 +86,8 @@ class PDFService {
             ${quote.solarPackage ? `<tr><td>Solar System</td><td>${quote.solarPackage}</td><td>Included</td></tr>` : ''}
             ${quote.batterySystem ? `<tr><td>Battery Storage</td><td>${quote.batterySystem}</td><td>Included</td></tr>` : ''}
             ${quote.evCharger ? `<tr><td>EV Charger</td><td>${quote.evCharger}</td><td>Included</td></tr>` : ''}
-            <tr><td colspan="2">Subtotal</td><td>$${quote.subtotal}</td></tr>
-            <tr><td colspan="2">Rebates Applied</td><td>-$${quote.rebatesTotal}</td></tr>
+            <tr><td colspan="2">Total Price</td><td>$${quote.totalPrice}</td></tr>
+            <tr><td colspan="2">Rebates Applied</td><td>-$${quote.rebateAmount}</td></tr>
             <tr class="total-row">
                 <td colspan="2"><strong>Total Investment</strong></td>
                 <td><strong>$${quote.totalPrice}</strong></td>
@@ -96,10 +96,10 @@ class PDFService {
     </table>
 
     <div class="quote-details">
-        <h3>Investment Benefits</h3>
-        ${quote.annualSavings ? `<p><strong>Estimated Annual Savings:</strong> $${quote.annualSavings}</p>` : ''}
-        ${quote.paybackPeriod ? `<p><strong>Payback Period:</strong> ${quote.paybackPeriod}</p>` : ''}
-        ${quote.co2Reduction ? `<p><strong>Annual CO2 Reduction:</strong> ${quote.co2Reduction} tonnes</p>` : ''}
+        <h3>Quote Summary</h3>
+        <p><strong>Final Price:</strong> $${quote.finalPrice}</p>
+        <p><strong>Status:</strong> ${quote.status}</p>
+        <p><strong>Quote Generated:</strong> ${new Date(quote.createdAt).toLocaleDateString()}</p>
     </div>
 
     <div class="footer">

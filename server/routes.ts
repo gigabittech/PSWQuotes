@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertQuoteSchema, insertProductSchema } from "@shared/schema";
-import { sendEmail } from "./sendgrid";
+import { sendEmail } from "./brevo";
 import { generateQuotePDF } from "./pdfGenerator";
 import multer from "multer";
 import { z } from "zod";
