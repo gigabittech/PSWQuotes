@@ -13,7 +13,7 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<Partial<QuoteFormData>>({
     systems: [],
-    powerSupply: '',
+    powerSupply: undefined,
     state: 'WA',
   });
   const [pricingData, setPricingData] = useState<PricingData | null>(null);
@@ -114,7 +114,7 @@ export default function Home() {
   const startOver = () => {
     setFormData({
       systems: [],
-      powerSupply: '',
+      powerSupply: undefined,
       state: 'WA',
     });
     setPricingData(null);

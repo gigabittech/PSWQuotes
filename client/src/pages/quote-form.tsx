@@ -9,20 +9,20 @@ import SystemRequirements from "@/components/quote-form/SystemRequirements";
 import ProductSelection from "@/components/quote-form/ProductSelection";
 import PropertyDetails from "@/components/quote-form/PropertyDetails";
 import QuoteSummary from "@/components/quote-form/QuoteSummary";
-import type { QuoteFormData, PricingData, ProductData } from "@/types/quote";
+import type { QuoteFormData, PricingData, Product } from "@/types/quote";
 
 export default function QuoteForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<Partial<QuoteFormData>>({
     systems: [],
-    powerSupply: '',
+    powerSupply: undefined,
     state: 'WA',
   });
   const [pricingData, setPricingData] = useState<PricingData | null>(null);
   const { toast } = useToast();
 
   // Fetch products
-  const { data: products = [] } = useQuery<ProductData[]>({
+  const { data: products = [] } = useQuery<Product[]>({
     queryKey: ['/api/products'],
   });
 
@@ -48,9 +48,9 @@ export default function QuoteForm() {
     mutationFn: async (data: QuoteFormData) => {
       const response = await apiRequest('POST', '/api/quotes', {
         customerName: data.customerName,
-        customerEmail: data.customerEmail,
-        customerPhone: data.customerPhone,
-        streetAddress: data.streetAddress,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
         suburb: data.suburb,
         state: data.state,
         postcode: data.postcode,
@@ -105,7 +105,7 @@ export default function QuoteForm() {
   const startOver = () => {
     setFormData({
       systems: [],
-      powerSupply: '',
+      powerSupply: undefined,
       state: 'WA',
     });
     setPricingData(null);

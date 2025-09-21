@@ -25,31 +25,31 @@ class PricingService {
 
     // Calculate solar pricing
     if (params.systemTypes.includes('solar') && params.solarPackage) {
-      const solarProducts = await storage.getProductsByCategory('solar', params.powerSupply);
-      const solarProduct = solarProducts.find(p => p.model === params.solarPackage);
+      const solarProducts = await storage.getProductsByType('solar');
+      const solarProduct = solarProducts.find((p: Product) => p.name === params.solarPackage);
       if (solarProduct) {
-        subtotal += parseFloat(solarProduct.price);
-        rebatesTotal += parseFloat(solarProduct.rebateAmount || '0');
+        subtotal += parseFloat(solarProduct.price.toString());
+        rebatesTotal += parseFloat(solarProduct.rebateAmount?.toString() || '0');
       }
     }
 
     // Calculate battery pricing
     if (params.systemTypes.includes('battery') && params.batterySystem) {
-      const batteryProducts = await storage.getProductsByCategory('battery');
-      const batteryProduct = batteryProducts.find(p => p.model === params.batterySystem);
+      const batteryProducts = await storage.getProductsByType('battery');
+      const batteryProduct = batteryProducts.find((p: Product) => p.name === params.batterySystem);
       if (batteryProduct) {
-        subtotal += parseFloat(batteryProduct.price);
-        rebatesTotal += parseFloat(batteryProduct.rebateAmount || '0');
+        subtotal += parseFloat(batteryProduct.price.toString());
+        rebatesTotal += parseFloat(batteryProduct.rebateAmount?.toString() || '0');
       }
     }
 
     // Calculate EV charger pricing
     if (params.systemTypes.includes('ev') && params.evCharger) {
-      const evProducts = await storage.getProductsByCategory('ev_charger');
-      const evProduct = evProducts.find(p => p.model === params.evCharger);
+      const evProducts = await storage.getProductsByType('ev_charger');
+      const evProduct = evProducts.find((p: Product) => p.name === params.evCharger);
       if (evProduct) {
-        subtotal += parseFloat(evProduct.price);
-        rebatesTotal += parseFloat(evProduct.rebateAmount || '0');
+        subtotal += parseFloat(evProduct.price.toString());
+        rebatesTotal += parseFloat(evProduct.rebateAmount?.toString() || '0');
       }
     }
 

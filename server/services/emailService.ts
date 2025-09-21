@@ -54,9 +54,9 @@ Thank you for your interest in Perth Solar Warehouse! Your personalized solar qu
 Quote Summary:
 - System Types: ${systemTypes}
 - Installation Address: ${quote.address}, ${quote.suburb}, ${quote.state} ${quote.postcode}
-- Total Investment: $${quote.totalPrice} (after rebates)
-- Total Investment: $${quote.finalPrice}
+- System Price: $${quote.totalPrice}
 - Rebate Applied: $${quote.rebateAmount}
+- Final Investment: $${quote.finalPrice}
 
 What's Next:
 1. Our team will contact you within 24 hours to discuss your quote
@@ -98,9 +98,9 @@ Licensed Electrical Contractor EC010771
             <h3>Quote Summary</h3>
             <p><strong>System Types:</strong> ${systemTypes}</p>
             <p><strong>Installation Address:</strong> ${quote.address}, ${quote.suburb}, ${quote.state} ${quote.postcode}</p>
-            <p><strong>Total Investment:</strong> <span class="price-highlight">$${quote.totalPrice}</span> (after rebates)</p>
-            <p><strong>Total Investment:</strong> <span class="price-highlight">$${quote.finalPrice}</span></p>
+            <p><strong>System Price:</strong> $${quote.totalPrice}</p>
             <p><strong>Rebate Applied:</strong> $${quote.rebateAmount}</p>
+            <p><strong>Final Investment:</strong> <span class="price-highlight">$${quote.finalPrice}</span></p>
         </div>
         
         <div class="steps">

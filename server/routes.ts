@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertQuoteSchema, insertProductSchema } from "@shared/schema";
-import { sendEmail } from "./brevo";
+import { emailService } from "./services/emailService";
 import { generateQuotePDF } from "./pdfGenerator";
 import multer from "multer";
 import { z } from "zod";
@@ -50,29 +50,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const pdfBuffer = await generateQuotePDF(quote);
       
       // Send email with quote
-      const emailSent = await sendEmail(
-        process.env.SENDGRID_API_KEY || "",
-        {
-          to: quote.email,
-          from: "quotes@perthsolarwarehouse.com.au",
-          subject: "Your Solar Quote from Perth Solar Warehouse",
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h1 style="color: #3b82f6;">Your Solar Quote is Ready!</h1>
-              <p>Dear ${quote.customerName},</p>
-              <p>Thank you for your interest in Perth Solar Warehouse. Your personalized solar quote is attached to this email.</p>
-              <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h3>Quote Summary:</h3>
-                <p><strong>Total Investment:</strong> $${quote.finalPrice}</p>
-                <p><strong>After Rebates:</strong> $${quote.rebateAmount} savings</p>
-                <p><strong>Systems Selected:</strong> ${quote.selectedSystems.join(', ')}</p>
-              </div>
-              <p>Our team will contact you within 24 hours to discuss your quote and answer any questions.</p>
-              <p>Best regards,<br>Perth Solar Warehouse Team<br>(08) 6171 4111</p>
-            </div>
-          `,
-        }
-      );
+      const emailSent = await emailService.sendQuoteEmail(quote);
 
       if (!emailSent) {
         console.error("Failed to send email to customer");

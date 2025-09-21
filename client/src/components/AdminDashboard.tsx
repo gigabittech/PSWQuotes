@@ -6,11 +6,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "../utils/pricingCalculator";
+import type { Quote } from "@shared/schema";
 
 export default function AdminDashboard() {
   const queryClient = useQueryClient();
 
-  const { data: quotes, isLoading } = useQuery({
+  const { data: quotes = [], isLoading } = useQuery<Quote[]>({
     queryKey: ['/api/quotes'],
   });
 
@@ -52,11 +53,11 @@ export default function AdminDashboard() {
   }
 
   const stats = {
-    total: quotes?.length || 0,
-    pending: quotes?.filter((q: any) => q.status === 'pending').length || 0,
-    contacted: quotes?.filter((q: any) => q.status === 'contacted').length || 0,
-    converted: quotes?.filter((q: any) => q.status === 'converted').length || 0,
-    totalValue: quotes?.reduce((sum: number, q: any) => sum + parseFloat(q.finalPrice), 0) || 0,
+    total: quotes.length || 0,
+    pending: quotes.filter((q: Quote) => q.status === 'pending').length || 0,
+    contacted: quotes.filter((q: Quote) => q.status === 'contacted').length || 0,
+    converted: quotes.filter((q: Quote) => q.status === 'converted').length || 0,
+    totalValue: quotes.reduce((sum: number, q: Quote) => sum + parseFloat(q.finalPrice.toString()), 0) || 0,
   };
 
   return (
@@ -133,7 +134,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {quotes?.map((quote: any) => (
+                {quotes.map((quote: Quote) => (
                   <tr key={quote.id} className="border-b" data-testid={`quote-row-${quote.id}`}>
                     <td className="p-4 font-medium">{quote.customerName}</td>
                     <td className="p-4">{quote.email}</td>

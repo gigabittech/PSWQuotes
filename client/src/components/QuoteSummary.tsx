@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "../utils/pricingCalculator";
+import type { Quote } from "@shared/schema";
 
 interface QuoteSummaryProps {
   quoteId: string;
@@ -8,7 +9,7 @@ interface QuoteSummaryProps {
 }
 
 export default function QuoteSummary({ quoteId, onStartOver }: QuoteSummaryProps) {
-  const { data: quote, isLoading } = useQuery({
+  const { data: quote, isLoading } = useQuery<Quote>({
     queryKey: ['/api/quotes', quoteId],
   });
 

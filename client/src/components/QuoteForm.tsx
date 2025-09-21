@@ -12,11 +12,11 @@ import type { QuoteFormData } from "../types/quote";
 export default function QuoteForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<QuoteFormData>({
-    selectedSystems: [],
-    powerSupply: '',
+    systems: [],
+    powerSupply: 'unknown',
     customerName: '',
     email: '',
-    phone: '',
+    phone: undefined,
     address: '',
     suburb: '',
     state: 'WA',
@@ -62,13 +62,13 @@ export default function QuoteForm() {
   });
 
   const handleSystemToggle = (system: string) => {
-    const newSystems = formData.selectedSystems.includes(system as any)
-      ? formData.selectedSystems.filter(s => s !== system)
-      : [...formData.selectedSystems, system as any];
+    const newSystems = formData.systems.includes(system as any)
+      ? formData.systems.filter((s: string) => s !== system)
+      : [...formData.systems, system as any];
     
     setFormData(prev => ({
       ...prev,
-      selectedSystems: newSystems,
+      systems: newSystems,
     }));
   };
 
@@ -151,11 +151,11 @@ export default function QuoteForm() {
   const startOver = () => {
     setCurrentStep(1);
     setFormData({
-      selectedSystems: [],
-      powerSupply: '',
+      systems: [],
+      powerSupply: 'unknown',
       customerName: '',
       email: '',
-      phone: '',
+      phone: undefined,
       address: '',
       suburb: '',
       state: 'WA',
@@ -174,7 +174,7 @@ export default function QuoteForm() {
         <div className="bg-card rounded-lg shadow-lg overflow-hidden">
           {currentStep === 1 && (
             <SystemSelection
-              selectedSystems={formData.selectedSystems}
+              selectedSystems={formData.systems}
               powerSupply={formData.powerSupply}
               onSystemToggle={handleSystemToggle}
               onPowerSupplyChange={handlePowerSupplyChange}
@@ -184,7 +184,7 @@ export default function QuoteForm() {
 
           {currentStep === 2 && (
             <ProductSelection
-              selectedSystems={formData.selectedSystems}
+              selectedSystems={formData.systems}
               solarPackage={formData.solarPackage || ''}
               batterySystem={formData.batterySystem || ''}
               evCharger={formData.evCharger || ''}
@@ -198,7 +198,7 @@ export default function QuoteForm() {
 
           {currentStep === 3 && (
             <PropertyDetails
-              formData={formData}
+              formData={{...formData, phone: formData.phone || '', additionalInfo: formData.additionalInfo || ''}}
               onFormDataChange={handleFormDataChange}
               onFileChange={handleFileChange}
               onNext={handleSubmitQuote}
