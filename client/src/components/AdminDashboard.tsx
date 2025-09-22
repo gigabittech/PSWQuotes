@@ -6,13 +6,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Settings, Users, FileText, BarChart3, Palette, FileEdit, Building, Image, Menu, X } from "lucide-react";
+import { Settings as SettingsIcon, Users, FileText, BarChart3, Palette, FileEdit, Building, Image, Menu, X } from "lucide-react";
 import { formatPrice } from "../utils/pricingCalculator";
 import ThemeEditor from "@/components/admin/ThemeEditor";
 import PageManager from "@/components/admin/PageManager";
 import FormBuilder from "@/components/admin/FormBuilder";
 import AnalyticsView from "@/components/admin/AnalyticsView";
 import MediaManager from "@/components/admin/MediaManager";
+import { Settings } from "@/components/admin/Settings";
 import type { User, Quote } from "@shared/schema";
 
 export default function AdminDashboard() {
@@ -215,6 +216,17 @@ export default function AdminDashboard() {
             >
               <Users className="h-5 w-5 flex-shrink-0" />
               <span className="text-sm sm:text-base">Users</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("settings")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "settings" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-settings"
+            >
+              <SettingsIcon className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Settings</span>
             </button>
           </>
         )}
@@ -424,6 +436,11 @@ export default function AdminDashboard() {
                   </CardContent>
                 </Card>
               </div>
+            )}
+
+            {/* Settings */}
+            {activeTab === "settings" && userRole === 'admin' && (
+              <Settings />
             )}
           </div>
         </div>

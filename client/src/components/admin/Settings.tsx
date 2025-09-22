@@ -1,0 +1,358 @@
+import { useState, useEffect } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { queryClient, apiRequest } from '@/lib/queryClient';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Loader2, Save, AlertCircle, CheckCircle2, Building, Mail, Calculator, FileText, Shield, Database, BarChart3, Link, Bell, FileCheck, Wrench, Eye, EyeOff } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import type { Setting } from '@shared/schema';
+
+interface SettingValue {
+  type: 'text' | 'number' | 'boolean' | 'email' | 'url' | 'password' | 'textarea' | 'select';
+  value: any;
+  options?: string[];
+  description?: string;
+  sensitive?: boolean;
+}
+
+const settingsConfig: Record<string, {
+  title: string;
+  description: string;
+  icon: any;
+  sections: Record<string, {
+    title: string;
+    settings: Record<string, SettingValue>;
+  }>;
+}> = {
+  business: {
+    title: "Business Profile",
+    description: "Basic company information and contact details",
+    icon: Building,
+    sections: {
+      company: {
+        title: "Company Information",
+        settings: {
+          'business.company_name': { type: 'text', value: '', description: 'Your company name' },
+          'business.company_email': { type: 'email', value: '', description: 'Main business email address' },
+          'business.company_phone': { type: 'text', value: '', description: 'Main phone number' },
+          'business.company_address': { type: 'textarea', value: '', description: 'Full business address' },
+          'business.abn': { type: 'text', value: '', description: 'Australian Business Number' },
+          'business.timezone': { 
+            type: 'select', 
+            value: 'Australia/Perth', 
+            options: ['Australia/Perth', 'Australia/Sydney', 'Australia/Melbourne'],
+            description: 'Business timezone' 
+          },
+        }
+      }
+    }
+  },
+  email: {
+    title: "Email Settings",
+    description: "Configure email service and notification preferences",
+    icon: Mail,
+    sections: {
+      provider: {
+        title: "Email Provider",
+        settings: {
+          'email.provider': { 
+            type: 'select', 
+            value: 'brevo', 
+            options: ['brevo', 'sendgrid', 'smtp'],
+            description: 'Email service provider' 
+          },
+          'email.brevo_api_key': { type: 'password', value: '', description: 'Brevo API key', sensitive: true },
+          'email.from_email': { type: 'email', value: '', description: 'Default sender email' },
+          'email.from_name': { type: 'text', value: '', description: 'Default sender name' },
+        }
+      },
+      notifications: {
+        title: "Email Notifications",
+        settings: {
+          'email.quote_notifications': { type: 'boolean', value: true, description: 'Send email when new quotes are submitted' },
+          'email.admin_notifications': { type: 'boolean', value: true, description: 'Send admin notification emails' },
+          'email.customer_auto_response': { type: 'boolean', value: true, description: 'Send automatic responses to customers' },
+        }
+      }
+    }
+  },
+  pricing: {
+    title: "Quotes & Pricing",
+    description: "Configure pricing rules and quote settings",
+    icon: Calculator,
+    sections: {
+      rebates: {
+        title: "Government Rebates",
+        settings: {
+          'pricing.federal_rebate_enabled': { type: 'boolean', value: true, description: 'Enable federal solar rebate calculations' },
+          'pricing.federal_rebate_amount': { type: 'number', value: 400, description: 'Federal rebate amount per kW' },
+          'pricing.state_rebate_enabled': { type: 'boolean', value: true, description: 'Enable state solar rebate' },
+          'pricing.state_rebate_amount': { type: 'number', value: 2500, description: 'Fixed state rebate amount' },
+        }
+      },
+      margins: {
+        title: "Pricing & Margins",
+        settings: {
+          'pricing.default_margin': { type: 'number', value: 0.2, description: 'Default profit margin (0.2 = 20%)' },
+          'pricing.battery_margin': { type: 'number', value: 0.15, description: 'Battery system margin' },
+          'pricing.ev_margin': { type: 'number', value: 0.18, description: 'EV charger margin' },
+          'pricing.installation_rate': { type: 'number', value: 150, description: 'Installation rate per hour' },
+        }
+      }
+    }
+  },
+  pdf: {
+    title: "PDF & Branding",
+    description: "Customize PDF quotes and company branding",
+    icon: FileText,
+    sections: {
+      branding: {
+        title: "Company Branding",
+        settings: {
+          'pdf.company_logo_url': { type: 'url', value: '', description: 'Company logo URL for PDFs' },
+          'pdf.company_colors': { type: 'text', value: '#1f2937,#3b82f6', description: 'Primary,Secondary colors (hex)' },
+          'pdf.watermark_text': { type: 'text', value: '', description: 'Optional watermark text' },
+        }
+      },
+      content: {
+        title: "PDF Content",
+        settings: {
+          'pdf.footer_text': { type: 'textarea', value: '', description: 'Footer text on PDF quotes' },
+          'pdf.terms_conditions': { type: 'textarea', value: '', description: 'Terms and conditions text' },
+          'pdf.warranty_info': { type: 'textarea', value: '', description: 'Warranty information' },
+        }
+      }
+    }
+  }
+};
+
+export function Settings() {
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState('business');
+  const [visibleSecrets, setVisibleSecrets] = useState<Set<string>>(new Set());
+
+  const { data: settings = [], isLoading } = useQuery<Setting[]>({
+    queryKey: ['/api/settings'],
+    queryFn: async () => {
+      const response = await fetch('/api/settings');
+      if (!response.ok) throw new Error('Failed to fetch settings');
+      return response.json();
+    }
+  });
+
+  const updateSettingMutation = useMutation({
+    mutationFn: async ({ key, value }: { key: string; value: any }) => {
+      const response = await fetch(`/api/settings/${key}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value })
+      });
+      if (!response.ok) throw new Error('Failed to update setting');
+      return response.json();
+    },
+    onSuccess: (_, { key }) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/settings'] });
+      toast({
+        title: "Setting Updated",
+        description: `Successfully updated ${key}`,
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update setting",
+        variant: "destructive",
+      });
+    }
+  });
+
+  const getSettingValue = (key: string, defaultValue: any = ''): any => {
+    const setting = settings.find(s => s.key === key);
+    return setting?.value ?? defaultValue;
+  };
+
+  const handleSettingUpdate = (key: string, value: any) => {
+    updateSettingMutation.mutate({ key, value });
+  };
+
+  const toggleSecretVisibility = (key: string) => {
+    const newVisible = new Set(visibleSecrets);
+    if (newVisible.has(key)) {
+      newVisible.delete(key);
+    } else {
+      newVisible.add(key);
+    }
+    setVisibleSecrets(newVisible);
+  };
+
+  const renderSettingField = (key: string, config: SettingValue) => {
+    const currentValue = getSettingValue(key, config.value);
+    const isRedacted = config.sensitive && currentValue === '[REDACTED]';
+    const showValue = !config.sensitive || visibleSecrets.has(key) || !isRedacted;
+
+    return (
+      <div key={key} className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            {key.split('.').pop()?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+            {config.sensitive && (
+              <Badge variant="secondary" className="ml-2 text-xs">
+                Sensitive
+              </Badge>
+            )}
+          </label>
+          {config.sensitive && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => toggleSecretVisibility(key)}
+              data-testid={`button-toggle-visibility-${key}`}
+            >
+              {showValue ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </Button>
+          )}
+        </div>
+        
+        {config.description && (
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {config.description}
+          </p>
+        )}
+
+        {config.type === 'boolean' ? (
+          <div className="flex items-center space-x-2">
+            <Switch
+              checked={Boolean(currentValue)}
+              onCheckedChange={(checked) => handleSettingUpdate(key, checked)}
+              data-testid={`switch-${key}`}
+            />
+            <span className="text-sm">{currentValue ? 'Enabled' : 'Disabled'}</span>
+          </div>
+        ) : config.type === 'select' ? (
+          <Select 
+            value={currentValue || config.value} 
+            onValueChange={(value) => handleSettingUpdate(key, value)}
+          >
+            <SelectTrigger data-testid={`select-${key}`}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {config.options?.map(option => (
+                <SelectItem key={option} value={option}>
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ) : config.type === 'textarea' ? (
+          <Textarea
+            value={showValue ? currentValue : ''}
+            placeholder={isRedacted ? '[REDACTED]' : ''}
+            onChange={(e) => handleSettingUpdate(key, e.target.value)}
+            className="min-h-[80px]"
+            data-testid={`textarea-${key}`}
+          />
+        ) : (
+          <Input
+            type={config.type === 'password' && showValue ? 'text' : config.type}
+            value={showValue ? currentValue : ''}
+            placeholder={isRedacted ? '[REDACTED]' : ''}
+            onChange={(e) => {
+              const value = config.type === 'number' ? Number(e.target.value) : e.target.value;
+              handleSettingUpdate(key, value);
+            }}
+            data-testid={`input-${key}`}
+          />
+        )}
+      </div>
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Settings
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Configure your application settings and preferences
+          </p>
+        </div>
+        <div className="flex items-center space-x-2">
+          {updateSettingMutation.isPending && (
+            <div className="flex items-center space-x-2 text-blue-600">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span className="text-sm">Saving...</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <TabsList className="grid grid-cols-4 w-fit">
+          {Object.entries(settingsConfig).map(([key, config]) => {
+            const Icon = config.icon;
+            return (
+              <TabsTrigger 
+                key={key} 
+                value={key} 
+                className="flex items-center space-x-2"
+                data-testid={`tab-${key}`}
+              >
+                <Icon className="h-4 w-4" />
+                <span className="hidden sm:inline">{config.title}</span>
+              </TabsTrigger>
+            );
+          })}
+        </TabsList>
+
+        {Object.entries(settingsConfig).map(([tabKey, tabConfig]) => (
+          <TabsContent key={tabKey} value={tabKey} className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <tabConfig.icon className="h-5 w-5" />
+                  <span>{tabConfig.title}</span>
+                </CardTitle>
+                <CardDescription>{tabConfig.description}</CardDescription>
+              </CardHeader>
+            </Card>
+
+            {Object.entries(tabConfig.sections).map(([sectionKey, section]) => (
+              <Card key={sectionKey}>
+                <CardHeader>
+                  <CardTitle className="text-lg">{section.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {Object.entries(section.settings).map(([settingKey, settingConfig]) =>
+                    renderSettingField(settingKey, settingConfig)
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </TabsContent>
+        ))}
+      </Tabs>
+    </div>
+  );
+}
