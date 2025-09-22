@@ -11,27 +11,16 @@ import {
 import { emailService } from "./services/emailService";
 import { pricingService } from "./services/pricingService";
 import { generateQuotePDF } from "./pdfGenerator";
-import multer from "multer";
+import {
+  ObjectStorageService,
+  ObjectNotFoundError,
+} from "./objectStorage";
+import { ObjectPermission } from "./objectAcl";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import type { Request, Response, NextFunction } from "express";
 
-const upload = multer({ 
-  dest: "uploads/",
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
-    files: 5 // Maximum 5 files
-  },
-  fileFilter: (req, file, cb) => {
-    // Only allow specific image types
-    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    if (allowedMimeTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.'));
-    }
-  }
-});
+// Removed insecure multer upload - replaced with secure object storage
 
 // Rate limiters for specific endpoints
 const authLimiter = rateLimit({
@@ -113,10 +102,148 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     res.json({ csrfToken: token });
   });
+
+  // Secure Object Storage Endpoints
+  
+  // Serve public objects
+  app.get("/public-objects/:filePath(*)", async (req, res) => {
+    const filePath = req.params.filePath;
+    const objectStorageService = new ObjectStorageService();
+    try {
+      const file = await objectStorageService.searchPublicObject(filePath);
+      if (!file) {
+        return res.status(404).json({ error: "File not found" });
+      }
+      objectStorageService.downloadObject(file, res);
+    } catch (error) {
+      console.error("Error searching for public object:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Serve private objects (requires authentication and ACL check)
+  app.get("/objects/:objectPath(*)", requireAuth, async (req, res) => {
+    const userId = req.session.userId;
+    const objectStorageService = new ObjectStorageService();
+    try {
+      const objectFile = await objectStorageService.getObjectEntityFile(
+        req.path,
+      );
+      const canAccess = await objectStorageService.canAccessObjectEntity({
+        objectFile,
+        userId: userId,
+        requestedPermission: ObjectPermission.READ,
+      });
+      if (!canAccess) {
+        return res.status(403).json({ error: "Access denied" });
+      }
+      objectStorageService.downloadObject(objectFile, res);
+    } catch (error) {
+      console.error("Error checking object access:", error);
+      if (error instanceof ObjectNotFoundError) {
+        return res.status(404).json({ error: "File not found" });
+      }
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Get upload URL (requires authentication)
+  app.post("/api/objects/upload", requireAuth, async (req, res) => {
+    try {
+      // Validate request body
+      const uploadRequestSchema = z.object({
+        fileType: z.string().min(1).regex(/^[a-zA-Z0-9\/+-]+$/),
+        maxSizeBytes: z.number().optional().default(10 * 1024 * 1024)
+      });
+      
+      const { fileType, maxSizeBytes } = uploadRequestSchema.parse(req.body);
+      const objectStorageService = new ObjectStorageService();
+      const result = await objectStorageService.getObjectEntityUploadURL(fileType, maxSizeBytes);
+      res.json(result);
+    } catch (error) {
+      console.error("Error getting upload URL:", error);
+      res.status(400).json({ error: error instanceof Error ? error.message : "Failed to get upload URL" });
+    }
+  });
+
+  // Update media asset after upload (for admin use)
+  app.put("/api/media-assets", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      // Validate request body
+      const mediaAssetRequestSchema = z.object({
+        assetURL: z.string().url(),
+        filename: z.string().min(1).max(255),
+        mimeType: z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*\/[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_.]*$/),
+        size: z.number().min(0).max(50 * 1024 * 1024), // Max 50MB
+        expectedMimeType: z.string().optional()
+      });
+      
+      const { assetURL, filename, mimeType, size, expectedMimeType } = mediaAssetRequestSchema.parse(req.body);
+      const userId = req.session.userId;
+
+      const objectStorageService = new ObjectStorageService();
+      
+      // Verify the uploaded object meets security requirements
+      const isValid = await objectStorageService.verifyUploadedObject(
+        assetURL, 
+        expectedMimeType || mimeType, 
+        size
+      );
+      
+      if (!isValid) {
+        return res.status(400).json({ error: "Uploaded file failed security verification" });
+      }
+
+      const objectPath = await objectStorageService.trySetObjectEntityAclPolicy(
+        assetURL,
+        {
+          owner: userId!,
+          visibility: "public", // Media assets are typically public
+        },
+      );
+
+      // Store media asset in database
+      const mediaAsset = await storage.createMediaAsset({
+        filename: filename,
+        url: objectPath,
+        mimeType: mimeType,
+        size: size
+      });
+
+      res.status(200).json({
+        objectPath: objectPath,
+        assetId: mediaAsset.id
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid request data", details: error.errors });
+      }
+      console.error("Error setting media asset:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
   
   // Authentication routes
   app.post("/api/auth/login", authLimiter, async (req, res) => {
     try {
+      // Validate Origin/Referer for CSRF protection
+      const origin = req.get('Origin');
+      const referer = req.get('Referer');
+      const allowedOrigins = process.env.NODE_ENV === 'production' 
+        ? ['https://your-domain.replit.app'] 
+        : ['http://localhost:5000', 'http://127.0.0.1:5000'];
+      
+      let validOrigin = false;
+      if (origin) {
+        validOrigin = allowedOrigins.includes(origin);
+      } else if (referer) {
+        validOrigin = allowedOrigins.some(allowed => referer.startsWith(allowed + '/'));
+      }
+      
+      if (!validOrigin) {
+        return res.status(403).json({ error: "Invalid credentials" }); // Consistent error message
+      }
+
       const { username, password } = loginSchema.parse(req.body);
       
       const user = await storage.getUserByUsername(username);
@@ -149,7 +276,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       console.error("Login error:", error);
-      res.status(400).json({ error: "Login failed" });
+      res.status(401).json({ error: "Invalid credentials" }); // Consistent error response
     }
   });
 
@@ -159,8 +286,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.error("Logout error:", err);
         return res.status(500).json({ error: "Logout failed" });
       }
-      // Clear the session cookie
-      res.clearCookie('connect.sid');
+      // Clear the session cookie with correct name and options
+      res.clearCookie('sessionId', {
+        httpOnly: true,
+        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+        secure: process.env.NODE_ENV === 'production'
+      });
       res.json({ message: "Logged out successfully" });
     });
   });
@@ -244,7 +375,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Create a new quote
-  app.post("/api/quotes", upload.single('switchboardPhoto'), async (req, res) => {
+  app.post("/api/quotes", quoteLimiter, async (req, res) => {
     try {
       // Parse JSON stringified arrays from FormData
       const requestBody = { ...req.body };
@@ -261,10 +392,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const validatedData = insertQuoteSchema.parse(requestBody);
       
-      // Handle file upload if present
-      if (req.file) {
-        validatedData.switchboardPhotoUrl = `/uploads/${req.file.filename}`;
-      }
+      // Note: File uploads now handled via secure object storage endpoints
 
       const quote = await storage.createQuote(validatedData);
 

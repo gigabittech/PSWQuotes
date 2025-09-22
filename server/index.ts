@@ -26,14 +26,23 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Required for Vite in dev
-      imgSrc: ["'self'", "data:", "https:"],
+      styleSrc: process.env.NODE_ENV === 'production'
+        ? ["'self'"] // Remove unsafe-inline in production
+        : ["'self'", "'unsafe-inline'"], // Allow unsafe-inline only in dev
+      scriptSrc: process.env.NODE_ENV === 'production' 
+        ? ["'self'"] 
+        : ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Allow unsafe only in dev for Vite
+      imgSrc: ["'self'", "data:", "https://storage.googleapis.com"],
       fontSrc: ["'self'", "https:"],
-      connectSrc: ["'self'", "ws:", "wss:"], // For Vite HMR
+      connectSrc: process.env.NODE_ENV === 'production'
+        ? ["'self'", "https://storage.googleapis.com"] 
+        : ["'self'", "ws:", "wss:", "https://storage.googleapis.com"], // Add GCS for uploads
       objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
+      mediaSrc: ["'self'", "https://storage.googleapis.com"],
       frameSrc: ["'none'"],
+      frameAncestors: ["'none'"], // Prevent clickjacking
+      baseUri: ["'self'"], // Restrict base URI to prevent injection
+      formAction: ["'self'"], // Restrict form actions to same origin
     },
   },
   hsts: {
@@ -43,7 +52,8 @@ app.use(helmet({
   },
   noSniff: true,
   xssFilter: true,
-  referrerPolicy: { policy: "strict-origin-when-cross-origin" }
+  referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+  frameguard: { action: 'deny' }
 }));
 
 // CORS Configuration
@@ -55,7 +65,7 @@ app.use(cors({
   origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
   optionsSuccessStatus: 200
 }));
 
@@ -195,8 +205,13 @@ app.use((req, res, next) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
+    // Log error for debugging
+    console.error('Error:', err);
+
+    // Send response without throwing to prevent DoS
+    if (!res.headersSent) {
+      res.status(status).json({ error: message });
+    }
   });
 
   // importantly only setup vite in development and after
