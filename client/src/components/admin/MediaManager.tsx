@@ -125,34 +125,36 @@ export default function MediaManager() {
   }
 
   return (
-    <div className="space-y-6" data-testid="media-manager">
+    <div className="space-y-4 sm:space-y-6" data-testid="media-manager">
       {/* Upload Section */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Upload className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
             Upload Media
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <Input
               type="file"
               multiple
               accept="image/*,video/*,audio/*,.pdf,.doc,.docx"
               onChange={handleFileSelect}
               data-testid="file-input"
+              className="w-full"
             />
             {selectedFiles && (
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
+              <div className="space-y-2 sm:space-y-3">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   {selectedFiles.length} file(s) selected
                 </p>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Button
                     onClick={handleUpload}
                     disabled={uploadMutation.isPending}
                     data-testid="button-upload"
+                    className="w-full sm:w-auto min-h-[44px]"
                   >
                     {uploadMutation.isPending ? "Uploading..." : "Upload Files"}
                   </Button>
@@ -160,6 +162,7 @@ export default function MediaManager() {
                     variant="outline"
                     onClick={() => setSelectedFiles(null)}
                     data-testid="button-cancel-upload"
+                    className="w-full sm:w-auto min-h-[44px]"
                   >
                     Cancel
                   </Button>
@@ -173,15 +176,16 @@ export default function MediaManager() {
       {/* Filter Section */}
       <Card>
         <CardHeader>
-          <CardTitle>Media Library</CardTitle>
+          <CardTitle className="text-lg sm:text-xl">Media Library</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2 mb-6">
+          <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
             <Button
               variant={filter === 'all' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setFilter('all')}
               data-testid="filter-all"
+              className="flex-1 sm:flex-initial text-xs sm:text-sm min-h-[36px]"
             >
               All ({mediaAssets.length})
             </Button>
@@ -190,6 +194,7 @@ export default function MediaManager() {
               size="sm"
               onClick={() => setFilter('images')}
               data-testid="filter-images"
+              className="flex-1 sm:flex-initial text-xs sm:text-sm min-h-[36px]"
             >
               Images ({mediaAssets.filter(a => a.mimeType.startsWith('image/')).length})
             </Button>
@@ -198,6 +203,7 @@ export default function MediaManager() {
               size="sm"
               onClick={() => setFilter('videos')}
               data-testid="filter-videos"
+              className="flex-1 sm:flex-initial text-xs sm:text-sm min-h-[36px]"
             >
               Videos ({mediaAssets.filter(a => a.mimeType.startsWith('video/')).length})
             </Button>
@@ -206,13 +212,14 @@ export default function MediaManager() {
               size="sm"
               onClick={() => setFilter('documents')}
               data-testid="filter-documents"
+              className="flex-1 sm:flex-initial text-xs sm:text-sm min-h-[36px]"
             >
-              Documents ({mediaAssets.filter(a => !a.mimeType.startsWith('image/') && !a.mimeType.startsWith('video/')).length})
+              Docs ({mediaAssets.filter(a => !a.mimeType.startsWith('image/') && !a.mimeType.startsWith('video/')).length})
             </Button>
           </div>
 
           {/* Media Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             {filteredAssets.map((asset) => (
               <Card key={asset.id} className="overflow-hidden" data-testid={`media-card-${asset.id}`}>
                 <div className="aspect-video bg-muted flex items-center justify-center">
@@ -230,8 +237,8 @@ export default function MediaManager() {
                     </div>
                   )}
                 </div>
-                <div className="p-3 space-y-2">
-                  <h4 className="font-medium text-sm truncate" title={asset.filename}>
+                <div className="p-2 sm:p-3 space-y-1 sm:space-y-2">
+                  <h4 className="font-medium text-xs sm:text-sm truncate" title={asset.filename}>
                     {asset.filename}
                   </h4>
                   <p className="text-xs text-muted-foreground">
@@ -242,17 +249,19 @@ export default function MediaManager() {
                       size="sm"
                       variant="outline"
                       onClick={() => copyUrl(asset.url)}
-                      className="flex-1"
+                      className="flex-1 text-xs min-h-[32px] touch-manipulation"
                       data-testid={`button-copy-url-${asset.id}`}
                     >
                       <Copy className="w-3 h-3 mr-1" />
-                      Copy URL
+                      <span className="hidden sm:inline">Copy URL</span>
+                      <span className="sm:hidden">Copy</span>
                     </Button>
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button
                           size="sm"
                           variant="outline"
+                          className="min-h-[32px] touch-manipulation"
                           data-testid={`button-delete-${asset.id}`}
                         >
                           <Trash2 className="w-3 h-3" />
@@ -264,13 +273,14 @@ export default function MediaManager() {
                         </DialogHeader>
                         <div className="space-y-4">
                           <p>Are you sure you want to delete "{asset.filename}"? This action cannot be undone.</p>
-                          <div className="flex gap-2 justify-end">
-                            <Button variant="outline">Cancel</Button>
+                          <div className="flex flex-col sm:flex-row gap-2 justify-end">
+                            <Button variant="outline" className="w-full sm:w-auto min-h-[44px]">Cancel</Button>
                             <Button
                               variant="destructive"
                               onClick={() => deleteMutation.mutate(asset.id)}
                               disabled={deleteMutation.isPending}
                               data-testid={`button-confirm-delete-${asset.id}`}
+                              className="w-full sm:w-auto min-h-[44px]"
                             >
                               {deleteMutation.isPending ? "Deleting..." : "Delete"}
                             </Button>

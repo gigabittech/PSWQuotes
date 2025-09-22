@@ -196,11 +196,11 @@ export default function ThemeEditor() {
   }
 
   return (
-    <div className="space-y-6" data-testid="theme-editor">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6" data-testid="theme-editor">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Theme Editor</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">Theme Editor</h2>
+          <p className="text-muted-foreground text-sm sm:text-base">
             Customize your website's appearance and branding
           </p>
         </div>
@@ -212,11 +212,11 @@ export default function ThemeEditor() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="colors" data-testid="tab-colors">Colors</TabsTrigger>
-          <TabsTrigger value="branding" data-testid="tab-branding">Branding</TabsTrigger>
-          <TabsTrigger value="typography" data-testid="tab-typography">Typography</TabsTrigger>
-          <TabsTrigger value="content" data-testid="tab-content">Content</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
+          <TabsTrigger value="colors" data-testid="tab-colors" className="text-xs sm:text-sm">Colors</TabsTrigger>
+          <TabsTrigger value="branding" data-testid="tab-branding" className="text-xs sm:text-sm">Branding</TabsTrigger>
+          <TabsTrigger value="typography" data-testid="tab-typography" className="text-xs sm:text-sm">Typography</TabsTrigger>
+          <TabsTrigger value="content" data-testid="tab-content" className="text-xs sm:text-sm">Content</TabsTrigger>
         </TabsList>
 
         <TabsContent value="colors" className="space-y-6">
@@ -227,8 +227,8 @@ export default function ThemeEditor() {
                 Color Scheme
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+            <CardContent className="space-y-4 sm:space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <ColorPicker
                   label="Primary Color"
                   value={formData.primaryColor}
@@ -253,12 +253,14 @@ export default function ThemeEditor() {
                   onChange={(value) => handleInputChange("backgroundColor", value)}
                   description="Main background color"
                 />
-                <ColorPicker
-                  label="Text Color"
-                  value={formData.textColor}
-                  onChange={(value) => handleInputChange("textColor", value)}
-                  description="Primary text color"
-                />
+                <div className="sm:col-span-2">
+                  <ColorPicker
+                    label="Text Color"
+                    value={formData.textColor}
+                    onChange={(value) => handleInputChange("textColor", value)}
+                    description="Primary text color"
+                  />
+                </div>
               </div>
               
               {/* Color Preview */}

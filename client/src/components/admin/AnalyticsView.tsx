@@ -125,17 +125,17 @@ export default function AnalyticsView() {
   };
 
   return (
-    <div className="space-y-6" data-testid="analytics-view">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6" data-testid="analytics-view">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Analytics Dashboard</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">Analytics Dashboard</h2>
+          <p className="text-muted-foreground text-sm sm:text-base">
             Track performance metrics and conversion analytics
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-32" data-testid="select-time-range">
+            <SelectTrigger className="w-full sm:w-32" data-testid="select-time-range">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -145,7 +145,7 @@ export default function AnalyticsView() {
               <SelectItem value="1y">Last year</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" data-testid="button-export-data">
+          <Button variant="outline" data-testid="button-export-data" className="w-full sm:w-auto">
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
@@ -153,83 +153,83 @@ export default function AnalyticsView() {
       </div>
 
       {/* Key Metrics Overview */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <Card className="p-4 sm:p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Total Quotes</p>
-              <p className="text-3xl font-bold" data-testid="metric-total-quotes">
+            <div className="flex-1">
+              <p className="text-xs sm:text-sm text-muted-foreground">Total Quotes</p>
+              <p className="text-2xl sm:text-3xl font-bold" data-testid="metric-total-quotes">
                 {analyticsData.quotes.total}
               </p>
-              <p className="text-sm text-green-600 mt-1">
+              <p className="text-xs sm:text-sm text-green-600 mt-1">
                 +{analyticsData.quotes.thisMonth} this month
               </p>
             </div>
-            <div className="p-3 bg-blue-100 rounded-full">
-              <FileText className="h-6 w-6 text-blue-600" />
+            <div className="p-2 sm:p-3 bg-blue-100 rounded-full flex-shrink-0">
+              <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-4 sm:p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Conversion Rate</p>
-              <p className="text-3xl font-bold" data-testid="metric-conversion-rate">
+            <div className="flex-1">
+              <p className="text-xs sm:text-sm text-muted-foreground">Conversion Rate</p>
+              <p className="text-2xl sm:text-3xl font-bold" data-testid="metric-conversion-rate">
                 {analyticsData.quotes.conversion.toFixed(1)}%
               </p>
-              <p className="text-sm text-green-600 mt-1">
+              <p className="text-xs sm:text-sm text-green-600 mt-1">
                 <TrendingUp className="h-3 w-3 inline mr-1" />
                 +2.4% vs last month
               </p>
             </div>
-            <div className="p-3 bg-green-100 rounded-full">
-              <TrendingUp className="h-6 w-6 text-green-600" />
+            <div className="p-2 sm:p-3 bg-green-100 rounded-full flex-shrink-0">
+              <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-4 sm:p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Avg Quote Value</p>
-              <p className="text-3xl font-bold" data-testid="metric-avg-value">
+            <div className="flex-1">
+              <p className="text-xs sm:text-sm text-muted-foreground">Avg Quote Value</p>
+              <p className="text-2xl sm:text-3xl font-bold" data-testid="metric-avg-value">
                 {formatCurrency(analyticsData.quotes.avgValue)}
               </p>
-              <p className="text-sm text-blue-600 mt-1">
+              <p className="text-xs sm:text-sm text-blue-600 mt-1">
                 Total: {formatCurrency(analyticsData.quotes.total * analyticsData.quotes.avgValue)}
               </p>
             </div>
-            <div className="p-3 bg-yellow-100 rounded-full">
-              <DollarSign className="h-6 w-6 text-yellow-600" />
+            <div className="p-2 sm:p-3 bg-yellow-100 rounded-full flex-shrink-0">
+              <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-4 sm:p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Page Views</p>
-              <p className="text-3xl font-bold" data-testid="metric-page-views">
+            <div className="flex-1">
+              <p className="text-xs sm:text-sm text-muted-foreground">Page Views</p>
+              <p className="text-2xl sm:text-3xl font-bold" data-testid="metric-page-views">
                 {analyticsData.traffic.pageViews.toLocaleString()}
               </p>
-              <p className="text-sm text-purple-600 mt-1">
+              <p className="text-xs sm:text-sm text-purple-600 mt-1">
                 {analyticsData.traffic.uniqueVisitors.toLocaleString()} unique visitors
               </p>
             </div>
-            <div className="p-3 bg-purple-100 rounded-full">
-              <Eye className="h-6 w-6 text-purple-600" />
+            <div className="p-2 sm:p-3 bg-purple-100 rounded-full flex-shrink-0">
+              <Eye className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
             </div>
           </div>
         </Card>
       </div>
 
       <Tabs value={selectedMetric} onValueChange={setSelectedMetric}>
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="quotes" data-testid="tab-quotes">Quotes</TabsTrigger>
-          <TabsTrigger value="forms" data-testid="tab-forms">Forms</TabsTrigger>
-          <TabsTrigger value="traffic" data-testid="tab-traffic">Traffic</TabsTrigger>
-          <TabsTrigger value="performance" data-testid="tab-performance">Performance</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
+          <TabsTrigger value="quotes" data-testid="tab-quotes" className="text-xs sm:text-sm">Quotes</TabsTrigger>
+          <TabsTrigger value="forms" data-testid="tab-forms" className="text-xs sm:text-sm">Forms</TabsTrigger>
+          <TabsTrigger value="traffic" data-testid="tab-traffic" className="text-xs sm:text-sm">Traffic</TabsTrigger>
+          <TabsTrigger value="performance" data-testid="tab-performance" className="text-xs sm:text-sm">Performance</TabsTrigger>
         </TabsList>
 
         <TabsContent value="quotes" className="space-y-6">
