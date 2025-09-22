@@ -84,19 +84,19 @@ const loginSchema = z.object({
 export async function registerRoutes(app: Express): Promise<Server> {
   
   // CSRF Token endpoint
-  app.get("/api/csrf-token", (req, res) => {
+  app.get("/api/csrf-token", async (req, res) => {
     if (!req.session) {
       return res.status(500).json({ error: 'Session not initialized' });
     }
     
     // Initialize CSRF secret if not exists
     if (!req.session.csrfSecret) {
-      const { Tokens } = require('csrf');
+      const { default: Tokens } = await import('csrf');
       const tokens = new Tokens();
       req.session.csrfSecret = tokens.secretSync();
     }
     
-    const { Tokens } = require('csrf');
+    const { default: Tokens } = await import('csrf');
     const tokens = new Tokens();
     const token = tokens.create(req.session.csrfSecret);
     
@@ -230,7 +230,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const origin = req.get('Origin');
       const referer = req.get('Referer');
       const allowedOrigins = process.env.NODE_ENV === 'production' 
-        ? ['https://your-domain.replit.app'] 
+        ? (process.env.ALLOWED_ORIGINS?.split(',') || ['https://your-domain.replit.app'])
         : ['http://localhost:5000', 'http://127.0.0.1:5000'];
       
       let validOrigin = false;

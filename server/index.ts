@@ -56,9 +56,9 @@ app.use(helmet({
   frameguard: { action: 'deny' }
 }));
 
-// CORS Configuration
+// CORS Configuration - Environment driven
 const allowedOrigins = process.env.NODE_ENV === 'production' 
-  ? ['https://your-domain.replit.app'] // Update with your actual domain
+  ? (process.env.ALLOWED_ORIGINS?.split(',') || ['https://your-domain.replit.app'])
   : ['http://localhost:5000', 'http://127.0.0.1:5000'];
 
 app.use(cors({
@@ -84,7 +84,44 @@ const globalLimiter = rateLimit({
 
 app.use(globalLimiter);
 
-// CSRF Protection Setup
+// Ensure SESSION_SECRET is set
+if (!process.env.SESSION_SECRET) {
+  throw new Error('SESSION_SECRET environment variable is required');
+}
+
+// Body parser with size limits (must come before CSRF)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+
+// Session configuration with proper PostgreSQL Pool (must come before CSRF)
+const PgSession = ConnectPgSimple(session);
+const sessionPool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+app.use(session({
+  store: new PgSession({
+    pool: sessionPool,
+    tableName: 'session',
+    createTableIfMissing: true
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  name: 'sessionId', // Change default session name
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+    httpOnly: true, // Prevent XSS
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax' // CSRF protection
+  },
+  genid: () => {
+    // Generate cryptographically secure session ID
+    return crypto.randomBytes(16).toString('hex');
+  }
+}));
+
+// CSRF Protection Setup (must come after session)
 const csrfProtection = new Tokens();
 
 // CSRF middleware
@@ -130,43 +167,6 @@ app.use('/api', (req: Request, res: Response, next: NextFunction) => {
   // Apply CSRF protection for all other routes
   return csrfMiddleware(req, res, next);
 });
-
-// Ensure SESSION_SECRET is set
-if (!process.env.SESSION_SECRET) {
-  throw new Error('SESSION_SECRET environment variable is required');
-}
-
-// Body parser with size limits
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: false, limit: '10mb' }));
-
-// Session configuration with proper PostgreSQL Pool
-const PgSession = ConnectPgSimple(session);
-const sessionPool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-app.use(session({
-  store: new PgSession({
-    pool: sessionPool,
-    tableName: 'session',
-    createTableIfMissing: true
-  }),
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  name: 'sessionId', // Change default session name
-  genid: () => {
-    // Generate cryptographically secure session IDs
-    return crypto.randomBytes(32).toString('hex');
-  },
-  cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-    maxAge: 2 * 60 * 60 * 1000 // 2 hours instead of 7 days for better security
-  }
-}));
 
 app.use((req, res, next) => {
   const start = Date.now();
