@@ -58,7 +58,8 @@ export default function ProductSelection({
                   isSelected={data.solarPackage === product.id}
                   onSelect={() => handleProductSelect('solarPackage', product.id)}
                   badge={product.popular ? "POPULAR" : undefined}
-                  badgeColor="bg-secondary text-secondary-foreground"
+                  badgeColor="bg-gradient-to-r from-yellow-400 to-orange-500 text-white"
+                  productType="solar"
                 />
               ))}
             </div>
@@ -77,7 +78,8 @@ export default function ProductSelection({
                   isSelected={data.batterySystem === product.id}
                   onSelect={() => handleProductSelect('batterySystem', product.id)}
                   badge={product.popular ? "VALUE" : product.specifications?.premium ? "PREMIUM" : undefined}
-                  badgeColor={product.popular ? "bg-secondary text-secondary-foreground" : "bg-primary text-primary-foreground"}
+                  badgeColor={product.popular ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white" : "bg-gradient-to-r from-blue-500 to-purple-600 text-white"}
+                  productType="battery"
                 />
               ))}
             </div>
@@ -88,32 +90,17 @@ export default function ProductSelection({
         {data.systems?.includes('ev') && (
           <div className="mb-6 sm:mb-8">
             <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 px-2">EV Charging Solutions</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
               {evProducts.map((product) => (
-                <div
+                <ProductCard
                   key={product.id}
-                  className={cn(
-                    "pricing-card border-2 rounded-lg p-3 sm:p-4 cursor-pointer transition-all duration-200 hover:shadow-lg touch-manipulation min-h-[140px] sm:min-h-[160px]",
-                    data.evCharger === product.id
-                      ? "border-primary bg-primary/5 ring-2 ring-primary/20 scale-[1.02]"
-                      : "border-border hover:border-primary active:scale-[0.98]"
-                  )}
-                  onClick={() => handleProductSelect('evCharger', product.id)}
-                  data-testid={`ev-charger-${product.id}`}
-                >
-                  <div className="text-center h-full flex flex-col justify-between">
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base leading-tight">{product.name}</h4>
-                      <p className="text-xs text-muted-foreground mb-3 leading-tight">
-                        {product.capacity}, {product.specifications?.cable || 'Standard cable'}
-                      </p>
-                    </div>
-                    <div>
-                      <div className="text-base sm:text-lg font-bold text-primary">${parseFloat(product.price).toLocaleString()}</div>
-                      <div className="text-xs text-muted-foreground">Installed</div>
-                    </div>
-                  </div>
-                </div>
+                  product={product}
+                  isSelected={data.evCharger === product.id}
+                  onSelect={() => handleProductSelect('evCharger', product.id)}
+                  badge={product.popular ? "FAST CHARGING" : undefined}
+                  badgeColor="bg-gradient-to-r from-blue-400 to-indigo-500 text-white"
+                  productType="ev_charger"
+                />
               ))}
             </div>
           </div>
@@ -121,20 +108,25 @@ export default function ProductSelection({
 
       {/* Real-time Pricing Display */}
       {pricingData && (
-        <div className="bg-muted/50 rounded-lg p-6 mb-8">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Current Quote Summary</h3>
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl p-6 mb-8 border border-blue-200 dark:border-blue-800 shadow-lg">
+          <div className="flex items-center mb-6">
+            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+              <span className="text-white">💰</span>
+            </div>
+            <h3 className="text-xl font-bold text-foreground">Current Quote Summary</h3>
+          </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-foreground">${pricingData.totalPrice?.toLocaleString()}</div>
+            <div className="text-center bg-white/50 dark:bg-gray-900/30 rounded-lg p-4 backdrop-blur-sm">
+              <div className="text-2xl font-bold text-foreground mb-1">${pricingData.totalPrice?.toLocaleString()}</div>
               <div className="text-sm text-muted-foreground">Total System Price</div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-accent">-${pricingData.rebateAmount?.toLocaleString()}</div>
+            <div className="text-center bg-white/50 dark:bg-gray-900/30 rounded-lg p-4 backdrop-blur-sm">
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-1">-${pricingData.rebateAmount?.toLocaleString()}</div>
               <div className="text-sm text-muted-foreground">Rebates & Incentives</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary">${pricingData.finalPrice?.toLocaleString()}</div>
-              <div className="text-sm text-muted-foreground">Your Investment</div>
+            <div className="text-center bg-gradient-to-br from-primary/10 to-blue-500/10 rounded-lg p-4 border border-primary/20">
+              <div className="text-3xl font-bold text-primary mb-1">${pricingData.finalPrice?.toLocaleString()}</div>
+              <div className="text-sm font-medium text-primary/80">Your Investment</div>
             </div>
           </div>
         </div>
@@ -143,21 +135,45 @@ export default function ProductSelection({
         {/* Navigation Buttons */}
         <div className="flex flex-col sm:flex-row justify-between gap-4 px-4 mt-8">
           <button
-            className="bg-muted-foreground hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors w-full sm:w-auto min-h-[48px] touch-manipulation"
+            className="group relative bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-lg hover:shadow-xl hover:-translate-y-1 active:scale-[0.98]"
             onClick={onPrev}
             data-testid="button-back"
           >
-            <span className="mr-2">←</span>
-            Back
+            <span className="flex items-center justify-center">
+              <svg className="w-5 h-5 mr-3 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+              </svg>
+              Back
+            </span>
           </button>
           <button
-            className="bg-primary hover:bg-blue-700 text-primary-foreground px-8 py-3 rounded-lg font-semibold transition-colors disabled:opacity-50 w-full sm:w-auto min-h-[48px] touch-manipulation"
+            className={cn(
+              "group relative bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-primary text-white px-10 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-xl",
+              "hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98]",
+              "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-xl"
+            )}
             onClick={onNext}
             disabled={isCalculating}
             data-testid="button-continue-to-details"
           >
-            {isCalculating ? "Calculating..." : "Continue to Property Details"}
-            <span className="ml-2">→</span>
+            <span className="flex items-center justify-center">
+              <span className="mr-3">
+                {isCalculating ? "Calculating..." : "Continue to Property Details"}
+              </span>
+              {!isCalculating && (
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              )}
+              {isCalculating && (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              )}
+            </span>
+            
+            {/* Shine effect on hover */}
+            {!isCalculating && (
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 rounded-xl"></div>
+            )}
           </button>
         </div>
       </div>

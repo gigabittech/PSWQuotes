@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface PropertyDetailsProps {
   data: {
@@ -249,25 +250,48 @@ export default function PropertyDetails({
 
           {/* Navigation Buttons */}
           <div className="flex flex-col sm:flex-row justify-between gap-4 mt-8">
-            <Button
+            <button
               type="button"
-              variant="secondary"
               onClick={onPrev}
               data-testid="button-back"
-              className="w-full sm:w-auto min-h-[48px] text-base"
+              className="group relative bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-lg hover:shadow-xl hover:-translate-y-1 active:scale-[0.98]"
             >
-              <span className="mr-2">←</span>
-              Back
-            </Button>
-            <Button
+              <span className="flex items-center justify-center">
+                <svg className="w-5 h-5 mr-3 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                </svg>
+                Back
+              </span>
+            </button>
+            <button
               type="submit"
-              className="bg-primary hover:bg-blue-700 w-full sm:w-auto min-h-[48px] text-base"
               disabled={!isValid || isSubmitting}
               data-testid="button-generate-quote"
+              className={cn(
+                "group relative bg-gradient-to-r from-green-500 to-emerald-600 hover:from-emerald-600 hover:to-green-500 text-white px-10 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-xl",
+                "hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98]",
+                "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-xl"
+              )}
             >
-              {isSubmitting ? "Generating Quote..." : "Generate Quote"}
-              <span className="ml-2">→</span>
-            </Button>
+              <span className="flex items-center justify-center">
+                <span className="mr-3">
+                  {isSubmitting ? "Generating Quote..." : "Generate Quote"}
+                </span>
+                {!isSubmitting && (
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                )}
+                {isSubmitting && (
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                )}
+              </span>
+              
+              {/* Shine effect on hover */}
+              {!isSubmitting && (
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 rounded-xl"></div>
+              )}
+            </button>
           </div>
         </form>
       </div>
