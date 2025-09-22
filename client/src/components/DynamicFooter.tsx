@@ -13,7 +13,9 @@ export default function DynamicFooter() {
   });
 
   // Fallback to default footer if CMS data not available
-  const footerContent = homepage?.blocks?.find((block: any) => block.type === 'footer')?.content || {
+  const footerContent = (homepage?.blocks && Array.isArray(homepage.blocks)) 
+    ? homepage.blocks.find((block: any) => block.type === 'footer')?.content 
+    : null || {
     company: {
       name: "Perth Solar Warehouse",
       description: "Perth's trusted solar specialists since 2015. Licensed, insured, and committed to helping Western Australian families save on energy costs.",
@@ -71,13 +73,13 @@ export default function DynamicFooter() {
             <div className="mt-6 space-y-2" data-testid="footer-contact">
               <div className="flex items-center text-muted-foreground">
                 <span className="text-lg mr-3">📞</span>
-                <a href={`tel:${footerContent.contact?.phone}`} className="hover:text-primary transition-colors" data-testid="footer-phone">
+                <a href={`tel:${footerContent.contact?.phone}`} className="hover:text-primary transition-colors touch-manipulation py-2" data-testid="footer-phone">
                   {footerContent.contact?.phone}
                 </a>
               </div>
               <div className="flex items-center text-muted-foreground">
                 <span className="text-lg mr-3">✉️</span>
-                <a href={`mailto:${footerContent.contact?.email}`} className="hover:text-primary transition-colors" data-testid="footer-email">
+                <a href={`mailto:${footerContent.contact?.email}`} className="hover:text-primary transition-colors touch-manipulation py-2" data-testid="footer-email">
                   {footerContent.contact?.email}
                 </a>
               </div>
@@ -130,19 +132,19 @@ export default function DynamicFooter() {
           
           {/* Social Links */}
           {footerContent.social && (
-            <div className="flex space-x-4" data-testid="footer-social">
+            <div className="flex flex-wrap gap-4" data-testid="footer-social">
               {footerContent.social.facebook && (
-                <a href={footerContent.social.facebook} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" data-testid="footer-facebook">
+                <a href={footerContent.social.facebook} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors touch-manipulation py-2 px-2" data-testid="footer-facebook">
                   Facebook
                 </a>
               )}
               {footerContent.social.instagram && (
-                <a href={footerContent.social.instagram} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" data-testid="footer-instagram">
+                <a href={footerContent.social.instagram} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors touch-manipulation py-2 px-2" data-testid="footer-instagram">
                   Instagram
                 </a>
               )}
               {footerContent.social.linkedin && (
-                <a href={footerContent.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" data-testid="footer-linkedin">
+                <a href={footerContent.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors touch-manipulation py-2 px-2" data-testid="footer-linkedin">
                   LinkedIn
                 </a>
               )}
