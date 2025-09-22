@@ -8,6 +8,7 @@ import {
   insertMediaAssetSchema, insertAnalyticsEventSchema
 } from "@shared/schema";
 import { emailService } from "./services/emailService";
+import { pricingService } from "./services/pricingService";
 import { generateQuotePDF } from "./pdfGenerator";
 import multer from "multer";
 import { z } from "zod";
@@ -355,6 +356,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       console.error("Error calculating pricing:", error);
+      res.status(500).json({ error: "Failed to calculate pricing" });
+    }
+  });
+
+  // Enhanced pricing calculation endpoint
+  app.post("/api/pricing/calculate", async (req, res) => {
+    try {
+      const params = req.body;
+      const pricingResult = await pricingService.calculateQuotePrice(params);
+      res.json(pricingResult);
+    } catch (error) {
+      console.error("Error calculating enhanced pricing:", error);
       res.status(500).json({ error: "Failed to calculate pricing" });
     }
   });

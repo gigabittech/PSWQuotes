@@ -18,8 +18,59 @@ export interface QuoteFormData {
   postcode: string;
   additionalInfo?: string;
   switchboardPhoto?: File;
+  roofDirection?: string;
+  averageMonthlyBill?: number;
+  currentElectricityRate?: number;
 }
 
+export interface RebateBreakdown {
+  stcRebate: number;
+  stateRebate: number;
+  localRebate: number;
+  totalRebates: number;
+}
+
+export interface FinancingOption {
+  loanAmount: number;
+  monthlyPayment: number;
+  totalInterest: number;
+  totalPayments: number;
+  interestRate: number;
+  termYears: number;
+}
+
+export interface SavingsProjection {
+  yearOne: number;
+  year5: number;
+  year10: number;
+  year25: number;
+  lifetimeSavings: number;
+  paybackPeriod: number;
+  returnOnInvestment: number;
+}
+
+export interface EnvironmentalImpact {
+  co2ReductionAnnual: number;
+  co2ReductionLifetime: number;
+  treesEquivalent: number;
+  carsOffRoadEquivalent: number;
+}
+
+export interface EnhancedPricingData {
+  totalPrice: string;
+  subtotal: string;
+  rebatesTotal: string;
+  finalPrice: string;
+  rebateBreakdown: RebateBreakdown;
+  financingOptions: FinancingOption[];
+  savingsProjection: SavingsProjection;
+  environmentalImpact: EnvironmentalImpact;
+  annualSavings?: string;
+  paybackPeriod?: string;
+  co2Reduction?: string;
+}
+
+// Legacy interface for backwards compatibility
 export interface PricingData {
   totalPrice: number;
   rebateAmount: number;

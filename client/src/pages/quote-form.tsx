@@ -9,7 +9,8 @@ import SystemRequirements from "@/components/quote-form/SystemRequirements";
 import ProductSelection from "@/components/quote-form/ProductSelection";
 import PropertyDetails from "@/components/quote-form/PropertyDetails";
 import QuoteSummary from "@/components/quote-form/QuoteSummary";
-import type { QuoteFormData, PricingData, Product } from "@/types/quote";
+import type { QuoteFormData, PricingData, EnhancedPricingData, Product } from "@/types/quote";
+import { PricingBreakdown } from "@/components/pricing/PricingBreakdown";
 
 export default function QuoteForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -18,7 +19,7 @@ export default function QuoteForm() {
     powerSupply: undefined,
     state: 'WA',
   });
-  const [pricingData, setPricingData] = useState<PricingData | null>(null);
+  const [pricingData, setPricingData] = useState<EnhancedPricingData | null>(null);
   const { toast } = useToast();
 
   // Fetch products
@@ -35,6 +36,10 @@ export default function QuoteForm() {
         batterySystem: data.batterySystem,
         evCharger: data.evCharger,
         powerSupply: data.powerSupply,
+        postcode: data.postcode,
+        roofDirection: data.roofDirection,
+        averageMonthlyBill: data.averageMonthlyBill,
+        currentElectricityRate: data.currentElectricityRate || 0.29
       });
       return response.json();
     },
@@ -212,12 +217,23 @@ export default function QuoteForm() {
             )}
             
             {currentStep === 4 && pricingData && (
-              <QuoteSummary
-                data={formData}
-                pricingData={pricingData}
-                products={products}
-                onStartOver={startOver}
-              />
+              <div className="space-y-8">
+                <QuoteSummary
+                  data={formData}
+                  pricingData={{
+                    totalPrice: parseFloat(pricingData.subtotal),
+                    rebateAmount: parseFloat(pricingData.rebatesTotal),
+                    finalPrice: parseFloat(pricingData.finalPrice),
+                    breakdown: {} // Legacy support
+                  }}
+                  products={products}
+                  onStartOver={startOver}
+                />
+                <PricingBreakdown 
+                  pricingData={pricingData}
+                  className="mt-8"
+                />
+              </div>
             )}
           </Card>
         </div>
