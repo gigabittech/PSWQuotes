@@ -89,7 +89,7 @@ export default function AdminDashboard() {
             
             {/* User Info */}
             <div className="mb-8 p-3 bg-muted rounded-lg">
-              <p className="text-sm font-medium text-foreground" data-testid="user-email">{user?.email}</p>
+              <p className="text-sm font-medium text-foreground" data-testid="user-username">{user?.username}</p>
               <p className="text-xs text-muted-foreground capitalize" data-testid="user-role">{userRole}</p>
             </div>
           </div>
