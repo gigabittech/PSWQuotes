@@ -208,8 +208,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Generate PDF
       const pdfBuffer = await generateQuotePDF(quote);
       
-      // Send email with quote
-      const emailSent = await emailService.sendQuoteEmail(quote);
+      // Send email with quote and PDF
+      const emailSent = await emailService.sendQuoteEmail(quote, pdfBuffer);
 
       if (!emailSent) {
         console.error("Failed to send email to customer");
