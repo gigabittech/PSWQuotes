@@ -135,20 +135,20 @@ export default function Home() {
       <DynamicHero />
 
       {/* Quote Form Container */}
-      <section id="quote" className="py-20 bg-light-gray">
+      <section id="quote" className="py-12 sm:py-16 lg:py-20 bg-light-gray">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6">
               Get Your Instant Solar Quote
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4 sm:px-0">
               Follow our simple 3-step process to receive a personalized solar quote tailored to your property and energy needs.
             </p>
           </div>
           
           <StepIndicator currentStep={currentStep} />
           
-          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-5xl mx-auto">
+          <div className="bg-white rounded-lg sm:rounded-2xl shadow-lg sm:shadow-2xl overflow-hidden max-w-5xl mx-auto">
             {currentStep === 1 && (
               <SystemRequirements
                 data={formData}
