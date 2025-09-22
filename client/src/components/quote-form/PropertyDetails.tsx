@@ -7,6 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 interface PropertyDetailsProps {
   data: {
+    systems?: string[];
+    powerSupply?: string;
+    solarPackage?: string;
+    batterySystem?: string;
+    evCharger?: string;
     customerName?: string;
     email?: string;
     phone?: string;

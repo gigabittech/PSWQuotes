@@ -89,13 +89,16 @@ export default function Home() {
   const handleSubmit = (finalData: any) => {
     const submitData = new FormData();
     
-    // Add all text fields
+    // Add all text fields with proper field mapping
     Object.entries(finalData).forEach(([key, value]) => {
       if (key !== 'switchboardPhoto' && value !== undefined && value !== null) {
+        // Map 'systems' to 'selectedSystems' for server compatibility
+        const fieldName = key === 'systems' ? 'selectedSystems' : key;
+        
         if (Array.isArray(value)) {
-          submitData.append(key, JSON.stringify(value));
+          submitData.append(fieldName, JSON.stringify(value));
         } else {
-          submitData.append(key, value.toString());
+          submitData.append(fieldName, value.toString());
         }
       }
     });
@@ -112,6 +115,7 @@ export default function Home() {
       submitData.append('finalPrice', pricingData.finalPrice.toString());
     }
 
+    console.log('Submitting quote with systems:', finalData.systems); // Debug log
     submitQuote.mutate(submitData);
   };
 
