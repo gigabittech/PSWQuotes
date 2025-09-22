@@ -8,6 +8,7 @@ import ProductSelection from "@/components/quote-form/ProductSelection";
 import PropertyDetails from "@/components/quote-form/PropertyDetails";
 import QuoteSummary from "@/components/quote-form/QuoteSummary";
 import type { QuoteFormData, PricingData, Product } from "@/types/quote";
+import pswLogo from "@/assets/psw-logo.png";
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -124,27 +125,32 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-border">
+      <header className="bg-navy shadow-lg border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-4">
               <div className="flex-shrink-0">
-                <h1 className="text-2xl font-bold text-primary" data-testid="header-logo">
-                  Perth Solar Warehouse
-                </h1>
+                <img 
+                  src={pswLogo} 
+                  alt="Perth Solar Warehouse" 
+                  className="h-12 w-auto" 
+                  data-testid="header-logo"
+                />
               </div>
               <div className="hidden md:block">
-                <span className="text-sm text-muted-foreground">Get your instant solar quote</span>
+                <span className="text-sm text-gray-300">Get your instant solar quote</span>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center space-x-2 text-sm text-muted-foreground">
+              <div className="hidden md:flex items-center space-x-2 text-sm text-gray-300">
                 <span className="text-secondary">⭐</span>
                 <span>4.9/5 from 1500+ reviews</span>
               </div>
               <div className="flex items-center space-x-2" data-testid="header-phone">
-                <span className="text-primary">📞</span>
-                <span className="text-sm font-medium">(08) 6171 4111</span>
+                <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/>
+                </svg>
+                <span className="text-sm font-medium text-white">(08) 6171 4111</span>
               </div>
             </div>
           </div>
