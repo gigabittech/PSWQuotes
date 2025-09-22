@@ -13,9 +13,7 @@ export default function DynamicFooter() {
   });
 
   // Fallback to default footer if CMS data not available
-  const footerContent = (homepage?.blocks && Array.isArray(homepage.blocks)) 
-    ? homepage.blocks.find((block: any) => block.type === 'footer')?.content 
-    : null || {
+  const defaultContent = {
     company: {
       name: "Perth Solar Warehouse",
       description: "Perth's trusted solar specialists since 2015. Licensed, insured, and committed to helping Western Australian families save on energy costs.",
@@ -52,6 +50,11 @@ export default function DynamicFooter() {
       linkedin: "https://linkedin.com/company/perthsolarwarehouse"
     }
   };
+  
+  const footerBlock = Array.isArray(homepage?.blocks) 
+    ? homepage.blocks.find((block: any) => block.type === 'footer') 
+    : undefined;
+  const footerContent = footerBlock?.content ?? defaultContent;
 
   return (
     <footer className="bg-background border-t border-border" data-testid="dynamic-footer">
