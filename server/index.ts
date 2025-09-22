@@ -5,6 +5,7 @@ import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import crypto from "crypto";
+import Tokens from "csrf";
 import pkg from "pg";
 const { Pool } = pkg;
 import { registerRoutes } from "./routes";
@@ -72,6 +73,53 @@ const globalLimiter = rateLimit({
 });
 
 app.use(globalLimiter);
+
+// CSRF Protection Setup
+const csrfProtection = new Tokens();
+
+// CSRF middleware
+const csrfMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  // Skip CSRF for GET, HEAD, OPTIONS requests (safe methods)
+  if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    return next();
+  }
+
+  // Get token from header or body
+  const token = req.get('X-CSRF-Token') || req.body._csrf;
+  
+  if (!req.session) {
+    return res.status(500).json({ error: 'Session not initialized' });
+  }
+
+  // Initialize CSRF secret if not exists
+  if (!req.session.csrfSecret) {
+    req.session.csrfSecret = csrfProtection.secretSync();
+  }
+
+  // Verify token
+  if (!token || !csrfProtection.verify(req.session.csrfSecret, token)) {
+    console.log(`CSRF token validation failed for ${req.method} ${req.path} from IP: ${req.ip}`);
+    return res.status(403).json({ error: 'Invalid CSRF token' });
+  }
+
+  next();
+};
+
+// Apply CSRF protection to all API routes except auth endpoints that need special handling
+app.use('/api', (req: Request, res: Response, next: NextFunction) => {
+  // Skip CSRF for login route (we'll handle it separately with additional validation)
+  if (req.path === '/auth/login' && req.method === 'POST') {
+    return next();
+  }
+  
+  // Skip CSRF for GET requests and public endpoints
+  if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    return next();
+  }
+  
+  // Apply CSRF protection for all other routes
+  return csrfMiddleware(req, res, next);
+});
 
 // Ensure SESSION_SECRET is set
 if (!process.env.SESSION_SECRET) {
