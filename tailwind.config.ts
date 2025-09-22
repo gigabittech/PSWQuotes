@@ -44,6 +44,11 @@ export default {
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
+        navy: {
+          DEFAULT: "var(--navy)",
+          foreground: "var(--navy-foreground)",
+        },
+        "light-gray": "var(--light-gray)",
         chart: {
           "1": "var(--chart-1)",
           "2": "var(--chart-2)",

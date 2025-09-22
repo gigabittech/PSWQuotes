@@ -4,25 +4,31 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(210, 20%, 98%);
+  --background: hsl(0, 0%, 100%);
   --foreground: hsl(222, 84%, 4.9%);
   --card: hsl(0, 0%, 100%);
   --card-foreground: hsl(222, 84%, 4.9%);
   --popover: hsl(0, 0%, 100%);
   --popover-foreground: hsl(222, 84%, 4.9%);
-  --primary: hsl(217, 91%, 60%);
-  --primary-foreground: hsl(210, 20%, 98%);
+  --primary: hsl(208, 100%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
   --secondary: hsl(43, 96%, 56%);
   --secondary-foreground: hsl(222, 84%, 4.9%);
   --muted: hsl(210, 40%, 96%);
-  --muted-foreground: hsl(215, 13%, 65%);
-  --accent: hsl(142, 76%, 36%);
-  --accent-foreground: hsl(210, 20%, 98%);
+  --muted-foreground: hsl(215, 25%, 45%);
+  --accent: hsl(142, 76%, 42%);
+  --accent-foreground: hsl(0, 0%, 100%);
   --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(210, 20%, 98%);
+  --destructive-foreground: hsl(0, 0%, 100%);
   --border: hsl(214, 32%, 91%);
   --input: hsl(214, 32%, 91%);
-  --ring: hsl(217, 91%, 60%);
+  --ring: hsl(208, 100%, 50%);
+  
+  /* New professional colors */
+  --navy: hsl(220, 13%, 18%);
+  --navy-foreground: hsl(0, 0%, 100%);
+  --light-gray: hsl(210, 40%, 98%);
+  --section-spacing: 80px;
   --chart-1: hsl(217, 91%, 60%);
   --chart-2: hsl(142, 76%, 36%);
   --chart-3: hsl(43, 96%, 56%);

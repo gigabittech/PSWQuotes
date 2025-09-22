@@ -152,31 +152,62 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary to-blue-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section 
+        className="relative bg-navy text-white py-20 md:py-32 overflow-hidden"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 600\'%3E%3Crect fill=\'%23334155\' width=\'1200\' height=\'600\'/%3E%3Cpath d=\'M0 300L100 280L200 320L300 290L400 310L500 285L600 305L700 280L800 300L900 295L1000 310L1100 285L1200 300V600H0V300Z\' fill=\'%23475569\' opacity=\'0.3\'/%3E%3C/svg%3E")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6" data-testid="hero-title">
-              Get Your Solar Quote in <span className="text-secondary">Real-Time</span>
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight" data-testid="hero-title">
+              Get a quote with our <br />
+              <span className="text-primary">hassle-free guarantee</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90" data-testid="hero-subtitle">
-              Experience our hassle-free guarantee with instant pricing, personalized recommendations, 
-              and professional installation across Western Australia.
+            <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed text-gray-200" data-testid="hero-subtitle">
+              Experience instant pricing, personalized solar recommendations, and professional installation 
+              across Western Australia with our proven track record of excellence.
             </p>
-            <div className="flex flex-wrap justify-center gap-6 text-sm">
+            
+            {/* Main CTA */}
+            <div className="mb-16">
+              <a 
+                href="#quote-form" 
+                className="inline-flex items-center px-8 py-4 bg-primary hover:bg-primary/90 text-white font-semibold text-lg rounded-lg transition-colors duration-200 shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
+              >
+                Get Your Free Quote Now
+                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+
+            {/* Trust badges */}
+            <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-300">
               <div className="flex items-center space-x-2">
-                <span className="text-accent">✓</span>
+                <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
                 <span>No pressure sales</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="text-accent">✓</span>
+                <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
                 <span>Instant real-time pricing</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="text-accent">✓</span>
+                <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
                 <span>Professional installation</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="text-accent">✓</span>
+                <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
                 <span>20+ years experience</span>
               </div>
             </div>
@@ -185,11 +216,20 @@ export default function Home() {
       </section>
 
       {/* Quote Form Container */}
-      <section className="py-12 bg-muted">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="quote-form" className="py-20 bg-light-gray">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+              Get Your Instant Solar Quote
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Follow our simple 3-step process to receive a personalized solar quote tailored to your property and energy needs.
+            </p>
+          </div>
+          
           <StepIndicator currentStep={currentStep} />
           
-          <div className="bg-card rounded-lg shadow-lg overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-5xl mx-auto">
             {currentStep === 1 && (
               <SystemRequirements
                 data={formData}
@@ -233,65 +273,79 @@ export default function Home() {
       </section>
 
       {/* Trust Indicators */}
-      <section className="py-16 bg-card">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose Perth Solar Warehouse?</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Why Choose Perth Solar Warehouse?</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Trusted by over 1,500 customers across Western Australia with a proven track record of excellence.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6 mb-12">
-            <div className="text-center p-6" data-testid="trust-indicator-legendary">
-              <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-secondary text-2xl">🏆</span>
+          <div className="grid md:grid-cols-4 gap-8 mb-20">
+            <div className="text-center group" data-testid="trust-indicator-legendary">
+              <div className="w-20 h-20 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200">
+                <svg className="w-10 h-10 text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
               </div>
-              <h3 className="font-semibold text-foreground mb-2">SolarQuotes Legendary</h3>
-              <p className="text-sm text-muted-foreground">Top-rated installer nationwide</p>
+              <h3 className="text-xl font-bold text-foreground mb-3">SolarQuotes Legendary</h3>
+              <p className="text-muted-foreground">Top-rated installer nationwide</p>
             </div>
-            <div className="text-center p-6" data-testid="trust-indicator-approved">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-primary text-2xl">🛡️</span>
+            <div className="text-center group" data-testid="trust-indicator-approved">
+              <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200">
+                <svg className="w-10 h-10 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                </svg>
               </div>
-              <h3 className="font-semibold text-foreground mb-2">NETCC Approved</h3>
-              <p className="text-sm text-muted-foreground">Government-approved seller</p>
+              <h3 className="text-xl font-bold text-foreground mb-3">NETCC Approved</h3>
+              <p className="text-muted-foreground">Government-approved seller</p>
             </div>
-            <div className="text-center p-6" data-testid="trust-indicator-reviews">
-              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-accent text-2xl">👥</span>
+            <div className="text-center group" data-testid="trust-indicator-reviews">
+              <div className="w-20 h-20 bg-gradient-to-br from-accent/20 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200">
+                <svg className="w-10 h-10 text-accent" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v4H4zM13 18v-4h3v4h-3zM10 18v-4h3v4H10zM4 12V8h3v4H4zM13 12V8h3v4H13zM10 12V8h3v4H10z"/>
+                </svg>
               </div>
-              <h3 className="font-semibold text-foreground mb-2">1,500+ Reviews</h3>
-              <p className="text-sm text-muted-foreground">4.9/5 star average rating</p>
+              <h3 className="text-xl font-bold text-foreground mb-3">1,500+ Reviews</h3>
+              <p className="text-muted-foreground">4.9/5 star average rating</p>
             </div>
-            <div className="text-center p-6" data-testid="trust-indicator-experience">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-orange-500 text-2xl">📅</span>
+            <div className="text-center group" data-testid="trust-indicator-experience">
+              <div className="w-20 h-20 bg-gradient-to-br from-orange-200 to-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200">
+                <svg className="w-10 h-10 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M9,10V12H7V10H9M13,10V12H11V10H13M17,10V12H15V10H17M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M9,14V16H7V14H9M13,14V16H11V14H13M17,14V16H15V14H17Z"/>
+                </svg>
               </div>
-              <h3 className="font-semibold text-foreground mb-2">20+ Years</h3>
-              <p className="text-sm text-muted-foreground">Established business history</p>
+              <h3 className="text-xl font-bold text-foreground mb-3">20+ Years</h3>
+              <p className="text-muted-foreground">Established business history</p>
             </div>
           </div>
 
           {/* Customer Testimonial */}
-          <div className="bg-muted/50 rounded-lg p-8 max-w-4xl mx-auto" data-testid="customer-testimonial">
-            <div className="flex items-start space-x-4">
+          <div className="bg-gradient-to-r from-light-gray to-muted/30 rounded-2xl p-8 md:p-12 max-w-5xl mx-auto shadow-lg" data-testid="customer-testimonial">
+            <div className="flex items-start space-x-6">
               <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                  <span className="text-primary text-xl">👤</span>
+                <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center">
+                  <svg className="w-10 h-10 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                  </svg>
                 </div>
               </div>
               <div className="flex-1">
-                <div className="flex items-center mb-2">
-                  <div className="flex text-secondary text-sm mr-2">
-                    <span>⭐⭐⭐⭐⭐</span>
+                <div className="flex items-center mb-4">
+                  <div className="flex text-secondary text-lg mr-3">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    ))}
                   </div>
-                  <span className="text-sm text-muted-foreground">5/5</span>
+                  <span className="text-sm font-medium text-muted-foreground">5/5 stars</span>
                 </div>
-                <blockquote className="text-foreground italic mb-3">
+                <blockquote className="text-lg md:text-xl text-foreground italic mb-4 leading-relaxed">
                   "I collected over 30 quotes from 12 installers around Perth, and Perth Solar Warehouse was not only one of the most competitive in price but also the most highly recommended on social media. There were no hard sales tactics, gimmicks, 'today only' offers, or bagging out their competitors. It was just pure professionalism and service."
                 </blockquote>
-                <cite className="text-sm font-medium text-muted-foreground">— David, Local Guide, Google Reviews</cite>
+                <cite className="text-base font-semibold text-muted-foreground">— David, Local Guide, Google Reviews</cite>
               </div>
             </div>
           </div>
@@ -299,47 +353,71 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-foreground text-white py-12">
+      <footer className="bg-navy text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-4 gap-12">
             <div className="col-span-2">
-              <h3 className="text-2xl font-bold text-primary mb-4">Perth Solar Warehouse</h3>
-              <p className="text-gray-300 mb-4">
+              <h3 className="text-3xl font-bold text-primary mb-6">Perth Solar Warehouse</h3>
+              <p className="text-gray-300 mb-6 text-lg leading-relaxed">
                 Western Australia's trusted solar, battery, and EV charging specialist. 
-                Providing professional installation services across Perth and Bunbury regions.
+                Providing professional installation services across Perth and Bunbury regions with 20+ years of experience.
               </p>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <span className="text-primary">📞</span>
-                  <span>(08) 6171 4111</span>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/>
+                    </svg>
+                  </div>
+                  <span className="text-lg">(08) 6171 4111</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-primary">📧</span>
-                  <span>info@perthsolarwarehouse.com.au</span>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                    </svg>
+                  </div>
+                  <span className="text-lg">info@perthsolarwarehouse.com.au</span>
                 </div>
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Services</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li>Solar Installation</li>
-                <li>Battery Storage</li>
-                <li>EV Chargers</li>
-                <li>Commercial Solar</li>
+              <h4 className="text-xl font-semibold mb-6 text-white">Services</h4>
+              <ul className="space-y-3 text-gray-300">
+                <li className="hover:text-primary transition-colors cursor-pointer">Solar Panel Installation</li>
+                <li className="hover:text-primary transition-colors cursor-pointer">Battery Storage Systems</li>
+                <li className="hover:text-primary transition-colors cursor-pointer">EV Charging Stations</li>
+                <li className="hover:text-primary transition-colors cursor-pointer">Commercial Solar Solutions</li>
+                <li className="hover:text-primary transition-colors cursor-pointer">Solar Maintenance & Repairs</li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Installation Areas</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li>Perth Metro</li>
-                <li>Bunbury Region</li>
-                <li>Yanchep to Northam</li>
-                <li>Fremantle to Hills</li>
+              <h4 className="text-xl font-semibold mb-6 text-white">Installation Areas</h4>
+              <ul className="space-y-3 text-gray-300">
+                <li className="hover:text-primary transition-colors cursor-pointer">Perth Metro Area</li>
+                <li className="hover:text-primary transition-colors cursor-pointer">Bunbury Region</li>
+                <li className="hover:text-primary transition-colors cursor-pointer">Yanchep to Northam</li>
+                <li className="hover:text-primary transition-colors cursor-pointer">Fremantle to Perth Hills</li>
+                <li className="hover:text-primary transition-colors cursor-pointer">Mandurah & Surrounds</li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-600 mt-8 pt-8 text-center text-gray-300">
-            <p>&copy; 2025 Perth Solar Warehouse. All rights reserved. Licensed Electrical Contractor EC010771</p>
+          
+          <div className="border-t border-gray-600 mt-12 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <div className="text-gray-400 text-center md:text-left">
+                <p>&copy; 2025 Perth Solar Warehouse. All rights reserved.</p>
+                <p className="text-sm mt-1">Licensed Electrical Contractor EC010771 | ABN: 12 345 678 901</p>
+              </div>
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-2 text-secondary">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                  <span className="text-sm text-gray-300">4.9/5 from 1500+ reviews</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
