@@ -4,6 +4,7 @@ import { Menu, X, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import type { CmsPage } from "@shared/schema";
+import pswLogo from "@/assets/psw-logo.png";
 
 export default function DynamicHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,14 +43,17 @@ export default function DynamicHeader() {
   };
 
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50 shadow-sm" data-testid="dynamic-header">
+    <header className="bg-black border-b border-gray-800 sticky top-0 z-50 shadow-sm" data-testid="dynamic-header">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 sm:h-20">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
-            <h1 className="text-xl sm:text-2xl font-bold text-primary truncate" data-testid="header-logo">
-              {headerContent.logo}
-            </h1>
+            <img 
+              src={pswLogo} 
+              alt={headerContent.logo || "Perth Solar Warehouse"} 
+              className="h-10 sm:h-12 w-auto object-contain"
+              data-testid="header-logo-image"
+            />
           </div>
 
           {/* Desktop Navigation */}
@@ -62,7 +66,7 @@ export default function DynamicHeader() {
                   e.preventDefault();
                   handleNavClick(item.href);
                 }}
-                className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base px-3 py-2 rounded-lg hover:bg-muted"
+                className="text-white hover:text-blue-400 transition-colors font-medium text-sm xl:text-base px-3 py-2 rounded-lg hover:bg-gray-800"
                 data-testid={`nav-link-${item.text.toLowerCase().replace(' ', '-')}`}
               >
                 {item.text}
@@ -74,7 +78,7 @@ export default function DynamicHeader() {
           <div className="hidden xl:flex items-center space-x-4" data-testid="header-contact">
             <a
               href={`tel:${headerContent.contact?.phone}`}
-              className="flex items-center text-foreground hover:text-primary transition-colors text-sm px-3 py-2 rounded-lg hover:bg-muted"
+              className="flex items-center text-white hover:text-blue-400 transition-colors text-sm px-3 py-2 rounded-lg hover:bg-gray-800"
               data-testid="header-phone"
             >
               <Phone className="h-4 w-4 mr-2" />
@@ -82,7 +86,7 @@ export default function DynamicHeader() {
             </a>
             <a
               href={`mailto:${headerContent.contact?.email}`}
-              className="flex items-center text-foreground hover:text-primary transition-colors text-sm px-3 py-2 rounded-lg hover:bg-muted"
+              className="flex items-center text-white hover:text-blue-400 transition-colors text-sm px-3 py-2 rounded-lg hover:bg-gray-800"
               data-testid="header-email"
             >
               <Mail className="h-4 w-4 mr-2" />
@@ -94,7 +98,7 @@ export default function DynamicHeader() {
           <div className="flex items-center space-x-2 lg:hidden">
             <a
               href={`tel:${headerContent.contact?.phone}`}
-              className="flex items-center justify-center w-10 h-10 text-foreground hover:text-primary transition-colors rounded-lg hover:bg-muted"
+              className="flex items-center justify-center w-10 h-10 text-white hover:text-blue-400 transition-colors rounded-lg hover:bg-gray-800"
               data-testid="header-phone-mobile"
               aria-label="Call us"
             >
@@ -116,8 +120,12 @@ export default function DynamicHeader() {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[350px]">
                 <SheetHeader>
-                  <SheetTitle className="text-left text-primary font-bold">
-                    {headerContent.logo}
+                  <SheetTitle className="text-left text-foreground font-bold">
+                    <img 
+                      src={pswLogo} 
+                      alt={headerContent.logo || "Perth Solar Warehouse"} 
+                      className="h-8 w-auto object-contain"
+                    />
                   </SheetTitle>
                 </SheetHeader>
                 

@@ -57,37 +57,37 @@ export default function DynamicFooter() {
   const footerContent = footerBlock?.content ?? defaultContent;
 
   return (
-    <footer className="bg-background border-t border-border" data-testid="dynamic-footer">
+    <footer className="bg-black border-t border-gray-800" data-testid="dynamic-footer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-2" data-testid="footer-company">
-            <h3 className="text-xl font-bold text-foreground mb-4" data-testid="footer-company-name">
+            <h3 className="text-xl font-bold text-white mb-4" data-testid="footer-company-name">
               {footerContent.company?.name}
             </h3>
-            <p className="text-muted-foreground mb-4 leading-relaxed" data-testid="footer-company-description">
+            <p className="text-gray-300 mb-4 leading-relaxed" data-testid="footer-company-description">
               {footerContent.company?.description}
             </p>
-            <p className="text-sm text-muted-foreground font-medium" data-testid="footer-license">
+            <p className="text-sm text-gray-400 font-medium" data-testid="footer-license">
               {footerContent.company?.license}
             </p>
             
             {/* Contact Info */}
             <div className="mt-6 space-y-2" data-testid="footer-contact">
-              <div className="flex items-center text-muted-foreground">
+              <div className="flex items-center text-gray-300">
                 <span className="text-lg mr-3">📞</span>
-                <a href={`tel:${footerContent.contact?.phone}`} className="hover:text-primary transition-colors touch-manipulation py-2" data-testid="footer-phone">
+                <a href={`tel:${footerContent.contact?.phone}`} className="hover:text-blue-400 transition-colors touch-manipulation py-2" data-testid="footer-phone">
                   {footerContent.contact?.phone}
                 </a>
               </div>
-              <div className="flex items-center text-muted-foreground">
+              <div className="flex items-center text-gray-300">
                 <span className="text-lg mr-3">✉️</span>
-                <a href={`mailto:${footerContent.contact?.email}`} className="hover:text-primary transition-colors touch-manipulation py-2" data-testid="footer-email">
+                <a href={`mailto:${footerContent.contact?.email}`} className="hover:text-blue-400 transition-colors touch-manipulation py-2" data-testid="footer-email">
                   {footerContent.contact?.email}
                 </a>
               </div>
               {footerContent.contact?.address && (
-                <div className="flex items-start text-muted-foreground">
+                <div className="flex items-start text-gray-300">
                   <span className="text-lg mr-3">📍</span>
                   <div data-testid="footer-address">
                     <div>{footerContent.contact.address.street}</div>
@@ -100,11 +100,11 @@ export default function DynamicFooter() {
 
           {/* Services */}
           <div data-testid="footer-services">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Our Services</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Our Services</h3>
             <ul className="space-y-2">
               {footerContent.services?.map((service: string, index: number) => (
                 <li key={index}>
-                  <span className="text-muted-foreground hover:text-primary transition-colors" data-testid={`footer-service-${index}`}>
+                  <span className="text-gray-300 hover:text-blue-400 transition-colors" data-testid={`footer-service-${index}`}>
                     {service}
                   </span>
                 </li>
@@ -114,11 +114,11 @@ export default function DynamicFooter() {
 
           {/* Service Areas */}
           <div data-testid="footer-service-areas">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Service Areas</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Service Areas</h3>
             <ul className="space-y-2">
               {footerContent.serviceAreas?.map((area: string, index: number) => (
                 <li key={index}>
-                  <span className="text-muted-foreground hover:text-primary transition-colors" data-testid={`footer-area-${index}`}>
+                  <span className="text-gray-300 hover:text-blue-400 transition-colors" data-testid={`footer-area-${index}`}>
                     {area}
                   </span>
                 </li>
@@ -129,7 +129,7 @@ export default function DynamicFooter() {
 
         {/* Bottom Bar */}
         <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-sm text-muted-foreground mb-4 md:mb-0" data-testid="footer-copyright">
+          <div className="text-sm text-gray-400 mb-4 md:mb-0" data-testid="footer-copyright">
             © {new Date().getFullYear()} {footerContent.company?.name}. All rights reserved.
           </div>
           
@@ -137,17 +137,17 @@ export default function DynamicFooter() {
           {footerContent.social && (
             <div className="flex flex-wrap gap-4" data-testid="footer-social">
               {footerContent.social.facebook && (
-                <a href={footerContent.social.facebook} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors touch-manipulation py-2 px-2" data-testid="footer-facebook">
+                <a href={footerContent.social.facebook} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-blue-400 transition-colors touch-manipulation py-2 px-2" data-testid="footer-facebook">
                   Facebook
                 </a>
               )}
               {footerContent.social.instagram && (
-                <a href={footerContent.social.instagram} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors touch-manipulation py-2 px-2" data-testid="footer-instagram">
+                <a href={footerContent.social.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-blue-400 transition-colors touch-manipulation py-2 px-2" data-testid="footer-instagram">
                   Instagram
                 </a>
               )}
               {footerContent.social.linkedin && (
-                <a href={footerContent.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors touch-manipulation py-2 px-2" data-testid="footer-linkedin">
+                <a href={footerContent.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-blue-400 transition-colors touch-manipulation py-2 px-2" data-testid="footer-linkedin">
                   LinkedIn
                 </a>
               )}
