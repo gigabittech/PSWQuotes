@@ -20,9 +20,14 @@ export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  const { data: user } = useQuery<User>({
+  const { data: authResponse, refetch: refetchUser } = useQuery<{user: User}>({
     queryKey: ['/api/auth/me'],
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
   });
+  
+  // Extract user from response structure
+  const user = authResponse?.user;
 
   const { data: quotes = [], isLoading } = useQuery<Quote[]>({
     queryKey: ['/api/quotes'],
