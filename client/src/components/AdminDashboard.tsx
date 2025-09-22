@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Settings, Users, FileText, BarChart3, Palette, FileEdit, Building } from "lucide-react";
 import { formatPrice } from "../utils/pricingCalculator";
 import ThemeEditor from "@/components/admin/ThemeEditor";
+import PageManager from "@/components/admin/PageManager";
+import FormBuilder from "@/components/admin/FormBuilder";
+import AnalyticsView from "@/components/admin/AnalyticsView";
 import type { User, Quote } from "@shared/schema";
 
 export default function AdminDashboard() {
@@ -342,47 +345,11 @@ export default function AdminDashboard() {
           
           {activeTab === "theme" && <ThemeEditor />}
           
-          {activeTab === "pages" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Page Management</h2>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Content Pages</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Page management coming soon...</p>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {activeTab === "pages" && <PageManager />}
           
-          {activeTab === "forms" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Form Builder</h2>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Custom Forms</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Form builder coming soon...</p>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {activeTab === "forms" && <FormBuilder />}
           
-          {activeTab === "analytics" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Analytics</h2>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Performance Metrics</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Analytics dashboard coming soon...</p>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {activeTab === "analytics" && <AnalyticsView />}
         </div>
       </div>
     </div>

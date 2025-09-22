@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -73,26 +73,31 @@ export default function ThemeEditor() {
   });
 
   // Update form data when theme data loads
-  useState(() => {
+  useEffect(() => {
     if (theme) {
+      const headerData = theme.header as { siteName?: string; logoUrl?: string; faviconUrl?: string; content?: string } | null;
+      const colorsData = theme.colors as { primaryColor?: string; secondaryColor?: string; accentColor?: string; backgroundColor?: string; textColor?: string } | null;
+      const typographyData = theme.typography as { headingFont?: string; bodyFont?: string; customCss?: string } | null;
+      const footerData = theme.footer as { content?: string } | null;
+      
       setFormData({
-        siteName: (theme.header as any)?.siteName || "Perth Solar Warehouse",
-        logoUrl: (theme.header as any)?.logoUrl || "",
-        faviconUrl: (theme.header as any)?.faviconUrl || "",
-        primaryColor: (theme.colors as any)?.primaryColor || "#007bff",
-        secondaryColor: (theme.colors as any)?.secondaryColor || "#6c757d",
-        accentColor: (theme.colors as any)?.accentColor || "#28a745",
-        backgroundColor: (theme.colors as any)?.backgroundColor || "#ffffff",
-        textColor: (theme.colors as any)?.textColor || "#212529",
-        headingFont: (theme.typography as any)?.headingFont || "Inter",
-        bodyFont: (theme.typography as any)?.bodyFont || "Inter",
-        customCss: (theme.typography as any)?.customCss || "",
-        headerContent: (theme.header as any)?.content || "",
-        footerContent: (theme.footer as any)?.content || "",
+        siteName: headerData?.siteName || "Perth Solar Warehouse",
+        logoUrl: headerData?.logoUrl || "",
+        faviconUrl: headerData?.faviconUrl || "",
+        primaryColor: colorsData?.primaryColor || "#007bff",
+        secondaryColor: colorsData?.secondaryColor || "#6c757d",
+        accentColor: colorsData?.accentColor || "#28a745",
+        backgroundColor: colorsData?.backgroundColor || "#ffffff",
+        textColor: colorsData?.textColor || "#212529",
+        headingFont: typographyData?.headingFont || "Inter",
+        bodyFont: typographyData?.bodyFont || "Inter",
+        customCss: typographyData?.customCss || "",
+        headerContent: headerData?.content || "",
+        footerContent: footerData?.content || "",
         status: theme.status || "draft"
       });
     }
-  });
+  }, [theme]);
 
   const saveThemeMutation = useMutation({
     mutationFn: async (themeData: typeof formData) => {
