@@ -1,7 +1,12 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertQuoteSchema, insertProductSchema, insertUserSchemaWithRole } from "@shared/schema";
+import { 
+  insertQuoteSchema, insertProductSchema, insertUserSchemaWithRole,
+  insertCmsThemeSchema, insertCmsPageSchema, insertFormSchema,
+  insertFormFieldSchema, insertFormConditionSchema, insertSubmissionSchema,
+  insertMediaAssetSchema, insertAnalyticsEventSchema
+} from "@shared/schema";
 import { emailService } from "./services/emailService";
 import { generateQuotePDF } from "./pdfGenerator";
 import multer from "multer";
@@ -351,6 +356,293 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error calculating pricing:", error);
       res.status(500).json({ error: "Failed to calculate pricing" });
+    }
+  });
+
+  // CMS Theme Management
+  app.get("/api/cms/theme", async (req, res) => {
+    try {
+      const theme = await storage.getCmsTheme();
+      res.json(theme || null);
+    } catch (error) {
+      console.error("Error fetching theme:", error);
+      res.status(500).json({ error: "Failed to fetch theme" });
+    }
+  });
+
+  app.get("/api/cms/theme/admin", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const theme = await storage.getCmsThemeForAdmin();
+      res.json(theme || null);
+    } catch (error) {
+      console.error("Error fetching admin theme:", error);
+      res.status(500).json({ error: "Failed to fetch admin theme" });
+    }
+  });
+
+  app.put("/api/cms/theme", requireRole(['admin']), async (req, res) => {
+    try {
+      const validatedData = insertCmsThemeSchema.parse(req.body);
+      
+      // Check if theme exists (use admin method to get latest)
+      const existingTheme = await storage.getCmsThemeForAdmin();
+      let theme;
+      
+      if (existingTheme) {
+        theme = await storage.updateCmsTheme(existingTheme.id, validatedData);
+      } else {
+        theme = await storage.createCmsTheme(validatedData);
+      }
+      
+      res.json(theme);
+    } catch (error) {
+      console.error("Error updating theme:", error);
+      res.status(400).json({ error: "Failed to update theme" });
+    }
+  });
+
+  // Add theme publish endpoint
+  app.post("/api/cms/theme/publish", requireRole(['admin']), async (req, res) => {
+    try {
+      const existingTheme = await storage.getCmsThemeForAdmin();
+      
+      if (!existingTheme) {
+        return res.status(404).json({ error: "No theme found to publish" });
+      }
+      
+      const theme = await storage.updateCmsTheme(existingTheme.id, { status: "published" });
+      res.json(theme);
+    } catch (error) {
+      console.error("Error publishing theme:", error);
+      res.status(400).json({ error: "Failed to publish theme" });
+    }
+  });
+
+  // CMS Pages Management
+  app.get("/api/cms/pages", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const pages = await storage.getCmsPages();
+      res.json(pages);
+    } catch (error) {
+      console.error("Error fetching pages:", error);
+      res.status(500).json({ error: "Failed to fetch pages" });
+    }
+  });
+
+  app.get("/api/cms/pages/:slug", async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const page = await storage.getCmsPage(slug);
+      
+      if (!page) {
+        return res.status(404).json({ error: "Page not found" });
+      }
+      
+      res.json(page);
+    } catch (error) {
+      console.error("Error fetching page:", error);
+      res.status(500).json({ error: "Failed to fetch page" });
+    }
+  });
+
+  app.get("/api/cms/pages/:slug/admin", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const page = await storage.getCmsPageForAdmin(slug);
+      
+      if (!page) {
+        return res.status(404).json({ error: "Page not found" });
+      }
+      
+      res.json(page);
+    } catch (error) {
+      console.error("Error fetching admin page:", error);
+      res.status(500).json({ error: "Failed to fetch admin page" });
+    }
+  });
+
+  app.post("/api/cms/pages", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const validatedData = insertCmsPageSchema.parse(req.body);
+      const page = await storage.createCmsPage(validatedData);
+      res.json(page);
+    } catch (error) {
+      console.error("Error creating page:", error);
+      res.status(400).json({ error: "Failed to create page" });
+    }
+  });
+
+  app.put("/api/cms/pages/:id", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { id } = req.params;
+      const validatedData = insertCmsPageSchema.partial().parse(req.body);
+      const page = await storage.updateCmsPage(id, validatedData);
+      
+      if (!page) {
+        return res.status(404).json({ error: "Page not found" });
+      }
+      
+      res.json(page);
+    } catch (error) {
+      console.error("Error updating page:", error);
+      res.status(400).json({ error: "Failed to update page" });
+    }
+  });
+
+  app.post("/api/cms/pages/:id/publish", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { id } = req.params;
+      const page = await storage.publishCmsPage(id);
+      
+      if (!page) {
+        return res.status(404).json({ error: "Page not found" });
+      }
+      
+      res.json(page);
+    } catch (error) {
+      console.error("Error publishing page:", error);
+      res.status(400).json({ error: "Failed to publish page" });
+    }
+  });
+
+  // Forms Management
+  app.get("/api/cms/forms", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const forms = await storage.getForms();
+      res.json(forms);
+    } catch (error) {
+      console.error("Error fetching forms:", error);
+      res.status(500).json({ error: "Failed to fetch forms" });
+    }
+  });
+
+  app.get("/api/cms/forms/:id", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { id } = req.params;
+      const form = await storage.getForm(id);
+      
+      if (!form) {
+        return res.status(404).json({ error: "Form not found" });
+      }
+      
+      // Get form fields and conditions
+      const [fields, conditions] = await Promise.all([
+        storage.getFormFields(id),
+        storage.getFormConditions(id)
+      ]);
+      
+      res.json({ ...form, fields, conditions });
+    } catch (error) {
+      console.error("Error fetching form:", error);
+      res.status(500).json({ error: "Failed to fetch form" });
+    }
+  });
+
+  app.post("/api/cms/forms", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const validatedData = insertFormSchema.parse(req.body);
+      const form = await storage.createForm(validatedData);
+      res.json(form);
+    } catch (error) {
+      console.error("Error creating form:", error);
+      res.status(400).json({ error: "Failed to create form" });
+    }
+  });
+
+  app.put("/api/cms/forms/:id", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { id } = req.params;
+      const validatedData = insertFormSchema.partial().parse(req.body);
+      const form = await storage.updateForm(id, validatedData);
+      
+      if (!form) {
+        return res.status(404).json({ error: "Form not found" });
+      }
+      
+      res.json(form);
+    } catch (error) {
+      console.error("Error updating form:", error);
+      res.status(400).json({ error: "Failed to update form" });
+    }
+  });
+
+  // Submissions Management
+  app.get("/api/cms/submissions", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { formId } = req.query;
+      const submissions = await storage.getSubmissions(formId as string);
+      res.json(submissions);
+    } catch (error) {
+      console.error("Error fetching submissions:", error);
+      res.status(500).json({ error: "Failed to fetch submissions" });
+    }
+  });
+
+  app.get("/api/cms/submissions/:id", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { id } = req.params;
+      const submission = await storage.getSubmission(id);
+      
+      if (!submission) {
+        return res.status(404).json({ error: "Submission not found" });
+      }
+      
+      res.json(submission);
+    } catch (error) {
+      console.error("Error fetching submission:", error);
+      res.status(500).json({ error: "Failed to fetch submission" });
+    }
+  });
+
+  app.put("/api/cms/submissions/:id/status", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      
+      if (!status || typeof status !== 'string') {
+        return res.status(400).json({ error: "Status is required" });
+      }
+      
+      const submission = await storage.updateSubmissionStatus(id, status);
+      
+      if (!submission) {
+        return res.status(404).json({ error: "Submission not found" });
+      }
+      
+      res.json(submission);
+    } catch (error) {
+      console.error("Error updating submission status:", error);
+      res.status(400).json({ error: "Failed to update submission status" });
+    }
+  });
+
+  // Analytics Events
+  app.get("/api/cms/analytics", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { formId, type, dateFrom, dateTo } = req.query;
+      
+      const filters: any = {};
+      if (formId) filters.formId = formId as string;
+      if (type) filters.type = type as string;
+      if (dateFrom) filters.dateFrom = new Date(dateFrom as string);
+      if (dateTo) filters.dateTo = new Date(dateTo as string);
+      
+      const events = await storage.getAnalyticsEvents(filters);
+      res.json(events);
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      res.status(500).json({ error: "Failed to fetch analytics" });
+    }
+  });
+
+  // Media Assets Management
+  app.get("/api/cms/media", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const assets = await storage.getMediaAssets();
+      res.json(assets);
+    } catch (error) {
+      console.error("Error fetching media assets:", error);
+      res.status(500).json({ error: "Failed to fetch media assets" });
     }
   });
 

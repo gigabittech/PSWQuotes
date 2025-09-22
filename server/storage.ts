@@ -43,11 +43,13 @@ export interface IStorage {
   
   // CMS Theme management
   getCmsTheme(): Promise<CmsTheme | undefined>;
+  getCmsThemeForAdmin(): Promise<CmsTheme | undefined>;
   createCmsTheme(theme: InsertCmsTheme): Promise<CmsTheme>;
   updateCmsTheme(id: string, theme: Partial<InsertCmsTheme>): Promise<CmsTheme | undefined>;
   
   // CMS Pages management
   getCmsPage(slug: string): Promise<CmsPage | undefined>;
+  getCmsPageForAdmin(slug: string): Promise<CmsPage | undefined>;
   getCmsPages(): Promise<CmsPage[]>;
   createCmsPage(page: InsertCmsPage): Promise<CmsPage>;
   updateCmsPage(id: string, page: Partial<InsertCmsPage>): Promise<CmsPage | undefined>;
@@ -190,6 +192,11 @@ export class DatabaseStorage implements IStorage {
     return theme || undefined;
   }
 
+  async getCmsThemeForAdmin(): Promise<CmsTheme | undefined> {
+    const [theme] = await db.select().from(cmsTheme).orderBy(desc(cmsTheme.updatedAt));
+    return theme || undefined;
+  }
+
   async createCmsTheme(insertTheme: InsertCmsTheme): Promise<CmsTheme> {
     const [theme] = await db
       .insert(cmsTheme)
@@ -209,6 +216,12 @@ export class DatabaseStorage implements IStorage {
 
   // CMS Pages methods
   async getCmsPage(slug: string): Promise<CmsPage | undefined> {
+    const [page] = await db.select().from(cmsPages)
+      .where(and(eq(cmsPages.slug, slug), eq(cmsPages.status, "published")));
+    return page || undefined;
+  }
+
+  async getCmsPageForAdmin(slug: string): Promise<CmsPage | undefined> {
     const [page] = await db.select().from(cmsPages).where(eq(cmsPages.slug, slug));
     return page || undefined;
   }
