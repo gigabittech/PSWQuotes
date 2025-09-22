@@ -9,6 +9,7 @@ import PropertyDetails from "@/components/quote-form/PropertyDetails";
 import QuoteSummary from "@/components/quote-form/QuoteSummary";
 import type { QuoteFormData, PricingData, Product } from "@/types/quote";
 import pswLogo from "@/assets/psw-logo.png";
+import heroBackground from "@/assets/hero-background.png";
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -159,20 +160,21 @@ export default function Home() {
 
       {/* Hero Section */}
       <section 
-        className="relative bg-navy text-white py-20 md:py-32 overflow-hidden"
+        className="relative text-white py-20 md:py-32 overflow-hidden"
         style={{
-          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 600\'%3E%3Crect fill=\'%23334155\' width=\'1200\' height=\'600\'/%3E%3Cpath d=\'M0 300L100 280L200 320L300 290L400 310L500 285L600 305L700 280L800 300L900 295L1000 310L1100 285L1200 300V600H0V300Z\' fill=\'%23475569\' opacity=\'0.3\'/%3E%3C/svg%3E")',
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)), url(${heroBackground})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight" data-testid="hero-title">
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl" data-testid="hero-title">
               Get a quote with our <br />
               <span className="text-primary">hassle-free guarantee</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed text-gray-200" data-testid="hero-subtitle">
+            <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed text-white drop-shadow-lg" data-testid="hero-subtitle">
               Experience instant pricing, personalized solar recommendations, and professional installation 
               across Western Australia with our proven track record of excellence.
             </p>
@@ -191,26 +193,26 @@ export default function Home() {
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-300">
-              <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap justify-center gap-8 text-sm text-white drop-shadow-lg">
+              <div className="flex items-center space-x-2 bg-black/20 px-4 py-2 rounded-full backdrop-blur-sm">
                 <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
                 <span>No pressure sales</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 bg-black/20 px-4 py-2 rounded-full backdrop-blur-sm">
                 <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
                 <span>Instant real-time pricing</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 bg-black/20 px-4 py-2 rounded-full backdrop-blur-sm">
                 <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
                 <span>Professional installation</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 bg-black/20 px-4 py-2 rounded-full backdrop-blur-sm">
                 <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
