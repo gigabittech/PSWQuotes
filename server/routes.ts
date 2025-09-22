@@ -5,7 +5,7 @@ import {
   insertQuoteSchema, insertProductSchema, insertUserSchemaWithRole,
   insertCmsThemeSchema, insertCmsPageSchema, insertFormSchema,
   insertFormFieldSchema, insertFormConditionSchema, insertSubmissionSchema,
-  insertMediaAssetSchema, insertAnalyticsEventSchema
+  insertMediaAssetSchema, insertAnalyticsEventSchema, insertSettingSchema
 } from "@shared/schema";
 import { emailService } from "./services/emailService";
 import { pricingService } from "./services/pricingService";
@@ -656,6 +656,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching media assets:", error);
       res.status(500).json({ error: "Failed to fetch media assets" });
+    }
+  });
+
+  // Settings Management (Admin Only)
+  app.get("/api/settings", requireRole(['admin']), async (req, res) => {
+    try {
+      const settings = await storage.getSettings();
+      // Redact sensitive values for security
+      const redactedSettings = settings.map(setting => ({
+        ...setting,
+        value: setting.key.includes('password') || setting.key.includes('key') || setting.key.includes('secret') 
+          ? '[REDACTED]' 
+          : setting.value
+      }));
+      res.json(redactedSettings);
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+      res.status(500).json({ error: "Failed to fetch settings" });
+    }
+  });
+
+  app.get("/api/settings/:key", requireRole(['admin']), async (req, res) => {
+    try {
+      const { key } = req.params;
+      const setting = await storage.getSetting(key);
+      
+      if (!setting) {
+        return res.status(404).json({ error: "Setting not found" });
+      }
+      
+      // Redact sensitive values
+      const isSecret = key.includes('password') || key.includes('key') || key.includes('secret');
+      res.json({
+        ...setting,
+        value: isSecret ? '[REDACTED]' : setting.value
+      });
+    } catch (error) {
+      console.error("Error fetching setting:", error);
+      res.status(500).json({ error: "Failed to fetch setting" });
+    }
+  });
+
+  app.put("/api/settings/:key", requireRole(['admin']), async (req, res) => {
+    try {
+      const { key } = req.params;
+      const { value } = req.body;
+      
+      // Validate that value is provided
+      if (value === undefined || value === null) {
+        return res.status(400).json({ error: "Value is required" });
+      }
+      
+      const setting = await storage.upsertSetting(key, value);
+      
+      // Log setting changes for audit trail
+      console.log(`Setting updated: ${key} by user ${req.session.userId}`);
+      
+      res.json({
+        ...setting,
+        value: key.includes('password') || key.includes('key') || key.includes('secret') 
+          ? '[REDACTED]' 
+          : setting.value
+      });
+    } catch (error) {
+      console.error("Error updating setting:", error);
+      res.status(400).json({ error: "Failed to update setting" });
     }
   });
 

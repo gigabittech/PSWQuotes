@@ -1,6 +1,6 @@
 import { 
   users, quotes, products, quoteItems,
-  cmsTheme, cmsPages, mediaAssets, forms, formFields, formConditions, submissions, analyticsEvents,
+  cmsTheme, cmsPages, mediaAssets, forms, formFields, formConditions, submissions, analyticsEvents, settings,
   type User, type InsertUser, type InsertUserWithRole,
   type Quote, type InsertQuote,
   type Product, type InsertProduct,
@@ -12,7 +12,8 @@ import {
   type FormField, type InsertFormField,
   type FormCondition, type InsertFormCondition,
   type Submission, type InsertSubmission,
-  type AnalyticsEvent, type InsertAnalyticsEvent
+  type AnalyticsEvent, type InsertAnalyticsEvent,
+  type Setting, type InsertSetting
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -78,6 +79,11 @@ export interface IStorage {
   createFormCondition(condition: InsertFormCondition): Promise<FormCondition>;
   updateFormCondition(id: string, condition: Partial<InsertFormCondition>): Promise<FormCondition | undefined>;
   deleteFormCondition(id: string): Promise<boolean>;
+  
+  // Settings management
+  getSetting(key: string): Promise<Setting | undefined>;
+  getSettings(): Promise<Setting[]>;
+  upsertSetting(key: string, value: any): Promise<Setting>;
   
   // Submissions management
   getSubmissions(formId?: string): Promise<Submission[]>;
@@ -413,6 +419,28 @@ export class DatabaseStorage implements IStorage {
     }
     
     return await db.select().from(analyticsEvents).orderBy(desc(analyticsEvents.createdAt));
+  }
+
+  // Settings management
+  async getSetting(key: string): Promise<Setting | undefined> {
+    const [setting] = await db.select().from(settings).where(eq(settings.key, key));
+    return setting || undefined;
+  }
+
+  async getSettings(): Promise<Setting[]> {
+    return await db.select().from(settings).orderBy(settings.key);
+  }
+
+  async upsertSetting(key: string, value: any): Promise<Setting> {
+    const [setting] = await db
+      .insert(settings)
+      .values({ key, value })
+      .onConflictDoUpdate({
+        target: settings.key,
+        set: { value, updatedAt: new Date() }
+      })
+      .returning();
+    return setting;
   }
 }
 
