@@ -1,10 +1,49 @@
 import express, { type Request, Response, NextFunction } from "express";
+import session from "express-session";
+import ConnectPgSimple from "connect-pg-simple";
+import pkg from "pg";
+const { Pool } = pkg;
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { db } from "./db";
 
 const app = express();
+
+// Trust proxy for secure cookies in production
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
+// Ensure SESSION_SECRET is set
+if (!process.env.SESSION_SECRET) {
+  throw new Error('SESSION_SECRET environment variable is required');
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Session configuration with proper PostgreSQL Pool
+const PgSession = ConnectPgSimple(session);
+const sessionPool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+app.use(session({
+  store: new PgSession({
+    pool: sessionPool,
+    tableName: 'session',
+    createTableIfMissing: true
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+  }
+}));
 
 app.use((req, res, next) => {
   const start = Date.now();

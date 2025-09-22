@@ -1,16 +1,157 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertQuoteSchema, insertProductSchema } from "@shared/schema";
+import { insertQuoteSchema, insertProductSchema, insertUserSchemaWithRole } from "@shared/schema";
 import { emailService } from "./services/emailService";
 import { generateQuotePDF } from "./pdfGenerator";
 import multer from "multer";
 import { z } from "zod";
+import bcrypt from "bcrypt";
+import type { Request, Response, NextFunction } from "express";
 
 const upload = multer({ dest: "uploads/" });
 
+// Authentication middleware
+function requireAuth(req: Request, res: Response, next: NextFunction) {
+  if (!req.session?.userId) {
+    return res.status(401).json({ error: "Authentication required" });
+  }
+  next();
+}
+
+function requireRole(allowedRoles: string[]) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.session?.userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    try {
+      const user = await storage.getUser(req.session.userId);
+      if (!user || !allowedRoles.includes(user.role)) {
+        return res.status(403).json({ error: "Insufficient permissions" });
+      }
+      next();
+    } catch (error) {
+      console.error("Error checking user role:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  };
+}
+
+// Login schema
+const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
 export async function registerRoutes(app: Express): Promise<Server> {
   
+  // Authentication routes
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { username, password } = loginSchema.parse(req.body);
+      
+      const user = await storage.getUserByUsername(username);
+      if (!user) {
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
+
+      // Regenerate session ID to prevent session fixation
+      req.session.regenerate((err) => {
+        if (err) {
+          console.error("Session regeneration failed:", err);
+          return res.status(500).json({ error: "Login failed" });
+        }
+
+        req.session.userId = user.id;
+        req.session.userRole = user.role;
+
+        res.json({ 
+          user: { 
+            id: user.id, 
+            username: user.username, 
+            role: user.role 
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(400).json({ error: "Login failed" });
+    }
+  });
+
+  app.post("/api/auth/logout", requireAuth, async (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Logout error:", err);
+        return res.status(500).json({ error: "Logout failed" });
+      }
+      // Clear the session cookie
+      res.clearCookie('connect.sid');
+      res.json({ message: "Logged out successfully" });
+    });
+  });
+
+  app.get("/api/auth/me", requireAuth, async (req, res) => {
+    try {
+      const user = await storage.getUser(req.session.userId!);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.json({ 
+        user: { 
+          id: user.id, 
+          username: user.username, 
+          role: user.role 
+        }
+      });
+    } catch (error) {
+      console.error("Get user error:", error);
+      res.status(500).json({ error: "Failed to get user data" });
+    }
+  });
+
+  // Create admin user (development only)
+  app.post("/api/auth/create-admin", async (req, res) => {
+    if (process.env.NODE_ENV === "production") {
+      return res.status(403).json({ error: "Not available in production" });
+    }
+
+    try {
+      const { username, password } = loginSchema.parse(req.body);
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByUsername(username);
+      if (existingUser) {
+        return res.status(400).json({ error: "User already exists" });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await storage.createUserWithRole({
+        username,
+        password: hashedPassword,
+        role: "admin"
+      });
+
+      res.json({ 
+        user: { 
+          id: user.id, 
+          username: user.username, 
+          role: user.role 
+        }
+      });
+    } catch (error) {
+      console.error("Create admin error:", error);
+      res.status(400).json({ error: "Failed to create admin user" });
+    }
+  });
+
   // Get all products
   app.get("/api/products", async (req, res) => {
     try {
@@ -77,7 +218,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get all quotes (admin)
-  app.get("/api/quotes", async (req, res) => {
+  app.get("/api/quotes", requireRole(['admin', 'editor']), async (req, res) => {
     try {
       const quotes = await storage.getQuotes();
       res.json(quotes);
@@ -88,7 +229,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get single quote
-  app.get("/api/quotes/:id", async (req, res) => {
+  app.get("/api/quotes/:id", requireRole(['admin', 'editor']), async (req, res) => {
     try {
       const { id } = req.params;
       const quote = await storage.getQuote(id);
@@ -106,7 +247,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Update quote status
-  app.put("/api/quotes/:id/status", async (req, res) => {
+  app.put("/api/quotes/:id/status", requireRole(['admin', 'editor']), async (req, res) => {
     try {
       const { id } = req.params;
       const { status } = req.body;
@@ -125,7 +266,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Generate and download PDF for a quote
-  app.get("/api/quotes/:id/pdf", async (req, res) => {
+  app.get("/api/quotes/:id/pdf", requireRole(['admin', 'editor']), async (req, res) => {
     try {
       const { id } = req.params;
       const quote = await storage.getQuote(id);
@@ -146,7 +287,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Create product (admin)
-  app.post("/api/products", async (req, res) => {
+  app.post("/api/products", requireRole(['admin']), async (req, res) => {
     try {
       const validatedData = insertProductSchema.parse(req.body);
       const product = await storage.createProduct(validatedData);
