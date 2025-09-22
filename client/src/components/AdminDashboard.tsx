@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Settings, Users, FileText, BarChart3, Palette, FileEdit, Building } from "lucide-react";
+import { Settings, Users, FileText, BarChart3, Palette, FileEdit, Building, Image } from "lucide-react";
 import { formatPrice } from "../utils/pricingCalculator";
 import ThemeEditor from "@/components/admin/ThemeEditor";
 import PageManager from "@/components/admin/PageManager";
 import FormBuilder from "@/components/admin/FormBuilder";
 import AnalyticsView from "@/components/admin/AnalyticsView";
+import MediaManager from "@/components/admin/MediaManager";
 import type { User, Quote } from "@shared/schema";
 
 export default function AdminDashboard() {
@@ -86,175 +87,206 @@ export default function AdminDashboard() {
               </div>
             </div>
             
-            <nav className="space-y-2">
-              <button
-                onClick={() => setActiveTab("overview")}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left ${activeTab === "overview" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
-                data-testid="nav-overview"
-              >
-                <BarChart3 className="h-4 w-4" />
-                Overview
-              </button>
-              
-              <button
-                onClick={() => setActiveTab("quotes")}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left ${activeTab === "quotes" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
-                data-testid="nav-quotes"
-              >
-                <FileText className="h-4 w-4" />
-                Quotes
-              </button>
-              
-              {(userRole === 'admin' || userRole === 'editor') && (
-                <>
-                  <button
-                    onClick={() => setActiveTab("theme")}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left ${activeTab === "theme" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
-                    data-testid="nav-theme"
-                  >
-                    <Palette className="h-4 w-4" />
-                    Theme
-                  </button>
-                  
-                  <button
-                    onClick={() => setActiveTab("pages")}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left ${activeTab === "pages" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
-                    data-testid="nav-pages"
-                  >
-                    <FileEdit className="h-4 w-4" />
-                    Pages
-                  </button>
-                  
-                  <button
-                    onClick={() => setActiveTab("forms")}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left ${activeTab === "forms" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
-                    data-testid="nav-forms"
-                  >
-                    <Settings className="h-4 w-4" />
-                    Forms
-                  </button>
-                </>
-              )}
-              
-              <button
-                onClick={() => setActiveTab("analytics")}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left ${activeTab === "analytics" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
-                data-testid="nav-analytics"
-              >
-                <BarChart3 className="h-4 w-4" />
-                Analytics
-              </button>
-            </nav>
-            
-            <div className="mt-8 pt-4 border-t border-border">
-              <div className="text-xs text-muted-foreground mb-2">Logged in as</div>
-              <div className="text-sm font-medium">{user?.username || 'User'}</div>
-              <div className="text-xs text-muted-foreground capitalize">{userRole}</div>
+            {/* User Info */}
+            <div className="mb-8 p-3 bg-muted rounded-lg">
+              <p className="text-sm font-medium text-foreground" data-testid="user-email">{user?.email}</p>
+              <p className="text-xs text-muted-foreground capitalize" data-testid="user-role">{userRole}</p>
             </div>
           </div>
+
+          {/* Main Navigation */}
+          <nav className="space-y-2">
+            <button
+              onClick={() => setActiveTab("overview")}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                activeTab === "overview" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-overview"
+            >
+              <BarChart3 className="h-5 w-5" />
+              <span>Overview</span>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab("quotes")}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                activeTab === "quotes" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-quotes"
+            >
+              <FileText className="h-5 w-5" />
+              <span>Quotes</span>
+              <Badge className="ml-auto" variant="secondary">
+                {quotes.length}
+              </Badge>
+            </button>
+
+            {/* CMS Section */}
+            {(userRole === 'admin' || userRole === 'editor') && (
+              <>
+                <div className="pt-4 pb-2">
+                  <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Content Management
+                  </h3>
+                </div>
+                
+                <button
+                  onClick={() => setActiveTab("theme")}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                    activeTab === "theme" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                  data-testid="nav-theme"
+                >
+                  <Palette className="h-5 w-5" />
+                  <span>Theme</span>
+                </button>
+                
+                <button
+                  onClick={() => setActiveTab("pages")}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                    activeTab === "pages" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                  data-testid="nav-pages"
+                >
+                  <FileEdit className="h-5 w-5" />
+                  <span>Pages</span>
+                </button>
+                
+                <button
+                  onClick={() => setActiveTab("forms")}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                    activeTab === "forms" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                  data-testid="nav-forms"
+                >
+                  <Building className="h-5 w-5" />
+                  <span>Forms</span>
+                </button>
+                
+                <button
+                  onClick={() => setActiveTab("media")}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                    activeTab === "media" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                  data-testid="nav-media"
+                >
+                  <Image className="h-5 w-5" />
+                  <span>Media</span>
+                </button>
+                
+                <button
+                  onClick={() => setActiveTab("analytics")}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                    activeTab === "analytics" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                  data-testid="nav-analytics"
+                >
+                  <BarChart3 className="h-5 w-5" />
+                  <span>Analytics</span>
+                </button>
+              </>
+            )}
+
+            {/* User Management Section */}
+            {userRole === 'admin' && (
+              <>
+                <div className="pt-4 pb-2">
+                  <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    User Management
+                  </h3>
+                </div>
+                
+                <button
+                  onClick={() => setActiveTab("users")}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                    activeTab === "users" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                  data-testid="nav-users"
+                >
+                  <Users className="h-5 w-5" />
+                  <span>Users</span>
+                </button>
+              </>
+            )}
+          </nav>
         </div>
-        
+
         {/* Main Content */}
         <div className="flex-1 p-8">
           {activeTab === "overview" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Dashboard Overview</h2>
-              
+            <div className="space-y-8">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h1>
+                <p className="text-muted-foreground">Manage your solar quote system and website content</p>
+              </div>
+
               {/* Stats Cards */}
-              <div className="grid md:grid-cols-5 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium text-muted-foreground">Total Quotes</CardTitle>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Quotes</CardTitle>
+                    <FileText className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold" data-testid="stat-total-quotes">{stats.total}</div>
+                    <div className="text-2xl font-bold" data-testid="total-quotes">{stats.total}</div>
                   </CardContent>
                 </Card>
-
+                
                 <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Pending</CardTitle>
+                    <FileText className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-yellow-600" data-testid="stat-pending">{stats.pending}</div>
+                    <div className="text-2xl font-bold text-yellow-600" data-testid="pending-quotes">{stats.pending}</div>
                   </CardContent>
                 </Card>
-
+                
                 <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium text-muted-foreground">Contacted</CardTitle>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Converted</CardTitle>
+                    <FileText className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-blue-600" data-testid="stat-contacted">{stats.contacted}</div>
+                    <div className="text-2xl font-bold text-green-600" data-testid="converted-quotes">{stats.converted}</div>
                   </CardContent>
                 </Card>
-
+                
                 <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium text-muted-foreground">Converted</CardTitle>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Value</CardTitle>
+                    <FileText className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-green-600" data-testid="stat-converted">{stats.converted}</div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium text-muted-foreground">Total Value</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-primary" data-testid="stat-total-value">
-                      {formatPrice(stats.totalValue)}
-                    </div>
+                    <div className="text-2xl font-bold text-primary" data-testid="total-value">{formatPrice(stats.totalValue)}</div>
                   </CardContent>
                 </Card>
               </div>
-              
+
+              {/* Recent Quotes */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Welcome to Perth Solar Warehouse CMS</CardTitle>
+                  <CardTitle>Recent Quotes</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Manage your website content, quotes, and analytics from this central dashboard.
-                  </p>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <Card className="p-4">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-5 w-5 text-primary" />
+                  <div className="space-y-4">
+                    {quotes.slice(0, 5).map((quote: Quote) => (
+                      <div key={quote.id} className="flex items-center justify-between p-4 border border-border rounded-lg">
                         <div>
-                          <div className="text-sm text-muted-foreground">Active Pages</div>
-                          <div className="text-xl font-bold">5</div>
+                          <p className="font-medium text-foreground">{quote.customerName}</p>
+                          <p className="text-sm text-muted-foreground">{quote.email}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {new Date(quote.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-medium text-foreground">{formatPrice(parseFloat(quote.finalPrice.toString()))}</p>
+                          <Badge className={getStatusColor(quote.status)}>
+                            {quote.status}
+                          </Badge>
                         </div>
                       </div>
-                    </Card>
-                    <Card className="p-4">
-                      <div className="flex items-center gap-2">
-                        <Settings className="h-5 w-5 text-primary" />
-                        <div>
-                          <div className="text-sm text-muted-foreground">Forms</div>
-                          <div className="text-xl font-bold">3</div>
-                        </div>
-                      </div>
-                    </Card>
-                    <Card className="p-4">
-                      <div className="flex items-center gap-2">
-                        <Users className="h-5 w-5 text-primary" />
-                        <div>
-                          <div className="text-sm text-muted-foreground">This Month</div>
-                          <div className="text-xl font-bold">124</div>
-                        </div>
-                      </div>
-                    </Card>
-                    <Card className="p-4">
-                      <div className="flex items-center gap-2">
-                        <BarChart3 className="h-5 w-5 text-primary" />
-                        <div>
-                          <div className="text-sm text-muted-foreground">Conversion</div>
-                          <div className="text-xl font-bold">12.5%</div>
-                        </div>
-                      </div>
-                    </Card>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
@@ -262,94 +294,88 @@ export default function AdminDashboard() {
           )}
           
           {activeTab === "quotes" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Quote Management</h2>
-              
-              {/* Quotes Table */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Quotes</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b">
-                          <th className="text-left p-4">Customer</th>
-                          <th className="text-left p-4">Email</th>
-                          <th className="text-left p-4">Systems</th>
-                          <th className="text-left p-4">Value</th>
-                          <th className="text-left p-4">Status</th>
-                          <th className="text-left p-4">Date</th>
-                          <th className="text-left p-4">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {quotes.map((quote: Quote) => (
-                          <tr key={quote.id} className="border-b" data-testid={`quote-row-${quote.id}`}>
-                            <td className="p-4 font-medium">{quote.customerName}</td>
-                            <td className="p-4">{quote.email}</td>
-                            <td className="p-4">
-                              <div className="flex gap-1">
-                                {quote.selectedSystems.map((system: string) => (
-                                  <Badge key={system} variant="secondary" className="text-xs">
-                                    {system}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </td>
-                            <td className="p-4 font-semibold">{formatPrice(parseFloat(quote.finalPrice))}</td>
-                            <td className="p-4">
-                              <Badge className={getStatusColor(quote.status)}>
-                                {quote.status}
-                              </Badge>
-                            </td>
-                            <td className="p-4 text-muted-foreground">
-                              {new Date(quote.createdAt).toLocaleDateString()}
-                            </td>
-                            <td className="p-4">
-                              <div className="flex gap-2">
-                                <Select
-                                  value={quote.status}
-                                  onValueChange={(status) => handleStatusUpdate(quote.id, status)}
-                                >
-                                  <SelectTrigger className="w-32">
-                                    <SelectValue />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="pending">Pending</SelectItem>
-                                    <SelectItem value="contacted">Contacted</SelectItem>
-                                    <SelectItem value="converted">Converted</SelectItem>
-                                    <SelectItem value="lost">Lost</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => window.open(`/api/quotes/${quote.id}/pdf`, '_blank')}
-                                  data-testid={`button-download-pdf-${quote.id}`}
-                                >
-                                  <i className="fas fa-download"></i>
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Quote Management</h1>
+                <p className="text-muted-foreground">Review and manage solar system quote requests</p>
+              </div>
+
+              <div className="space-y-4">
+                {quotes.map((quote: Quote) => (
+                  <Card key={quote.id}>
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h3 className="text-lg font-semibold text-foreground">{quote.customerName}</h3>
+                          <p className="text-muted-foreground">{quote.email}</p>
+                          <p className="text-sm text-muted-foreground">{quote.phone}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold text-primary">{formatPrice(parseFloat(quote.finalPrice.toString()))}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {new Date(quote.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <p className="text-sm font-medium text-foreground">Address</p>
+                          <p className="text-sm text-muted-foreground">{quote.address}, {quote.suburb}, {quote.state} {quote.postcode}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-foreground">Systems</p>
+                          <p className="text-sm text-muted-foreground">{quote.selectedSystems.join(', ')}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <Badge className={getStatusColor(quote.status)} data-testid={`quote-status-${quote.id}`}>
+                          {quote.status}
+                        </Badge>
+                        <Select
+                          value={quote.status}
+                          onValueChange={(status) => handleStatusUpdate(quote.id, status)}
+                        >
+                          <SelectTrigger className="w-48">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pending">Pending</SelectItem>
+                            <SelectItem value="contacted">Contacted</SelectItem>
+                            <SelectItem value="converted">Converted</SelectItem>
+                            <SelectItem value="lost">Lost</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           )}
-          
+
           {activeTab === "theme" && <ThemeEditor />}
-          
+
           {activeTab === "pages" && <PageManager />}
-          
+
           {activeTab === "forms" && <FormBuilder />}
-          
+
+          {activeTab === "media" && <MediaManager />}
+
           {activeTab === "analytics" && <AnalyticsView />}
+
+          {activeTab === "users" && userRole === 'admin' && (
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">User Management</h1>
+                <p className="text-muted-foreground">Manage system users and permissions</p>
+              </div>
+              <div className="bg-muted p-8 rounded-lg text-center">
+                <p className="text-muted-foreground">User management functionality coming soon...</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
