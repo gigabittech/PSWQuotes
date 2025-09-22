@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Building, Lock } from "lucide-react";
+import { Loader2, Building, Lock, Sun, Zap, Shield } from "lucide-react";
 import AdminDashboard from "@/components/AdminDashboard";
 import type { User } from "@shared/schema";
 
@@ -71,18 +71,46 @@ export default function Admin() {
   // Show login form if not authenticated
   if (!user || authError) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        {/* Background Pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.04] dark:opacity-[0.05]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, #334155 1px, transparent 0)`,
+            backgroundSize: '48px 48px'
+          }}
+        />
+        
         {/* Header */}
-        <header className="bg-white shadow-sm border-b border-border">
+        <header className="relative bg-white/80 backdrop-blur-sm shadow-sm border-b border-border/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
+            <div className="flex justify-between items-center h-20">
               <div className="flex items-center space-x-4">
-                <h1 className="text-2xl font-bold text-primary">Perth Solar Warehouse</h1>
-                <span className="text-sm text-muted-foreground">Admin Login</span>
+                {/* Enhanced Logo */}
+                <div className="flex items-center space-x-3">
+                  <div className="relative">
+                    <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-lg">
+                      <Sun className="h-7 w-7 text-white" />
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <Zap className="h-2.5 w-2.5 text-white" />
+                    </div>
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                      Perth Solar Warehouse
+                    </h1>
+                    <p className="text-xs text-muted-foreground font-medium">Solar Energy Solutions</p>
+                  </div>
+                </div>
               </div>
               <div className="flex items-center space-x-4">
-                <a href="/" className="text-sm text-muted-foreground hover:text-primary">
-                  Back to Quote Form
+                <a 
+                  href="/" 
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-muted/50"
+                  data-testid="link-quote-form"
+                >
+                  ← Back to Quote Form
                 </a>
               </div>
             </div>
@@ -90,70 +118,119 @@ export default function Admin() {
         </header>
 
         {/* Login Form */}
-        <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
-          <Card className="w-full max-w-md">
-            <CardHeader className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                <Lock className="h-6 w-6 text-primary" />
-              </div>
-              <CardTitle className="text-2xl">Admin Login</CardTitle>
-              <p className="text-muted-foreground">
-                Enter your credentials to access the admin dashboard
-              </p>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="username">Username</Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter your username"
-                    required
-                    data-testid="input-username"
-                  />
+        <div className="relative flex items-center justify-center min-h-[calc(100vh-5rem)] p-4">
+          <div className="w-full max-w-md">
+            {/* Main Login Card */}
+            <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+              <CardHeader className="text-center pb-8 pt-8">
+                {/* Logo Section in Form */}
+                <div className="mx-auto mb-6 relative">
+                  <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl shadow-xl">
+                    <div className="relative">
+                      <Sun className="h-10 w-10 text-white" />
+                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                        <Zap className="h-3 w-3 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+                    <Shield className="h-4 w-4 text-white" />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                    required
-                    data-testid="input-password"
-                  />
-                </div>
-                <Button 
-                  type="submit" 
-                  className="w-full"
-                  disabled={loginMutation.isPending || !username.trim() || !password.trim()}
-                  data-testid="button-login"
-                >
-                  {loginMutation.isPending ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Signing in...
-                    </>
-                  ) : (
-                    'Sign in'
-                  )}
-                </Button>
-              </form>
+                
+                <CardTitle className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent mb-2">
+                  Welcome Back
+                </CardTitle>
+                <p className="text-muted-foreground text-base">
+                  Sign in to access your admin dashboard
+                </p>
+              </CardHeader>
               
-              {/* Development-only credentials hint */}
-              {import.meta.env.DEV && (
-                <div className="mt-6 p-3 bg-muted rounded-md">
-                  <p className="text-xs text-muted-foreground text-center">
-                    Development credentials: admin / admin123
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+              <CardContent className="px-8 pb-8">
+                <form onSubmit={handleLogin} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="username" className="text-sm font-medium text-slate-700">
+                      Username
+                    </Label>
+                    <Input
+                      id="username"
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder="Enter your username"
+                      required
+                      className="h-12 px-4 bg-slate-50/50 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20"
+                      data-testid="input-username"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-sm font-medium text-slate-700">
+                      Password
+                    </Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      required
+                      className="h-12 px-4 bg-slate-50/50 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20"
+                      data-testid="input-password"
+                    />
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200"
+                    disabled={loginMutation.isPending || !username.trim() || !password.trim()}
+                    data-testid="button-login"
+                  >
+                    {loginMutation.isPending ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Signing in...
+                      </>
+                    ) : (
+                      <>
+                        <Lock className="mr-2 h-4 w-4" />
+                        Sign in to Dashboard
+                      </>
+                    )}
+                  </Button>
+                </form>
+                
+                {/* Development-only credentials hint */}
+                {import.meta.env.DEV && (
+                  <div className="mt-6 p-4 bg-gradient-to-r from-slate-50 to-blue-50 rounded-xl border border-slate-200">
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <Building className="h-4 w-4 text-slate-500" />
+                      <p className="text-xs font-medium text-slate-600">Development Mode</p>
+                    </div>
+                    <p className="text-xs text-slate-500 text-center">
+                      Username: <span className="font-mono font-medium">admin</span> | 
+                      Password: <span className="font-mono font-medium">admin123</span>
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Additional Info Cards */}
+            <div className="mt-6 grid grid-cols-3 gap-3">
+              <div className="text-center p-3 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20">
+                <Sun className="h-6 w-6 text-blue-600 mx-auto mb-1" />
+                <p className="text-xs font-medium text-slate-600">Solar</p>
+              </div>
+              <div className="text-center p-3 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20">
+                <Zap className="h-6 w-6 text-yellow-600 mx-auto mb-1" />
+                <p className="text-xs font-medium text-slate-600">Energy</p>
+              </div>
+              <div className="text-center p-3 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20">
+                <Shield className="h-6 w-6 text-green-600 mx-auto mb-1" />
+                <p className="text-xs font-medium text-slate-600">Secure</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -162,17 +239,36 @@ export default function Admin() {
   // Show admin dashboard if authenticated
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-border">
+      {/* Enhanced Header */}
+      <header className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-primary">Perth Solar Warehouse</h1>
-              <span className="text-sm text-muted-foreground">Admin Dashboard</span>
+              {/* Enhanced Logo in Header */}
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg shadow-md">
+                    <Sun className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                    <Zap className="h-1.5 w-1.5 text-white" />
+                  </div>
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                    Perth Solar Warehouse
+                  </h1>
+                  <span className="text-xs text-muted-foreground font-medium">Admin Dashboard</span>
+                </div>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
-              <a href="/" className="text-sm text-muted-foreground hover:text-primary">
-                Back to Quote Form
+              <a 
+                href="/" 
+                className="text-sm text-muted-foreground hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-muted/50"
+                data-testid="link-quote-form"
+              >
+                ← Back to Quote Form
               </a>
             </div>
           </div>
