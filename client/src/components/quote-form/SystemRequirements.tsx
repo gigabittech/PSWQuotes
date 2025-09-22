@@ -71,11 +71,11 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
   const canContinue = (data.systems?.length || 0) > 0 && data.powerSupply;
 
   return (
-    <div className="p-8" data-testid="system-requirements">
-      <h2 className="text-3xl font-bold text-foreground mb-6 text-center">
+    <div className="p-8 md:p-12" data-testid="system-requirements">
+      <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 text-center">
         What are you looking for?
       </h2>
-      <p className="text-muted-foreground text-center mb-8">
+      <p className="text-lg text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
         Select all the systems you're interested in. We'll create a custom quote based on your needs.
       </p>
 
@@ -84,29 +84,29 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
           <div
             key={option.id}
             className={cn(
-              "pricing-card border-2 rounded-lg p-6 cursor-pointer transition-all duration-200 hover:shadow-lg",
+              "card-elevated border-2 p-6 cursor-pointer transition-all duration-300 hover:shadow-2xl",
               data.systems?.includes(option.id)
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary"
+                ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                : "border-gray-200 hover:border-primary hover:-translate-y-1"
             )}
             onClick={() => handleSystemToggle(option.id)}
             data-testid={`system-option-${option.id}`}
           >
             <div className="text-center">
-              <div className={cn("w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4", option.bgColor)}>
-                <span className="text-2xl">{option.icon}</span>
+              <div className={cn("w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg", option.bgColor)}>
+                <span className="text-3xl">{option.icon}</span>
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">{option.title}</h3>
-              <p className="text-muted-foreground text-sm mb-4">{option.description}</p>
-              <div className="text-sm text-primary font-medium">{option.price}</div>
+              <h3 className="text-xl font-bold text-foreground mb-3">{option.title}</h3>
+              <p className="text-muted-foreground mb-4 leading-relaxed">{option.description}</p>
+              <div className="text-base text-primary font-semibold bg-primary/10 px-4 py-2 rounded-full">{option.price}</div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mb-8">
-        <h3 className="text-xl font-semibold text-foreground mb-4">Power Supply Type</h3>
-        <p className="text-muted-foreground mb-4">
+      <div className="mb-12">
+        <h3 className="text-2xl font-bold text-foreground mb-6 text-center">Power Supply Type</h3>
+        <p className="text-lg text-muted-foreground mb-8 text-center max-w-2xl mx-auto">
           Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
         </p>
         <div className="grid md:grid-cols-3 gap-4">
@@ -114,10 +114,10 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
             <div
               key={option.id}
               className={cn(
-                "border rounded-lg p-4 cursor-pointer transition-colors duration-200",
+                "border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:shadow-lg",
                 data.powerSupply === option.id
-                  ? "border-primary bg-primary/5"
-                  : "border-border hover:border-primary"
+                  ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                  : "border-gray-200 hover:border-primary hover:-translate-y-1"
               )}
               onClick={() => handlePowerSupplyChange(option.id)}
               data-testid={`power-supply-${option.id}`}
@@ -142,13 +142,15 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
 
       <div className="flex justify-center">
         <button
-          className="bg-primary hover:bg-blue-700 text-primary-foreground px-8 py-3 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-primary px-10 py-4 text-lg rounded-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-lg"
           onClick={onNext}
           disabled={!canContinue}
           data-testid="button-continue-to-products"
         >
           Continue to Product Selection
-          <span className="ml-2">→</span>
+          <svg className="ml-3 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
         </button>
       </div>
     </div>
