@@ -148,6 +148,13 @@ export const analyticsEvents = pgTable("analytics_events", {
   createdAt: timestamp("created_at").notNull().default(sql`now()`),
 });
 
+export const settings = pgTable("settings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  key: text("key").notNull().unique(), // e.g., "business.company_name", "email.smtp_host"
+  value: jsonb("value").notNull(), // Configuration value as JSON
+  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+});
+
 export const quoteItemRelations = relations(quoteItems, ({ one }) => ({
   quote: one(quotes, {
     fields: [quoteItems.quoteId],
@@ -226,6 +233,11 @@ export const insertAnalyticsEventSchema = createInsertSchema(analyticsEvents).om
   createdAt: true,
 });
 
+export const insertSettingSchema = createInsertSchema(settings).omit({
+  id: true,
+  updatedAt: true,
+});
+
 // Type exports
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertUserWithRole = z.infer<typeof insertUserSchemaWithRole>;
@@ -254,3 +266,6 @@ export type Submission = typeof submissions.$inferSelect;
 export type InsertSubmission = z.infer<typeof insertSubmissionSchema>;
 export type AnalyticsEvent = typeof analyticsEvents.$inferSelect;
 export type InsertAnalyticsEvent = z.infer<typeof insertAnalyticsEventSchema>;
+
+export type Setting = typeof settings.$inferSelect;
+export type InsertSetting = z.infer<typeof insertSettingSchema>;
