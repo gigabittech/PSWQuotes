@@ -126,7 +126,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-navy shadow-lg border-b border-gray-700">
+      <header className="bg-black shadow-lg border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-4">
@@ -282,7 +282,7 @@ export default function Home() {
 
 
       {/* Footer */}
-      <footer className="bg-navy text-white py-16">
+      <footer className="bg-black text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-12">
             <div className="col-span-2">
