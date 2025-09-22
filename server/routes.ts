@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import rateLimit from "express-rate-limit";
 import { storage } from "./storage";
 import { 
   insertQuoteSchema, insertProductSchema, insertUserSchemaWithRole,
@@ -15,7 +16,48 @@ import { z } from "zod";
 import bcrypt from "bcrypt";
 import type { Request, Response, NextFunction } from "express";
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ 
+  dest: "uploads/",
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+    files: 5 // Maximum 5 files
+  },
+  fileFilter: (req, file, cb) => {
+    // Only allow specific image types
+    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (allowedMimeTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.'));
+    }
+  }
+});
+
+// Rate limiters for specific endpoints
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 login attempts per windowMs
+  message: { error: 'Too many login attempts, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipSuccessfulRequests: true, // Don't count successful requests
+});
+
+const quoteLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10, // Limit each IP to 10 quote submissions per minute
+  message: { error: 'Too many quote requests, please slow down' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const settingsLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 20, // Limit each IP to 20 settings updates per minute
+  message: { error: 'Too many settings updates, please slow down' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Authentication middleware
 function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -53,7 +95,7 @@ const loginSchema = z.object({
 export async function registerRoutes(app: Express): Promise<Server> {
   
   // Authentication routes
-  app.post("/api/auth/login", async (req, res) => {
+  app.post("/api/auth/login", authLimiter, async (req, res) => {
     try {
       const { username, password } = loginSchema.parse(req.body);
       
@@ -660,7 +702,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Settings Management (Admin Only)
-  app.get("/api/settings", requireRole(['admin']), async (req, res) => {
+  app.get("/api/settings", requireRole(['admin']), settingsLimiter, async (req, res) => {
     try {
       const settings = await storage.getSettings();
       // Redact sensitive values for security
@@ -698,7 +740,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/settings/:key", requireRole(['admin']), async (req, res) => {
+  app.put("/api/settings/:key", requireRole(['admin']), settingsLimiter, async (req, res) => {
     try {
       const { key } = req.params;
       const { value } = req.body;
