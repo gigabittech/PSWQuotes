@@ -13,7 +13,8 @@ interface PropertyDetailsProps {
     solarPackage?: string;
     batterySystem?: string;
     evCharger?: string;
-    customerName?: string;
+    firstName?: string;
+    lastName?: string;
     email?: string;
     phone?: string;
     address?: string;
@@ -61,7 +62,7 @@ export default function PropertyDetails({
     onSubmit(finalData);
   };
 
-  const isValid = data.customerName && data.email && data.address && data.suburb && data.postcode;
+  const isValid = data.firstName && data.lastName && data.email && data.address && data.suburb && data.postcode;
 
   return (
     <div className="p-4 sm:p-6 md:p-8" data-testid="property-details">
@@ -85,20 +86,38 @@ export default function PropertyDetails({
             <div className="space-y-4 sm:space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="customer-name" className="block text-sm font-medium text-foreground mb-2">
-                    Full Name *
+                  <Label htmlFor="first-name" className="block text-sm font-medium text-foreground mb-2">
+                    First Name *
                   </Label>
                   <Input
                     type="text"
-                    id="customer-name"
-                    value={data.customerName || ''}
-                    onChange={(e) => handleInputChange('customerName', e.target.value)}
+                    id="first-name"
+                    value={data.firstName || ''}
+                    onChange={(e) => handleInputChange('firstName', e.target.value)}
                     required
-                    data-testid="input-customer-name"
+                    data-testid="input-first-name"
                     className="w-full h-12 text-base"
-                    placeholder="Enter your full name"
+                    placeholder="John"
                   />
                 </div>
+                <div>
+                  <Label htmlFor="last-name" className="block text-sm font-medium text-foreground mb-2">
+                    Last Name *
+                  </Label>
+                  <Input
+                    type="text"
+                    id="last-name"
+                    value={data.lastName || ''}
+                    onChange={(e) => handleInputChange('lastName', e.target.value)}
+                    required
+                    data-testid="input-last-name"
+                    className="w-full h-12 text-base"
+                    placeholder="Smith"
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
                     Email Address *
@@ -114,73 +133,77 @@ export default function PropertyDetails({
                     className="w-full h-12 text-base"
                   />
                 </div>
-              </div>
-
-              <div>
-                <Label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
-                  Phone Number
-                </Label>
-                <Input
-                  type="tel"
-                  id="phone"
-                  value={data.phone || ''}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                  placeholder="(04) 1234 5678"
-                  data-testid="input-phone"
-                  className="w-full h-12 text-base"
-                />
+                <div>
+                  <Label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
+                    Phone Number
+                  </Label>
+                  <Input
+                    type="tel"
+                    id="phone"
+                    value={data.phone || ''}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    placeholder="(04) 1234 5678"
+                    data-testid="input-phone"
+                    className="w-full h-12 text-base"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-        {/* Property Address */}
-        <div>
-          <h3 className="text-lg font-semibold text-foreground mb-4">Installation Address</h3>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="address" className="block text-sm font-medium text-foreground mb-2">
-                Street Address *
-              </Label>
-              <Input
-                type="text"
-                id="address"
-                value={data.address || ''}
-                onChange={(e) => handleInputChange('address', e.target.value)}
-                required
-                placeholder="123 Example Street"
-                data-testid="input-address"
-                className="w-full"
-              />
-            </div>
-            <div className="grid md:grid-cols-3 gap-4">
+          {/* Property Address */}
+          <div className="bg-muted/30 rounded-lg p-4 sm:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6 flex items-center">
+              <svg className="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              Installation Address
+            </h3>
+            <div className="space-y-4 sm:space-y-6">
               <div>
-                <Label htmlFor="suburb" className="block text-sm font-medium text-foreground mb-2">
-                  Suburb *
+                <Label htmlFor="address" className="block text-sm font-medium text-foreground mb-2">
+                  Street Address *
                 </Label>
                 <Input
                   type="text"
-                  id="suburb"
-                  value={data.suburb || ''}
-                  onChange={(e) => handleInputChange('suburb', e.target.value)}
+                  id="address"
+                  value={data.address || ''}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
                   required
-                  placeholder="Perth"
-                  data-testid="input-suburb"
-                  className="w-full"
+                  placeholder="123 Example Street"
+                  data-testid="input-address"
+                  className="w-full h-12 text-base"
                 />
               </div>
-              <div>
-                <Label htmlFor="state" className="block text-sm font-medium text-foreground mb-2">
-                  State
-                </Label>
-                <Select value={data.state || 'WA'} onValueChange={(value) => handleInputChange('state', value)}>
-                  <SelectTrigger data-testid="select-state">
-                    <SelectValue placeholder="Select state" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="WA">Western Australia</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="suburb" className="block text-sm font-medium text-foreground mb-2">
+                    Suburb *
+                  </Label>
+                  <Input
+                    type="text"
+                    id="suburb"
+                    value={data.suburb || ''}
+                    onChange={(e) => handleInputChange('suburb', e.target.value)}
+                    required
+                    placeholder="Perth"
+                    data-testid="input-suburb"
+                    className="w-full h-12 text-base"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="state" className="block text-sm font-medium text-foreground mb-2">
+                    State
+                  </Label>
+                  <Select value={data.state || 'WA'} onValueChange={(value) => handleInputChange('state', value)}>
+                    <SelectTrigger className="h-12" data-testid="select-state">
+                      <SelectValue placeholder="Select state" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="WA">Western Australia</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               <div>
                 <Label htmlFor="postcode" className="block text-sm font-medium text-foreground mb-2">
                   Postcode *

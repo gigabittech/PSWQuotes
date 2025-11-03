@@ -6,7 +6,8 @@ interface QuoteSummaryProps {
     solarPackage?: string;
     batterySystem?: string;
     evCharger?: string;
-    customerName?: string;
+    firstName?: string;
+    lastName?: string;
   };
   pricingData: {
     totalPrice: number;

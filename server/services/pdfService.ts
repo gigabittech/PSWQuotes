@@ -64,7 +64,7 @@ class PDFService {
 
     <div class="quote-details">
         <h3>Customer Information</h3>
-        <p><strong>Name:</strong> ${quote.customerName}</p>
+        <p><strong>Name:</strong> ${quote.firstName} ${quote.lastName}</p>
         <p><strong>Email:</strong> ${quote.email}</p>
         <p><strong>Phone:</strong> ${quote.phone || 'Not provided'}</p>
         <p><strong>Installation Address:</strong> ${quote.address}, ${quote.suburb}, ${quote.state} ${quote.postcode}</p>

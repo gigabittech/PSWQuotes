@@ -105,7 +105,7 @@ export default function AdminDashboard() {
   const filteredQuotes = useMemo(() => {
     return quotes.filter((quote: Quote) => {
       const matchesSearch = searchQuery === "" || 
-        quote.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        `${quote.firstName} ${quote.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
         quote.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         quote.phone.includes(searchQuery);
       
@@ -523,7 +523,7 @@ export default function AdminDashboard() {
                         {[...quotes].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5).map((quote: Quote) => (
                           <div key={quote.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
                             <div className="flex-1 min-w-0">
-                              <p className="font-medium text-foreground text-sm truncate">{quote.customerName}</p>
+                              <p className="font-medium text-foreground text-sm truncate">{quote.firstName} {quote.lastName}</p>
                               <p className="text-xs text-muted-foreground truncate">{quote.email}</p>
                               <p className="text-xs text-muted-foreground">
                                 {new Date(quote.createdAt).toLocaleDateString()}
@@ -671,7 +671,7 @@ export default function AdminDashboard() {
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4 gap-4">
                           <div className="flex-1">
                             <div className="flex items-start justify-between mb-2">
-                              <h3 className="text-base sm:text-lg font-semibold text-foreground">{quote.customerName}</h3>
+                              <h3 className="text-base sm:text-lg font-semibold text-foreground">{quote.firstName} {quote.lastName}</h3>
                               <Button variant="ghost" size="sm" className="ml-2">
                                 <MoreVertical className="h-4 w-4" />
                               </Button>
