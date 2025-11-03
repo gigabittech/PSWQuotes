@@ -20,16 +20,15 @@ export default function StepIndicator({ currentStep, totalSteps }: StepIndicator
           <div key={step.number} className="flex items-center">
             <div
               className={cn(
-                "step-indicator flex items-center justify-center w-10 h-10 rounded-full font-semibold transition-all duration-300",
-                step.number === currentStep
-                  ? "bg-primary text-primary-foreground"
-                  : step.number < currentStep
-                  ? "bg-accent text-accent-foreground"
-                  : "bg-muted-foreground text-white"
+                "glass-step flex items-center justify-center w-12 h-12 rounded-full font-semibold",
+                step.number === currentStep && "active",
+                step.number < currentStep && "completed"
               )}
             >
               {step.number < currentStep ? (
-                <i className="fas fa-check"></i>
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
               ) : (
                 step.number
               )}
@@ -37,8 +36,10 @@ export default function StepIndicator({ currentStep, totalSteps }: StepIndicator
             {index < steps.length - 1 && (
               <div
                 className={cn(
-                  "w-16 h-1 rounded transition-colors duration-300",
-                  step.number < currentStep ? "bg-accent" : "bg-border"
+                  "w-16 sm:w-20 h-1 rounded-full transition-all duration-300",
+                  step.number < currentStep 
+                    ? "bg-gradient-to-r from-green-400 to-green-500 shadow-md" 
+                    : "bg-gray-200 bg-opacity-50 backdrop-blur-sm"
                 )}
               />
             )}

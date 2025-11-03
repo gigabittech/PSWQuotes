@@ -176,11 +176,11 @@ export default function QuoteForm() {
   };
 
   return (
-    <section className="py-12 bg-muted" data-testid="quote-form">
+    <section className="py-12 glass-backdrop min-h-screen" data-testid="quote-form">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <StepIndicator currentStep={currentStep} totalSteps={4} />
 
-        <div className="bg-card rounded-lg shadow-lg overflow-hidden">
+        <div className="glass-card overflow-hidden">
           {currentStep === 1 && (
             <SystemSelection
               selectedSystems={formData.systems}
