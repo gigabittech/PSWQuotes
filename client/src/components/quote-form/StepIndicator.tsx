@@ -74,22 +74,14 @@ export default function StepIndicator({
                 onClick={() => handleStepClick(step.number)}
                 disabled={!clickable}
                 className={cn(
-                  "step-indicator relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full font-semibold transition-all duration-300 border-2 shadow-lg",
+                  "glass-step relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full font-semibold",
                   "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
-                  state === 'current' && [
-                    "bg-primary text-primary-foreground border-primary",
-                    "animate-pulse shadow-primary/30",
-                    isLoading && "animate-spin"
-                  ],
+                  state === 'current' && "active",
                   state === 'completed' && [
-                    "bg-green-500 text-white border-green-500",
-                    clickable && "hover:bg-green-600 hover:scale-105 cursor-pointer",
-                    "shadow-green-500/30"
+                    "completed",
+                    clickable && "hover:scale-105 cursor-pointer"
                   ],
-                  state === 'upcoming' && [
-                    "bg-muted text-muted-foreground border-muted",
-                    "shadow-muted/20"
-                  ],
+                  state === 'upcoming' && "opacity-60",
                   hasError && "ring-2 ring-red-500 ring-offset-1",
                   !clickable && "cursor-default"
                 )}
