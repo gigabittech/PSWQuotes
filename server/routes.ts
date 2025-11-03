@@ -19,8 +19,10 @@ import { ObjectPermission } from "./objectAcl";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import type { Request, Response, NextFunction } from "express";
+import multer from "multer";
 
-// Removed insecure multer upload - replaced with secure object storage
+// Multer for parsing multipart/form-data (fields only, no file storage)
+const upload = multer();
 
 // Rate limiters for specific endpoints
 const authLimiter = rateLimit({
@@ -375,7 +377,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Create a new quote
-  app.post("/api/quotes", quoteLimiter, async (req, res) => {
+  app.post("/api/quotes", quoteLimiter, upload.none(), async (req, res) => {
     try {
       // Parse JSON stringified arrays from FormData
       const requestBody = { ...req.body };
