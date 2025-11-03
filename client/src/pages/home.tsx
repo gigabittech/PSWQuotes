@@ -87,6 +87,10 @@ export default function Home() {
   };
 
   const handleSubmit = (finalData: any) => {
+    console.log('handleSubmit received finalData:', finalData);
+    console.log('Current formData state:', formData);
+    console.log('Pricing data:', pricingData);
+    
     const submitData = new FormData();
     
     // Add all text fields with proper field mapping
@@ -115,7 +119,12 @@ export default function Home() {
       submitData.append('finalPrice', pricingData.finalPrice.toString());
     }
 
-    console.log('Submitting quote with systems:', finalData.systems); // Debug log
+    // Debug: Log what's in FormData
+    console.log('FormData entries:');
+    Array.from(submitData.entries()).forEach(([key, value]) => {
+      console.log(key, '=', value);
+    });
+    
     submitQuote.mutate(submitData);
   };
 
