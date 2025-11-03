@@ -14,7 +14,8 @@ export default function QuoteForm() {
   const [formData, setFormData] = useState<QuoteFormData>({
     systems: [],
     powerSupply: 'unknown',
-    customerName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: undefined,
     address: '',
@@ -160,7 +161,8 @@ export default function QuoteForm() {
     setFormData({
       systems: [],
       powerSupply: 'unknown',
-      customerName: '',
+      firstName: '',
+      lastName: '',
       email: '',
       phone: undefined,
       address: '',

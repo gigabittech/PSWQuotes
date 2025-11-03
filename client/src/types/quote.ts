@@ -9,7 +9,8 @@ export interface QuoteFormData {
   evCharger?: string;
   
   // Step 3: Property Details
-  customerName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone?: string;
   address: string;
@@ -102,7 +103,8 @@ export interface Product {
 
 export interface Quote {
   id: string;
-  customerName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone?: string;
   address: string;

@@ -7,7 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 interface PropertyDetailsProps {
   formData: {
-    customerName: string;
+    firstName: string;
+    lastName: string;
     email: string;
     phone: string;
     address: string;
@@ -66,34 +67,48 @@ export default function PropertyDetails({
           <h3 className="text-lg font-semibold text-foreground mb-4">Contact Information</h3>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="customer-name" className="block text-sm font-medium text-foreground mb-2">
-                Full Name *
+              <Label htmlFor="first-name" className="block text-sm font-medium text-foreground mb-2">
+                First Name *
               </Label>
               <Input
                 type="text"
-                id="customer-name"
-                value={formData.customerName}
-                onChange={(e) => handleInputChange('customerName', e.target.value)}
+                id="first-name"
+                value={formData.firstName}
+                onChange={(e) => handleInputChange('firstName', e.target.value)}
                 required
-                data-testid="input-customer-name"
+                data-testid="input-first-name"
                 className="w-full"
               />
             </div>
             <div>
-              <Label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                Email Address *
+              <Label htmlFor="last-name" className="block text-sm font-medium text-foreground mb-2">
+                Last Name *
               </Label>
               <Input
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
+                type="text"
+                id="last-name"
+                value={formData.lastName}
+                onChange={(e) => handleInputChange('lastName', e.target.value)}
                 required
-                placeholder="your@email.com"
-                data-testid="input-email"
+                data-testid="input-last-name"
                 className="w-full"
               />
             </div>
+          </div>
+          <div className="mt-4">
+            <Label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+              Email Address *
+            </Label>
+            <Input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              required
+              placeholder="your@email.com"
+              data-testid="input-email"
+              className="w-full"
+            />
           </div>
         </div>
 
