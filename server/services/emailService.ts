@@ -47,7 +47,7 @@ class EmailService {
       }] : undefined;
 
       const result = await brevoApi.sendTransacEmail({
-        to: [{ email: quote.email, name: quote.customerName }],
+        to: [{ email: quote.email, name: `${quote.firstName} ${quote.lastName}` }],
         sender: { 
           email: process.env.FROM_EMAIL || 'quotes@perthsolarwarehouse.com.au',
           name: 'Perth Solar Warehouse'
@@ -111,7 +111,7 @@ class EmailService {
     const quoteId = quote.id.split('-')[0].toUpperCase();
     
     const text = `
-Dear ${quote.customerName},
+Dear ${quote.firstName} ${quote.lastName},
 
 🎉 Great news! Your personalized solar quote from Perth Solar Warehouse is ready.
 
@@ -420,7 +420,7 @@ The Perth Solar Warehouse Team
         
         <div class="content">
             <div class="greeting">
-                Dear ${quote.customerName},
+                Dear ${quote.firstName} ${quote.lastName},
             </div>
             
             <p>Great news! Your personalized solar quote is ready. We've carefully selected the perfect solar solution for your home based on your requirements.</p>
@@ -531,8 +531,8 @@ The Perth Solar Warehouse Team
     
     return {
       subject: `🌟 Follow-up: Your Solar Quote #${quoteId} - Perth Solar Warehouse`,
-      text: `Hi ${quote.customerName}, we wanted to follow up on your solar quote...`,
-      html: `<p>Follow-up email content for ${quote.customerName}</p>`
+      text: `Hi ${quote.firstName}, we wanted to follow up on your solar quote...`,
+      html: `<p>Follow-up email content for ${quote.firstName} ${quote.lastName}</p>`
     };
   }
 
@@ -541,8 +541,8 @@ The Perth Solar Warehouse Team
     
     return {
       subject: `✅ Quote #${quoteId} Confirmed - Perth Solar Warehouse`,
-      text: `Hi ${quote.customerName}, your solar quote has been confirmed...`,
-      html: `<p>Confirmation email content for ${quote.customerName}</p>`
+      text: `Hi ${quote.firstName}, your solar quote has been confirmed...`,
+      html: `<p>Confirmation email content for ${quote.firstName} ${quote.lastName}</p>`
     };
   }
 }
