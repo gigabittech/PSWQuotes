@@ -11,9 +11,10 @@ Preferred communication style: Simple, everyday language.
 ## Frontend Architecture
 - **React + TypeScript SPA**: Built with Vite for fast development and optimized builds
 - **UI Framework**: Shadcn/ui components with Radix UI primitives for accessible, customizable components
-- **Styling**: Tailwind CSS with CSS custom properties for theming and responsive design
+- **Styling**: Tailwind CSS with custom glassmorphism utilities (glass-card, glass-input, glass-btn, glass-step)
+- **Design System**: Glassmorphism aesthetic with backdrop-blur, semi-transparent backgrounds, and gradient accents
 - **State Management**: TanStack Query for server state management and caching
-- **Routing**: Wouter for lightweight client-side routing
+- **Routing**: Wouter for lightweight client-side routing with dedicated /embed route for iframe embedding
 - **Form Handling**: React Hook Form with Zod validation for type-safe form management
 
 ## Backend Architecture
@@ -31,9 +32,11 @@ Preferred communication style: Simple, everyday language.
 
 ## Core Features
 - **Multi-step Quote Form**: Progressive form with system selection, product configuration, and customer details
+- **Glassmorphism Design**: Modern liquid glass UI with backdrop-blur effects, semi-transparent panels, and gradient borders
 - **Dynamic Pricing**: Real-time price calculations based on product selections and government rebates
 - **Product Catalog**: Configurable product database with specifications and pricing
 - **Admin Dashboard**: Quote management with status tracking and lead conversion
+- **Embeddable Form**: Standalone /embed route with copy-to-clipboard embed code generator for external website integration
 - **PDF Generation**: Automated quote document generation with company branding
 
 ## Data Flow

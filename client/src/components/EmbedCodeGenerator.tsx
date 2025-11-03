@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -8,9 +8,15 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function EmbedCodeGenerator() {
   const [copied, setCopied] = useState(false);
+  const [embedUrl, setEmbedUrl] = useState("");
   const { toast } = useToast();
   
-  const embedUrl = `${window.location.origin}/embed`;
+  // Set embedUrl in useEffect to avoid SSR/build errors
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setEmbedUrl(`${window.location.origin}/embed`);
+    }
+  }, []);
   
   const iframeCode = `<!-- Perth Solar Warehouse Quote Form -->
 <iframe 

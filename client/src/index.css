@@ -324,7 +324,10 @@
 
   /* Step indicator glass effect */
   .glass-step {
-    @apply glass rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 

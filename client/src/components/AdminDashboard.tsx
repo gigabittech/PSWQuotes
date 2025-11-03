@@ -34,7 +34,8 @@ import {
   Edit,
   MoreVertical,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  Code
 } from "lucide-react";
 import { formatPrice } from "../utils/pricingCalculator";
 import ThemeEditor from "@/components/admin/ThemeEditor";
@@ -43,6 +44,7 @@ import FormBuilder from "@/components/admin/FormBuilder";
 import AnalyticsView from "@/components/admin/AnalyticsView";
 import MediaManager from "@/components/admin/MediaManager";
 import { Settings } from "@/components/admin/Settings";
+import EmbedCodeGenerator from "@/components/EmbedCodeGenerator";
 import type { User, Quote } from "@shared/schema";
 
 export default function AdminDashboard() {
@@ -218,6 +220,17 @@ export default function AdminDashboard() {
           <Badge className="ml-auto" variant="secondary">
             {quotes.length}
           </Badge>
+        </button>
+
+        <button
+          onClick={() => handleTabChange("embed")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "embed" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-embed"
+        >
+          <Code className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Embed Code</span>
         </button>
 
         {/* CMS Section */}
@@ -787,6 +800,17 @@ export default function AdminDashboard() {
                     </Card>
                   )}
                 </div>
+              </div>
+            )}
+
+            {/* Embed Code */}
+            {activeTab === "embed" && (
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Embed Quote Form</h1>
+                  <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
+                </div>
+                <EmbedCodeGenerator />
               </div>
             )}
 
