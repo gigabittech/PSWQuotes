@@ -107,7 +107,7 @@ export default function AdminDashboard() {
       const matchesSearch = searchQuery === "" || 
         `${quote.firstName} ${quote.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
         quote.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        quote.phone.includes(searchQuery);
+        quote.phone?.includes(searchQuery);
       
       const matchesStatus = statusFilter === "all" || quote.status === statusFilter;
       
