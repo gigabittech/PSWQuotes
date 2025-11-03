@@ -1,0 +1,317 @@
+{
+  "singlePhase": {
+    "3kW": {
+      "risen": {
+        "name": "RISEN 3kW Solar System (Single Phase)",
+        "capacity": "3kW",
+        "price": 2190,
+        "panels": "7 x 440W RISEN RSM40-8-440BMDG Panels",
+        "inverter": "Growatt MIN 3000TL-XH",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "jinko": {
+        "name": "JINKO 3kW Solar System (Single Phase)",
+        "capacity": "3kW",
+        "price": 2390,
+        "panels": "7 x 440W JINKO Tiger Neo N-Type Panels",
+        "inverter": "Growatt MIN 3000TL-XH",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "aiko": {
+        "name": "AIKO 3kW Solar System (Single Phase)",
+        "capacity": "3kW",
+        "price": 2590,
+        "panels": "7 x 440W AIKO A-MAH54 Panels",
+        "inverter": "Growatt MIN 3000TL-XH",
+        "warranty": "30 year panel performance, 10 year inverter"
+      }
+    },
+    "6.6kW": {
+      "risen": {
+        "name": "RISEN 6.6kW Solar System (Single Phase)",
+        "capacity": "6.6kW",
+        "price": 3290,
+        "panels": "15 x 440W RISEN RSM40-8-440BMDG Panels",
+        "inverter": "Growatt MOD 5000TL3-XH",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "jinko": {
+        "name": "JINKO 6.6kW Solar System (Single Phase)",
+        "capacity": "6.6kW",
+        "price": 3590,
+        "panels": "15 x 440W JINKO Tiger Neo N-Type Panels",
+        "inverter": "Growatt MOD 5000TL3-XH",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "aiko": {
+        "name": "AIKO 6.6kW Solar System (Single Phase)",
+        "capacity": "6.6kW",
+        "price": 3890,
+        "panels": "15 x 440W AIKO A-MAH54 Panels",
+        "inverter": "Growatt MOD 5000TL3-XH",
+        "warranty": "30 year panel performance, 10 year inverter"
+      }
+    },
+    "10kW": {
+      "risen": {
+        "name": "RISEN 10kW Solar System (Single Phase)",
+        "capacity": "10kW",
+        "price": 4990,
+        "panels": "23 x 440W RISEN RSM40-8-440BMDG Panels",
+        "inverter": "Growatt MOD 8000TL3-XH",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "jinko": {
+        "name": "JINKO 10kW Solar System (Single Phase)",
+        "capacity": "10kW",
+        "price": 5490,
+        "panels": "23 x 440W JINKO Tiger Neo N-Type Panels",
+        "inverter": "Growatt MOD 8000TL3-XH",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "aiko": {
+        "name": "AIKO 10kW Solar System (Single Phase)",
+        "capacity": "10kW",
+        "price": 5990,
+        "panels": "23 x 440W AIKO A-MAH54 Panels",
+        "inverter": "Growatt MOD 8000TL3-XH",
+        "warranty": "30 year panel performance, 10 year inverter"
+      }
+    },
+    "13kW": {
+      "risen": {
+        "name": "RISEN 13kW Solar System (Single Phase)",
+        "capacity": "13kW",
+        "price": 6290,
+        "panels": "30 x 440W RISEN RSM40-8-440BMDG Panels",
+        "inverter": "Growatt MOD 10000TL3-XH",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "jinko": {
+        "name": "JINKO 13kW Solar System (Single Phase)",
+        "capacity": "13kW",
+        "price": 6990,
+        "panels": "30 x 440W JINKO Tiger Neo N-Type Panels",
+        "inverter": "Growatt MOD 10000TL3-XH",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "aiko": {
+        "name": "AIKO 13kW Solar System (Single Phase)",
+        "capacity": "13kW",
+        "price": 7490,
+        "panels": "30 x 440W AIKO A-MAH54 Panels",
+        "inverter": "Growatt MOD 10000TL3-XH",
+        "warranty": "30 year panel performance, 10 year inverter"
+      }
+    }
+  },
+  "threePhase": {
+    "6.6kW": {
+      "risen": {
+        "name": "RISEN 6.6kW Solar System (Three Phase)",
+        "capacity": "6.6kW",
+        "price": 3490,
+        "panels": "15 x 440W RISEN RSM40-8-440BMDG Panels",
+        "inverter": "Growatt MOD 5000TL3-X",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "jinko": {
+        "name": "JINKO 6.6kW Solar System (Three Phase)",
+        "capacity": "6.6kW",
+        "price": 3790,
+        "panels": "15 x 440W JINKO Tiger Neo N-Type Panels",
+        "inverter": "Growatt MOD 5000TL3-X",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "aiko": {
+        "name": "AIKO 6.6kW Solar System (Three Phase)",
+        "capacity": "6.6kW",
+        "price": 4090,
+        "panels": "15 x 440W AIKO A-MAH54 Panels",
+        "inverter": "Growatt MOD 5000TL3-X",
+        "warranty": "30 year panel performance, 10 year inverter"
+      }
+    },
+    "10kW": {
+      "risen": {
+        "name": "RISEN 10kW Solar System (Three Phase)",
+        "capacity": "10kW",
+        "price": 5190,
+        "panels": "23 x 440W RISEN RSM40-8-440BMDG Panels",
+        "inverter": "Growatt MOD 8000TL3-X",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "jinko": {
+        "name": "JINKO 10kW Solar System (Three Phase)",
+        "capacity": "10kW",
+        "price": 5690,
+        "panels": "23 x 440W JINKO Tiger Neo N-Type Panels",
+        "inverter": "Growatt MOD 8000TL3-X",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "aiko": {
+        "name": "AIKO 10kW Solar System (Three Phase)",
+        "capacity": "10kW",
+        "price": 6190,
+        "panels": "23 x 440W AIKO A-MAH54 Panels",
+        "inverter": "Growatt MOD 8000TL3-X",
+        "warranty": "30 year panel performance, 10 year inverter"
+      }
+    },
+    "13kW": {
+      "risen": {
+        "name": "RISEN 13kW Solar System (Three Phase)",
+        "capacity": "13kW",
+        "price": 6490,
+        "panels": "30 x 440W RISEN RSM40-8-440BMDG Panels",
+        "inverter": "Growatt MOD 10000TL3-X",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "jinko": {
+        "name": "JINKO 13kW Solar System (Three Phase)",
+        "capacity": "13kW",
+        "price": 7190,
+        "panels": "30 x 440W JINKO Tiger Neo N-Type Panels",
+        "inverter": "Growatt MOD 10000TL3-X",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "aiko": {
+        "name": "AIKO 13kW Solar System (Three Phase)",
+        "capacity": "13kW",
+        "price": 7690,
+        "panels": "30 x 440W AIKO A-MAH54 Panels",
+        "inverter": "Growatt MOD 10000TL3-X",
+        "warranty": "30 year panel performance, 10 year inverter"
+      }
+    },
+    "19kW": {
+      "risen": {
+        "name": "RISEN 19kW Solar System (Three Phase)",
+        "capacity": "19kW",
+        "price": 9490,
+        "panels": "43 x 440W RISEN RSM40-8-440BMDG Panels",
+        "inverter": "Growatt MOD 15000TL3-X",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "jinko": {
+        "name": "JINKO 19kW Solar System (Three Phase)",
+        "capacity": "19kW",
+        "price": 10490,
+        "panels": "43 x 440W JINKO Tiger Neo N-Type Panels",
+        "inverter": "Growatt MOD 15000TL3-X",
+        "warranty": "25 year panel performance, 10 year inverter"
+      },
+      "aiko": {
+        "name": "AIKO 19kW Solar System (Three Phase)",
+        "capacity": "19kW",
+        "price": 11490,
+        "panels": "43 x 440W AIKO A-MAH54 Panels",
+        "inverter": "Growatt MOD 15000TL3-X",
+        "warranty": "30 year panel performance, 10 year inverter"
+      }
+    }
+  },
+  "batteries": {
+    "tesla_powerwall2": {
+      "name": "Tesla Powerwall 2",
+      "capacity": "13.5kWh",
+      "price": 14990,
+      "warranty": "10 years",
+      "specs": "AC-coupled, 5kW continuous power, 7kW peak"
+    },
+    "tesla_powerwall3": {
+      "name": "Tesla Powerwall 3",
+      "capacity": "13.5kWh",
+      "price": 16990,
+      "warranty": "10 years",
+      "specs": "AC-coupled, 11.5kW continuous power, integrated solar inverter"
+    },
+    "byd_hvm_11": {
+      "name": "BYD HVM 11.0",
+      "capacity": "11kWh",
+      "price": 9990,
+      "warranty": "10 years",
+      "specs": "Modular design, scalable up to 22.1kWh"
+    },
+    "byd_hvm_16": {
+      "name": "BYD HVM 16.6",
+      "capacity": "16.6kWh",
+      "price": 13990,
+      "warranty": "10 years",
+      "specs": "Modular design, high efficiency"
+    },
+    "alpha_ess_smile5": {
+      "name": "Alpha ESS SMILE5-BAT",
+      "capacity": "10.1kWh",
+      "price": 8990,
+      "warranty": "10 years",
+      "specs": "All-in-one system, 5kW continuous power"
+    },
+    "alpha_ess_smile10": {
+      "name": "Alpha ESS SMILE10-BAT",
+      "capacity": "20.2kWh",
+      "price": 15990,
+      "warranty": "10 years",
+      "specs": "All-in-one system, 10kW continuous power"
+    },
+    "sungrow_sbr096": {
+      "name": "Sungrow SBR096",
+      "capacity": "9.6kWh",
+      "price": 7990,
+      "warranty": "10 years",
+      "specs": "Modular battery, expandable"
+    },
+    "sungrow_sbr160": {
+      "name": "Sungrow SBR160",
+      "capacity": "16kWh",
+      "price": 12490,
+      "warranty": "10 years",
+      "specs": "Modular battery, high capacity"
+    }
+  },
+  "evChargers": {
+    "zappi_v2": {
+      "name": "Zappi V2 EV Charger",
+      "power": "7kW",
+      "price": 2490,
+      "warranty": "3 years",
+      "features": "Solar diversion, smart charging, app control"
+    },
+    "ocpp_7kw": {
+      "name": "OCPP 7kW EV Charger",
+      "power": "7kW",
+      "price": 1790,
+      "warranty": "2 years",
+      "features": "Wi-Fi enabled, OCPP compliant"
+    },
+    "ocpp_22kw": {
+      "name": "OCPP 22kW EV Charger (3-Phase)",
+      "power": "22kW",
+      "price": 2990,
+      "warranty": "2 years",
+      "features": "Three-phase, fast charging, Wi-Fi enabled"
+    },
+    "tesla_wall_connector": {
+      "name": "Tesla Wall Connector",
+      "power": "11kW",
+      "price": 2190,
+      "warranty": "4 years",
+      "features": "Optimized for Tesla vehicles, weatherproof"
+    }
+  },
+  "rebates": {
+    "stc": {
+      "description": "Small-scale Technology Certificates",
+      "3kW": 1090,
+      "6.6kW": 2190,
+      "10kW": 3340,
+      "13kW": 4340,
+      "19kW": 6340
+    },
+    "battery_subsidy": {
+      "description": "WA Battery Subsidy (if eligible)",
+      "amount": 3000,
+      "maxCapacity": "13.5kWh"
+    }
+  }
+}
