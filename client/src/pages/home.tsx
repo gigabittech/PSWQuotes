@@ -11,6 +11,7 @@ import SystemRequirements from "@/components/quote-form/SystemRequirements";
 import ProductSelection from "@/components/quote-form/ProductSelection";
 import PropertyDetails from "@/components/quote-form/PropertyDetails";
 import QuoteSummary from "@/components/quote-form/QuoteSummary";
+import EmbedCodeGenerator from "@/components/EmbedCodeGenerator";
 import type { QuoteFormData, PricingData, Product } from "@/types/quote";
 
 export default function Home() {
@@ -197,6 +198,21 @@ export default function Home() {
               />
             )}
           </div>
+        </div>
+      </section>
+
+      {/* Embed Code Section */}
+      <section className="py-12 sm:py-16 lg:py-20 glass-backdrop">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+              Embed This Form On Your Website
+            </h2>
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+              Copy the code below to add this solar quote form to your website
+            </p>
+          </div>
+          <EmbedCodeGenerator />
         </div>
       </section>
 
