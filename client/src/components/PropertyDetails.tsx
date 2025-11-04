@@ -21,6 +21,7 @@ interface PropertyDetailsProps {
   onFileChange: (file: File | null) => void;
   onNext: () => void;
   onBack: () => void;
+  isSubmitting?: boolean;
 }
 
 export default function PropertyDetails({
@@ -29,6 +30,7 @@ export default function PropertyDetails({
   onFileChange,
   onNext,
   onBack,
+  isSubmitting = false,
 }: PropertyDetailsProps) {
   const [fileName, setFileName] = useState<string>("");
 
@@ -256,9 +258,19 @@ export default function PropertyDetails({
             type="submit"
             className="bg-primary hover:bg-blue-700"
             data-testid="button-generate-quote"
+            disabled={isSubmitting}
           >
-            Generate Quote
-            <i className="fas fa-arrow-right ml-2"></i>
+            {isSubmitting ? (
+              <>
+                <i className="fas fa-spinner fa-spin mr-2"></i>
+                Generating Quote...
+              </>
+            ) : (
+              <>
+                Generate Quote
+                <i className="fas fa-arrow-right ml-2"></i>
+              </>
+            )}
           </Button>
         </div>
       </form>

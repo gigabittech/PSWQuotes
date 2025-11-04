@@ -111,6 +111,26 @@ export default function QuoteForm() {
   };
 
   const handleSubmitQuote = () => {
+    // Show error if pricing calculation failed
+    if (pricingError) {
+      toast({
+        title: "Pricing Error",
+        description: "Unable to calculate quote pricing. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Ensure pricing has been calculated
+    if (pricing.totalPrice === 0 && formData.systems.length > 0) {
+      toast({
+        title: "Calculating Pricing",
+        description: "Please wait while we calculate your quote...",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const submitData = new FormData();
     
     // Ensure selectedSystems is always included, even if empty
@@ -211,6 +231,7 @@ export default function QuoteForm() {
               onFileChange={handleFileChange}
               onNext={handleSubmitQuote}
               onBack={prevStep}
+              isSubmitting={isCalculating || createQuoteMutation.isPending}
             />
           )}
 
