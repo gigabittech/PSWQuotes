@@ -463,8 +463,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Generate and download PDF for a quote
-  app.get("/api/quotes/:id/pdf", requireRole(['admin', 'editor']), async (req, res) => {
+  // Generate and download PDF for a quote (public access for customers)
+  app.get("/api/quotes/:id/pdf", async (req, res) => {
     try {
       const { id } = req.params;
       const quote = await storage.getQuote(id);
