@@ -58,7 +58,7 @@ export default function ProductSelection({
                   isSelected={data.solarPackage === product.id}
                   onSelect={() => handleProductSelect('solarPackage', product.id)}
                   badge={product.popular ? "POPULAR" : undefined}
-                  badgeColor="bg-gradient-to-r from-yellow-400 to-orange-500 text-white"
+                  badgeColor="bg-primary text-primary-foreground"
                   productType="solar"
                 />
               ))}
@@ -78,7 +78,7 @@ export default function ProductSelection({
                   isSelected={data.batterySystem === product.id}
                   onSelect={() => handleProductSelect('batterySystem', product.id)}
                   badge={product.popular ? "VALUE" : product.specifications?.premium ? "PREMIUM" : undefined}
-                  badgeColor={product.popular ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white" : "bg-gradient-to-r from-blue-500 to-purple-600 text-white"}
+                  badgeColor="bg-primary text-primary-foreground"
                   productType="battery"
                 />
               ))}
@@ -98,7 +98,7 @@ export default function ProductSelection({
                   isSelected={data.evCharger === product.id}
                   onSelect={() => handleProductSelect('evCharger', product.id)}
                   badge={product.popular ? "FAST CHARGING" : undefined}
-                  badgeColor="bg-gradient-to-r from-blue-400 to-indigo-500 text-white"
+                  badgeColor="bg-primary text-primary-foreground"
                   productType="ev_charger"
                 />
               ))}
@@ -108,10 +108,10 @@ export default function ProductSelection({
 
       {/* Real-time Pricing Display */}
       {pricingData && (
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl p-6 mb-8 border border-blue-200 dark:border-blue-800 shadow-lg">
+        <div className="glass-card rounded-xl p-6 mb-8 border-2 border-border shadow-lg">
           <div className="flex items-center mb-6">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
-              <span className="text-white">💰</span>
+            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center mr-3">
+              <span className="text-lg">💰</span>
             </div>
             <h3 className="text-xl font-bold text-foreground">Current Quote Summary</h3>
           </div>

@@ -19,28 +19,24 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
     switch (productType || product.type) {
       case 'solar':
         return {
-          gradient: 'from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20',
-          border: 'hover:border-yellow-400',
-          accent: 'text-yellow-600',
+          border: 'hover:border-primary',
+          accent: 'text-primary',
           icon: '☀️'
         };
       case 'battery':
         return {
-          gradient: 'from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20',
-          border: 'hover:border-green-400',
-          accent: 'text-green-600',
+          border: 'hover:border-primary',
+          accent: 'text-primary',
           icon: '🔋'
         };
       case 'ev_charger':
         return {
-          gradient: 'from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20',
-          border: 'hover:border-blue-400',
-          accent: 'text-blue-600',
+          border: 'hover:border-primary',
+          accent: 'text-primary',
           icon: '⚡'
         };
       default:
         return {
-          gradient: 'from-gray-50 to-slate-50 dark:from-gray-950/20 dark:to-slate-950/20',
           border: 'hover:border-primary',
           accent: 'text-primary',
           icon: '⭐'
@@ -53,19 +49,18 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
   return (
     <div
       className={cn(
-        "group relative bg-gradient-to-br rounded-xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:shadow-xl active:scale-[0.98] flex flex-col justify-between",
+        "group relative glass-card rounded-xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:shadow-xl active:scale-[0.98] flex flex-col justify-between",
         "border-2 min-h-[280px] sm:min-h-[320px] touch-manipulation",
         "hover:-translate-y-2 hover:shadow-2xl",
         isSelected
-          ? `border-primary bg-primary/10 ring-2 ring-primary/30 scale-[1.02] shadow-lg bg-gradient-to-br ${typeStyles.gradient}`
-          : `border-border ${typeStyles.border} bg-gradient-to-br ${typeStyles.gradient}`,
-        typeStyles.gradient
+          ? "border-primary bg-primary/10 ring-2 ring-primary/30 scale-[1.02] shadow-lg"
+          : `border-border ${typeStyles.border}`
       )}
       onClick={onSelect}
       data-testid={`product-card-${product.id}`}
     >
       {/* Product Type Icon */}
-      <div className="absolute top-3 left-3 w-8 h-8 bg-white/80 dark:bg-gray-800/80 rounded-full flex items-center justify-center shadow-sm">
+      <div className="absolute top-3 left-3 w-8 h-8 bg-muted/50 dark:bg-muted/30 rounded-full flex items-center justify-center shadow-sm backdrop-blur-sm">
         <span className="text-lg">{typeStyles.icon}</span>
       </div>
 

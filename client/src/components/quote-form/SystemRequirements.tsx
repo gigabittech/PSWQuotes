@@ -16,9 +16,8 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
       title: 'Solar Power',
       description: 'Harness the sun\'s energy with premium solar panel systems',
       icon: '☀️',
-      gradient: 'from-yellow-100 to-orange-100 dark:from-yellow-950/30 dark:to-orange-950/30',
-      iconBg: 'bg-gradient-to-br from-yellow-400 to-orange-500',
-      border: 'hover:border-yellow-400',
+      iconBg: 'bg-muted/50 dark:bg-muted/30',
+      border: 'hover:border-primary',
       price: 'From $3,090',
       afterText: 'after rebates',
       badge: 'MOST POPULAR',
@@ -29,9 +28,8 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
       title: 'Battery Storage',
       description: 'Store energy for use when you need it most',
       icon: '🔋',
-      gradient: 'from-green-100 to-emerald-100 dark:from-green-950/30 dark:to-emerald-950/30',
-      iconBg: 'bg-gradient-to-br from-green-400 to-emerald-500',
-      border: 'hover:border-green-400',
+      iconBg: 'bg-muted/50 dark:bg-muted/30',
+      border: 'hover:border-primary',
       price: 'From $6,490',
       afterText: 'after rebates',
       badge: 'PREMIUM',
@@ -41,9 +39,8 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
       title: 'EV Charging',
       description: 'Fast, convenient home charging for your electric vehicle',
       icon: '⚡',
-      gradient: 'from-blue-100 to-indigo-100 dark:from-blue-950/30 dark:to-indigo-950/30',
-      iconBg: 'bg-gradient-to-br from-blue-400 to-indigo-500',
-      border: 'hover:border-blue-400',
+      iconBg: 'bg-muted/50 dark:bg-muted/30',
+      border: 'hover:border-primary',
       price: 'From $1,790',
       afterText: 'installed',
       badge: 'FAST CHARGING',
@@ -99,13 +96,11 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
             <div
               key={option.id}
               className={cn(
-                "group relative bg-gradient-to-br rounded-2xl p-6 cursor-pointer transition-all duration-500 hover:shadow-2xl min-h-[320px] sm:min-h-[360px] touch-manipulation",
+                "group relative glass-card rounded-2xl p-6 cursor-pointer transition-all duration-500 hover:shadow-2xl min-h-[320px] sm:min-h-[360px] touch-manipulation",
                 "border-2 hover:-translate-y-3 hover:shadow-xl active:scale-[0.98]",
-                "backdrop-blur-sm",
                 data.systems?.includes(option.id)
-                  ? `border-primary bg-primary/10 ring-2 ring-primary/30 scale-[1.02] shadow-xl ${option.gradient}`
-                  : `border-gray-200 dark:border-gray-700 ${option.border} ${option.gradient}`,
-                option.gradient
+                  ? "border-primary bg-primary/10 ring-2 ring-primary/30 scale-[1.02] shadow-xl"
+                  : `border-border ${option.border}`
               )}
               onClick={() => handleSystemToggle(option.id)}
               data-testid={`system-option-${option.id}`}
@@ -113,7 +108,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               {/* Popular Badge */}
               {option.popular && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-lg">
+                  <span className="bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-lg">
                     {option.badge}
                   </span>
                 </div>
@@ -122,7 +117,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               {/* Other Badges */}
               {!option.popular && option.badge && (
                 <div className="absolute top-4 right-4">
-                  <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-md">
+                  <span className="bg-primary/90 text-primary-foreground px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-md">
                     {option.badge}
                   </span>
                 </div>
@@ -171,7 +166,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
         {/* Power Supply Section */}
         <div className="mb-8 md:mb-12">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-full px-6 py-3 mb-4">
+            <div className="inline-flex items-center glass-card rounded-full px-6 py-3 mb-4">
               <span className="text-2xl mr-3">⚡</span>
               <h3 className="text-xl sm:text-2xl font-bold text-foreground">Power Supply Type</h3>
             </div>
@@ -185,11 +180,11 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               <div
                 key={option.id}
                 className={cn(
-                  "group relative bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30 border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:shadow-xl touch-manipulation min-h-[120px]",
+                  "group relative glass-card border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:shadow-xl touch-manipulation min-h-[120px]",
                   "hover:-translate-y-1 active:scale-[0.98]",
                   data.powerSupply === option.id
                     ? "border-primary bg-primary/10 ring-2 ring-primary/30 scale-[1.02] shadow-lg"
-                    : "border-gray-200 dark:border-gray-700 hover:border-primary"
+                    : "border-border hover:border-primary"
                 )}
                 onClick={() => handlePowerSupplyChange(option.id)}
                 data-testid={`power-supply-${option.id}`}
