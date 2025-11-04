@@ -426,8 +426,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get single quote
-  app.get("/api/quotes/:id", requireRole(['admin', 'editor']), async (req, res) => {
+  // Get single quote (public access for customers to view their quotes)
+  app.get("/api/quotes/:id", async (req, res) => {
     try {
       const { id } = req.params;
       const quote = await storage.getQuote(id);
