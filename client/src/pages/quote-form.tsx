@@ -52,7 +52,8 @@ export default function QuoteForm() {
   const submitQuote = useMutation({
     mutationFn: async (data: QuoteFormData) => {
       const response = await apiRequest('POST', '/api/quotes', {
-        customerName: data.customerName,
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         phone: data.phone,
         address: data.address,

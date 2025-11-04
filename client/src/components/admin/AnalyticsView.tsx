@@ -268,7 +268,7 @@ export default function AnalyticsView() {
                   {quotes.slice(0, 5).map((quote) => (
                     <div key={quote.id} className="flex items-center justify-between py-2 border-b last:border-0" data-testid={`recent-quote-${quote.id}`}>
                       <div>
-                        <div className="font-medium text-sm">{quote.customerName}</div>
+                        <div className="font-medium text-sm">{quote.firstName} {quote.lastName}</div>
                         <div className="text-xs text-muted-foreground">
                           {new Date(quote.createdAt).toLocaleDateString()}
                         </div>

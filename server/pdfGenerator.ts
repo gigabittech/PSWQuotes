@@ -90,7 +90,7 @@ export async function generateQuotePDF(quote: Quote): Promise<Buffer> {
   doc.setTextColor(0, 0, 0);
   doc.text("Name:", 25, yPos);
   doc.setFont("helvetica", "normal");
-  doc.text(quote.customerName, 50, yPos);
+  doc.text(`${quote.firstName} ${quote.lastName}`, 50, yPos);
   
   yPos += 7;
   doc.setFont("helvetica", "bold");

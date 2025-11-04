@@ -58,7 +58,7 @@ export default function AdminDashboard() {
   // Filter and search quotes
   const filteredQuotes = quotes?.filter((quote) => {
     const matchesSearch = !searchTerm || 
-      quote.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      `${quote.firstName} ${quote.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
       quote.email.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = statusFilter === 'all' || quote.status === statusFilter;
@@ -215,7 +215,7 @@ export default function AdminDashboard() {
                     <tbody>
                       {filteredQuotes.map((quote) => (
                         <tr key={quote.id} className="border-b hover:bg-muted/50 transition-colors" data-testid={`quote-row-${quote.id}`}>
-                          <td className="p-4 font-medium">{quote.customerName}</td>
+                          <td className="p-4 font-medium">{quote.firstName} {quote.lastName}</td>
                           <td className="p-4">{quote.email}</td>
                           <td className="p-4">
                             <div className="flex gap-1 flex-wrap">
@@ -269,7 +269,7 @@ export default function AdminDashboard() {
                               <Button
                                 size="sm" 
                                 variant="outline"
-                                onClick={() => window.open(`mailto:${quote.email}?subject=Re: Your Solar Quote&body=Dear ${quote.customerName},%0A%0AThank you for your interest in Perth Solar Warehouse.`)}
+                                onClick={() => window.open(`mailto:${quote.email}?subject=Re: Your Solar Quote&body=Dear ${quote.firstName} ${quote.lastName},%0A%0AThank you for your interest in Perth Solar Warehouse.`)}
                                 data-testid={`button-email-customer-${quote.id}`}
                                 title="Email Customer"
                               >
@@ -316,7 +316,7 @@ export default function AdminDashboard() {
                     const csv = [
                       ['Customer Name', 'Email', 'Phone', 'Systems', 'Total Value', 'Status', 'Date'].join(','),
                       ...filteredQuotes.map(quote => [
-                        quote.customerName,
+                        `${quote.firstName} ${quote.lastName}`,
                         quote.email,
                         quote.phone || '',
                         quote.selectedSystems.join(';'),
