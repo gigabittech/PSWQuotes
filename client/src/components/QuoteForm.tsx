@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { usePricingCalculator } from "@/hooks/usePricingCalculator";
 import StepIndicator from "./StepIndicator";
 import SystemSelection from "./SystemSelection";
 import ProductSelection from "./ProductSelection";
@@ -29,6 +30,20 @@ export default function QuoteForm() {
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { pricing, calculatePricing, isCalculating, error: pricingError } = usePricingCalculator();
+
+  // Calculate pricing whenever selections change
+  useEffect(() => {
+    if (formData.systems.length > 0) {
+      calculatePricing({
+        selectedSystems: formData.systems,
+        solarPackage: formData.solarPackage,
+        batterySystem: formData.batterySystem,
+        evCharger: formData.evCharger,
+        powerSupply: formData.powerSupply,
+      });
+    }
+  }, [formData.systems, formData.solarPackage, formData.batterySystem, formData.evCharger, formData.powerSupply]);
 
   const createQuoteMutation = useMutation({
     mutationFn: async (data: FormData) => {
@@ -119,29 +134,13 @@ export default function QuoteForm() {
       submitData.append('switchboardPhoto', switchboardPhoto);
     }
 
-    // Calculate and add pricing
-    const totalPrice = calculateTotalPrice();
-    const rebateAmount = calculateRebateAmount();
-    const finalPrice = totalPrice - rebateAmount;
-
-    submitData.append('totalPrice', totalPrice.toString());
-    submitData.append('rebateAmount', rebateAmount.toString());
-    submitData.append('finalPrice', finalPrice.toString());
+    // Add real pricing from calculator
+    submitData.append('totalPrice', pricing.totalPrice.toString());
+    submitData.append('rebateAmount', pricing.rebateAmount.toString());
+    submitData.append('finalPrice', pricing.finalPrice.toString());
     submitData.append('status', 'pending');
 
     createQuoteMutation.mutate(submitData);
-  };
-
-  const calculateTotalPrice = (): number => {
-    // This would use the real pricing calculator
-    // For now, return a sample calculation
-    return 15000;
-  };
-
-  const calculateRebateAmount = (): number => {
-    // This would calculate actual rebates
-    // For now, return a sample calculation
-    return 5000;
   };
 
   const nextStep = () => {
