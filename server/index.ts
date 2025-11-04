@@ -40,7 +40,7 @@ app.use(helmet({
       objectSrc: ["'none'"],
       mediaSrc: ["'self'", "https://storage.googleapis.com"],
       frameSrc: ["'none'"],
-      frameAncestors: ["'none'"], // Prevent clickjacking
+      frameAncestors: ["*"], // Allow embedding in iframes from any domain
       baseUri: ["'self'"], // Restrict base URI to prevent injection
       formAction: ["'self'"], // Restrict form actions to same origin
     },
@@ -53,7 +53,7 @@ app.use(helmet({
   noSniff: true,
   xssFilter: true,
   referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-  frameguard: { action: 'deny' }
+  frameguard: false // Disable frameguard to allow iframe embedding
 }));
 
 // CORS Configuration - Environment driven
