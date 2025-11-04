@@ -22,6 +22,7 @@ interface PropertyDetailsProps {
   onNext: () => void;
   onBack: () => void;
   isSubmitting?: boolean;
+  pricingError?: Error | null;
 }
 
 export default function PropertyDetails({
@@ -31,6 +32,7 @@ export default function PropertyDetails({
   onNext,
   onBack,
   isSubmitting = false,
+  pricingError = null,
 }: PropertyDetailsProps) {
   const [fileName, setFileName] = useState<string>("");
 
@@ -244,6 +246,15 @@ export default function PropertyDetails({
           />
         </div>
 
+        {pricingError && (
+          <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-center">
+            <i className="fas fa-exclamation-circle text-destructive mr-2"></i>
+            <span className="text-destructive font-medium">
+              Unable to calculate quote pricing. Please check your selections and try again.
+            </span>
+          </div>
+        )}
+
         <div className="flex justify-between mt-8">
           <Button
             type="button"
@@ -258,7 +269,7 @@ export default function PropertyDetails({
             type="submit"
             className="bg-primary hover:bg-blue-700"
             data-testid="button-generate-quote"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !!pricingError}
           >
             {isSubmitting ? (
               <>

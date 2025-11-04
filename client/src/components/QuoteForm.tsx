@@ -32,17 +32,15 @@ export default function QuoteForm() {
   const queryClient = useQueryClient();
   const { pricing, calculatePricing, isCalculating, error: pricingError } = usePricingCalculator();
 
-  // Calculate pricing whenever selections change
+  // Calculate pricing whenever selections change (including when cleared)
   useEffect(() => {
-    if (formData.systems.length > 0) {
-      calculatePricing({
-        selectedSystems: formData.systems,
-        solarPackage: formData.solarPackage,
-        batterySystem: formData.batterySystem,
-        evCharger: formData.evCharger,
-        powerSupply: formData.powerSupply,
-      });
-    }
+    calculatePricing({
+      selectedSystems: formData.systems,
+      solarPackage: formData.solarPackage,
+      batterySystem: formData.batterySystem,
+      evCharger: formData.evCharger,
+      powerSupply: formData.powerSupply,
+    });
   }, [formData.systems, formData.solarPackage, formData.batterySystem, formData.evCharger, formData.powerSupply]);
 
   const createQuoteMutation = useMutation({
@@ -232,6 +230,7 @@ export default function QuoteForm() {
               onNext={handleSubmitQuote}
               onBack={prevStep}
               isSubmitting={isCalculating || createQuoteMutation.isPending}
+              pricingError={pricingError}
             />
           )}
 

@@ -52,7 +52,8 @@ export function usePricingCalculator() {
     if (request.selectedSystems.length > 0) {
       pricingMutation.mutate(request);
     } else {
-      // Reset pricing if no systems selected
+      // Reset pricing and clear any errors if no systems selected
+      pricingMutation.reset();
       setPricing({
         totalPrice: 0,
         rebateAmount: 0,
