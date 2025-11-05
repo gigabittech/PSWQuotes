@@ -570,13 +570,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (validatedData.selectedSystems.includes('solar') && validatedData.solarPackage) {
         const solarBrands = await pricingDataService.getAllSolarBrands(phaseType);
         
-        // Try to match the product name with a package in pricing data
+        // Try to match the product ID or name with a package in pricing data
         for (const [brandKey, brandData] of Object.entries(solarBrands)) {
-          const matchingPackage = brandData.packages.find(pkg => {
+          const matchingPackage = brandData.packages.find((pkg: any) => {
+            // Match by ID if it's an ID format
+            if (pkg.id && validatedData.solarPackage === pkg.id) {
+              return true;
+            }
+            // Otherwise match by name
             const productName = `${pkg.size_kw}kW ${brandData.brand} Solar System`;
             return validatedData.solarPackage?.includes(productName) || 
-                   validatedData.solarPackage?.includes(`${pkg.size_kw}kW`) && 
-                   validatedData.solarPackage?.includes(brandData.brand);
+                   (validatedData.solarPackage?.includes(`${pkg.size_kw}kW`) && 
+                   validatedData.solarPackage?.includes(brandData.brand));
           });
           
           if (matchingPackage) {
@@ -594,11 +599,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const batteryBrands = await pricingDataService.getAllBatteryBrands(phaseType);
         
         for (const [brandKey, brandData] of Object.entries(batteryBrands)) {
-          const matchingOption = brandData.options.find(opt => {
+          const matchingOption = brandData.options.find((opt: any) => {
+            // Match by ID if it's an ID format
+            if (opt.id && validatedData.batterySystem === opt.id) {
+              return true;
+            }
+            // Otherwise match by name
             const productName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
             return validatedData.batterySystem?.includes(productName) ||
-                   validatedData.batterySystem?.includes(`${opt.capacity_kwh}kWh`) &&
-                   validatedData.batterySystem?.includes(brandData.brand);
+                   (validatedData.batterySystem?.includes(`${opt.capacity_kwh}kWh`) &&
+                   validatedData.batterySystem?.includes(brandData.brand));
           });
           
           if (matchingOption) {
@@ -617,11 +627,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const evChargerBrands = await pricingDataService.getAllEVChargerBrands(phaseType);
         
         for (const [brandKey, brandData] of Object.entries(evChargerBrands)) {
-          const matchingOption = brandData.options.find(opt => {
+          const matchingOption = brandData.options.find((opt: any) => {
+            // Match by ID if it's an ID format
+            if (opt.id && validatedData.evCharger === opt.id) {
+              return true;
+            }
+            // Otherwise match by name
             const productName = `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`;
             return validatedData.evCharger?.includes(productName) ||
-                   validatedData.evCharger?.includes(`${opt.power_kw}kW`) &&
-                   validatedData.evCharger?.includes(brandData.brand);
+                   (validatedData.evCharger?.includes(`${opt.power_kw}kW`) &&
+                   validatedData.evCharger?.includes(brandData.brand));
           });
           
           if (matchingOption) {
@@ -758,12 +773,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         batteryRebate: 0,
       };
       
-      // Calculate solar pricing by matching product name
+      // Calculate solar pricing by matching product ID or name
       if (selectedSystems?.includes('solar') && solarPackage) {
         const solarBrands = await pricingDataService.getAllSolarBrands(phaseType);
         
         for (const [brandKey, brandData] of Object.entries(solarBrands)) {
-          const matchingPackage = brandData.packages.find(pkg => {
+          const matchingPackage = brandData.packages.find((pkg: any) => {
+            // Match by ID if it's an ID format
+            if (pkg.id && solarPackage === pkg.id) {
+              return true;
+            }
+            // Otherwise match by name
             const productName = `${pkg.size_kw}kW ${brandData.brand} Solar System`;
             return solarPackage.includes(productName) || 
                    (solarPackage.includes(`${pkg.size_kw}kW`) && solarPackage.includes(brandData.brand));
@@ -782,12 +802,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
-      // Calculate battery pricing by matching product name
+      // Calculate battery pricing by matching product ID or name
       if (selectedSystems?.includes('battery') && batterySystem) {
         const batteryBrands = await pricingDataService.getAllBatteryBrands(phaseType);
         
         for (const [brandKey, brandData] of Object.entries(batteryBrands)) {
-          const matchingOption = brandData.options.find(opt => {
+          const matchingOption = brandData.options.find((opt: any) => {
+            // Match by ID if it's an ID format
+            if (opt.id && batterySystem === opt.id) {
+              return true;
+            }
+            // Otherwise match by name
             const productName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
             return batterySystem.includes(productName) ||
                    (batterySystem.includes(`${opt.capacity_kwh}kWh`) && batterySystem.includes(brandData.brand));
@@ -807,12 +832,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
-      // Calculate EV charger pricing by matching product name
+      // Calculate EV charger pricing by matching product ID or name
       if (selectedSystems?.includes('ev') && evCharger) {
         const evChargerBrands = await pricingDataService.getAllEVChargerBrands(phaseType);
         
         for (const [brandKey, brandData] of Object.entries(evChargerBrands)) {
-          const matchingOption = brandData.options.find(opt => {
+          const matchingOption = brandData.options.find((opt: any) => {
+            // Match by ID if it's an ID format
+            if (opt.id && evCharger === opt.id) {
+              return true;
+            }
+            // Otherwise match by name
             const productName = `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`;
             return evCharger.includes(productName) ||
                    (evCharger.includes(`${opt.power_kw}kW`) && evCharger.includes(brandData.brand));
