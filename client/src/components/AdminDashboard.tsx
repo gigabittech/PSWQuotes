@@ -118,14 +118,6 @@ export default function AdminDashboard() {
     });
   }, [quotes, searchQuery, statusFilter]);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64" data-testid="admin-dashboard-loading">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
   // Calculate stats with trends
   const stats = useMemo(() => {
     const today = new Date();
@@ -176,6 +168,14 @@ export default function AdminDashboard() {
       }).length
     };
   }, [quotes]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64" data-testid="admin-dashboard-loading">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   // Sidebar component for both desktop and mobile
   const SidebarContent = () => (
