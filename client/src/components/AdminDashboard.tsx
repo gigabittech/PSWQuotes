@@ -46,6 +46,8 @@ import MediaManager from "@/components/admin/MediaManager";
 import { Settings } from "@/components/admin/Settings";
 import EmbedCodeGenerator from "@/components/EmbedCodeGenerator";
 import ProductManager from "@/components/admin/ProductManager";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { User, Quote } from "@shared/schema";
 
 export default function AdminDashboard() {
@@ -81,15 +83,15 @@ export default function AdminDashboard() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-amber-100 text-amber-900 dark:bg-amber-900 dark:text-amber-100 border border-amber-200 dark:border-amber-800';
       case 'contacted':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100 border border-blue-200 dark:border-blue-800';
       case 'converted':
-        return 'bg-green-100 text-green-800';
+        return 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100 border border-emerald-200 dark:border-emerald-800';
       case 'lost':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-100 text-red-900 dark:bg-red-900 dark:text-red-100 border border-red-200 dark:border-red-800';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700';
     }
   };
 
@@ -171,8 +173,49 @@ export default function AdminDashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64" data-testid="admin-dashboard-loading">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="flex h-screen">
+          {/* Desktop Sidebar Skeleton */}
+          <div className="hidden lg:flex lg:w-64 lg:flex-col lg:bg-white lg:dark:bg-gray-800 lg:shadow-sm lg:border-r lg:border-border p-6">
+            <Skeleton className="h-8 w-48 mb-8" />
+            <div className="space-y-2">
+              {[...Array(6)].map((_, i) => (
+                <Skeleton key={i} className="h-10 w-full" />
+              ))}
+            </div>
+          </div>
+
+          {/* Main Content Skeleton */}
+          <div className="flex-1 p-8">
+            <Skeleton className="h-10 w-64 mb-2" />
+            <Skeleton className="h-6 w-96 mb-8" />
+            
+            {/* Stats Cards Skeleton */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="p-6 rounded-lg border bg-card">
+                  <Skeleton className="h-4 w-24 mb-4" />
+                  <Skeleton className="h-8 w-16 mb-2" />
+                  <Skeleton className="h-3 w-32" />
+                </div>
+              ))}
+            </div>
+
+            {/* Additional Cards Skeleton */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="p-6 rounded-lg border bg-card">
+                  <Skeleton className="h-6 w-48 mb-4" />
+                  <div className="space-y-3">
+                    {[...Array(5)].map((_, j) => (
+                      <Skeleton key={j} className="h-16 w-full" />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -348,8 +391,9 @@ export default function AdminDashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900" data-testid="admin-dashboard">
-      <div className="flex h-screen">
+    <TooltipProvider>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900" data-testid="admin-dashboard">
+        <div className="flex h-screen">
         {/* Desktop Sidebar */}
         <div className="hidden lg:flex lg:w-64 lg:flex-col lg:bg-white lg:dark:bg-gray-800 lg:shadow-sm lg:border-r lg:border-border">
           <SidebarContent />
@@ -690,7 +734,33 @@ export default function AdminDashboard() {
 
                 {/* Enhanced Quote Cards */}
                 <div className="space-y-4">
-                  {filteredQuotes.map((quote: Quote) => (
+                  {filteredQuotes.length === 0 ? (
+                    <Card className="p-12">
+                      <div className="text-center">
+                        <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
+                          <FileText className="h-12 w-12 text-muted-foreground" />
+                        </div>
+                        <h3 className="text-lg font-semibold mb-2">No Quotes Found</h3>
+                        <p className="text-muted-foreground mb-6">
+                          {searchQuery || statusFilter !== "all" 
+                            ? "Try adjusting your search or filter criteria" 
+                            : "Quote requests will appear here once customers submit the form"}
+                        </p>
+                        {(searchQuery || statusFilter !== "all") && (
+                          <Button 
+                            variant="outline" 
+                            onClick={() => {
+                              setSearchQuery("");
+                              setStatusFilter("all");
+                            }}
+                          >
+                            Clear Filters
+                          </Button>
+                        )}
+                      </div>
+                    </Card>
+                  ) : (
+                    filteredQuotes.map((quote: Quote) => (
                     <Card key={quote.id} className="shadow-lg hover:shadow-xl transition-shadow">
                       <CardContent className="p-4 sm:p-6">
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4 gap-4">
@@ -787,29 +857,7 @@ export default function AdminDashboard() {
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
-                  
-                  {filteredQuotes.length === 0 && (
-                    <Card>
-                      <CardContent className="p-12 text-center">
-                        <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground/50" />
-                        <h3 className="text-lg font-medium mb-2">No quotes found</h3>
-                        <p className="text-muted-foreground mb-4">
-                          {searchQuery || statusFilter !== "all" 
-                            ? "Try adjusting your search or filter criteria." 
-                            : "No quotes have been submitted yet."}
-                        </p>
-                        {(searchQuery || statusFilter !== "all") && (
-                          <Button 
-                            variant="outline" 
-                            onClick={() => { setSearchQuery(""); setStatusFilter("all"); }}
-                            className="gap-2"
-                          >
-                            Clear Filters
-                          </Button>
-                        )}
-                      </CardContent>
-                    </Card>
+                  ))
                   )}
                 </div>
               </div>
@@ -859,6 +907,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }
