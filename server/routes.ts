@@ -370,9 +370,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Transform solar panels into Product format
       Object.entries(solarBrands).forEach(([brandKey, brandData]) => {
-        brandData.packages.forEach((pkg, index) => {
+        brandData.packages.forEach((pkg: any, index) => {
           products.push({
-            id: `solar-${brandKey}-${pkg.size_kw}kw`,
+            id: pkg.id || `solar-${brandKey}-${pkg.size_kw}kw`,
             name: `${pkg.size_kw}kW ${brandData.brand} Solar System`,
             type: 'solar',
             category: 'residential',
@@ -395,10 +395,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Transform batteries into Product format
       Object.entries(batteryBrands).forEach(([brandKey, brandData]) => {
-        brandData.options.forEach((opt, index) => {
+        brandData.options.forEach((opt: any, index) => {
           const displayName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
           products.push({
-            id: `battery-${brandKey}-${opt.capacity_kwh}kwh`,
+            id: opt.id || `battery-${brandKey}-${opt.capacity_kwh}kwh`,
             name: displayName,
             type: 'battery',
             category: brandKey === 'tesla' ? 'premium' : 'value',
@@ -421,9 +421,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Transform EV chargers into Product format
       Object.entries(evChargerBrands).forEach(([brandKey, brandData]) => {
-        brandData.options.forEach((opt, index) => {
+        brandData.options.forEach((opt: any, index) => {
           products.push({
-            id: `ev-${brandKey}-${opt.power_kw}kw`,
+            id: opt.id || `ev-${brandKey}-${opt.power_kw}kw`,
             name: `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`,
             type: 'ev_charger',
             category: 'standard',
@@ -463,9 +463,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (type === 'solar') {
         const solarBrands = await pricingDataService.getAllSolarBrands(phaseType);
         Object.entries(solarBrands).forEach(([brandKey, brandData]) => {
-          brandData.packages.forEach((pkg, index) => {
+          brandData.packages.forEach((pkg: any, index) => {
             products.push({
-              id: `solar-${brandKey}-${pkg.size_kw}kw`,
+              id: pkg.id || `solar-${brandKey}-${pkg.size_kw}kw`,
               name: `${pkg.size_kw}kW ${brandData.brand} Solar System`,
               type: 'solar',
               category: 'residential',
@@ -487,10 +487,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else if (type === 'battery') {
         const batteryBrands = await pricingDataService.getAllBatteryBrands(phaseType);
         Object.entries(batteryBrands).forEach(([brandKey, brandData]) => {
-          brandData.options.forEach((opt, index) => {
+          brandData.options.forEach((opt: any, index) => {
             const displayName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
             products.push({
-              id: `battery-${brandKey}-${opt.capacity_kwh}kwh`,
+              id: opt.id || `battery-${brandKey}-${opt.capacity_kwh}kwh`,
               name: displayName,
               type: 'battery',
               category: brandKey === 'tesla' ? 'premium' : 'value',
@@ -512,9 +512,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else if (type === 'ev_charger') {
         const evChargerBrands = await pricingDataService.getAllEVChargerBrands(phaseType);
         Object.entries(evChargerBrands).forEach(([brandKey, brandData]) => {
-          brandData.options.forEach((opt, index) => {
+          brandData.options.forEach((opt: any, index) => {
             products.push({
-              id: `ev-${brandKey}-${opt.power_kw}kw`,
+              id: opt.id || `ev-${brandKey}-${opt.power_kw}kw`,
               name: `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`,
               type: 'ev_charger',
               category: 'standard',
