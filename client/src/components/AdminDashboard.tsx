@@ -431,9 +431,16 @@ export default function AdminDashboard() {
           <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
             {activeTab === "overview" && (
               <div className="space-y-6 sm:space-y-8">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Dashboard Overview</h1>
-                  <p className="text-sm sm:text-base text-muted-foreground">Manage your solar quote system and website content</p>
+                <div className="flex items-center justify-between border-b pb-4 mb-6">
+                  <div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                      <span>Admin</span>
+                      <span>/</span>
+                      <span className="text-foreground font-medium">Dashboard</span>
+                    </div>
+                    <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground">Dashboard Overview</h1>
+                    <p className="text-sm sm:text-base text-muted-foreground mt-1">Manage your solar quote system and website content</p>
+                  </div>
                 </div>
 
                 {/* Quick Actions */}
@@ -678,10 +685,15 @@ export default function AdminDashboard() {
             
             {activeTab === "quotes" && (
               <div className="space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
                   <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Quote Management</h1>
-                    <p className="text-sm sm:text-base text-muted-foreground">Review and manage solar system quote requests</p>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                      <span>Admin</span>
+                      <span>/</span>
+                      <span className="text-foreground font-medium">Quotes</span>
+                    </div>
+                    <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground">Quote Management</h1>
+                    <p className="text-sm sm:text-base text-muted-foreground mt-1">Review and manage solar system quote requests</p>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Button variant="outline" size="sm" className="gap-2">
@@ -733,7 +745,7 @@ export default function AdminDashboard() {
                 </Card>
 
                 {/* Enhanced Quote Cards */}
-                <div className="space-y-4">
+                <div className="space-y-4 pb-8">
                   {filteredQuotes.length === 0 ? (
                     <Card className="p-12">
                       <div className="text-center">
