@@ -430,417 +430,265 @@ export default function AdminDashboard() {
         <div className="flex-1 flex flex-col lg:overflow-hidden">
           <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
             {activeTab === "overview" && (
-              <div className="space-y-6 sm:space-y-8">
-                <div className="flex items-center justify-between border-b pb-4 mb-6">
-                  <div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                      <span>Admin</span>
-                      <span>/</span>
-                      <span className="text-foreground font-medium">Dashboard</span>
-                    </div>
-                    <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground">Dashboard Overview</h1>
-                    <p className="text-sm sm:text-base text-muted-foreground mt-1">Manage your solar quote system and website content</p>
-                  </div>
+              <div className="max-w-7xl">
+                {/* Header */}
+                <div className="mb-8">
+                  <h1 className="text-3xl font-outfit font-bold text-foreground mb-2">Dashboard</h1>
+                  <p className="text-muted-foreground">Welcome back! Here's what's happening with your solar quotes today.</p>
                 </div>
 
-                {/* Quick Actions */}
-                <div className="flex flex-wrap gap-3 mb-6">
-                  <Button onClick={() => handleTabChange("quotes")} className="gap-2" data-testid="quick-action-quotes">
-                    <FileText className="h-4 w-4" />
-                    View All Quotes
-                  </Button>
-                  <Button variant="outline" onClick={() => handleTabChange("analytics")} className="gap-2">
-                    <BarChart3 className="h-4 w-4" />
-                    Analytics
-                  </Button>
-                  <Button variant="outline" onClick={() => handleTabChange("theme")} className="gap-2">
-                    <Palette className="h-4 w-4" />
-                    Customize Theme
-                  </Button>
-                </div>
-
-                {/* Enhanced Stats Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                  <Card className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950 dark:to-indigo-900 border-0 shadow-lg">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium text-blue-700 dark:text-blue-300">Total Quotes</CardTitle>
-                      <div className="p-2 bg-blue-200 dark:bg-blue-800 rounded-lg">
-                        <FileText className="h-4 w-4 text-blue-700 dark:text-blue-300" />
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl sm:text-3xl font-bold text-blue-900 dark:text-blue-100 mb-1" data-testid="total-quotes">
-                        {stats.total}
-                      </div>
-                      <div className="flex items-center text-xs text-blue-600 dark:text-blue-400">
-                        {stats.quoteTrend >= 0 ? (
-                          <ArrowUpRight className="h-3 w-3 mr-1" />
-                        ) : (
-                          <ArrowDownRight className="h-3 w-3 mr-1" />
-                        )}
-                        <span>{Math.abs(stats.quoteTrend).toFixed(1)}% vs last month</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="relative overflow-hidden bg-gradient-to-br from-amber-50 to-orange-100 dark:from-amber-950 dark:to-orange-900 border-0 shadow-lg">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium text-amber-700 dark:text-amber-300">Pending</CardTitle>
-                      <div className="p-2 bg-amber-200 dark:bg-amber-800 rounded-lg">
-                        <Clock className="h-4 w-4 text-amber-700 dark:text-amber-300" />
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl sm:text-3xl font-bold text-amber-900 dark:text-amber-100 mb-1" data-testid="pending-quotes">
-                        {stats.pending}
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-amber-600 dark:text-amber-400">Needs attention</span>
-                        <Progress value={stats.total ? (stats.pending / stats.total) * 100 : 0} className="w-16 h-2" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="relative overflow-hidden bg-gradient-to-br from-emerald-50 to-green-100 dark:from-emerald-950 dark:to-green-900 border-0 shadow-lg">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium text-emerald-700 dark:text-emerald-300">Converted</CardTitle>
-                      <div className="p-2 bg-emerald-200 dark:bg-emerald-800 rounded-lg">
-                        <CheckCircle className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl sm:text-3xl font-bold text-emerald-900 dark:text-emerald-100 mb-1" data-testid="converted-quotes">
-                        {stats.converted}
-                      </div>
-                      <div className="text-xs text-emerald-600 dark:text-emerald-400">
-                        {stats.conversionRate.toFixed(1)}% conversion rate
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="relative overflow-hidden bg-gradient-to-br from-purple-50 to-violet-100 dark:from-purple-950 dark:to-violet-900 border-0 shadow-lg">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium text-purple-700 dark:text-purple-300">Total Value</CardTitle>
-                      <div className="p-2 bg-purple-200 dark:bg-purple-800 rounded-lg">
-                        <DollarSign className="h-4 w-4 text-purple-700 dark:text-purple-300" />
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-lg sm:text-2xl font-bold text-purple-900 dark:text-purple-100 mb-1" data-testid="total-value">
-                        {formatPrice(stats.totalValue)}
-                      </div>
-                      <div className="flex items-center text-xs text-purple-600 dark:text-purple-400">
-                        {stats.valueTrend >= 0 ? (
-                          <TrendingUp className="h-3 w-3 mr-1" />
-                        ) : (
-                          <TrendingDown className="h-3 w-3 mr-1" />
-                        )}
-                        <span>{Math.abs(stats.valueTrend).toFixed(1)}% vs last month</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Additional Stats Row */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                  <Card className="border-l-4 border-l-blue-500">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Today's Quotes</p>
-                          <p className="text-2xl font-bold">{stats.todayQuotes}</p>
+                {/* Today's Activity Strip */}
+                {stats.todayQuotes > 0 && (
+                  <Card className="mb-6 border-l-4 border-l-primary bg-primary/5">
+                    <CardContent className="py-4">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-5 w-5 text-primary" />
+                          <span className="font-medium">Today</span>
                         </div>
-                        <Calendar className="h-8 w-8 text-blue-500" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="border-l-4 border-l-green-500">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Avg Quote Value</p>
-                          <p className="text-2xl font-bold">{formatPrice(stats.avgQuoteValue)}</p>
-                        </div>
-                        <DollarSign className="h-8 w-8 text-green-500" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="border-l-4 border-l-amber-500">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">This Month</p>
-                          <p className="text-2xl font-bold">{stats.recentQuotes}</p>
-                        </div>
-                        <Activity className="h-8 w-8 text-amber-500" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Recent Activity */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <Card className="shadow-lg">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
-                          <Activity className="h-5 w-5" />
-                          Recent Quotes
-                        </CardTitle>
-                        <Button variant="ghost" size="sm" onClick={() => handleTabChange("quotes")}>
-                          View All
+                        <span className="text-muted-foreground">•</span>
+                        <span className="font-semibold text-lg">{stats.todayQuotes}</span>
+                        <span className="text-muted-foreground">new {stats.todayQuotes === 1 ? 'quote' : 'quotes'}</span>
+                        <Button variant="link" size="sm" className="ml-auto" onClick={() => handleTabChange("quotes")}>
+                          Review →
                         </Button>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        {[...quotes].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5).map((quote: Quote) => (
-                          <div key={quote.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
-                            <div className="flex-1 min-w-0">
-                              <p className="font-medium text-foreground text-sm truncate">{quote.firstName} {quote.lastName}</p>
-                              <p className="text-xs text-muted-foreground truncate">{quote.email}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {new Date(quote.createdAt).toLocaleDateString()}
-                              </p>
-                            </div>
-                            <div className="text-right ml-4">
-                              <p className="font-medium text-sm">{formatPrice(parseFloat(quote.finalPrice.toString()))}</p>
-                              <Badge variant="secondary" className={`text-xs ${getStatusColor(quote.status)}`}>
-                                {quote.status}
-                              </Badge>
-                            </div>
-                          </div>
-                        ))}
-                        {quotes.length === 0 && (
-                          <div className="text-center py-8 text-muted-foreground">
-                            <FileText className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                            <p>No quotes yet</p>
-                          </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Main Stats - Clean 2x2 Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="p-2 bg-muted rounded-lg">
+                          <FileText className="h-5 w-5 text-muted-foreground" />
+                        </div>
+                        {stats.quoteTrend !== 0 && (
+                          <Badge variant="secondary" className="text-xs">
+                            {stats.quoteTrend >= 0 ? '+' : ''}{stats.quoteTrend.toFixed(1)}%
+                          </Badge>
                         )}
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Total Quotes</p>
+                        <p className="text-3xl font-bold" data-testid="total-quotes">{stats.total}</p>
                       </div>
                     </CardContent>
                   </Card>
 
-                  {/* Status Distribution */}
-                  <Card className="shadow-lg">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
-                        <BarChart3 className="h-5 w-5" />
-                        Quote Status Distribution
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                              <span className="text-sm">Pending</span>
-                            </div>
-                            <span className="text-sm font-medium">{stats.pending}</span>
-                          </div>
-                          <Progress value={(stats.pending / (stats.total || 1)) * 100} className="h-2" />
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                          <Clock className="h-5 w-5 text-amber-600 dark:text-amber-500" />
                         </div>
-                        
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                              <span className="text-sm">Contacted</span>
-                            </div>
-                            <span className="text-sm font-medium">{stats.contacted}</span>
-                          </div>
-                          <Progress value={(stats.contacted / (stats.total || 1)) * 100} className="h-2" />
+                        {stats.pending > 0 && (
+                          <Badge variant="secondary" className="bg-amber-100 text-amber-900 dark:bg-amber-900 dark:text-amber-100">
+                            Action needed
+                          </Badge>
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Pending</p>
+                        <p className="text-3xl font-bold" data-testid="pending-quotes">{stats.pending}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                          <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-500" />
                         </div>
-                        
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                              <span className="text-sm">Converted</span>
-                            </div>
-                            <span className="text-sm font-medium">{stats.converted}</span>
-                          </div>
-                          <Progress value={(stats.converted / (stats.total || 1)) * 100} className="h-2" />
+                        {stats.conversionRate > 0 && (
+                          <Badge variant="secondary">
+                            {stats.conversionRate.toFixed(1)}%
+                          </Badge>
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Converted</p>
+                        <p className="text-3xl font-bold" data-testid="converted-quotes">{stats.converted}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="p-2 bg-muted rounded-lg">
+                          <DollarSign className="h-5 w-5 text-muted-foreground" />
                         </div>
-                        
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                              <span className="text-sm">Lost</span>
-                            </div>
-                            <span className="text-sm font-medium">{stats.lost}</span>
-                          </div>
-                          <Progress value={(stats.lost / (stats.total || 1)) * 100} className="h-2" />
-                        </div>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Total Value</p>
+                        <p className="text-2xl font-bold" data-testid="total-value">{formatPrice(stats.totalValue)}</p>
                       </div>
                     </CardContent>
                   </Card>
                 </div>
+
+                {/* Insights Panel */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {[...quotes].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5).map((quote: Quote) => (
+                        <div key={quote.id} className="flex items-center justify-between py-3 border-b last:border-0">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-sm truncate">{quote.firstName} {quote.lastName}</p>
+                            <p className="text-xs text-muted-foreground">{new Date(quote.createdAt).toLocaleDateString()} • {quote.email}</p>
+                          </div>
+                          <div className="flex items-center gap-3 ml-4">
+                            <p className="font-semibold text-sm whitespace-nowrap">{formatPrice(parseFloat(quote.finalPrice.toString()))}</p>
+                            <Badge variant="outline" className={`text-xs whitespace-nowrap ${getStatusColor(quote.status)}`}>
+                              {quote.status}
+                            </Badge>
+                          </div>
+                        </div>
+                      ))}
+                      {quotes.length === 0 && (
+                        <div className="text-center py-12 text-muted-foreground">
+                          <FileText className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                          <p className="text-sm">No quotes yet. They'll appear here once customers submit requests.</p>
+                        </div>
+                      )}
+                      {quotes.length > 0 && (
+                        <Button variant="outline" className="w-full mt-4" onClick={() => handleTabChange("quotes")}>
+                          View All Quotes
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             )}
             
             {activeTab === "quotes" && (
-              <div className="space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
-                  <div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                      <span>Admin</span>
-                      <span>/</span>
-                      <span className="text-foreground font-medium">Quotes</span>
-                    </div>
-                    <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground">Quote Management</h1>
-                    <p className="text-sm sm:text-base text-muted-foreground mt-1">Review and manage solar system quote requests</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <Download className="h-4 w-4" />
-                      Export
-                    </Button>
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <Filter className="h-4 w-4" />
-                      Filter
-                    </Button>
-                  </div>
+              <div className="max-w-7xl">
+                {/* Header */}
+                <div className="mb-6">
+                  <h1 className="text-3xl font-outfit font-bold text-foreground mb-2">Quotes</h1>
+                  <p className="text-muted-foreground">Review and manage customer quote requests</p>
                 </div>
 
-                {/* Search and Filter Controls */}
-                <Card className="p-4">
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-1 relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        placeholder="Search quotes by name, email, or phone..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-10"
-                        data-testid="search-quotes"
-                      />
-                    </div>
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger className="w-full sm:w-48">
-                        <SelectValue placeholder="Filter by status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Statuses</SelectItem>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="contacted">Contacted</SelectItem>
-                        <SelectItem value="converted">Converted</SelectItem>
-                        <SelectItem value="lost">Lost</SelectItem>
-                      </SelectContent>
-                    </Select>
+                {/* Search and Filter Toolbar */}
+                <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search by name, email, or phone..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                      data-testid="search-quotes"
+                    />
                   </div>
-                  
-                  {/* Results Summary */}
-                  <div className="mt-3 pt-3 border-t">
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-full sm:w-48">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Statuses</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="contacted">Contacted</SelectItem>
+                      <SelectItem value="converted">Converted</SelectItem>
+                      <SelectItem value="lost">Lost</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button variant="outline" className="gap-2">
+                    <Download className="h-4 w-4" />
+                    Export
+                  </Button>
+                </div>
+                
+                {/* Results Summary */}
+                {(searchQuery || statusFilter !== "all") && (
+                  <div className="mb-4 flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">
                       Showing {filteredQuotes.length} of {quotes.length} quotes
-                      {searchQuery && ` matching "${searchQuery}"`}
-                      {statusFilter !== "all" && ` with status "${statusFilter}"`}
                     </p>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => {
+                        setSearchQuery("");
+                        setStatusFilter("all");
+                      }}
+                    >
+                      Clear filters
+                    </Button>
                   </div>
-                </Card>
+                )}
 
-                {/* Enhanced Quote Cards */}
-                <div className="space-y-4 pb-8">
+                {/* Quote List */}
+                <div className="space-y-3">
                   {filteredQuotes.length === 0 ? (
                     <Card className="p-12">
                       <div className="text-center">
-                        <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
-                          <FileText className="h-12 w-12 text-muted-foreground" />
-                        </div>
+                        <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-20" />
                         <h3 className="text-lg font-semibold mb-2">No Quotes Found</h3>
-                        <p className="text-muted-foreground mb-6">
+                        <p className="text-sm text-muted-foreground">
                           {searchQuery || statusFilter !== "all" 
-                            ? "Try adjusting your search or filter criteria" 
+                            ? "No quotes match your current filters" 
                             : "Quote requests will appear here once customers submit the form"}
                         </p>
-                        {(searchQuery || statusFilter !== "all") && (
-                          <Button 
-                            variant="outline" 
-                            onClick={() => {
-                              setSearchQuery("");
-                              setStatusFilter("all");
-                            }}
-                          >
-                            Clear Filters
-                          </Button>
-                        )}
                       </div>
                     </Card>
                   ) : (
                     filteredQuotes.map((quote: Quote) => (
-                    <Card key={quote.id} className="shadow-lg hover:shadow-xl transition-shadow">
-                      <CardContent className="p-4 sm:p-6">
-                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4 gap-4">
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between mb-2">
-                              <h3 className="text-base sm:text-lg font-semibold text-foreground">{quote.firstName} {quote.lastName}</h3>
-                              <Button variant="ghost" size="sm" className="ml-2">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
+                    <Card key={quote.id} className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-6">
+                        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                          {/* Customer Info */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between mb-3">
+                              <div>
+                                <h3 className="text-lg font-semibold text-foreground mb-1">{quote.firstName} {quote.lastName}</h3>
+                                <div className="space-y-0.5 text-sm text-muted-foreground">
+                                  <p>{quote.email}</p>
+                                  <p>{quote.phone}</p>
+                                  <p>{quote.address}, {quote.suburb} {quote.state} {quote.postcode}</p>
+                                </div>
+                              </div>
                             </div>
-                            <div className="space-y-1">
-                              <p className="text-sm text-muted-foreground flex items-center gap-2">
-                                <span>📧</span> {quote.email}
-                              </p>
-                              <p className="text-sm text-muted-foreground flex items-center gap-2">
-                                <span>📱</span> {quote.phone}
-                              </p>
-                              <p className="text-sm text-muted-foreground flex items-center gap-2">
-                                <span>📍</span> {quote.address}, {quote.suburb}, {quote.state} {quote.postcode}
-                              </p>
+                            
+                            {/* Quote Details */}
+                            <div className="flex flex-wrap gap-4 text-sm">
+                              <div>
+                                <span className="text-muted-foreground">Systems:</span>
+                                <span className="ml-1 font-medium">{quote.selectedSystems?.join(', ') || 'N/A'}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Supply:</span>
+                                <span className="ml-1 font-medium">{quote.powerSupply} Phase</span>
+                              </div>
                             </div>
                           </div>
-                          <div className="text-left lg:text-right">
-                            <p className="text-xl sm:text-2xl font-bold text-primary mb-1">
+                          
+                          {/* Price & Status */}
+                          <div className="md:text-right">
+                            <p className="text-2xl font-bold mb-2">
                               {formatPrice(parseFloat(quote.finalPrice.toString()))}
                             </p>
-                            <p className="text-xs sm:text-sm text-muted-foreground mb-2">
+                            <p className="text-xs text-muted-foreground mb-3">
                               {new Date(quote.createdAt).toLocaleDateString('en-AU', {
                                 year: 'numeric',
                                 month: 'short',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
+                                day: 'numeric'
                               })}
                             </p>
-                            <div className="flex flex-col lg:items-end gap-2">
-                              <Badge className={`${getStatusColor(quote.status)} border-0`}>
-                                {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Quote Details */}
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4 p-4 bg-muted/30 rounded-lg">
-                          <div>
-                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Systems</p>
-                            <p className="text-sm font-medium">{quote.selectedSystems?.join(', ') || 'N/A'}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Power Supply</p>
-                            <p className="text-sm font-medium">{quote.powerSupply} Phase</p>
-                          </div>
-                          <div>
-                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Total Price</p>
-                            <p className="text-sm font-medium">{formatPrice(parseFloat(quote.totalPrice.toString()))}</p>
-                          </div>
-                        </div>
-                        
-                        {/* Actions */}
-                        <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t">
-                          <div className="flex items-center gap-2">
                             <Select
                               value={quote.status}
                               onValueChange={(value) => handleStatusUpdate(quote.id, value)}
                               disabled={updateStatusMutation.isPending}
                             >
-                              <SelectTrigger className="w-36 h-8">
+                              <SelectTrigger className="w-full md:w-36">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
@@ -850,21 +698,6 @@ export default function AdminDashboard() {
                                 <SelectItem value="lost">Lost</SelectItem>
                               </SelectContent>
                             </Select>
-                          </div>
-                          
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm" className="gap-2">
-                              <Eye className="h-4 w-4" />
-                              View
-                            </Button>
-                            <Button variant="outline" size="sm" className="gap-2">
-                              <Edit className="h-4 w-4" />
-                              Edit
-                            </Button>
-                            <Button variant="outline" size="sm" className="gap-2">
-                              <Download className="h-4 w-4" />
-                              PDF
-                            </Button>
                           </div>
                         </div>
                       </CardContent>

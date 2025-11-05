@@ -702,6 +702,20 @@
             "rrp": 22490
           }
         ]
+      },
+      "nayem": {
+        "brand": "Nayem",
+        "model": "Nayem wall 3",
+        "warranty_years": 12,
+        "options": [
+          {
+            "id": "battery-1ph-nayem-123kwh",
+            "capacity_kwh": 123,
+            "price_after_rebate": 9123,
+            "rrp": 12341,
+            "power_kw": 31
+          }
+        ]
       }
     },
     "ev_chargers": {
@@ -814,6 +828,20 @@
             "power_kw": 11,
             "phase": "3ph",
             "installed_price": 2090
+          }
+        ]
+      },
+      "nayem": {
+        "brand": "Nayem",
+        "model": "Nayem Wwall III",
+        "cable_type": "1",
+        "cable_length_m": 312,
+        "options": [
+          {
+            "id": "ev-1ph-nayem-312kw",
+            "power_kw": 312,
+            "phase": "1-phase",
+            "installed_price": 12312
           }
         ]
       }
