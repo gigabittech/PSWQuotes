@@ -560,6 +560,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const validatedData = insertQuoteSchema.parse(requestBody);
       
+      // Calculate pricing from the selected products using pricing-data.json
+      const phaseType: 'single_phase' | 'three_phase' = validatedData.powerSupply === '3-phase' ? 'three_phase' : 'single_phase';
+      
+      let totalPrice = 0;
+      let totalRebates = 0;
+      
+      // Find and price the solar package
+      if (validatedData.selectedSystems.includes('solar') && validatedData.solarPackage) {
+        const solarBrands = await pricingDataService.getAllSolarBrands(phaseType);
+        
+        // Try to match the product name with a package in pricing data
+        for (const [brandKey, brandData] of Object.entries(solarBrands)) {
+          const matchingPackage = brandData.packages.find(pkg => {
+            const productName = `${pkg.size_kw}kW ${brandData.brand} Solar System`;
+            return validatedData.solarPackage?.includes(productName) || 
+                   validatedData.solarPackage?.includes(`${pkg.size_kw}kW`) && 
+                   validatedData.solarPackage?.includes(brandData.brand);
+          });
+          
+          if (matchingPackage) {
+            totalPrice += matchingPackage.price_after_rebate;
+            // STC rebates are already included in price_after_rebate
+            const rebates = await pricingDataService.calculateSolarRebates(matchingPackage.size_kw);
+            totalRebates += rebates.stcRebate;
+            break;
+          }
+        }
+      }
+      
+      // Find and price the battery
+      if (validatedData.selectedSystems.includes('battery') && validatedData.batterySystem) {
+        const batteryBrands = await pricingDataService.getAllBatteryBrands(phaseType);
+        
+        for (const [brandKey, brandData] of Object.entries(batteryBrands)) {
+          const matchingOption = brandData.options.find(opt => {
+            const productName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
+            return validatedData.batterySystem?.includes(productName) ||
+                   validatedData.batterySystem?.includes(`${opt.capacity_kwh}kWh`) &&
+                   validatedData.batterySystem?.includes(brandData.brand);
+          });
+          
+          if (matchingOption) {
+            totalPrice += matchingOption.price_after_rebate;
+            // Battery rebates are already included in price_after_rebate
+            const isTesla = brandKey === 'tesla';
+            const rebates = await pricingDataService.calculateBatteryRebates(matchingOption.capacity_kwh, isTesla);
+            totalRebates += rebates.totalRebate;
+            break;
+          }
+        }
+      }
+      
+      // Find and price the EV charger
+      if (validatedData.selectedSystems.includes('ev') && validatedData.evCharger) {
+        const evChargerBrands = await pricingDataService.getAllEVChargerBrands(phaseType);
+        
+        for (const [brandKey, brandData] of Object.entries(evChargerBrands)) {
+          const matchingOption = brandData.options.find(opt => {
+            const productName = `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`;
+            return validatedData.evCharger?.includes(productName) ||
+                   validatedData.evCharger?.includes(`${opt.power_kw}kW`) &&
+                   validatedData.evCharger?.includes(brandData.brand);
+          });
+          
+          if (matchingOption) {
+            totalPrice += matchingOption.installed_price;
+            break;
+          }
+        }
+      }
+      
+      // Update validated data with calculated prices
+      validatedData.totalPrice = totalPrice.toFixed(2);
+      validatedData.rebateAmount = totalRebates.toFixed(2);
+      validatedData.finalPrice = totalPrice.toFixed(2); // Price is already after rebates
+      
       // Note: File uploads now handled via secure object storage endpoints
 
       const quote = await storage.createQuote(validatedData);
