@@ -165,7 +165,7 @@ export default function ProductManager() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-8">
               {[
                 { id: 'single_phase' as Phase, title: 'Single Phase', desc: 'Most residential properties' },
                 { id: 'three_phase' as Phase, title: 'Three Phase', desc: 'Commercial & larger properties' },
@@ -206,7 +206,7 @@ export default function ProductManager() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-8">
               {[
                 { id: 'solar' as ProductType, title: 'Solar Panels', icon: '☀️' },
                 { id: 'battery' as ProductType, title: 'Battery Storage', icon: '🔋' },
@@ -251,7 +251,7 @@ export default function ProductManager() {
 
             <div className="space-y-4 mt-8">
               {/* Common Fields */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="brand">Brand *</Label>
                   <Input
@@ -275,7 +275,7 @@ export default function ProductManager() {
               {/* Solar Specific Fields */}
               {formData.productType === 'solar' && (
                 <>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="sizeKw">System Size (kW)</Label>
                       <Input
@@ -324,7 +324,7 @@ export default function ProductManager() {
               {/* Battery Specific Fields */}
               {formData.productType === 'battery' && (
                 <>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="capacityKwh">Capacity (kWh)</Label>
                       <Input
@@ -374,7 +374,7 @@ export default function ProductManager() {
               {/* EV Charger Specific Fields */}
               {formData.productType === 'ev_charger' && (
                 <>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="powerKw">Power (kW)</Label>
                       <Input
