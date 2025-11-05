@@ -1,0 +1,793 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2025-01-05",
+  "rebates": {
+    "wa_battery_rebate": {
+      "description": "WA Residential Battery Scheme",
+      "value_per_kwh": 130,
+      "max_capacity_kwh": 10,
+      "vpp_requirement": true
+    },
+    "national_battery_rebate": {
+      "description": "National Battery Booster Program",
+      "value_per_certificate": 38
+    },
+    "stc_rebate": {
+      "description": "Small Technology Certificates",
+      "value_per_certificate": 38,
+      "zone": 3
+    }
+  },
+  "single_phase": {
+    "solar_panels": {
+      "risen": {
+        "brand": "Risen Solar",
+        "model": "N-Type 475W",
+        "technology": "N-Type TOPCon",
+        "warranty_product": 25,
+        "warranty_performance": 30,
+        "packages": [
+          {
+            "size_kw": 3.8,
+            "panels": 8,
+            "wattage": 475,
+            "price_after_rebate": 1990,
+            "requires_inverter": true
+          },
+          {
+            "size_kw": 6.6,
+            "panels": 14,
+            "wattage": 475,
+            "price_after_rebate": 2990,
+            "requires_inverter": true
+          },
+          {
+            "size_kw": 10.4,
+            "panels": 22,
+            "wattage": 475,
+            "price_after_rebate": 4490,
+            "requires_inverter": true
+          },
+          {
+            "size_kw": 13.3,
+            "panels": 28,
+            "wattage": 475,
+            "price_after_rebate": 5490,
+            "requires_inverter": true
+          }
+        ]
+      },
+      "jinko": {
+        "brand": "Jinko Solar",
+        "model": "Neo 475W",
+        "technology": "N-Type TOPCon",
+        "warranty_product": 25,
+        "warranty_performance": 30,
+        "packages": [
+          {
+            "size_kw": 3.8,
+            "panels": 8,
+            "wattage": 475,
+            "price_after_rebate": 2190,
+            "requires_inverter": true
+          },
+          {
+            "size_kw": 6.6,
+            "panels": 14,
+            "wattage": 475,
+            "price_after_rebate": 3290,
+            "requires_inverter": true
+          },
+          {
+            "size_kw": 10.4,
+            "panels": 22,
+            "wattage": 475,
+            "price_after_rebate": 4990,
+            "requires_inverter": true
+          },
+          {
+            "size_kw": 13.3,
+            "panels": 28,
+            "wattage": 475,
+            "price_after_rebate": 6290,
+            "requires_inverter": true
+          }
+        ]
+      },
+      "aiko": {
+        "brand": "AIKO Solar",
+        "model": "Neostar 3S 475W",
+        "technology": "All Back Contact",
+        "warranty_product": 30,
+        "warranty_performance": 30,
+        "packages": [
+          {
+            "size_kw": 3.8,
+            "panels": 8,
+            "wattage": 475,
+            "price_after_rebate": 2390,
+            "requires_inverter": true
+          },
+          {
+            "size_kw": 6.6,
+            "panels": 14,
+            "wattage": 475,
+            "price_after_rebate": 3590,
+            "requires_inverter": true
+          },
+          {
+            "size_kw": 10.4,
+            "panels": 22,
+            "wattage": 475,
+            "price_after_rebate": 5490,
+            "requires_inverter": true
+          },
+          {
+            "size_kw": 13.3,
+            "panels": 28,
+            "wattage": 475,
+            "price_after_rebate": 6990,
+            "requires_inverter": true
+          }
+        ]
+      }
+    },
+    "hybrid_inverters": {
+      "sungrow": {
+        "brand": "Sungrow",
+        "model_series": "SH-RS",
+        "warranty_years": 10,
+        "models": [
+          {
+            "model": "SH5.0RS",
+            "power_kw": 5,
+            "phase": "1ph",
+            "price_package": 3290,
+            "price_single": 3790,
+            "includes_power_sensor": true
+          },
+          {
+            "model": "SH8.0RS",
+            "power_kw": 8,
+            "phase": "1ph",
+            "price_package": 4290,
+            "price_single": 4790,
+            "includes_power_sensor": true
+          },
+          {
+            "model": "SH10.0RS",
+            "power_kw": 10,
+            "phase": "1ph",
+            "price_package": 4790,
+            "price_single": 5290,
+            "includes_power_sensor": true
+          }
+        ]
+      },
+      "goodwe": {
+        "brand": "Goodwe",
+        "model_series": "N-EH/EHB",
+        "warranty_years": 10,
+        "activation_fee": 715,
+        "models": [
+          {
+            "model": "N-EH 5kW",
+            "power_kw": 5,
+            "phase": "1ph",
+            "price_package": 1790,
+            "price_single": 2290,
+            "includes_power_sensor": true,
+            "battery_activated": false
+          },
+          {
+            "model": "EHB 8kW",
+            "power_kw": 8,
+            "phase": "1ph",
+            "price_package": 3490,
+            "price_single": 3990,
+            "includes_power_sensor": true,
+            "battery_activated": true
+          },
+          {
+            "model": "EHB 10kW",
+            "power_kw": 10,
+            "phase": "1ph",
+            "price_package": 3690,
+            "price_single": 4190,
+            "includes_power_sensor": true,
+            "battery_activated": true
+          }
+        ]
+      },
+      "growatt": {
+        "brand": "Growatt",
+        "model_series": "MIN XH",
+        "warranty_years": 10,
+        "models": [
+          {
+            "model": "MIN XH 5kW",
+            "power_kw": 5,
+            "phase": "1ph",
+            "price_package": 1690,
+            "price_single": 2190,
+            "includes_power_sensor": true
+          }
+        ]
+      },
+      "istore": {
+        "brand": "iStore",
+        "model_series": "IS-HYB",
+        "warranty_years": 10,
+        "models": [
+          {
+            "model": "IS-HYB 5kW",
+            "power_kw": 5,
+            "phase": "1ph",
+            "price_package": 2290,
+            "price_single": 2790,
+            "includes_power_sensor": true
+          },
+          {
+            "model": "IS-HYB 10kW",
+            "power_kw": 10,
+            "phase": "1ph",
+            "price_package": 3490,
+            "price_single": 3990,
+            "includes_power_sensor": true
+          }
+        ]
+      },
+      "fronius": {
+        "brand": "Fronius",
+        "model_series": "Primo GEN24",
+        "warranty_years": 10,
+        "activation_fee": 990,
+        "models": [
+          {
+            "model": "Primo GEN24 5kW",
+            "power_kw": 5,
+            "phase": "1ph",
+            "price_package": 2990,
+            "price_single": 3490,
+            "includes_power_sensor": true,
+            "battery_activated": false
+          },
+          {
+            "model": "Primo GEN24 8kW",
+            "power_kw": 8,
+            "phase": "1ph",
+            "price_package": 3990,
+            "price_single": 4490,
+            "includes_power_sensor": true,
+            "battery_activated": false
+          },
+          {
+            "model": "Primo GEN24 10kW",
+            "power_kw": 10,
+            "phase": "1ph",
+            "price_package": 4590,
+            "price_single": 5090,
+            "includes_power_sensor": true,
+            "battery_activated": false
+          }
+        ]
+      },
+      "sigenergy": {
+        "brand": "Sigenergy",
+        "model_series": "Energy Controller",
+        "warranty_years": 10,
+        "models": [
+          {
+            "model": "Energy Controller 5kW",
+            "power_kw": 5,
+            "phase": "1ph",
+            "price_package": 2990,
+            "price_single": 3490,
+            "includes_power_sensor": true
+          },
+          {
+            "model": "Energy Controller 8kW",
+            "power_kw": 8,
+            "phase": "1ph",
+            "price_package": 4690,
+            "price_single": 5190,
+            "includes_power_sensor": true
+          },
+          {
+            "model": "Energy Controller 10kW",
+            "power_kw": 10,
+            "phase": "1ph",
+            "price_package": 4990,
+            "price_single": 5490,
+            "includes_power_sensor": true
+          }
+        ]
+      }
+    },
+    "batteries": {
+      "tesla": {
+        "brand": "Tesla",
+        "model": "Powerwall 3",
+        "warranty_years": 10,
+        "options": [
+          {
+            "model": "Powerwall 3 5kW Retrofit",
+            "capacity_kwh": 13.5,
+            "power_kw": 5,
+            "price_after_rebate": 10990,
+            "rrp": 15490,
+            "includes_gateway": true,
+            "type": "retrofit"
+          },
+          {
+            "model": "Powerwall 3 10kW Retrofit",
+            "capacity_kwh": 13.5,
+            "power_kw": 10,
+            "price_after_rebate": 11490,
+            "rrp": 15990,
+            "includes_gateway": true,
+            "type": "retrofit"
+          },
+          {
+            "model": "Powerwall 3 Expansion",
+            "capacity_kwh": 13.5,
+            "price_after_rebate": 7490,
+            "rrp": 12499,
+            "includes_gateway": false,
+            "type": "expansion"
+          }
+        ]
+      },
+      "alpha_ess": {
+        "brand": "Alpha ESS",
+        "model": "SMILE M5",
+        "warranty_years": 10,
+        "phase": "1ph",
+        "max_power_kw": 5,
+        "options": [
+          {
+            "capacity_kwh": 5,
+            "price_after_rebate": 4490,
+            "rrp": 6790,
+            "stacks": 1
+          },
+          {
+            "capacity_kwh": 10,
+            "price_after_rebate": 4790,
+            "rrp": 9290,
+            "stacks": 1
+          },
+          {
+            "capacity_kwh": 15,
+            "price_after_rebate": 5490,
+            "rrp": 11790,
+            "stacks": 1
+          },
+          {
+            "capacity_kwh": 20,
+            "price_after_rebate": 6790,
+            "rrp": 14790,
+            "stacks": 2
+          },
+          {
+            "capacity_kwh": 25,
+            "price_after_rebate": 7490,
+            "rrp": 17290,
+            "stacks": 2
+          }
+        ]
+      },
+      "sigenergy_battery": {
+        "brand": "Sigenergy",
+        "model": "SigenStor DC Battery",
+        "warranty_years": 10,
+        "requires_controller": true,
+        "options": [
+          {
+            "capacity_kwh": 7.8,
+            "price_after_rebate": 2490,
+            "rrp": 5990
+          },
+          {
+            "capacity_kwh": 15.6,
+            "price_after_rebate": 5290,
+            "rrp": 11790
+          },
+          {
+            "capacity_kwh": 23.4,
+            "price_after_rebate": 8490,
+            "rrp": 17590
+          },
+          {
+            "capacity_kwh": 31.2,
+            "price_after_rebate": 11790,
+            "rrp": 23390
+          },
+          {
+            "capacity_kwh": 39,
+            "price_after_rebate": 14990,
+            "rrp": 29190
+          }
+        ],
+        "gateway": {
+          "model": "Gateway/Blackout Protection SP",
+          "phase": "1ph",
+          "price_package": 1890,
+          "price_single": 2490
+        }
+      },
+      "goodwe_battery": {
+        "brand": "Goodwe",
+        "model": "Lynx F G2",
+        "warranty_years": 10,
+        "requires_hybrid": "Goodwe",
+        "options": [
+          {
+            "capacity_kwh": 9.6,
+            "price_after_rebate": 3390,
+            "rrp": 7990
+          },
+          {
+            "capacity_kwh": 12.8,
+            "price_after_rebate": 4190,
+            "rrp": 9990
+          },
+          {
+            "capacity_kwh": 16,
+            "price_after_rebate": 4890,
+            "rrp": 11990
+          },
+          {
+            "capacity_kwh": 19.2,
+            "price_after_rebate": 5790,
+            "rrp": 13990
+          },
+          {
+            "capacity_kwh": 22.4,
+            "price_after_rebate": 6690,
+            "rrp": 15990
+          },
+          {
+            "capacity_kwh": 25.6,
+            "price_after_rebate": 7490,
+            "rrp": 17990
+          }
+        ]
+      },
+      "growatt_battery": {
+        "brand": "Growatt",
+        "model": "APX HV",
+        "warranty_years": 10,
+        "requires_hybrid": "Growatt",
+        "options": [
+          {
+            "capacity_kwh": 9,
+            "price_after_rebate": 3790,
+            "rrp": 8990,
+            "stacks": 1
+          },
+          {
+            "capacity_kwh": 13.5,
+            "price_after_rebate": 5290,
+            "rrp": 11990,
+            "stacks": 1
+          },
+          {
+            "capacity_kwh": 18,
+            "price_after_rebate": 6490,
+            "rrp": 14990,
+            "stacks": 1
+          },
+          {
+            "capacity_kwh": 22.5,
+            "price_after_rebate": 7990,
+            "rrp": 18290,
+            "stacks": 2
+          },
+          {
+            "capacity_kwh": 27,
+            "price_after_rebate": 9190,
+            "rrp": 21290,
+            "stacks": 2
+          }
+        ]
+      },
+      "istore_battery": {
+        "brand": "iStore",
+        "model": "IS-BATT",
+        "warranty_years": 10,
+        "requires_hybrid": "iStore",
+        "options": [
+          {
+            "capacity_kwh": 5,
+            "price_after_rebate": 3990,
+            "rrp": 7990
+          },
+          {
+            "capacity_kwh": 10,
+            "price_after_rebate": 5990,
+            "rrp": 12490
+          },
+          {
+            "capacity_kwh": 15,
+            "price_after_rebate": 8490,
+            "rrp": 16990
+          }
+        ]
+      },
+      "fronius_battery": {
+        "brand": "BYD/Fronius",
+        "model": "BYD Reserva",
+        "warranty_years": 10,
+        "requires_hybrid": "Fronius GEN24",
+        "options": [
+          {
+            "capacity_kwh": 9.4,
+            "price_after_rebate": 5490,
+            "rrp": 9990,
+            "towers": 1
+          },
+          {
+            "capacity_kwh": 18.8,
+            "price_after_rebate": 11490,
+            "rrp": 19980,
+            "towers": 2
+          }
+        ]
+      },
+      "byd_hvm": {
+        "brand": "BYD",
+        "model": "Battery Box HVM",
+        "warranty_years": 10,
+        "options": [
+          {
+            "capacity_kwh": 11.0,
+            "price_after_rebate": 6490,
+            "rrp": 11490,
+            "includes_sensor": false
+          },
+          {
+            "capacity_kwh": 13.8,
+            "price_after_rebate": 7990,
+            "rrp": 14190,
+            "includes_sensor": false
+          },
+          {
+            "capacity_kwh": 16.6,
+            "price_after_rebate": 9490,
+            "rrp": 16890,
+            "includes_sensor": false
+          },
+          {
+            "capacity_kwh": 19.3,
+            "price_after_rebate": 10990,
+            "rrp": 19590,
+            "includes_sensor": false
+          },
+          {
+            "capacity_kwh": 22.1,
+            "price_after_rebate": 12490,
+            "rrp": 22290,
+            "includes_sensor": false
+          }
+        ]
+      },
+      "sungrow_battery": {
+        "brand": "Sungrow",
+        "model": "SBR HV",
+        "warranty_years": 10,
+        "cell_type": "Samsung",
+        "requires_hybrid": "Sungrow",
+        "options": [
+          {
+            "capacity_kwh": 9.6,
+            "price_after_rebate": 5990,
+            "rrp": 10990
+          },
+          {
+            "capacity_kwh": 12.8,
+            "price_after_rebate": 7190,
+            "rrp": 12490
+          },
+          {
+            "capacity_kwh": 16,
+            "price_after_rebate": 8490,
+            "rrp": 14990
+          },
+          {
+            "capacity_kwh": 19.2,
+            "price_after_rebate": 9990,
+            "rrp": 17490
+          },
+          {
+            "capacity_kwh": 22.4,
+            "price_after_rebate": 11490,
+            "rrp": 19990
+          },
+          {
+            "capacity_kwh": 25.6,
+            "price_after_rebate": 12990,
+            "rrp": 22490
+          }
+        ]
+      }
+    },
+    "ev_chargers": {
+      "fronius": {
+        "brand": "Fronius",
+        "model": "Wattpilot 22J",
+        "cable_type": "untethered",
+        "options": [
+          {
+            "power_kw": 7,
+            "phase": "1ph",
+            "installed_price": 2890
+          },
+          {
+            "power_kw": 22,
+            "phase": "3ph",
+            "installed_price": 3190
+          }
+        ]
+      },
+      "goodwe": {
+        "brand": "Goodwe",
+        "model": "HCA",
+        "cable_length_m": 6,
+        "cable_type": "tethered",
+        "options": [
+          {
+            "power_kw": 7,
+            "phase": "1ph",
+            "installed_price": 1990
+          },
+          {
+            "power_kw": 11,
+            "phase": "3ph",
+            "installed_price": 2390
+          },
+          {
+            "power_kw": 22,
+            "phase": "3ph",
+            "installed_price": 2490
+          }
+        ]
+      },
+      "sigenergy_ac": {
+        "brand": "Sigenergy",
+        "model": "Sigen AC",
+        "cable_length_m": 5,
+        "cable_type": "tethered",
+        "options": [
+          {
+            "power_kw": 7,
+            "phase": "1ph",
+            "installed_price": 2490
+          },
+          {
+            "power_kw": 11,
+            "phase": "3ph",
+            "installed_price": 2790
+          },
+          {
+            "power_kw": 22,
+            "phase": "3ph",
+            "installed_price": 2990
+          }
+        ]
+      },
+      "sigenergy_dc": {
+        "brand": "Sigenergy",
+        "model": "Sigen DC",
+        "cable_length_m": 7,
+        "cable_type": "tethered",
+        "connector_type": "CCS2",
+        "options": [
+          {
+            "power_kw": 12.5,
+            "phase": "DC",
+            "installed_price": 4990
+          },
+          {
+            "power_kw": 25,
+            "phase": "DC",
+            "installed_price": 5990
+          }
+        ]
+      },
+      "tesla": {
+        "brand": "Tesla",
+        "model": "Wall Connector",
+        "cable_length_m": 7.3,
+        "cable_type": "tethered",
+        "options": [
+          {
+            "power_kw": 7,
+            "phase": "1ph",
+            "installed_price": 1790
+          },
+          {
+            "power_kw": 11,
+            "phase": "3ph",
+            "installed_price": 2090
+          }
+        ]
+      }
+    }
+  },
+  "three_phase": {
+    "solar_panels": {},
+    "hybrid_inverters": {},
+    "batteries": {},
+    "ev_chargers": {
+      "fronius": {
+        "brand": "Fronius",
+        "model": "Wattpilot 22J",
+        "cable_type": "untethered",
+        "options": [
+          {
+            "power_kw": 22,
+            "phase": "3ph",
+            "installed_price": 3190
+          }
+        ]
+      },
+      "goodwe": {
+        "brand": "Goodwe",
+        "model": "HCA",
+        "cable_length_m": 6,
+        "cable_type": "tethered",
+        "options": [
+          {
+            "power_kw": 11,
+            "phase": "3ph",
+            "installed_price": 2390
+          },
+          {
+            "power_kw": 22,
+            "phase": "3ph",
+            "installed_price": 2490
+          }
+        ]
+      },
+      "sigenergy_ac": {
+        "brand": "Sigenergy",
+        "model": "Sigen AC",
+        "cable_length_m": 5,
+        "cable_type": "tethered",
+        "options": [
+          {
+            "power_kw": 11,
+            "phase": "3ph",
+            "installed_price": 2790
+          },
+          {
+            "power_kw": 22,
+            "phase": "3ph",
+            "installed_price": 2990
+          }
+        ]
+      },
+      "tesla": {
+        "brand": "Tesla",
+        "model": "Wall Connector",
+        "cable_length_m": 7.3,
+        "cable_type": "tethered",
+        "options": [
+          {
+            "power_kw": 11,
+            "phase": "3ph",
+            "installed_price": 2090
+          }
+        ]
+      }
+    }
+  },
+  "notes": {
+    "base_installation": "Prices include base installation for single-level, single-roof dwellings",
+    "rebates_included": "Advertised prices are after applicable WA and National Battery rebates",
+    "additional_costs": "Additional installation costs may apply for complex installations",
+    "location": "Western Australia only",
+    "blackout_protection": "Blackout protection typically not included in advertised prices - inquire for pricing"
+  }
+}
