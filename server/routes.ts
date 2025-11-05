@@ -357,7 +357,93 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all products
   app.get("/api/products", async (req, res) => {
     try {
-      const products = await storage.getProducts();
+      const { powerSupply = 'single-phase' } = req.query;
+      const phaseType: 'single_phase' | 'three_phase' = powerSupply === '3-phase' ? 'three_phase' : 'single_phase';
+      
+      const [solarBrands, batteryBrands, evChargerBrands] = await Promise.all([
+        pricingDataService.getAllSolarBrands(phaseType),
+        pricingDataService.getAllBatteryBrands(phaseType),
+        pricingDataService.getAllEVChargerBrands(phaseType)
+      ]);
+
+      const products: any[] = [];
+
+      // Transform solar panels into Product format
+      Object.entries(solarBrands).forEach(([brandKey, brandData]) => {
+        brandData.packages.forEach((pkg, index) => {
+          products.push({
+            id: `solar-${brandKey}-${pkg.size_kw}kw`,
+            name: `${pkg.size_kw}kW ${brandData.brand} Solar System`,
+            type: 'solar',
+            category: 'residential',
+            capacity: `${pkg.size_kw}kW`,
+            price: pkg.price_after_rebate.toString(),
+            rebateEligible: true,
+            rebateAmount: '0',
+            specifications: {
+              panels: `${pkg.panels} × ${pkg.wattage}W ${brandData.brand} ${brandData.model}`,
+              technology: brandData.technology,
+              warranty: `${brandData.warranty_product} years product, ${brandData.warranty_performance} years performance`,
+              generation: `~${Math.round(pkg.size_kw * 1500)} kWh annually`,
+            },
+            warranty: `${brandData.warranty_product} years`,
+            popular: index === 1, // Mark second option (typically 6.6kW) as popular
+            active: true,
+          });
+        });
+      });
+
+      // Transform batteries into Product format
+      Object.entries(batteryBrands).forEach(([brandKey, brandData]) => {
+        brandData.options.forEach((opt, index) => {
+          const displayName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
+          products.push({
+            id: `battery-${brandKey}-${opt.capacity_kwh}kwh`,
+            name: displayName,
+            type: 'battery',
+            category: brandKey === 'tesla' ? 'premium' : 'value',
+            capacity: `${opt.capacity_kwh}kWh`,
+            price: opt.price_after_rebate.toString(),
+            rebateEligible: brandKey !== 'tesla',
+            rebateAmount: '0',
+            specifications: {
+              capacity: `${opt.capacity_kwh}kWh usable`,
+              power: opt.power_kw ? `${opt.power_kw}kW continuous` : 'Varies',
+              warranty: `${brandData.warranty_years} years`,
+              cellType: brandData.cell_type || 'N/A',
+            },
+            warranty: `${brandData.warranty_years} years`,
+            popular: index === 0, // Mark first option as popular
+            active: true,
+          });
+        });
+      });
+
+      // Transform EV chargers into Product format
+      Object.entries(evChargerBrands).forEach(([brandKey, brandData]) => {
+        brandData.options.forEach((opt, index) => {
+          products.push({
+            id: `ev-${brandKey}-${opt.power_kw}kw`,
+            name: `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`,
+            type: 'ev_charger',
+            category: 'standard',
+            capacity: `${opt.power_kw}kW`,
+            price: opt.installed_price.toString(),
+            rebateEligible: false,
+            rebateAmount: '0',
+            specifications: {
+              power: `${opt.power_kw}kW`,
+              phase: opt.phase,
+              cableType: brandData.cable_type,
+              cableLength: brandData.cable_length_m ? `${brandData.cable_length_m}m` : 'N/A',
+            },
+            warranty: '2 years',
+            popular: index === 0,
+            active: true,
+          });
+        });
+      });
+
       res.json(products);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -369,7 +455,86 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/products/:type", async (req, res) => {
     try {
       const { type } = req.params;
-      const products = await storage.getProductsByType(type);
+      const { powerSupply = 'single-phase' } = req.query;
+      const phaseType: 'single_phase' | 'three_phase' = powerSupply === '3-phase' ? 'three_phase' : 'single_phase';
+      
+      let products: any[] = [];
+
+      if (type === 'solar') {
+        const solarBrands = await pricingDataService.getAllSolarBrands(phaseType);
+        Object.entries(solarBrands).forEach(([brandKey, brandData]) => {
+          brandData.packages.forEach((pkg, index) => {
+            products.push({
+              id: `solar-${brandKey}-${pkg.size_kw}kw`,
+              name: `${pkg.size_kw}kW ${brandData.brand} Solar System`,
+              type: 'solar',
+              category: 'residential',
+              capacity: `${pkg.size_kw}kW`,
+              price: pkg.price_after_rebate.toString(),
+              rebateEligible: true,
+              specifications: {
+                panels: `${pkg.panels} × ${pkg.wattage}W ${brandData.brand} ${brandData.model}`,
+                technology: brandData.technology,
+                warranty: `${brandData.warranty_product} years product, ${brandData.warranty_performance} years performance`,
+                generation: `~${Math.round(pkg.size_kw * 1500)} kWh annually`,
+              },
+              warranty: `${brandData.warranty_product} years`,
+              popular: index === 1,
+              active: true,
+            });
+          });
+        });
+      } else if (type === 'battery') {
+        const batteryBrands = await pricingDataService.getAllBatteryBrands(phaseType);
+        Object.entries(batteryBrands).forEach(([brandKey, brandData]) => {
+          brandData.options.forEach((opt, index) => {
+            const displayName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
+            products.push({
+              id: `battery-${brandKey}-${opt.capacity_kwh}kwh`,
+              name: displayName,
+              type: 'battery',
+              category: brandKey === 'tesla' ? 'premium' : 'value',
+              capacity: `${opt.capacity_kwh}kWh`,
+              price: opt.price_after_rebate.toString(),
+              rebateEligible: brandKey !== 'tesla',
+              specifications: {
+                capacity: `${opt.capacity_kwh}kWh usable`,
+                power: opt.power_kw ? `${opt.power_kw}kW continuous` : 'Varies',
+                warranty: `${brandData.warranty_years} years`,
+                cellType: brandData.cell_type || 'N/A',
+              },
+              warranty: `${brandData.warranty_years} years`,
+              popular: index === 0,
+              active: true,
+            });
+          });
+        });
+      } else if (type === 'ev_charger') {
+        const evChargerBrands = await pricingDataService.getAllEVChargerBrands(phaseType);
+        Object.entries(evChargerBrands).forEach(([brandKey, brandData]) => {
+          brandData.options.forEach((opt, index) => {
+            products.push({
+              id: `ev-${brandKey}-${opt.power_kw}kw`,
+              name: `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`,
+              type: 'ev_charger',
+              category: 'standard',
+              capacity: `${opt.power_kw}kW`,
+              price: opt.installed_price.toString(),
+              rebateEligible: false,
+              specifications: {
+                power: `${opt.power_kw}kW`,
+                phase: opt.phase,
+                cableType: brandData.cable_type,
+                cableLength: brandData.cable_length_m ? `${brandData.cable_length_m}m` : 'N/A',
+              },
+              warranty: '2 years',
+              popular: index === 0,
+              active: true,
+            });
+          });
+        });
+      }
+
       res.json(products);
     } catch (error) {
       console.error("Error fetching products by type:", error);
