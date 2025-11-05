@@ -284,6 +284,110 @@ class PricingDataService {
       stcRebate: Math.round(stcRebate),
     };
   }
+  async addProduct(productData: any): Promise<any> {
+    const data = await this.loadPricingData();
+    const phase = productData.phase as 'single_phase' | 'three_phase';
+    const productType = productData.productType;
+
+    // Generate a unique ID for the product
+    const generateId = (type: string, brand: string, size?: string) => {
+      const cleanBrand = brand.toLowerCase().replace(/\s+/g, '_');
+      const sizeStr = size || '';
+      return `${type}-${phase === 'single_phase' ? '1ph' : '3ph'}-${cleanBrand}-${sizeStr}`.toLowerCase();
+    };
+
+    // Add product based on type
+    if (productType === 'solar') {
+      const brandKey = productData.brand.toLowerCase().replace(/\s+/g, '_');
+      
+      // Check if brand exists, if not create it
+      if (!data[phase].solar_panels[brandKey]) {
+        data[phase].solar_panels[brandKey] = {
+          brand: productData.brand,
+          model: productData.model,
+          technology: "Monocrystalline",
+          warranty_product: productData.warrantyYears || 12,
+          warranty_performance: 25,
+          packages: []
+        };
+      }
+
+      // Add package
+      const newPackage = {
+        id: generateId('solar', productData.brand, `${productData.sizeKw}kw`),
+        size_kw: productData.sizeKw,
+        panels: productData.panels,
+        wattage: productData.wattage,
+        price_after_rebate: productData.priceAfterRebate,
+        requires_inverter: true
+      };
+
+      data[phase].solar_panels[brandKey].packages.push(newPackage);
+
+    } else if (productType === 'battery') {
+      const brandKey = productData.brand.toLowerCase().replace(/\s+/g, '_');
+      
+      // Check if brand exists, if not create it
+      if (!data[phase].batteries[brandKey]) {
+        data[phase].batteries[brandKey] = {
+          brand: productData.brand,
+          model: productData.model,
+          warranty_years: productData.warrantyYears || 10,
+          options: []
+        };
+      }
+
+      // Add option
+      const newOption = {
+        id: generateId('battery', productData.brand, `${productData.capacityKwh}kwh`),
+        capacity_kwh: productData.capacityKwh,
+        price_after_rebate: productData.priceAfterRebate,
+        rrp: productData.rrp,
+        power_kw: productData.powerKw
+      };
+
+      data[phase].batteries[brandKey].options.push(newOption);
+
+    } else if (productType === 'ev_charger') {
+      const brandKey = productData.brand.toLowerCase().replace(/\s+/g, '_');
+      
+      // Check if brand exists, if not create it
+      if (!data[phase].ev_chargers[brandKey]) {
+        data[phase].ev_chargers[brandKey] = {
+          brand: productData.brand,
+          model: productData.model,
+          cable_type: productData.cableType || "Tethered",
+          cable_length_m: productData.cableLength,
+          options: []
+        };
+      }
+
+      // Add option
+      const newOption = {
+        id: generateId('ev', productData.brand, `${productData.powerKw}kw`),
+        power_kw: productData.powerKw,
+        phase: phase === 'single_phase' ? '1-phase' : '3-phase',
+        installed_price: productData.installedPrice
+      };
+
+      data[phase].ev_chargers[brandKey].options.push(newOption);
+    }
+
+    // Write updated data back to file
+    const fs = await import('fs/promises');
+    const path = await import('path');
+    await fs.writeFile(
+      path.join(process.cwd(), 'pricing-data.json'),
+      JSON.stringify(data, null, 2),
+      'utf-8'
+    );
+
+    // Reload pricing data to reflect changes
+    this.pricingData = null;
+    await this.loadPricingData();
+
+    return { success: true, phase, productType, brand: productData.brand };
+  }
 }
 
 export const pricingDataService = new PricingDataService();

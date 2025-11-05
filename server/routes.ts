@@ -910,6 +910,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Add product to pricing-data.json (Admin only)
+  app.post("/api/admin/products", requireAuth, requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const productData = req.body;
+
+      // Validate required fields
+      if (!productData.phase || !productData.productType || !productData.brand || !productData.model) {
+        return res.status(400).json({ error: "Missing required fields: phase, productType, brand, model" });
+      }
+
+      // Add product to pricing data
+      const result = await pricingDataService.addProduct(productData);
+      
+      res.json({ 
+        success: true, 
+        message: "Product added successfully",
+        product: result 
+      });
+    } catch (error) {
+      console.error("Error adding product:", error);
+      res.status(500).json({ error: error instanceof Error ? error.message : "Failed to add product" });
+    }
+  });
+
   // CMS Theme Management
   app.get("/api/cms/theme", async (req, res) => {
     try {

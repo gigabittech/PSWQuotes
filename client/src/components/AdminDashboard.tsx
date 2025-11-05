@@ -45,6 +45,7 @@ import AnalyticsView from "@/components/admin/AnalyticsView";
 import MediaManager from "@/components/admin/MediaManager";
 import { Settings } from "@/components/admin/Settings";
 import EmbedCodeGenerator from "@/components/EmbedCodeGenerator";
+import ProductManager from "@/components/admin/ProductManager";
 import type { User, Quote } from "@shared/schema";
 
 export default function AdminDashboard() {
@@ -284,6 +285,17 @@ export default function AdminDashboard() {
             >
               <Image className="h-5 w-5 flex-shrink-0" />
               <span className="text-sm sm:text-base">Media</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("products")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "products" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-products"
+            >
+              <Plus className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Products</span>
             </button>
             
             <button
@@ -817,6 +829,7 @@ export default function AdminDashboard() {
             {/* CMS Components */}
             {activeTab === "theme" && <ThemeEditor />}
             {activeTab === "pages" && <PageManager />}
+            {activeTab === "products" && <ProductManager />}
             {activeTab === "forms" && <FormBuilder />}
             {activeTab === "media" && <MediaManager />}
             {activeTab === "analytics" && <AnalyticsView />}
