@@ -741,7 +741,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Real-time pricing calculation using pricing-data.json
   app.post("/api/calculate-pricing", async (req, res) => {
     try {
-      const { selectedSystems, solarPackage, batterySystem, evCharger, powerSupply, solarBrand, solarSize, batteryBrand, batteryCapacity, inverterBrand, inverterSize, evBrand, evPower } = req.body;
+      const { selectedSystems, solarPackage, batterySystem, evCharger, powerSupply } = req.body;
       
       // Determine phase type from power supply
       const phaseType: 'single_phase' | 'three_phase' = powerSupply === '3-phase' ? 'three_phase' : 'single_phase';
@@ -758,50 +758,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
         batteryRebate: 0,
       };
       
-      // Calculate solar pricing
-      if (selectedSystems.includes('solar') && solarBrand && solarSize) {
-        const solarPkg = await pricingDataService.findSolarPackage(phaseType, solarBrand.toLowerCase(), parseFloat(solarSize));
-        if (solarPkg) {
-          totalPrice += solarPkg.price_after_rebate;
-          breakdown.solarPrice = solarPkg.price_after_rebate;
+      // Calculate solar pricing by matching product name
+      if (selectedSystems?.includes('solar') && solarPackage) {
+        const solarBrands = await pricingDataService.getAllSolarBrands(phaseType);
+        
+        for (const [brandKey, brandData] of Object.entries(solarBrands)) {
+          const matchingPackage = brandData.packages.find(pkg => {
+            const productName = `${pkg.size_kw}kW ${brandData.brand} Solar System`;
+            return solarPackage.includes(productName) || 
+                   (solarPackage.includes(`${pkg.size_kw}kW`) && solarPackage.includes(brandData.brand));
+          });
           
-          // Calculate STC rebate (already included in price_after_rebate, for display only)
-          const rebates = await pricingDataService.calculateSolarRebates(solarPkg.size_kw);
-          solarRebate = rebates.stcRebate;
-          breakdown.solarRebate = solarRebate;
+          if (matchingPackage) {
+            totalPrice += matchingPackage.price_after_rebate;
+            breakdown.solarPrice = matchingPackage.price_after_rebate;
+            
+            // Calculate STC rebate (already included in price_after_rebate, for display only)
+            const rebates = await pricingDataService.calculateSolarRebates(matchingPackage.size_kw);
+            solarRebate = rebates.stcRebate;
+            breakdown.solarRebate = solarRebate;
+            break;
+          }
         }
       }
       
-      // Calculate inverter pricing (if solar selected and requires inverter)
-      if (selectedSystems.includes('solar') && inverterBrand && inverterSize) {
-        const inverter = await pricingDataService.findInverter(phaseType, inverterBrand.toLowerCase(), parseFloat(inverterSize));
-        if (inverter) {
-          totalPrice += inverter.price_package;
-          breakdown.inverterPrice = inverter.price_package;
-        }
-      }
-      
-      // Calculate battery pricing
-      if (selectedSystems.includes('battery') && batteryBrand && batteryCapacity) {
-        const battery = await pricingDataService.findBattery(phaseType, batteryBrand.toLowerCase(), parseFloat(batteryCapacity));
-        if (battery) {
-          totalPrice += battery.price_after_rebate;
-          breakdown.batteryPrice = battery.price_after_rebate;
+      // Calculate battery pricing by matching product name
+      if (selectedSystems?.includes('battery') && batterySystem) {
+        const batteryBrands = await pricingDataService.getAllBatteryBrands(phaseType);
+        
+        for (const [brandKey, brandData] of Object.entries(batteryBrands)) {
+          const matchingOption = brandData.options.find(opt => {
+            const productName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
+            return batterySystem.includes(productName) ||
+                   (batterySystem.includes(`${opt.capacity_kwh}kWh`) && batterySystem.includes(brandData.brand));
+          });
           
-          // Calculate battery rebates (already included in price_after_rebate, for display only)
-          const isTesla = batteryBrand.toLowerCase() === 'tesla';
-          const rebates = await pricingDataService.calculateBatteryRebates(battery.capacity_kwh, isTesla);
-          batteryRebate = rebates.totalRebate;
-          breakdown.batteryRebate = batteryRebate;
+          if (matchingOption) {
+            totalPrice += matchingOption.price_after_rebate;
+            breakdown.batteryPrice = matchingOption.price_after_rebate;
+            
+            // Calculate battery rebates (already included in price_after_rebate, for display only)
+            const isTesla = brandKey === 'tesla';
+            const rebates = await pricingDataService.calculateBatteryRebates(matchingOption.capacity_kwh, isTesla);
+            batteryRebate = rebates.totalRebate;
+            breakdown.batteryRebate = batteryRebate;
+            break;
+          }
         }
       }
       
-      // Calculate EV charger pricing
-      if (selectedSystems.includes('ev') && evBrand && evPower) {
-        const ev = await pricingDataService.findEVCharger(phaseType, evBrand.toLowerCase(), parseFloat(evPower));
-        if (ev) {
-          totalPrice += ev.installed_price;
-          breakdown.evPrice = ev.installed_price;
+      // Calculate EV charger pricing by matching product name
+      if (selectedSystems?.includes('ev') && evCharger) {
+        const evChargerBrands = await pricingDataService.getAllEVChargerBrands(phaseType);
+        
+        for (const [brandKey, brandData] of Object.entries(evChargerBrands)) {
+          const matchingOption = brandData.options.find(opt => {
+            const productName = `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`;
+            return evCharger.includes(productName) ||
+                   (evCharger.includes(`${opt.power_kw}kW`) && evCharger.includes(brandData.brand));
+          });
+          
+          if (matchingOption) {
+            totalPrice += matchingOption.installed_price;
+            breakdown.evPrice = matchingOption.installed_price;
+            break;
+          }
         }
       }
       
