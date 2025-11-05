@@ -10,6 +10,7 @@ import {
 } from "@shared/schema";
 import { emailService } from "./services/emailService";
 import { pricingService } from "./services/pricingService";
+import { pricingDataService } from "./services/pricingDataService";
 import { generateQuotePDF } from "./pdfGenerator";
 import {
   ObjectStorageService,
@@ -496,55 +497,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Real-time pricing calculation
+  // Real-time pricing calculation using pricing-data.json
   app.post("/api/calculate-pricing", async (req, res) => {
     try {
-      const { selectedSystems, solarPackage, batterySystem, evCharger, powerSupply } = req.body;
+      const { selectedSystems, solarPackage, batterySystem, evCharger, powerSupply, solarBrand, solarSize, batteryBrand, batteryCapacity, inverterBrand, inverterSize, evBrand, evPower } = req.body;
+      
+      // Determine phase type from power supply
+      const phaseType: 'single_phase' | 'three_phase' = powerSupply === '3-phase' ? 'three_phase' : 'single_phase';
       
       let totalPrice = 0;
-      let rebateAmount = 0;
+      let solarRebate = 0;
+      let batteryRebate = 0;
+      const breakdown: any = {
+        solarPrice: 0,
+        batteryPrice: 0,
+        evPrice: 0,
+        inverterPrice: 0,
+        solarRebate: 0,
+        batteryRebate: 0,
+      };
       
       // Calculate solar pricing
-      if (selectedSystems.includes('solar') && solarPackage) {
-        const solarProduct = await storage.getProduct(solarPackage);
-        if (solarProduct) {
-          totalPrice += parseFloat(solarProduct.price);
-          if (solarProduct.rebateEligible && solarProduct.rebateAmount) {
-            rebateAmount += parseFloat(solarProduct.rebateAmount);
-          }
+      if (selectedSystems.includes('solar') && solarBrand && solarSize) {
+        const solarPkg = await pricingDataService.findSolarPackage(phaseType, solarBrand.toLowerCase(), parseFloat(solarSize));
+        if (solarPkg) {
+          totalPrice += solarPkg.price_after_rebate;
+          breakdown.solarPrice = solarPkg.price_after_rebate;
+          
+          // Calculate STC rebate (already included in price_after_rebate, for display only)
+          const rebates = await pricingDataService.calculateSolarRebates(solarPkg.size_kw);
+          solarRebate = rebates.stcRebate;
+          breakdown.solarRebate = solarRebate;
+        }
+      }
+      
+      // Calculate inverter pricing (if solar selected and requires inverter)
+      if (selectedSystems.includes('solar') && inverterBrand && inverterSize) {
+        const inverter = await pricingDataService.findInverter(phaseType, inverterBrand.toLowerCase(), parseFloat(inverterSize));
+        if (inverter) {
+          totalPrice += inverter.price_package;
+          breakdown.inverterPrice = inverter.price_package;
         }
       }
       
       // Calculate battery pricing
-      if (selectedSystems.includes('battery') && batterySystem) {
-        const batteryProduct = await storage.getProduct(batterySystem);
-        if (batteryProduct) {
-          totalPrice += parseFloat(batteryProduct.price);
-          if (batteryProduct.rebateEligible && batteryProduct.rebateAmount) {
-            rebateAmount += parseFloat(batteryProduct.rebateAmount);
-          }
+      if (selectedSystems.includes('battery') && batteryBrand && batteryCapacity) {
+        const battery = await pricingDataService.findBattery(phaseType, batteryBrand.toLowerCase(), parseFloat(batteryCapacity));
+        if (battery) {
+          totalPrice += battery.price_after_rebate;
+          breakdown.batteryPrice = battery.price_after_rebate;
+          
+          // Calculate battery rebates (already included in price_after_rebate, for display only)
+          const isTesla = batteryBrand.toLowerCase() === 'tesla';
+          const rebates = await pricingDataService.calculateBatteryRebates(battery.capacity_kwh, isTesla);
+          batteryRebate = rebates.totalRebate;
+          breakdown.batteryRebate = batteryRebate;
         }
       }
       
       // Calculate EV charger pricing
-      if (selectedSystems.includes('ev') && evCharger) {
-        const evProduct = await storage.getProduct(evCharger);
-        if (evProduct) {
-          totalPrice += parseFloat(evProduct.price);
+      if (selectedSystems.includes('ev') && evBrand && evPower) {
+        const ev = await pricingDataService.findEVCharger(phaseType, evBrand.toLowerCase(), parseFloat(evPower));
+        if (ev) {
+          totalPrice += ev.installed_price;
+          breakdown.evPrice = ev.installed_price;
         }
       }
       
-      const finalPrice = totalPrice - rebateAmount;
+      const rebateAmount = solarRebate + batteryRebate;
       
       res.json({
         totalPrice,
         rebateAmount,
-        finalPrice,
-        breakdown: {
-          solar: selectedSystems.includes('solar') ? await storage.getProduct(solarPackage) : null,
-          battery: selectedSystems.includes('battery') ? await storage.getProduct(batterySystem) : null,
-          ev: selectedSystems.includes('ev') ? await storage.getProduct(evCharger) : null,
-        }
+        finalPrice: totalPrice,
+        breakdown,
       });
     } catch (error) {
       console.error("Error calculating pricing:", error);
@@ -561,6 +587,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error calculating enhanced pricing:", error);
       res.status(500).json({ error: "Failed to calculate pricing" });
+    }
+  });
+
+  // Get available products from pricing-data.json
+  app.get("/api/pricing-products/:phaseType", async (req, res) => {
+    try {
+      const phaseType = req.params.phaseType as 'single_phase' | 'three_phase';
+      
+      if (phaseType !== 'single_phase' && phaseType !== 'three_phase') {
+        return res.status(400).json({ error: "Invalid phase type. Must be 'single_phase' or 'three_phase'" });
+      }
+
+      const [solarBrands, inverterBrands, batteryBrands, evChargerBrands] = await Promise.all([
+        pricingDataService.getAllSolarBrands(phaseType),
+        pricingDataService.getAllInverterBrands(phaseType),
+        pricingDataService.getAllBatteryBrands(phaseType),
+        pricingDataService.getAllEVChargerBrands(phaseType)
+      ]);
+
+      res.json({
+        solar: solarBrands,
+        inverters: inverterBrands,
+        batteries: batteryBrands,
+        evChargers: evChargerBrands,
+      });
+    } catch (error) {
+      console.error("Error fetching pricing products:", error);
+      res.status(500).json({ error: "Failed to fetch pricing products" });
     }
   });
 
