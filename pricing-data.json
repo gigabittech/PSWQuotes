@@ -157,6 +157,14 @@
             "wattage": 490,
             "price_after_rebate": 4590,
             "requires_inverter": true
+          },
+          {
+            "id": "solar-1ph-nayem-19kw",
+            "size_kw": 19,
+            "panels": 19,
+            "wattage": 990,
+            "price_after_rebate": 9990,
+            "requires_inverter": true
           }
         ]
       }
