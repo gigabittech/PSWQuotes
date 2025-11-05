@@ -109,39 +109,46 @@ export default function ProductManager() {
       </div>
 
       {/* Progress Indicator */}
-      <div className="flex items-center justify-center gap-2">
-        {[1, 2, 3, 4].map((s) => (
-          <div key={s} className="flex items-center">
-            <div
-              className={cn(
-                "w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all",
-                s === step
-                  ? "bg-primary text-white scale-110 shadow-lg"
-                  : s < step
-                  ? "bg-accent text-white"
-                  : "bg-muted text-muted-foreground"
+      <div className="max-w-2xl mx-auto">
+        <div className="flex items-center justify-between mb-4">
+          {[
+            { num: 1, label: 'Phase' },
+            { num: 2, label: 'Product Type' },
+            { num: 3, label: 'Details' },
+            { num: 4, label: 'Review' }
+          ].map((s, idx) => (
+            <div key={s.num} className="flex items-center flex-1">
+              <div className="flex flex-col items-center flex-1">
+                <div
+                  className={cn(
+                    "w-12 h-12 rounded-full flex items-center justify-center font-semibold transition-all border-2",
+                    s.num === step
+                      ? "bg-primary text-white border-primary shadow-lg scale-110"
+                      : s.num < step
+                      ? "bg-green-500 text-white border-green-500"
+                      : "bg-white dark:bg-gray-800 text-muted-foreground border-gray-300 dark:border-gray-600"
+                  )}
+                >
+                  {s.num < step ? <Check className="w-6 h-6" /> : s.num}
+                </div>
+                <span className={cn(
+                  "text-xs mt-2 font-medium text-center",
+                  s.num === step ? "text-primary" : s.num < step ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
+                )}>
+                  {s.label}
+                </span>
+              </div>
+              {idx < 3 && (
+                <div
+                  className={cn(
+                    "h-0.5 flex-1 mx-2 -mt-6 transition-all",
+                    s.num < step ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"
+                  )}
+                />
               )}
-            >
-              {s < step ? <Check className="w-5 h-5" /> : s}
             </div>
-            {s < 4 && (
-              <div
-                className={cn(
-                  "w-16 h-1 mx-2 rounded",
-                  s < step ? "bg-accent" : "bg-muted"
-                )}
-              />
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Step Labels */}
-      <div className="flex justify-center gap-8 text-sm font-inter">
-        <span className={step === 1 ? "text-primary font-semibold" : "text-muted-foreground"}>Phase</span>
-        <span className={step === 2 ? "text-primary font-semibold" : "text-muted-foreground"}>Product Type</span>
-        <span className={step === 3 ? "text-primary font-semibold" : "text-muted-foreground"}>Details</span>
-        <span className={step === 4 ? "text-primary font-semibold" : "text-muted-foreground"}>Review</span>
+          ))}
+        </div>
       </div>
 
       {/* Form Card */}
@@ -167,13 +174,18 @@ export default function ProductManager() {
                   key={option.id}
                   onClick={() => updateFormData('phase', option.id)}
                   className={cn(
-                    "p-6 rounded-xl cursor-pointer transition-all duration-300 border-2",
-                    "hover:scale-105 hover:shadow-lg",
+                    "relative p-6 rounded-xl cursor-pointer transition-all duration-200 border-2",
+                    "hover:shadow-lg hover:border-primary",
                     formData.phase === option.id
-                      ? "border-primary bg-primary/5 shadow-md"
-                      : "border-border bg-card hover:border-primary/50"
+                      ? "border-primary bg-primary/10 shadow-md ring-2 ring-primary/20"
+                      : "border-gray-200 dark:border-gray-700 bg-card"
                   )}
                 >
+                  {formData.phase === option.id && (
+                    <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                  )}
                   <h4 className="font-semibold text-lg mb-2">{option.title}</h4>
                   <p className="text-sm text-muted-foreground">{option.desc}</p>
                 </div>
@@ -205,14 +217,19 @@ export default function ProductManager() {
                   key={option.id}
                   onClick={() => updateFormData('productType', option.id)}
                   className={cn(
-                    "p-6 rounded-xl cursor-pointer transition-all duration-300 border-2",
-                    "hover:scale-105 hover:shadow-lg",
+                    "relative p-6 rounded-xl cursor-pointer transition-all duration-200 border-2",
+                    "hover:shadow-lg hover:border-primary",
                     formData.productType === option.id
-                      ? "border-primary bg-primary/5 shadow-md"
-                      : "border-border bg-card hover:border-primary/50"
+                      ? "border-primary bg-primary/10 shadow-md ring-2 ring-primary/20"
+                      : "border-gray-200 dark:border-gray-700 bg-card"
                   )}
                 >
-                  <div className="text-3xl mb-2">{option.icon}</div>
+                  {formData.productType === option.id && (
+                    <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                  )}
+                  <div className="text-4xl mb-3">{option.icon}</div>
                   <h4 className="font-semibold text-lg">{option.title}</h4>
                 </div>
               ))}
@@ -502,38 +519,54 @@ export default function ProductManager() {
         )}
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between mt-8 pt-6 border-t">
-          <Button
-            variant="outline"
-            onClick={() => step > 1 ? setStep(step - 1) : resetForm()}
-            disabled={addProductMutation.isPending}
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            {step === 1 ? 'Cancel' : 'Back'}
-          </Button>
+        <div className="flex justify-between items-center mt-8 pt-6 border-t">
+          {step > 1 ? (
+            <Button
+              variant="ghost"
+              onClick={() => setStep(step - 1)}
+              disabled={addProductMutation.isPending}
+              className="gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              onClick={resetForm}
+              disabled={addProductMutation.isPending}
+              className="gap-2 text-muted-foreground hover:text-foreground"
+            >
+              <X className="w-4 h-4" />
+              Cancel
+            </Button>
+          )}
 
           {step < 4 ? (
             <Button
               onClick={() => setStep(step + 1)}
               disabled={!canProceed()}
+              size="lg"
+              className="gap-2"
             >
               Next
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="w-4 h-4" />
             </Button>
           ) : (
             <Button
               onClick={handleSubmit}
               disabled={addProductMutation.isPending}
-              className="bg-accent hover:bg-accent/90"
+              size="lg"
+              className="bg-green-600 hover:bg-green-700 gap-2"
             >
               {addProductMutation.isPending ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                  Adding...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                  Adding Product...
                 </>
               ) : (
                 <>
-                  <Check className="w-4 h-4 mr-2" />
+                  <Check className="w-4 h-4" />
                   Add Product
                 </>
               )}
