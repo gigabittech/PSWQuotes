@@ -197,7 +197,8 @@ export default function QuoteForm() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <StepIndicator currentStep={currentStep} totalSteps={4} />
 
-        <div className="glass-card overflow-hidden">
+        {/* Enhanced Glassmorphic Form Card */}
+        <div className="glass-form-card p-8 md:p-12 overflow-hidden">
           {currentStep === 1 && (
             <SystemSelection
               selectedSystems={formData.systems}

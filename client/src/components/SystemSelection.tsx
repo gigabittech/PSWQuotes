@@ -64,84 +64,154 @@ export default function SystemSelection({
   ];
 
   return (
-    <div className="p-8" data-testid="system-selection">
-      <h2 className="text-3xl font-bold text-foreground mb-6 text-center">
-        What are you looking for?
-      </h2>
-      <p className="text-muted-foreground text-center mb-8">
-        Select all the systems you're interested in. We'll create a custom quote based on your needs.
-      </p>
-
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
-        {systemOptions.map((option) => (
-          <div
-            key={option.id}
-            className={cn(
-              "pricing-card border-2 rounded-lg p-6 cursor-pointer transition-all duration-200 hover:shadow-lg",
-              selectedSystems.includes(option.id)
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary"
-            )}
-            onClick={() => onSystemToggle(option.id)}
-            data-testid={`system-option-${option.id}`}
-          >
-            <div className="text-center">
-              <div className={cn("w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4", option.bgColor)}>
-                <i className={cn(option.icon, option.iconColor, "text-2xl")}></i>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">{option.title}</h3>
-              <p className="text-muted-foreground text-sm mb-4">{option.description}</p>
-              <div className="text-sm text-primary font-medium">{option.price}</div>
-            </div>
-          </div>
-        ))}
+    <div className="space-y-10" data-testid="system-selection">
+      {/* Header Section */}
+      <div className="text-center space-y-4">
+        <h2 className="font-outfit text-4xl md:text-5xl font-semibold text-foreground tracking-tight">
+          What are you looking for?
+        </h2>
+        <p className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto">
+          Select all the systems you're interested in. We'll create a custom quote based on your needs.
+        </p>
       </div>
 
-      <div className="mb-8">
-        <h3 className="text-xl font-semibold text-foreground mb-4">Power Supply Type</h3>
-        <p className="text-muted-foreground mb-4">
-          Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
-        </p>
-        <div className="grid md:grid-cols-3 gap-4">
-          {powerOptions.map((option) => (
+      {/* System Options Grid */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {systemOptions.map((option) => {
+          const isSelected = selectedSystems.includes(option.id);
+          return (
             <div
               key={option.id}
               className={cn(
-                "border rounded-lg p-4 cursor-pointer transition-colors duration-200",
-                powerSupply === option.id
-                  ? "border-primary bg-primary/5"
-                  : "border-border hover:border-primary"
+                "relative group cursor-pointer transition-all duration-350 ease-out rounded-2xl p-8",
+                "backdrop-blur-lg border shadow-lg",
+                "hover:scale-105 hover:shadow-2xl",
+                isSelected
+                  ? "bg-white/90 border-primary/50 shadow-primary/20"
+                  : "bg-white/60 border-white/40 hover:border-primary/30"
               )}
-              onClick={() => onPowerSupplyChange(option.id)}
-              data-testid={`power-supply-${option.id}`}
+              onClick={() => onSystemToggle(option.id)}
+              data-testid={`system-option-${option.id}`}
             >
-              <div className="flex items-center space-x-3">
-                <input
-                  type="radio"
-                  name="power-supply"
-                  checked={powerSupply === option.id}
-                  onChange={() => onPowerSupplyChange(option.id)}
-                  className="text-primary"
-                />
-                <div>
-                  <label className="font-medium text-foreground cursor-pointer">{option.title}</label>
-                  <p className="text-sm text-muted-foreground">{option.description}</p>
+              {/* Selection Indicator */}
+              {isSelected && (
+                <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-md">
+                  <i className="fas fa-check text-white text-xs"></i>
+                </div>
+              )}
+
+              <div className="text-center space-y-4">
+                {/* Icon */}
+                <div className={cn(
+                  "w-20 h-20 rounded-2xl flex items-center justify-center mx-auto",
+                  "transition-transform duration-350 group-hover:scale-110",
+                  option.bgColor
+                )}>
+                  <i className={cn(option.icon, option.iconColor, "text-3xl")}></i>
+                </div>
+
+                {/* Content */}
+                <div className="space-y-2">
+                  <h3 className="font-outfit text-2xl font-semibold text-foreground">
+                    {option.title}
+                  </h3>
+                  <p className="font-inter text-sm text-muted-foreground leading-relaxed">
+                    {option.description}
+                  </p>
+                  <div className="font-inter text-sm text-primary font-semibold pt-2">
+                    {option.price}
+                  </div>
                 </div>
               </div>
+
+              {/* Glow Effect on Hover */}
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-350 pointer-events-none">
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-transparent" />
+              </div>
             </div>
-          ))}
+          );
+        })}
+      </div>
+
+      {/* Power Supply Section */}
+      <div className="space-y-6 pt-4">
+        <div className="text-center space-y-2">
+          <h3 className="font-outfit text-2xl md:text-3xl font-semibold text-foreground">
+            Power Supply Type
+          </h3>
+          <p className="font-inter text-muted-foreground max-w-2xl mx-auto">
+            Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          {powerOptions.map((option) => {
+            const isSelected = powerSupply === option.id;
+            return (
+              <div
+                key={option.id}
+                className={cn(
+                  "relative rounded-xl p-5 cursor-pointer transition-all duration-300",
+                  "backdrop-blur-md border",
+                  "hover:scale-102 hover:shadow-lg",
+                  isSelected
+                    ? "bg-white/80 border-primary/50 shadow-md"
+                    : "bg-white/50 border-white/40 hover:border-primary/30"
+                )}
+                onClick={() => onPowerSupplyChange(option.id)}
+                data-testid={`power-supply-${option.id}`}
+              >
+                <div className="flex items-start space-x-3">
+                  {/* Custom Radio */}
+                  <div className={cn(
+                    "mt-0.5 flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
+                    isSelected ? "border-primary bg-primary" : "border-muted-foreground/40"
+                  )}>
+                    {isSelected && (
+                      <div className="w-2 h-2 bg-white rounded-full" />
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <label className="font-inter font-semibold text-foreground cursor-pointer block mb-1">
+                      {option.title}
+                    </label>
+                    <p className="font-inter text-sm text-muted-foreground leading-relaxed">
+                      {option.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      <div className="flex justify-center">
+      {/* Action Button */}
+      <div className="flex justify-center pt-4">
         <button
-          className="bg-primary hover:bg-blue-700 text-primary-foreground px-8 py-3 rounded-lg font-semibold transition-colors"
+          className={cn(
+            "relative group px-10 py-4 rounded-xl font-inter font-semibold text-lg",
+            "transition-all duration-350 shadow-lg",
+            "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100",
+            selectedSystems.length > 0 && powerSupply
+              ? "bg-gradient-to-r from-primary to-blue-600 text-white hover:shadow-2xl hover:scale-105"
+              : "bg-muted/50 text-muted-foreground"
+          )}
           onClick={onNext}
           disabled={selectedSystems.length === 0 || !powerSupply}
           data-testid="button-continue-to-products"
         >
-          Continue to Product Selection
-          <i className="fas fa-arrow-right ml-2"></i>
+          <span className="relative z-10 flex items-center gap-2">
+            Continue to Product Selection
+            <i className="fas fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+          </span>
+          
+          {/* Button Glow Effect */}
+          {selectedSystems.length > 0 && powerSupply && (
+            <div className="absolute inset-0 rounded-xl bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-350" />
+          )}
         </button>
       </div>
     </div>
