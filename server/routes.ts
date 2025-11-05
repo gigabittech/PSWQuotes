@@ -232,18 +232,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Validate Origin/Referer for CSRF protection
       const origin = req.get('Origin');
       const referer = req.get('Referer');
+      const host = req.get('Host');
+      
       const allowedOrigins = process.env.NODE_ENV === 'production' 
         ? (process.env.ALLOWED_ORIGINS?.split(',') || ['https://your-domain.replit.app'])
-        : ['http://localhost:5000', 'http://127.0.0.1:5000'];
+        : ['http://localhost:5000', 'http://127.0.0.1:5000', `https://${host}`, `http://${host}`];
       
       let validOrigin = false;
       if (origin) {
         validOrigin = allowedOrigins.includes(origin);
       } else if (referer) {
-        validOrigin = allowedOrigins.some(allowed => referer.startsWith(allowed + '/'));
+        validOrigin = allowedOrigins.some(allowed => referer.startsWith(allowed + '/') || referer.startsWith(allowed));
+      }
+      
+      // In development, also allow any .replit.dev domain
+      if (!validOrigin && process.env.NODE_ENV === 'development') {
+        if (origin?.includes('.replit.dev') || referer?.includes('.replit.dev')) {
+          validOrigin = true;
+        }
       }
       
       if (!validOrigin) {
+        console.error('CSRF validation failed:', { origin, referer, host, allowedOrigins });
         return res.status(403).json({ error: "Invalid credentials" }); // Consistent error message
       }
 
