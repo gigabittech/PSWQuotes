@@ -1,0 +1,655 @@
+BYD HVM price break guide
+
+
+
+Packaged item Inc. base installation and BMU. After Rebates:
+
+BYD HVM 11.0 - kit (no sensor): $6,490* RRP $11,490
+BYD HVM 13.8 - kit (no sensor): $7,990* RRP $14,190
+BYD HVM 16.6 - kit (no sensor): $9,490* RRP $16,890
+BYD HVM 19.3 - kit (no sensor): $10,990* RRP $19,590
+BYD HVM 22.1 - kit (no sensor): $12,490* RRP $22,290
+Model: BYD Battery Box HVM: Datasheet ›
+
+
+
+*Conditions:
+
+1. Advertised prices. Subject to State (WA) and National Battery Rebate eligibility, and base installation/structure definitions. Prices include GST for the pre-rebate amount. Additional installation costs may apply; inquire or learn more ›
+
+2. Structure. The listed prices refer to single-level, single-roof/non-detached dwellings with adequate switchboard accessibility and provisions available to accommodate the circuitry and/or associated metering equipment. 
+
+3. Base installation inclusions: Inverter/Battery. The inverter is mounted within 15m of the electrical switchboard. The supplementary/expansion [DC] battery must be vertically integrated or within 3m of the foundation battery stack or inverter. Additional installation costs ›
+
+4.  WA Battery Rebate. The value of the Residential Battery Scheme is applied as a $130 per kWh point-of-sale discount up to 10 kWh (usable kWhs) of storage capacity, with a requirement to join the Synergy or Plico VPP. Customers can choose to opt out of this rebate and add the value to the advertised battery price.
+
+5. National Battery Rebate. The National Battery Booster Program’s value is applied as a point-of-sale discount valued at $38 per certificate after trading fees. Request a preliminary quote for the total system cost (including GST) and incorporated pricing for the itemised rebate.
+
+6. Right to decline. Perth Solar Warehouse staff reserve the right to respectfully decline to participate in selected tenders, quote requests, or inquiries at their discretion.
+
+7. Additional installation costs: View ›
+
+8. PSW Installation Region: Western Australia ›
+
+
+
+
+
+Extended research:
+
+1.1) Three battery rebate options available to West Australians ›
+
+
+
+Sungrow
+
+
+
+BATTERY & INVERTER
+
+
+Inverter installed from $3,290*
+10 year guaranteed energy security
+Samsung cells
+Blackout protection options
+
+
+Pictured: SBR HV 16 kWh
+
+
+
+
+
+Battery
+
+
+
+Size
+
+
+
+Supply
+
+AFTER
+
+REBATES*
+
+
+
+RRP
+
+
+
+Download
+
+
+
+SBR [kWh]
+
+with BMS
+
+
+
+Packaged item
+
+Inc. base installation.
+
+
+
+Requires Sungrow Hybrid
+
+
+
+
+
+9.6
+
+12.8
+
+16
+
+19.2
+
+22.4
+
+25.6
+
+
+
+
+
+DC
+
+DC
+
+DC
+
+DC
+
+DC
+
+DC
+
+
+
+
+
+$5,990
+
+$7,190
+
+$8,490
+
+$9,990
+
+$11,490
+
+$12,990
+
+
+
+
+
+$10,990
+
+$12,490
+
+$14,990
+
+$17,490
+
+$19,990
+
+$22,490
+
+
+
+
+
+Datasheet
+
+
+
+Inverter
+
+
+
+Size 
+
+
+
+Supply
+
+
+
+Package
+
+
+
+Single Buy
+
+
+
+
+
+
+
+Sungrow Hybrid [kW]
+
+- SH5.0RS
+
+- SH8.0RS
+
+- SH10.0RS
+
+
+
+Packaged item 
+
+Inc. base installation 
+
+and Power Sensor.
+
+
+
+
+
+5 
+
+8
+
+10 
+
+
+
+
+
+
+
+
+
+
+
+1 ph
+
+1 ph
+
+1 ph
+
+
+
+
+
+
+
+
+
+
+
+$3,290
+
+$4,290
+
+$4,790
+
+
+
+
+
+
+
+
+
+
+
+$3,790
+
+$4,790
+
+$5,290
+
+
+
+
+
+
+
+
+
+
+
+Datasheet
+
+Datasheet
+
+
+
+
+
+Blackout protection is not included in the advertised price: inquire
+
+
+*Installation inclusions and conditions
+
+
+
+What we do:
+
+Lodge Synergy & Western Power grid connection approval
+Install your Goodwe energy system 
+Performance test
+Establish monitoring with the home's WiFi 
+Electrical safety certificate
+Commission your monitoring portal within three business days
+PSW Life Support
+
+
+*Conditions:
+
+1. Advertised prices. Subject to State (WA) and National Battery Rebate eligibility, and base installation/structure definitions. Prices include GST for the pre-rebate amount. Additional installation costs may apply; inquire or learn more ›
+
+2. Structure. The listed prices refer to single-level, single-roof/non-detached dwellings with adequate switchboard accessibility and provisions available to accommodate the circuitry and/or associated metering equipment. 
+
+3. Base installation inclusions: Inverter/Battery. The inverter is mounted within 15m of the electrical switchboard. The supplementary/expansion [DC] battery must be vertically integrated or within 3m of the foundation battery stack or inverter. Additional installation costs ›
+
+4.  WA Battery Rebate. The value of the Residential Battery Scheme is applied as a $130 per kWh point-of-sale discount up to 10 kWh (usable kWhs) of storage capacity, with a requirement to join the Synergy or Plico VPP. Customers can opt out of this rebate and add the value to the advertised battery price.
+
+5. National Battery Rebate. The National Battery Booster Program’s value is applied as a point-of-sale discount valued at $38 per certificate after trading fees. Request a preliminary quote for the total system cost (including GST) and incorporated pricing for the itemised rebate.
+
+6. Right to decline. Perth Solar Warehouse staff reserve the right to respectfully decline to participate in selected tenders, quote requests, or inquiries at their discretion.
+
+7. Additional installation costs: View ›
+
+8. PSW Installation Region: Western Australia ›
+
+
+
+
+
+Extended research:
+
+1.1) Three battery rebate options available to West Australians ›
+
+
+
+
+Sungrow inverter trade-in offer
+
+
+
+
+Full terms and conditions: Download
+
+
+
+
+
+EV Chargers
+
+
+EV Chargers
+Supplied and base-installed prices. 
+
+
+
+Make
+
+
+
+Model
+
+
+
+Size
+
+
+
+Supply
+
+INSTALLED
+
+PRICE*
+
+
+
+Cable
+
+
+
+Download
+
+
+
+
+
+Fronius
+
+
+
+
+
+
+
+
+
+wattpilot 22J
+
+
+
+
+
+
+
+7kW
+
+22kW
+
+
+
+
+
+1ph
+
+3ph
+
+
+
+
+
+$2890
+
+$3190
+
+
+
+
+
+untethered
+
+untethered
+
+
+
+
+
+Datasheet
+
+
+
+Goodwe
+
+
+
+
+
+
+
+HCA
+
+
+
+7kW
+
+11kW
+
+22kW
+
+
+
+1ph
+
+3ph
+
+3ph
+
+
+
+$1990
+
+$2390
+
+$2490
+
+
+
+6m
+
+6m
+
+6m
+
+
+
+
+
+Datasheet
+
+
+
+Sigenergy
+
+
+
+
+
+
+
+
+
+Sigen AC
+
+
+
+7kW
+
+11kW
+
+22kW
+
+
+
+1ph
+
+3ph
+
+3ph
+
+
+
+$2490
+
+$2790
+
+$2990
+
+
+
+5m
+
+5m
+
+5m
+
+
+
+Datasheet
+
+
+
+
+
+
+
+
+
+Sigenergy
+
+
+
+
+
+
+
+Sigen DC
+
+
+
+12.5kW
+
+25kW
+
+
+
+
+
+DC
+
+DC
+
+
+
+$4,990
+
+$5,990
+
+
+
+7m
+
+7m
+
+
+
+Datasheet
+
+
+
+Tesla
+
+
+
+
+
+Wall Connector
+
+
+
+7kW
+
+11kW
+
+
+
+1ph
+
+3ph
+
+
+
+$1790
+
+$2090
+
+
+
+
+
+
+
+7.3m
+
+7.3m
+
+
+
+Datasheet
+
+
+*Terminologies and conditions
+
+
+
+EV charger terms:
+
+Tethered EV chargers are those with a cable attached to the EV charger. This format is a Type 2 AC connector suitable for new electric vehicles. The Sigen DC EV charger comes tethered with a CCS2 connector, also suitable for new electric vehicles.
+
+Untethered EV chargers are those in which the cable connecting the charger to the vehicle is a separate component, sold separately. This EV charger type suits either: 
+
+Solar inverter energy ecosystem alignment
+Public areas and 
+Older model electric vehicles that require a Type 1 AC connection
+
+
+*Conditions:
+
+1. Advertised prices. Subject to base installation inclusions. Prices include GST. Additional installation costs may apply; inquire or learn more.
+
+2. Structure. The advertised prices refer to single-level, single-roof/non-detached dwellings with adequate switchboard accessibility and provisions available to accommodate the circuitry and/or associated metering equipment. 
+
+3. Base installation inclusions: EV Charger. The EV charger is within 15m of the electrical switchboard, with a secure wall face for EV charger mounting and in a vicinity with a strong WiFi signal for monitoring, if required. Additional installation costs ›
+
+4. Right to decline. Perth Solar Warehouse staff reserve the right to respectfully decline to participate in selected tenders, quote requests, or inquiries at their discretion.
+
+5. Additional installation costs: View ›
+
+6. PSW Installation Region: Western Australia ›
