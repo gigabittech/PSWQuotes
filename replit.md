@@ -28,6 +28,7 @@ Preferred communication style: Simple, everyday language.
 - **Products Table**: Solar panels, batteries, and EV chargers with pricing and specifications
 - **Quotes Table**: Customer quote requests with system selections and contact details
 - **Quote Items Table**: Junction table for quote-product relationships
+- **Email Logs Table**: Complete audit trail of all email sending attempts with status tracking
 - **Schema Management**: Drizzle migrations for version-controlled database changes
 
 ## Core Features
@@ -36,6 +37,7 @@ Preferred communication style: Simple, everyday language.
 - **Dynamic Pricing**: Real-time price calculations based on product selections and government rebates
 - **Product Catalog**: Configurable product database with specifications and pricing
 - **Admin Dashboard**: Quote management with status tracking and lead conversion
+- **Email Logging System**: Complete tracking of all email sending attempts with success/failure status, error messages, and delivery timestamps for admin oversight
 - **Embeddable Form**: Standalone /embed route with copy-to-clipboard embed code generator for external website integration
 - **PDF Generation**: Automated quote document generation with company branding
 
@@ -44,8 +46,9 @@ Preferred communication style: Simple, everyday language.
 2. System displays relevant products with pricing calculations
 3. Customer provides property details and optional switchboard photo
 4. Quote is generated and stored in database
-5. PDF quote is created and emailed to customer
+5. PDF quote is created and emailed to customer (all email attempts logged to database)
 6. Admin can track and update quote status
+7. Admin can view email delivery logs to verify successful quote delivery
 
 # External Dependencies
 
