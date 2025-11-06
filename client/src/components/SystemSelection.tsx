@@ -17,47 +17,47 @@ export default function SystemSelection({
 }: SystemSelectionProps) {
   const systemOptions = [
     {
-      id: 'solar',
-      title: 'Solar Power',
-      description: 'Harness the sun\'s energy with premium solar panel systems',
-      icon: 'fas fa-sun',
-      iconColor: 'text-secondary',
-      bgColor: 'bg-secondary/10',
-      price: 'From $3,090 after rebates',
+      id: "solar",
+      title: "Solar Power",
+      description: "Harness the sun's energy with premium solar panel systems",
+      icon: "fas fa-sun",
+      iconColor: "text-secondary",
+      bgColor: "bg-secondary/10",
+      price: "From $3,090 after rebates",
     },
     {
-      id: 'battery',
-      title: 'Battery Storage',
-      description: 'Store energy for use when you need it most',
-      icon: 'fas fa-battery-full',
-      iconColor: 'text-accent',
-      bgColor: 'bg-accent/10',
-      price: 'From $6,490 after rebates',
+      id: "battery",
+      title: "Battery Storage",
+      description: "Store energy for use when you need it most",
+      icon: "fas fa-battery-full",
+      iconColor: "text-accent",
+      bgColor: "bg-accent/10",
+      price: "From $6,490 after rebates",
     },
     {
-      id: 'ev',
-      title: 'EV Charging',
-      description: 'Fast, convenient home charging for your electric vehicle',
-      icon: 'fas fa-charging-station',
-      iconColor: 'text-primary',
-      bgColor: 'bg-primary/10',
-      price: 'From $1,790 installed',
+      id: "ev",
+      title: "EV Charging",
+      description: "Fast, convenient home charging for your electric vehicle",
+      icon: "fas fa-charging-station",
+      iconColor: "text-primary",
+      bgColor: "bg-primary/10",
+      price: "From $1,790 installed",
     },
   ];
 
   const powerOptions = [
     {
-      id: 'single',
-      title: 'Single Phase',
-      description: 'Most common in residential properties',
+      id: "single",
+      title: "Single Phase",
+      description: "Most common in residential properties",
     },
     {
-      id: 'three',
-      title: 'Three Phase',
-      description: 'Larger homes and commercial properties',
+      id: "three",
+      title: "Three Phase",
+      description: "Larger homes and commercial properties",
     },
     {
-      id: 'unknown',
+      id: "unknown",
       title: "I don't know",
       description: "We'll help identify during assessment",
     },
@@ -71,7 +71,8 @@ export default function SystemSelection({
           What are you looking for?
         </h2>
         <p className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto">
-          Select all the systems you're interested in. We'll create a custom quote based on your needs.
+          Select all the systems you're interested in. We'll create a custom
+          quote based on your needs.
         </p>
       </div>
 
@@ -88,7 +89,7 @@ export default function SystemSelection({
                 "hover:scale-105 hover:shadow-2xl",
                 isSelected
                   ? "bg-white/90 border-primary/50 shadow-primary/20"
-                  : "bg-white/60 border-white/40 hover:border-primary/30"
+                  : "bg-white/60 border-white/40 hover:border-primary/30",
               )}
               onClick={() => onSystemToggle(option.id)}
               data-testid={`system-option-${option.id}`}
@@ -102,12 +103,16 @@ export default function SystemSelection({
 
               <div className="text-center space-y-4">
                 {/* Icon */}
-                <div className={cn(
-                  "w-20 h-20 rounded-2xl flex items-center justify-center mx-auto",
-                  "transition-transform duration-350 group-hover:scale-110",
-                  option.bgColor
-                )}>
-                  <i className={cn(option.icon, option.iconColor, "text-3xl")}></i>
+                <div
+                  className={cn(
+                    "w-20 h-20 rounded-2xl flex items-center justify-center mx-auto",
+                    "transition-transform duration-350 group-hover:scale-110",
+                    option.bgColor,
+                  )}
+                >
+                  <i
+                    className={cn(option.icon, option.iconColor, "text-3xl")}
+                  ></i>
                 </div>
 
                 {/* Content */}
@@ -140,7 +145,8 @@ export default function SystemSelection({
             Power Supply Type
           </h3>
           <p className="font-inter text-muted-foreground max-w-2xl mx-auto">
-            Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
+            Select your property's electrical supply configuration. Not sure? We
+            can help identify this during our assessment.
           </p>
         </div>
 
@@ -156,17 +162,21 @@ export default function SystemSelection({
                   "hover:scale-102 hover:shadow-lg",
                   isSelected
                     ? "bg-white/80 border-primary/50 shadow-md"
-                    : "bg-white/50 border-white/40 hover:border-primary/30"
+                    : "bg-white/50 border-white/40 hover:border-primary/30",
                 )}
                 onClick={() => onPowerSupplyChange(option.id)}
                 data-testid={`power-supply-${option.id}`}
               >
                 <div className="flex items-start space-x-3">
                   {/* Custom Radio */}
-                  <div className={cn(
-                    "mt-0.5 flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
-                    isSelected ? "border-primary bg-primary" : "border-muted-foreground/40"
-                  )}>
+                  <div
+                    className={cn(
+                      "mt-0.5 flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
+                      isSelected
+                        ? "border-primary bg-primary"
+                        : "border-muted-foreground/40",
+                    )}
+                  >
                     {isSelected && (
                       <div className="w-2 h-2 bg-white rounded-full" />
                     )}
@@ -197,7 +207,7 @@ export default function SystemSelection({
             "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100",
             selectedSystems.length > 0 && powerSupply
               ? "bg-gradient-to-r from-primary to-blue-600 text-white hover:shadow-2xl hover:scale-105"
-              : "bg-muted/50 text-muted-foreground"
+              : "bg-muted/50 text-muted-foreground",
           )}
           onClick={onNext}
           disabled={selectedSystems.length === 0 || !powerSupply}
@@ -207,7 +217,7 @@ export default function SystemSelection({
             Continue to Product Selection
             <i className="fas fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
           </span>
-          
+
           {/* Button Glow Effect */}
           {selectedSystems.length > 0 && powerSupply && (
             <div className="absolute inset-0 rounded-xl bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-350" />
