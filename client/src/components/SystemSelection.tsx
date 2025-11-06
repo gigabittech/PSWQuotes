@@ -22,7 +22,7 @@ export default function SystemSelection({
   onPowerSupplyChange,
   onNext,
 }: SystemSelectionProps) {
-  const { data: minPrices, isLoading } = useQuery<MinimumPrices>({
+  const { data: minPrices, isLoading, isError } = useQuery<MinimumPrices>({
     queryKey: ['/api/minimum-prices'],
   });
 
@@ -35,6 +35,12 @@ export default function SystemSelection({
     }).format(price);
   };
 
+  const getPriceDisplay = (systemType: 'solar' | 'battery' | 'ev', suffix: string) => {
+    if (isLoading) return "Loading...";
+    if (isError || !minPrices) return "Contact us for pricing";
+    return `From ${formatPrice(minPrices[systemType])} ${suffix}`;
+  };
+
   const systemOptions = [
     {
       id: "solar",
@@ -43,7 +49,7 @@ export default function SystemSelection({
       icon: "fas fa-sun",
       iconColor: "text-secondary",
       bgColor: "bg-secondary/10",
-      price: isLoading || !minPrices ? "Loading..." : `From ${formatPrice(minPrices.solar)} after rebates`,
+      price: getPriceDisplay('solar', 'after rebates'),
     },
     {
       id: "battery",
@@ -52,7 +58,7 @@ export default function SystemSelection({
       icon: "fas fa-battery-full",
       iconColor: "text-accent",
       bgColor: "bg-accent/10",
-      price: isLoading || !minPrices ? "Loading..." : `From ${formatPrice(minPrices.battery)} after rebates`,
+      price: getPriceDisplay('battery', 'after rebates'),
     },
     {
       id: "ev",
@@ -61,7 +67,7 @@ export default function SystemSelection({
       icon: "fas fa-charging-station",
       iconColor: "text-primary",
       bgColor: "bg-primary/10",
-      price: isLoading || !minPrices ? "Loading..." : `From ${formatPrice(minPrices.ev)} installed`,
+      price: getPriceDisplay('ev', 'installed'),
     },
   ];
 
