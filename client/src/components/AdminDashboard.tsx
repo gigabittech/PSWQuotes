@@ -35,7 +35,8 @@ import {
   MoreVertical,
   ArrowUpRight,
   ArrowDownRight,
-  Code
+  Code,
+  Mail
 } from "lucide-react";
 import { formatPrice } from "../utils/pricingCalculator";
 import ThemeEditor from "@/components/admin/ThemeEditor";
@@ -46,6 +47,7 @@ import MediaManager from "@/components/admin/MediaManager";
 import { Settings } from "@/components/admin/Settings";
 import EmbedCodeGenerator from "@/components/EmbedCodeGenerator";
 import ProductManager from "@/components/admin/ProductManager";
+import EmailLogs from "@/components/admin/EmailLogs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { User, Quote } from "@shared/schema";
@@ -264,6 +266,17 @@ export default function AdminDashboard() {
           <Badge className="ml-auto" variant="secondary">
             {quotes.length}
           </Badge>
+        </button>
+
+        <button
+          onClick={() => handleTabChange("email-logs")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "email-logs" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-email-logs"
+        >
+          <Mail className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Email Logs</span>
         </button>
 
         <button
@@ -718,6 +731,9 @@ export default function AdminDashboard() {
                 <EmbedCodeGenerator />
               </div>
             )}
+
+            {/* Email Logs */}
+            {activeTab === "email-logs" && <EmailLogs />}
 
             {/* CMS Components */}
             {activeTab === "theme" && <ThemeEditor />}
