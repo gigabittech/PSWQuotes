@@ -552,6 +552,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get minimum prices for system selection
+  app.get("/api/minimum-prices", async (req, res) => {
+    try {
+      const minPrices = await pricingDataService.getMinimumPrices();
+      res.json(minPrices);
+    } catch (error) {
+      console.error("Error fetching minimum prices:", error);
+      res.status(500).json({ error: "Failed to fetch minimum prices" });
+    }
+  });
+
   // Create a new quote
   app.post("/api/quotes", quoteLimiter, upload.none(), async (req, res) => {
     try {
