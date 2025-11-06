@@ -156,6 +156,17 @@ export const settings = pgTable("settings", {
   updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
 });
 
+export const emailLogs = pgTable("email_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  quoteId: varchar("quote_id").references(() => quotes.id),
+  emailType: text("email_type").notNull(), // quote, follow_up, confirmation
+  recipient: text("recipient").notNull(), // email address
+  subject: text("subject").notNull(),
+  status: text("status").notNull(), // sent, failed
+  errorMessage: text("error_message"), // if failed
+  sentAt: timestamp("sent_at").notNull().default(sql`now()`),
+});
+
 export const quoteItemRelations = relations(quoteItems, ({ one }) => ({
   quote: one(quotes, {
     fields: [quoteItems.quoteId],
@@ -239,6 +250,11 @@ export const insertSettingSchema = createInsertSchema(settings).omit({
   updatedAt: true,
 });
 
+export const insertEmailLogSchema = createInsertSchema(emailLogs).omit({
+  id: true,
+  sentAt: true,
+});
+
 // Type exports
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertUserWithRole = z.infer<typeof insertUserSchemaWithRole>;
@@ -270,3 +286,5 @@ export type InsertAnalyticsEvent = z.infer<typeof insertAnalyticsEventSchema>;
 
 export type Setting = typeof settings.$inferSelect;
 export type InsertSetting = z.infer<typeof insertSettingSchema>;
+export type EmailLog = typeof emailLogs.$inferSelect;
+export type InsertEmailLog = z.infer<typeof insertEmailLogSchema>;
