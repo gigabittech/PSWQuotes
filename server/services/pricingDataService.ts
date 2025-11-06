@@ -284,6 +284,57 @@ class PricingDataService {
       stcRebate: Math.round(stcRebate),
     };
   }
+
+  async getMinimumPrices(): Promise<{
+    solar: number;
+    battery: number;
+    ev: number;
+  }> {
+    const data = await this.loadPricingData();
+    
+    let minSolarPrice = Infinity;
+    let minBatteryPrice = Infinity;
+    let minEVPrice = Infinity;
+
+    // Check both single-phase and three-phase for minimum prices
+    for (const phaseType of ['single_phase', 'three_phase'] as const) {
+      const phaseData = data[phaseType];
+
+      // Find minimum solar price
+      Object.values(phaseData.solar_panels).forEach(brand => {
+        brand.packages.forEach(pkg => {
+          if (pkg.price_after_rebate < minSolarPrice) {
+            minSolarPrice = pkg.price_after_rebate;
+          }
+        });
+      });
+
+      // Find minimum battery price
+      Object.values(phaseData.batteries).forEach(brand => {
+        brand.options.forEach(option => {
+          if (option.price_after_rebate < minBatteryPrice) {
+            minBatteryPrice = option.price_after_rebate;
+          }
+        });
+      });
+
+      // Find minimum EV charger price
+      Object.values(phaseData.ev_chargers).forEach(brand => {
+        brand.options.forEach(option => {
+          if (option.installed_price < minEVPrice) {
+            minEVPrice = option.installed_price;
+          }
+        });
+      });
+    }
+
+    return {
+      solar: minSolarPrice === Infinity ? 0 : minSolarPrice,
+      battery: minBatteryPrice === Infinity ? 0 : minBatteryPrice,
+      ev: minEVPrice === Infinity ? 0 : minEVPrice,
+    };
+  }
+
   async addProduct(productData: any): Promise<any> {
     const data = await this.loadPricingData();
     const phase = productData.phase as 'single_phase' | 'three_phase';
