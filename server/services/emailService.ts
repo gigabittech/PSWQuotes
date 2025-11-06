@@ -34,6 +34,15 @@ class EmailService {
   private async sendEmail(quote: Quote, emailType: EmailType, pdfBuffer?: Buffer): Promise<boolean> {
     if (!process.env.BREVO_API_KEY) {
       console.log("Brevo not configured - email not sent");
+      // Log failed attempt to database
+      await storage.createEmailLog({
+        quoteId: quote.id,
+        emailType,
+        recipient: quote.email,
+        subject: 'Email not configured',
+        status: 'failed',
+        errorMessage: 'BREVO_API_KEY not configured',
+      });
       return false;
     }
 
@@ -63,9 +72,31 @@ class EmailService {
       });
 
       console.log(`${emailType} email sent successfully to ${quote.email}`);
+      
+      // Log successful send to database
+      await storage.createEmailLog({
+        quoteId: quote.id,
+        emailType,
+        recipient: quote.email,
+        subject: emailContent.subject,
+        status: 'sent',
+      });
+      
       return true;
     } catch (error) {
       console.error(`Brevo ${emailType} email error:`, error);
+      
+      // Log failed attempt to database
+      const emailContent = await this.generateEmailContent(quote, emailType);
+      await storage.createEmailLog({
+        quoteId: quote.id,
+        emailType,
+        recipient: quote.email,
+        subject: emailContent.subject,
+        status: 'failed',
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
+      });
+      
       return false;
     }
   }

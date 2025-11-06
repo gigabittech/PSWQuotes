@@ -1,6 +1,6 @@
 import { 
   users, quotes, products, quoteItems,
-  cmsTheme, cmsPages, mediaAssets, forms, formFields, formConditions, submissions, analyticsEvents, settings,
+  cmsTheme, cmsPages, mediaAssets, forms, formFields, formConditions, submissions, analyticsEvents, settings, emailLogs,
   type User, type InsertUser, type InsertUserWithRole,
   type Quote, type InsertQuote,
   type Product, type InsertProduct,
@@ -13,7 +13,8 @@ import {
   type FormCondition, type InsertFormCondition,
   type Submission, type InsertSubmission,
   type AnalyticsEvent, type InsertAnalyticsEvent,
-  type Setting, type InsertSetting
+  type Setting, type InsertSetting,
+  type EmailLog, type InsertEmailLog
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -94,6 +95,11 @@ export interface IStorage {
   // Analytics events
   createAnalyticsEvent(event: InsertAnalyticsEvent): Promise<AnalyticsEvent>;
   getAnalyticsEvents(filters?: {formId?: string, type?: string, dateFrom?: Date, dateTo?: Date}): Promise<AnalyticsEvent[]>;
+  
+  // Email logs
+  createEmailLog(log: InsertEmailLog): Promise<EmailLog>;
+  getEmailLogs(quoteId?: string): Promise<EmailLog[]>;
+  getEmailLogsByQuote(quoteId: string): Promise<EmailLog[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -441,6 +447,26 @@ export class DatabaseStorage implements IStorage {
       })
       .returning();
     return setting;
+  }
+
+  // Email logs methods
+  async createEmailLog(insertLog: InsertEmailLog): Promise<EmailLog> {
+    const [log] = await db
+      .insert(emailLogs)
+      .values(insertLog)
+      .returning();
+    return log;
+  }
+
+  async getEmailLogs(quoteId?: string): Promise<EmailLog[]> {
+    if (quoteId) {
+      return await db.select().from(emailLogs).where(eq(emailLogs.quoteId, quoteId)).orderBy(desc(emailLogs.sentAt));
+    }
+    return await db.select().from(emailLogs).orderBy(desc(emailLogs.sentAt));
+  }
+
+  async getEmailLogsByQuote(quoteId: string): Promise<EmailLog[]> {
+    return await db.select().from(emailLogs).where(eq(emailLogs.quoteId, quoteId)).orderBy(desc(emailLogs.sentAt));
   }
 }
 

@@ -730,6 +730,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get all email logs (admin)
+  app.get("/api/email-logs", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const logs = await storage.getEmailLogs();
+      res.json(logs);
+    } catch (error) {
+      console.error("Error fetching email logs:", error);
+      res.status(500).json({ error: "Failed to fetch email logs" });
+    }
+  });
+
+  // Get email logs for a specific quote (admin)
+  app.get("/api/email-logs/quote/:quoteId", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { quoteId } = req.params;
+      const logs = await storage.getEmailLogsByQuote(quoteId);
+      res.json(logs);
+    } catch (error) {
+      console.error("Error fetching email logs for quote:", error);
+      res.status(500).json({ error: "Failed to fetch email logs" });
+    }
+  });
+
   // Generate and download PDF for a quote (public access for customers)
   app.get("/api/quotes/:id/pdf", async (req, res) => {
     try {
