@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 
 interface SystemSelectionProps {
   selectedSystems: string[];
@@ -8,6 +9,12 @@ interface SystemSelectionProps {
   onNext: () => void;
 }
 
+interface MinimumPrices {
+  solar: number;
+  battery: number;
+  ev: number;
+}
+
 export default function SystemSelection({
   selectedSystems,
   powerSupply,
@@ -15,6 +22,19 @@ export default function SystemSelection({
   onPowerSupplyChange,
   onNext,
 }: SystemSelectionProps) {
+  const { data: minPrices, isLoading } = useQuery<MinimumPrices>({
+    queryKey: ['/api/minimum-prices'],
+  });
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-AU', {
+      style: 'currency',
+      currency: 'AUD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
+
   const systemOptions = [
     {
       id: "solar",
@@ -23,7 +43,7 @@ export default function SystemSelection({
       icon: "fas fa-sun",
       iconColor: "text-secondary",
       bgColor: "bg-secondary/10",
-      price: "From $3,090 after rebates",
+      price: isLoading || !minPrices ? "Loading..." : `From ${formatPrice(minPrices.solar)} after rebates`,
     },
     {
       id: "battery",
@@ -32,7 +52,7 @@ export default function SystemSelection({
       icon: "fas fa-battery-full",
       iconColor: "text-accent",
       bgColor: "bg-accent/10",
-      price: "From $6,490 after rebates",
+      price: isLoading || !minPrices ? "Loading..." : `From ${formatPrice(minPrices.battery)} after rebates`,
     },
     {
       id: "ev",
@@ -41,7 +61,7 @@ export default function SystemSelection({
       icon: "fas fa-charging-station",
       iconColor: "text-primary",
       bgColor: "bg-primary/10",
-      price: "From $1,790 installed",
+      price: isLoading || !minPrices ? "Loading..." : `From ${formatPrice(minPrices.ev)} installed`,
     },
   ];
 
