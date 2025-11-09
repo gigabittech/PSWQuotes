@@ -96,8 +96,8 @@ ${quoteData.additionalInfo ? `Additional Info: ${quoteData.additionalInfo}` : ""
       ADDRESS_POSTCODE: quoteData.postcode,
       LEAD_RATING: 5,
       TAGS: [
-        { TAG_NAME: "Perth Solar Warehouse" },
-        { TAG_NAME: "Quote Request" },
+        { TAG_NAME: "PerthSolarWarehouse" },
+        { TAG_NAME: "QuoteRequest" },
         ...quoteData.selectedSystems.map((s: string) => ({
           TAG_NAME: s.charAt(0).toUpperCase() + s.slice(1),
         })),
