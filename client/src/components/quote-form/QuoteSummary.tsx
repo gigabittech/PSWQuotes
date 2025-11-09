@@ -126,7 +126,15 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
               <span className="text-accent text-lg sm:text-xl">💰</span>
             </div>
             <h4 className="font-semibold text-foreground mb-1 sm:mb-2 text-sm sm:text-base">Annual Savings</h4>
-            <div className="text-xl sm:text-2xl font-bold text-primary">$2,800+</div>
+            <div className="text-xl sm:text-2xl font-bold text-primary">
+              {(() => {
+                const solarProduct = getSolarProduct();
+                const solarMatch = solarProduct?.name?.match(/(\d+\.?\d*)kW/) || data.solarPackage?.match(/(\d+\.?\d*)kW/);
+                const solarSize = solarMatch ? parseFloat(solarMatch[1]) : 0;
+                const annualSavings = Math.round(solarSize * 420);
+                return annualSavings > 0 ? `$${annualSavings.toLocaleString()}+` : 'N/A';
+              })()}
+            </div>
             <p className="text-xs sm:text-sm text-muted-foreground">Estimated electricity savings</p>
           </div>
 
@@ -135,7 +143,25 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
               <span className="text-secondary text-lg sm:text-xl">📅</span>
             </div>
             <h4 className="font-semibold text-foreground mb-1 sm:mb-2 text-sm sm:text-base">Payback Period</h4>
-            <div className="text-xl sm:text-2xl font-bold text-primary">4-5 years</div>
+            <div className="text-xl sm:text-2xl font-bold text-primary">
+              {(() => {
+                const solarProduct = getSolarProduct();
+                const solarMatch = solarProduct?.name?.match(/(\d+\.?\d*)kW/) || data.solarPackage?.match(/(\d+\.?\d*)kW/);
+                const solarSize = solarMatch ? parseFloat(solarMatch[1]) : 0;
+                const annualSavings = solarSize * 420;
+                const finalPrice = pricingData.finalPrice;
+                
+                if (finalPrice > 0 && annualSavings > 0) {
+                  const years = finalPrice / annualSavings;
+                  if (years < 1) return '< 1 year';
+                  if (years <= 3) return '2-3 years';
+                  if (years <= 5) return '4-5 years';
+                  if (years <= 7) return '5-7 years';
+                  return `${Math.round(years)} years`;
+                }
+                return 'N/A';
+              })()}
+            </div>
             <p className="text-xs sm:text-sm text-muted-foreground">Return on investment</p>
           </div>
 
@@ -144,7 +170,15 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
               <span className="text-primary text-lg sm:text-xl">🌱</span>
             </div>
             <h4 className="font-semibold text-foreground mb-1 sm:mb-2 text-sm sm:text-base">CO2 Reduction</h4>
-            <div className="text-xl sm:text-2xl font-bold text-primary">8.5 tonnes</div>
+            <div className="text-xl sm:text-2xl font-bold text-primary">
+              {(() => {
+                const solarProduct = getSolarProduct();
+                const solarMatch = solarProduct?.name?.match(/(\d+\.?\d*)kW/) || data.solarPackage?.match(/(\d+\.?\d*)kW/);
+                const solarSize = solarMatch ? parseFloat(solarMatch[1]) : 0;
+                const co2Reduction = (solarSize * 1.3).toFixed(1);
+                return solarSize > 0 ? `${co2Reduction} tonnes` : 'N/A';
+              })()}
+            </div>
             <p className="text-xs sm:text-sm text-muted-foreground">Annually</p>
           </div>
         </div>
