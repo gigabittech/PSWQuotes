@@ -22,20 +22,27 @@ export default function SystemSelection({
   onPowerSupplyChange,
   onNext,
 }: SystemSelectionProps) {
-  const { data: minPrices, isLoading, isError } = useQuery<MinimumPrices>({
-    queryKey: ['/api/minimum-prices'],
+  const {
+    data: minPrices,
+    isLoading,
+    isError,
+  } = useQuery<MinimumPrices>({
+    queryKey: ["/api/minimum-prices"],
   });
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-AU', {
-      style: 'currency',
-      currency: 'AUD',
+    return new Intl.NumberFormat("en-AU", {
+      style: "currency",
+      currency: "AUD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
   };
 
-  const getPriceDisplay = (systemType: 'solar' | 'battery' | 'ev', suffix: string) => {
+  const getPriceDisplay = (
+    systemType: "solar" | "battery" | "ev",
+    suffix: string,
+  ) => {
     if (isLoading) return "Loading...";
     if (isError || !minPrices) return "Contact us for pricing";
     return `From ${formatPrice(minPrices[systemType])} ${suffix}`;
@@ -49,7 +56,7 @@ export default function SystemSelection({
       icon: "fas fa-sun",
       iconColor: "text-secondary",
       bgColor: "bg-secondary/10",
-      price: getPriceDisplay('solar', 'after rebates'),
+      price: getPriceDisplay("solar", "after rebates"),
     },
     {
       id: "battery",
@@ -58,7 +65,7 @@ export default function SystemSelection({
       icon: "fas fa-battery-full",
       iconColor: "text-accent",
       bgColor: "bg-accent/10",
-      price: getPriceDisplay('battery', 'after rebates'),
+      price: getPriceDisplay("battery", "after rebates"),
     },
     {
       id: "ev",
@@ -67,7 +74,7 @@ export default function SystemSelection({
       icon: "fas fa-charging-station",
       iconColor: "text-primary",
       bgColor: "bg-primary/10",
-      price: getPriceDisplay('ev', 'installed'),
+      price: getPriceDisplay("ev", "installed"),
     },
   ];
 
@@ -132,7 +139,7 @@ export default function SystemSelection({
                 <div
                   className={cn(
                     "w-20 h-20 rounded-2xl flex items-center justify-center mx-auto",
-                    "transition-transform duration-350 group-hover:scale-110",
+                    "transition-transform duration-350 group-hover:scale-110 bg-red-500",
                     option.bgColor,
                   )}
                 >
