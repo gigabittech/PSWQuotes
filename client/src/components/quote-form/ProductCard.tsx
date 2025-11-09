@@ -6,7 +6,7 @@ interface ProductCardProps {
   onSelect: () => void;
   badge?: string;
   badgeColor?: string;
-  productType?: 'solar' | 'battery' | 'ev_charger';
+  productType?: 'solar' | 'battery' | 'ev_charger' | 'hybrid_inverter';
 }
 
 export default function ProductCard({ product, isSelected, onSelect, badge, badgeColor, productType }: ProductCardProps) {
@@ -22,6 +22,12 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
           border: 'hover:border-primary',
           accent: 'text-primary',
           icon: '☀️'
+        };
+      case 'hybrid_inverter':
+        return {
+          border: 'hover:border-purple-600',
+          accent: 'text-purple-600',
+          icon: '🔌'
         };
       case 'battery':
         return {
