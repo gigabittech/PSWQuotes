@@ -33,6 +33,7 @@ export const quotes = pgTable("quotes", {
   additionalInfo: text("additional_info"),
   switchboardPhotoUrl: text("switchboard_photo_url"),
   status: text("status").notNull().default("pending"), // pending, contacted, converted, lost
+  insightlyLeadId: text("insightly_lead_id"), // Insightly CRM lead ID
   createdAt: timestamp("created_at").notNull().default(sql`now()`),
   updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
 });
