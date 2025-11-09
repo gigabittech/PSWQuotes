@@ -289,12 +289,14 @@ class PricingDataService {
     solar: number;
     battery: number;
     ev: number;
+    inverter: number;
   }> {
     const data = await this.loadPricingData();
     
     let minSolarPrice = Infinity;
     let minBatteryPrice = Infinity;
     let minEVPrice = Infinity;
+    let minInverterPrice = Infinity;
 
     // Check both single-phase and three-phase for minimum prices
     for (const phaseType of ['single_phase', 'three_phase'] as const) {
@@ -305,6 +307,15 @@ class PricingDataService {
         brand.packages.forEach(pkg => {
           if (pkg.price_after_rebate < minSolarPrice) {
             minSolarPrice = pkg.price_after_rebate;
+          }
+        });
+      });
+
+      // Find minimum inverter price
+      Object.values(phaseData.hybrid_inverters).forEach(brand => {
+        brand.models.forEach(model => {
+          if (model.price_single < minInverterPrice) {
+            minInverterPrice = model.price_single;
           }
         });
       });
@@ -332,6 +343,7 @@ class PricingDataService {
       solar: minSolarPrice === Infinity ? 0 : minSolarPrice,
       battery: minBatteryPrice === Infinity ? 0 : minBatteryPrice,
       ev: minEVPrice === Infinity ? 0 : minEVPrice,
+      inverter: minInverterPrice === Infinity ? 0 : minInverterPrice,
     };
   }
 

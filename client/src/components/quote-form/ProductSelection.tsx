@@ -7,6 +7,7 @@ interface ProductSelectionProps {
   data: {
     systems?: string[];
     solarPackage?: string;
+    hybridInverter?: string;
     batterySystem?: string;
     evCharger?: string;
   };
@@ -29,6 +30,7 @@ export default function ProductSelection({
 }: ProductSelectionProps) {
   
   const solarProducts = products.filter(p => p.type === 'solar');
+  const inverterProducts = products.filter(p => p.type === 'hybrid_inverter');
   const batteryProducts = products.filter(p => p.type === 'battery');
   const evProducts = products.filter(p => p.type === 'ev_charger');
 
@@ -60,6 +62,26 @@ export default function ProductSelection({
                   badge={product.popular ? "POPULAR" : undefined}
                   badgeColor="bg-primary text-primary-foreground"
                   productType="solar"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Hybrid Inverter Selection */}
+        {data.systems?.includes('inverter') && (
+          <div className="mb-6 sm:mb-8">
+            <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 px-2">Hybrid Inverters</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+              {inverterProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  isSelected={data.hybridInverter === product.id}
+                  onSelect={() => handleProductSelect('hybridInverter', product.id)}
+                  badge={product.popular ? "SMART CONTROL" : undefined}
+                  badgeColor="bg-purple-600 text-white"
+                  productType="hybrid_inverter"
                 />
               ))}
             </div>
