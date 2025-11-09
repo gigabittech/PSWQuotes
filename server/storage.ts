@@ -32,6 +32,7 @@ export interface IStorage {
   getQuote(id: string): Promise<Quote | undefined>;
   getQuotes(): Promise<Quote[]>;
   updateQuoteStatus(id: string, status: string): Promise<Quote | undefined>;
+  updateQuote(id: string, updates: Partial<InsertQuote>): Promise<Quote | undefined>;
   
   // Product management
   getProducts(): Promise<Product[]>;
@@ -159,6 +160,15 @@ export class DatabaseStorage implements IStorage {
     const [quote] = await db
       .update(quotes)
       .set({ status, updatedAt: new Date() })
+      .where(eq(quotes.id, id))
+      .returning();
+    return quote || undefined;
+  }
+
+  async updateQuote(id: string, updates: Partial<InsertQuote>): Promise<Quote | undefined> {
+    const [quote] = await db
+      .update(quotes)
+      .set({ ...updates, updatedAt: new Date() })
       .where(eq(quotes.id, id))
       .returning();
     return quote || undefined;

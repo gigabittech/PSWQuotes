@@ -11,6 +11,7 @@ import {
 import { emailService } from "./services/emailService";
 import { pricingService } from "./services/pricingService";
 import { pricingDataService } from "./services/pricingDataService";
+import { insightlyService } from "./services/insightlyService";
 import { generateQuotePDF } from "./pdfGenerator";
 import {
   ObjectStorageService,
@@ -676,6 +677,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const quote = await storage.createQuote(validatedData);
 
+      // Create Insightly lead
+      let insightlyLeadId: string | null = null;
+      try {
+        insightlyLeadId = await insightlyService.createLead(quote);
+        console.log(`Insightly lead created: ${insightlyLeadId}`);
+        
+        // Update quote with Insightly lead ID
+        await storage.updateQuote(quote.id, { insightlyLeadId });
+      } catch (error) {
+        console.error("Failed to create Insightly lead:", error);
+        // Continue with quote creation even if Insightly fails
+      }
+
       // Generate PDF
       const pdfBuffer = await generateQuotePDF(quote);
       
@@ -686,7 +700,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.error("Failed to send email to customer");
       }
 
-      res.json({ quote, emailSent });
+      res.json({ quote, emailSent, insightlyLeadId });
     } catch (error) {
       console.error("Error creating quote:", error);
       res.status(400).json({ error: "Failed to create quote" });
