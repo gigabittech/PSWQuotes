@@ -4,6 +4,7 @@ interface QuoteSummaryProps {
   data: {
     systems?: string[];
     solarPackage?: string;
+    hybridInverter?: string;
     batterySystem?: string;
     evCharger?: string;
     firstName?: string;
@@ -31,6 +32,7 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
   };
 
   const getSolarProduct = () => products.find(p => p.id === data.solarPackage);
+  const getInverterProduct = () => products.find(p => p.id === data.hybridInverter);
   const getBatteryProduct = () => products.find(p => p.id === data.batterySystem);
   const getEvProduct = () => products.find(p => p.id === data.evCharger);
 
@@ -58,6 +60,21 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold text-foreground text-sm sm:text-base">Solar Power System</h4>
                     <p className="text-xs sm:text-sm text-muted-foreground truncate">{getSolarProduct()?.name || data.solarPackage}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Hybrid Inverter Summary */}
+            {data.systems?.includes('inverter') && data.hybridInverter && (
+              <div className="flex items-center p-3 sm:p-4 bg-card rounded-lg border border-border">
+                <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-600/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-purple-600">🔌</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-foreground text-sm sm:text-base">Hybrid Inverter</h4>
+                    <p className="text-xs sm:text-sm text-muted-foreground truncate">{getInverterProduct()?.name || data.hybridInverter}</p>
                   </div>
                 </div>
               </div>

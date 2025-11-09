@@ -1,10 +1,11 @@
 export interface QuoteFormData {
   // Step 1: System Requirements
-  systems: ('solar' | 'battery' | 'ev')[];
+  systems: ('solar' | 'battery' | 'ev' | 'inverter')[];
   powerSupply: 'single' | 'three' | 'unknown';
   
   // Step 2: Product Selection
   solarPackage?: string;
+  hybridInverter?: string;
   batterySystem?: string;
   evCharger?: string;
   
@@ -78,6 +79,7 @@ export interface PricingData {
   finalPrice: number;
   breakdown: {
     solar?: Product;
+    inverter?: Product;
     battery?: Product;
     ev?: Product;
   };
@@ -86,7 +88,7 @@ export interface PricingData {
 export interface Product {
   id: string;
   name: string;
-  type: 'solar' | 'battery' | 'ev_charger';
+  type: 'solar' | 'battery' | 'ev_charger' | 'hybrid_inverter';
   category: string;
   capacity: string;
   price: string;
@@ -114,6 +116,7 @@ export interface Quote {
   powerSupply: string;
   selectedSystems: string[];
   solarPackage?: string;
+  hybridInverter?: string;
   batterySystem?: string;
   evCharger?: string;
   totalPrice: string;
