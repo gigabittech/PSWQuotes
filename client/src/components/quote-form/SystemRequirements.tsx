@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 
 interface SystemRequirementsProps {
   data: {
@@ -9,7 +10,32 @@ interface SystemRequirementsProps {
   onNext: () => void;
 }
 
+interface MinimumPrices {
+  solar: number;
+  battery: number;
+  ev: number;
+}
+
 export default function SystemRequirements({ data, onUpdate, onNext }: SystemRequirementsProps) {
+  const { data: minPrices, isLoading, isError } = useQuery<MinimumPrices>({
+    queryKey: ["/api/minimum-prices"],
+  });
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-AU", {
+      style: "currency",
+      currency: "AUD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
+
+  const getPriceDisplay = (systemType: "solar" | "battery" | "ev") => {
+    if (isLoading) return "Loading...";
+    if (isError || !minPrices) return "Contact us";
+    return `From ${formatPrice(minPrices[systemType])}`;
+  };
+
   const systemOptions = [
     {
       id: 'solar',
@@ -18,7 +44,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
       icon: '☀️',
       iconBg: 'bg-muted/50 dark:bg-muted/30',
       border: 'hover:border-primary',
-      price: 'From $3,090',
+      price: getPriceDisplay('solar'),
       afterText: 'after rebates',
       badge: 'MOST POPULAR',
       popular: true,
@@ -30,7 +56,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
       icon: '🔋',
       iconBg: 'bg-muted/50 dark:bg-muted/30',
       border: 'hover:border-primary',
-      price: 'From $6,490',
+      price: getPriceDisplay('battery'),
       afterText: 'after rebates',
       badge: 'PREMIUM',
     },
@@ -41,7 +67,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
       icon: '⚡',
       iconBg: 'bg-muted/50 dark:bg-muted/30',
       border: 'hover:border-primary',
-      price: 'From $1,790',
+      price: getPriceDisplay('ev'),
       afterText: 'installed',
       badge: 'FAST CHARGING',
     },
