@@ -13,6 +13,7 @@ interface MinimumPrices {
   solar: number;
   battery: number;
   ev: number;
+  inverter: number;
 }
 
 export default function SystemSelection({
@@ -40,7 +41,7 @@ export default function SystemSelection({
   };
 
   const getPriceDisplay = (
-    systemType: "solar" | "battery" | "ev",
+    systemType: "solar" | "battery" | "ev" | "inverter",
     suffix: string,
   ) => {
     if (isLoading) return "Loading...";
@@ -57,6 +58,15 @@ export default function SystemSelection({
       iconColor: "text-secondary",
       bgColor: "bg-secondary/10",
       price: getPriceDisplay("solar", "after rebates"),
+    },
+    {
+      id: "inverter",
+      title: "Hybrid Inverter",
+      description: "Smart inverter for solar, battery & backup power management",
+      icon: "fas fa-microchip",
+      iconColor: "text-purple-600",
+      bgColor: "bg-purple-600/10",
+      price: getPriceDisplay("inverter", "installed"),
     },
     {
       id: "battery",
@@ -110,7 +120,7 @@ export default function SystemSelection({
       </div>
 
       {/* System Options Grid */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {systemOptions.map((option) => {
           const isSelected = selectedSystems.includes(option.id);
           return (

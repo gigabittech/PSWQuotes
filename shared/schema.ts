@@ -23,8 +23,9 @@ export const quotes = pgTable("quotes", {
   state: text("state").notNull(),
   postcode: text("postcode").notNull(),
   powerSupply: text("power_supply").notNull(), // single, three, unknown
-  selectedSystems: text("selected_systems").array().notNull(), // solar, battery, ev
+  selectedSystems: text("selected_systems").array().notNull(), // solar, battery, ev, inverter
   solarPackage: text("solar_package"),
+  hybridInverter: text("hybrid_inverter"),
   batterySystem: text("battery_system"),
   evCharger: text("ev_charger"),
   totalPrice: decimal("total_price", { precision: 10, scale: 2 }).notNull(),
