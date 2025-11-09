@@ -33,16 +33,7 @@ class EmailService {
 
   private async sendEmail(quote: Quote, emailType: EmailType, pdfBuffer?: Buffer): Promise<boolean> {
     if (!process.env.BREVO_API_KEY) {
-      console.log("Brevo not configured - email not sent");
-      // Log failed attempt to database
-      await storage.createEmailLog({
-        quoteId: quote.id,
-        emailType,
-        recipient: quote.email,
-        subject: 'Email not configured',
-        status: 'failed',
-        errorMessage: 'BREVO_API_KEY not configured',
-      });
+      console.log("Brevo not configured - skipping email");
       return false;
     }
 

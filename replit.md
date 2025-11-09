@@ -26,7 +26,7 @@ Preferred communication style: Simple, everyday language.
 
 ## Database Design
 - **Products Table**: Solar panels, batteries, and EV chargers with pricing and specifications
-- **Quotes Table**: Customer quote requests with system selections and contact details
+- **Quotes Table**: Customer quote requests with system selections, contact details, and Insightly lead ID tracking
 - **Quote Items Table**: Junction table for quote-product relationships
 - **Email Logs Table**: Complete audit trail of all email sending attempts with status tracking
 - **Schema Management**: Drizzle migrations for version-controlled database changes
@@ -34,9 +34,10 @@ Preferred communication style: Simple, everyday language.
 ## Core Features
 - **Multi-step Quote Form**: Progressive form with system selection, product configuration, and customer details
 - **Glassmorphism Design**: Modern liquid glass UI with backdrop-blur effects, semi-transparent panels, and gradient borders
-- **Dynamic Pricing**: Real-time price calculations based on product selections and government rebates
+- **Dynamic Pricing**: Real-time price calculations from pricing-data.json with automatic minimum price display
 - **Product Catalog**: Configurable product database with specifications and pricing
 - **Admin Dashboard**: Quote management with status tracking and lead conversion
+- **Insightly CRM Integration**: Automatic lead creation with customer details, product selections, pricing, and smart tagging
 - **Email Logging System**: Complete tracking of all email sending attempts with success/failure status, error messages, and delivery timestamps for admin oversight
 - **Embeddable Form**: Standalone /embed route with copy-to-clipboard embed code generator for external website integration
 - **PDF Generation**: Automated quote document generation with company branding
@@ -46,9 +47,10 @@ Preferred communication style: Simple, everyday language.
 2. System displays relevant products with pricing calculations
 3. Customer provides property details and optional switchboard photo
 4. Quote is generated and stored in database
-5. PDF quote is created and emailed to customer (all email attempts logged to database)
-6. Admin can track and update quote status
-7. Admin can view email delivery logs to verify successful quote delivery
+5. Lead is automatically created in Insightly CRM with full customer and quote details
+6. PDF quote is created and emailed to customer (if Brevo is configured)
+7. Admin can track and update quote status
+8. Admin can view email delivery logs to verify successful quote delivery
 
 # External Dependencies
 
@@ -56,8 +58,9 @@ Preferred communication style: Simple, everyday language.
 - **Neon Database**: PostgreSQL hosting with serverless connections
 - **Drizzle ORM**: Type-safe database toolkit with migrations
 
-## Email Services  
-- **Brevo (Sendinblue)**: Transactional email service for quote delivery
+## Email & CRM Services  
+- **Brevo (Sendinblue)**: Transactional email service for quote delivery (optional)
+- **Insightly CRM**: Customer relationship management with automatic lead creation from quotes
 
 ## UI & Frontend Libraries
 - **Radix UI**: Headless component primitives for accessibility
