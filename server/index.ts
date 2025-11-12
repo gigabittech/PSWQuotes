@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import session from "express-session";
 import ConnectPgSimple from "connect-pg-simple";
@@ -228,11 +229,19 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
+  const host = process.env.HOST || (process.platform === 'win32' ? 'localhost' : '0.0.0.0');
+  
+  // reusePort is not supported on Windows
+  const listenOptions: any = {
     port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
+    host,
+  };
+  
+  if (process.platform !== 'win32') {
+    listenOptions.reusePort = true;
+  }
+  
+  server.listen(listenOptions, () => {
     log(`serving on port ${port}`);
   });
 })();
