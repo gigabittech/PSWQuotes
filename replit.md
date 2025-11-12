@@ -1,6 +1,6 @@
 # Overview
 
-This is a full-stack solar quote management system for Perth Solar Warehouse. The application allows customers to request solar system quotes through a multi-step form and provides an admin dashboard for managing leads. The system handles solar power, battery storage, and EV charging product configurations with automated pricing calculations and quote generation.
+This is a full-stack solar quote management system for Perth Solar Warehouse. The application allows customers to request solar system quotes through a multi-step form and provides an admin dashboard for managing leads. The system handles solar power, hybrid inverters, battery storage, and EV charging product configurations with automated pricing calculations and quote generation.
 
 # User Preferences
 
@@ -25,8 +25,8 @@ Preferred communication style: Simple, everyday language.
 - **API Design**: RESTful endpoints for quotes, products, and admin operations
 
 ## Database Design
-- **Products Table**: Solar panels, batteries, and EV chargers with pricing and specifications
-- **Quotes Table**: Customer quote requests with system selections, contact details, and Insightly lead ID tracking
+- **Products Table**: Solar panels, hybrid inverters, batteries, and EV chargers with pricing and specifications
+- **Quotes Table**: Customer quote requests with system selections (including hybridInverter field), contact details, and Insightly lead ID tracking
 - **Quote Items Table**: Junction table for quote-product relationships
 - **Email Logs Table**: Complete audit trail of all email sending attempts with status tracking
 - **Schema Management**: Drizzle migrations for version-controlled database changes
@@ -43,7 +43,7 @@ Preferred communication style: Simple, everyday language.
 - **PDF Generation**: Automated quote document generation with company branding
 
 ## Data Flow
-1. Customer selects systems (solar/battery/EV) and power supply type
+1. Customer selects systems (solar/hybrid inverter/battery/EV) and power supply type
 2. System displays relevant products with pricing calculations
 3. Customer provides property details and optional switchboard photo
 4. Quote is generated and stored in database
@@ -51,6 +51,25 @@ Preferred communication style: Simple, everyday language.
 6. PDF quote is created and emailed to customer (if Brevo is configured)
 7. Admin can track and update quote status
 8. Admin can view email delivery logs to verify successful quote delivery
+
+# Configuration
+
+## Environment Variables
+A `.env.example` file is provided in the project root documenting all required and optional environment variables:
+
+### Required (Auto-provided by Replit)
+- Database credentials (DATABASE_URL, PGHOST, PGPORT, etc.)
+- Object storage configuration
+- Session secret
+
+### Required (User-provided)
+- **INSIGHTLY_API_KEY**: CRM integration for automatic lead creation
+
+### Optional
+- **BREVO_API_KEY**: Email service for sending quote PDFs to customers
+- **SENDGRID_API_KEY**: Alternative email service
+
+Developers should copy `.env.example` to `.env` and fill in the required values for local development.
 
 # External Dependencies
 
