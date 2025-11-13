@@ -14,10 +14,10 @@ export default function StepIndicator({
   isLoading = false 
 }: StepIndicatorProps) {
   const steps = [
-    { number: 1, title: "System Requirements" },
-    { number: 2, title: "Product Selection" },
-    { number: 3, title: "Property Details" },
-    { number: 4, title: "Quote Summary" },
+    { number: 1, title: "System Requirements", shortTitle: "System" },
+    { number: 2, title: "Product Selection", shortTitle: "Products" },
+    { number: 3, title: "Property Details", shortTitle: "Property" },
+    { number: 4, title: "Quote Summary", shortTitle: "Summary" },
   ];
 
   const handleStepClick = (stepNumber: number) => {
@@ -37,11 +37,11 @@ export default function StepIndicator({
   };
 
   return (
-    <div className="mb-8 px-4" role="navigation" aria-label="Quote progress">
+    <div className="mb-8 px-2 sm:px-4" role="navigation" aria-label="Quote progress">
       {/* Steps with connecting progress bar */}
-      <div className="relative flex items-center justify-between max-w-4xl mx-auto">
-        {/* Progress bar background */}
-        <div className="absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2 z-0">
+      <div className="relative flex items-center justify-between max-w-4xl mx-auto gap-1 sm:gap-2">
+        {/* Progress bar background - hidden on mobile, shown on larger screens */}
+        <div className="hidden sm:block absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2 z-0">
           <div className="h-full bg-muted/50 backdrop-blur-sm rounded-full" />
           {/* Active progress */}
           <div 
@@ -66,10 +66,10 @@ export default function StepIndicator({
               onClick={() => handleStepClick(step.number)}
               disabled={!clickable}
               className={cn(
-                "relative z-10 px-4 py-2 md:px-6 md:py-2.5 rounded-full text-sm md:text-base font-medium",
+                "relative z-10 flex-1 sm:flex-none px-2 py-1.5 sm:px-4 sm:py-2 md:px-6 md:py-2.5 rounded-full text-xs sm:text-sm md:text-base font-medium",
                 "transition-all duration-300 ease-out",
                 "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
-                "backdrop-blur-md border",
+                "backdrop-blur-md border min-w-0",
                 state === 'current' && [
                   "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30",
                   "scale-105"
@@ -102,10 +102,11 @@ export default function StepIndicator({
               )}
               
               <span className={cn(
-                "whitespace-nowrap",
+                "block truncate text-center",
                 state === 'current' && isLoading && "opacity-0"
               )}>
-                {step.title}
+                <span className="hidden sm:inline">{step.title}</span>
+                <span className="sm:hidden">{step.shortTitle}</span>
               </span>
             </button>
           );
