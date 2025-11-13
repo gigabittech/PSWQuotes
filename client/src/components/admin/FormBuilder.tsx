@@ -350,9 +350,9 @@ export default function FormBuilder() {
 
   return (
     <div className="space-y-6" data-testid="form-builder">
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Form Builder</h2>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2">Form Builder</h2>
           <p className="text-muted-foreground">
             Create and manage custom forms with conditional logic
           </p>

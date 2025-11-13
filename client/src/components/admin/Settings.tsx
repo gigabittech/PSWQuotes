@@ -289,9 +289,9 @@ export function Settings() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
             Settings
           </h2>
           <p className="text-gray-600 dark:text-gray-400">

@@ -237,9 +237,9 @@ export default function PageManager() {
 
   return (
     <div className="space-y-6" data-testid="page-manager">
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Page Management</h2>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2">Page Management</h2>
           <p className="text-muted-foreground">
             Create and manage your website pages and content
           </p>

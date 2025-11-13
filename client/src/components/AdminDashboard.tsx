@@ -52,8 +52,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Skeleton } from "@/components/ui/skeleton";
 import type { User, Quote } from "@shared/schema";
 
-export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen, showOnlySidebar }: { mobileSidebarOpen?: boolean; setMobileSidebarOpen?: (open: boolean) => void; showOnlySidebar?: boolean }) {
-  const [activeTab, setActiveTab] = useState("overview");
+export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen, showOnlySidebar, activeTab: externalActiveTab, setActiveTab: externalSetActiveTab }: { mobileSidebarOpen?: boolean; setMobileSidebarOpen?: (open: boolean) => void; showOnlySidebar?: boolean; activeTab?: string; setActiveTab?: (tab: string) => void }) {
+  const [internalActiveTab, setInternalActiveTab] = useState("overview");
+  const activeTab = externalActiveTab ?? internalActiveTab;
+  const setActiveTab = externalSetActiveTab ?? setInternalActiveTab;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -602,12 +604,12 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col lg:ml-64 overflow-hidden">
-          <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 lg:p-8 pt-14 sm:pt-16 lg:pt-0">
+          <div className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8">
             {activeTab === "overview" && (
               <div className="max-w-7xl">
                 {/* Header */}
-                <div className="mb-8 mt-4">
-                  <h1 className="text-3xl font-outfit font-bold text-foreground mb-2">Dashboard</h1>
+                <div className="mb-6 md:mb-8">
+                  <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Dashboard</h1>
                   <p className="text-muted-foreground">Welcome back! Here's what's happening with your solar quotes today.</p>
                 </div>
 
@@ -746,8 +748,8 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             {activeTab === "quotes" && (
               <div className="max-w-7xl">
                 {/* Header */}
-                <div className="mb-6 mt-4">
-                  <h1 className="text-3xl font-outfit font-bold text-foreground mb-2">Quotes</h1>
+                <div className="mb-6 md:mb-8">
+                  <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Quotes</h1>
                   <p className="text-muted-foreground">Review and manage customer quote requests</p>
                 </div>
 
@@ -884,9 +886,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
             {/* Embed Code */}
             {activeTab === "embed" && (
-              <div className="space-y-6">
-                <div className="mt-4">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Embed Quote Form</h1>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="mb-6 md:mb-8">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Embed Quote Form</h1>
                   <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
                 </div>
                 <EmbedCodeGenerator />
@@ -906,9 +908,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             
             {/* User Management */}
             {activeTab === "users" && userRole === 'admin' && (
-              <div className="space-y-6">
-                <div className="mt-4">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">User Management</h1>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="mb-6 md:mb-8">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">User Management</h1>
                   <p className="text-sm sm:text-base text-muted-foreground">Manage user accounts and permissions</p>
                 </div>
                 <Card>

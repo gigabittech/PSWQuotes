@@ -15,6 +15,7 @@ export default function Admin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -285,7 +286,7 @@ export default function Admin() {
                       </div>
                     </div>
                   </div>
-                  <AdminDashboard mobileSidebarOpen={mobileSidebarOpen} setMobileSidebarOpen={setMobileSidebarOpen} showOnlySidebar={true} />
+                  <AdminDashboard mobileSidebarOpen={mobileSidebarOpen} setMobileSidebarOpen={setMobileSidebarOpen} showOnlySidebar={true} activeTab={activeTab} setActiveTab={setActiveTab} />
                 </SheetContent>
               </Sheet>
               
@@ -303,7 +304,7 @@ export default function Admin() {
       </header>
 
       <div className="pt-16 sm:pt-20">
-        <AdminDashboard mobileSidebarOpen={mobileSidebarOpen} setMobileSidebarOpen={setMobileSidebarOpen} />
+        <AdminDashboard mobileSidebarOpen={mobileSidebarOpen} setMobileSidebarOpen={setMobileSidebarOpen} activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
     </div>
   );

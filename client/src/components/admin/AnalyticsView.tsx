@@ -126,9 +126,9 @@ export default function AnalyticsView() {
 
   return (
     <div className="space-y-4 sm:space-y-6" data-testid="analytics-view">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mt-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-6 md:mb-8">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">Analytics Dashboard</h2>
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 sm:mb-2">Analytics Dashboard</h2>
           <p className="text-muted-foreground text-sm sm:text-base">
             Track performance metrics and conversion analytics
           </p>
