@@ -225,19 +225,13 @@ export default function AdminDashboard() {
   // Sidebar component for both desktop and mobile
   const SidebarContent = () => (
     <>
-      <div className="p-4 sm:p-6">
-        <div className="flex items-center gap-2 mb-6 sm:mb-8">
+      <div className="p-4 sm:p-6 lg:hidden">
+        <div className="flex items-center gap-2 mb-2">
           <Building className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
           <div>
             <h1 className="text-lg sm:text-xl font-bold text-foreground">CMS Admin</h1>
             <p className="text-xs sm:text-sm text-muted-foreground">Perth Solar Warehouse</p>
           </div>
-        </div>
-        
-        {/* User Info */}
-        <div className="mb-6 sm:mb-8 p-3 bg-muted rounded-lg">
-          <p className="text-sm font-medium text-foreground" data-testid="user-username">{user?.username}</p>
-          <p className="text-xs text-muted-foreground capitalize" data-testid="user-role">{userRole}</p>
         </div>
       </div>
 

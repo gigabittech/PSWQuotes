@@ -241,25 +241,23 @@ export default function Admin() {
     <div className="min-h-screen bg-background">
       {/* Enhanced Header */}
       <header className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center space-x-4">
+        <div className="w-full">
+          <div className="flex justify-between items-center h-20 pl-2 sm:pl-4 lg:pl-6 pr-4 sm:pr-6 lg:pr-8">
+            <div className="flex items-center space-x-3 flex-shrink-0">
               {/* Enhanced Logo in Header */}
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg shadow-md">
-                    <Sun className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-                    <Zap className="h-1.5 w-1.5 text-white" />
-                  </div>
+              <div className="relative">
+                <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg shadow-md">
+                  <Sun className="h-6 w-6 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                    Perth Solar Warehouse
-                  </h1>
-                  <span className="text-xs text-muted-foreground font-medium">Admin Dashboard</span>
+                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                  <Zap className="h-1.5 w-1.5 text-white" />
                 </div>
+              </div>
+              <div className="flex flex-col">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent leading-tight">
+                  Perth Solar Warehouse
+                </h1>
+                <span className="text-xs text-muted-foreground font-medium leading-tight">Admin Dashboard</span>
               </div>
             </div>
             <div className="flex items-center space-x-4">
