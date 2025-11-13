@@ -52,7 +52,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Skeleton } from "@/components/ui/skeleton";
 import type { User, Quote } from "@shared/schema";
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen, showOnlySidebar }: { mobileSidebarOpen?: boolean; setMobileSidebarOpen?: (open: boolean) => void; showOnlySidebar?: boolean }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -106,6 +106,9 @@ export default function AdminDashboard() {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
     setSidebarOpen(false); // Close mobile sidebar when tab changes
+    if (setMobileSidebarOpen) {
+      setMobileSidebarOpen(false); // Close parent mobile sidebar when tab changes
+    }
   };
 
   // Filter quotes based on search and status
@@ -396,6 +399,170 @@ export default function AdminDashboard() {
       </nav>
     </div>
   );
+
+  // If showOnlySidebar is true, only render the sidebar navigation
+  if (showOnlySidebar) {
+    return (
+      <nav className="px-3 space-y-0.5 flex-1 overflow-y-auto pb-4">
+        <button
+          onClick={() => handleTabChange("overview")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "overview" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-overview"
+        >
+          <BarChart3 className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Overview</span>
+        </button>
+        
+        <button
+          onClick={() => handleTabChange("quotes")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "quotes" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-quotes"
+        >
+          <FileText className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Quotes</span>
+          <Badge className="ml-auto" variant="secondary">
+            {quotes.length}
+          </Badge>
+        </button>
+
+        <button
+          onClick={() => handleTabChange("email-logs")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "email-logs" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-email-logs"
+        >
+          <Mail className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Email Logs</span>
+        </button>
+
+        <button
+          onClick={() => handleTabChange("embed")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "embed" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-embed"
+        >
+          <Code className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Embed Code</span>
+        </button>
+
+        {/* CMS Section */}
+        {(userRole === 'admin' || userRole === 'editor') && (
+          <>
+            <div className="pt-4 pb-2">
+              <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Content Management
+              </h3>
+            </div>
+            
+            <button
+              onClick={() => handleTabChange("theme")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "theme" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-theme"
+            >
+              <Palette className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Theme</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("pages")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "pages" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-pages"
+            >
+              <FileEdit className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Pages</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("forms")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "forms" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-forms"
+            >
+              <Building className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Forms</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("media")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "media" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-media"
+            >
+              <Image className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Media</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("products")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "products" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-products"
+            >
+              <Plus className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Products</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("analytics")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "analytics" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-analytics"
+            >
+              <BarChart3 className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Analytics</span>
+            </button>
+          </>
+        )}
+
+        {/* User Management Section */}
+        {userRole === 'admin' && (
+          <>
+            <div className="pt-4 pb-2">
+              <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                User Management
+              </h3>
+            </div>
+            
+            <button
+              onClick={() => handleTabChange("users")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "users" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-users"
+            >
+              <Users className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Users</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("settings")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "settings" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-settings"
+            >
+              <SettingsIcon className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Settings</span>
+            </button>
+          </>
+        )}
+      </nav>
+    );
+  }
 
   return (
     <TooltipProvider>
