@@ -240,9 +240,9 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-background">
       {/* Enhanced Header */}
-      <header className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm border-b border-border">
         <div className="w-full">
-          <div className="flex justify-between items-center h-20 pl-2 sm:pl-4 lg:pl-6 pr-4 sm:pr-6 lg:pr-8">
+          <div className="flex justify-between items-center h-16 sm:h-20 px-2 sm:px-4 lg:px-6">
             <div className="flex items-center space-x-3 flex-shrink-0">
               {/* Enhanced Logo in Header */}
               <div className="relative">
@@ -273,7 +273,9 @@ export default function Admin() {
         </div>
       </header>
 
-      <AdminDashboard />
+      <div className="pt-16 sm:pt-20">
+        <AdminDashboard />
+      </div>
     </div>
   );
 }

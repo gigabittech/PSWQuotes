@@ -96,7 +96,7 @@ export default function ProductManager() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-4">
         <div>
           <h2 className="text-3xl font-outfit font-semibold text-foreground flex items-center gap-3">
             <Package className="w-8 h-8 text-primary" />

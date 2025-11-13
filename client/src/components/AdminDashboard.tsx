@@ -224,8 +224,8 @@ export default function AdminDashboard() {
 
   // Sidebar component for both desktop and mobile
   const SidebarContent = () => (
-    <>
-      <div className="p-4 sm:p-6 lg:hidden">
+    <div className="flex flex-col h-full">
+      <div className="p-4 sm:p-6 lg:hidden flex-shrink-0">
         <div className="flex items-center gap-2 mb-2">
           <Building className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
           <div>
@@ -236,7 +236,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Main Navigation */}
-      <nav className="px-3 space-y-1 sm:space-y-2">
+      <nav className="px-3 space-y-0.5 flex-1 overflow-y-auto pb-4">
         <button
           onClick={() => handleTabChange("overview")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
@@ -394,15 +394,15 @@ export default function AdminDashboard() {
           </>
         )}
       </nav>
-    </>
+    </div>
   );
 
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900" data-testid="admin-dashboard">
-        <div className="flex h-screen">
+        <div className="flex h-screen overflow-hidden">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:flex lg:w-64 lg:flex-col lg:bg-white lg:dark:bg-gray-800 lg:shadow-sm lg:border-r lg:border-border">
+        <div className="hidden lg:flex lg:w-64 lg:flex-col lg:bg-white lg:dark:bg-gray-800 lg:shadow-sm lg:border-r lg:border-border lg:fixed lg:left-0 lg:top-20 lg:h-[calc(100vh-5rem)] lg:z-30">
           <SidebarContent />
         </div>
 
@@ -434,12 +434,12 @@ export default function AdminDashboard() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col lg:overflow-hidden">
-          <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
+        <div className="flex-1 flex flex-col lg:ml-64 overflow-hidden">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 lg:p-8 pt-14 sm:pt-16 lg:pt-0">
             {activeTab === "overview" && (
               <div className="max-w-7xl">
                 {/* Header */}
-                <div className="mb-8">
+                <div className="mb-8 mt-4">
                   <h1 className="text-3xl font-outfit font-bold text-foreground mb-2">Dashboard</h1>
                   <p className="text-muted-foreground">Welcome back! Here's what's happening with your solar quotes today.</p>
                 </div>
@@ -579,7 +579,7 @@ export default function AdminDashboard() {
             {activeTab === "quotes" && (
               <div className="max-w-7xl">
                 {/* Header */}
-                <div className="mb-6">
+                <div className="mb-6 mt-4">
                   <h1 className="text-3xl font-outfit font-bold text-foreground mb-2">Quotes</h1>
                   <p className="text-muted-foreground">Review and manage customer quote requests</p>
                 </div>
@@ -718,7 +718,7 @@ export default function AdminDashboard() {
             {/* Embed Code */}
             {activeTab === "embed" && (
               <div className="space-y-6">
-                <div>
+                <div className="mt-4">
                   <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Embed Quote Form</h1>
                   <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
                 </div>
@@ -740,7 +740,7 @@ export default function AdminDashboard() {
             {/* User Management */}
             {activeTab === "users" && userRole === 'admin' && (
               <div className="space-y-6">
-                <div>
+                <div className="mt-4">
                   <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">User Management</h1>
                   <p className="text-sm sm:text-base text-muted-foreground">Manage user accounts and permissions</p>
                 </div>

@@ -197,7 +197,7 @@ export default function ThemeEditor() {
 
   return (
     <div className="space-y-4 sm:space-y-6" data-testid="theme-editor">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mt-4">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">Theme Editor</h2>
           <p className="text-muted-foreground text-sm sm:text-base">

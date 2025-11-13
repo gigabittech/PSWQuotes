@@ -237,7 +237,7 @@ export default function PageManager() {
 
   return (
     <div className="space-y-6" data-testid="page-manager">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-4">
         <div>
           <h2 className="text-2xl font-bold mb-2">Page Management</h2>
           <p className="text-muted-foreground">
