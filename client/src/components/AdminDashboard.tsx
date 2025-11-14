@@ -52,8 +52,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Skeleton } from "@/components/ui/skeleton";
 import type { User, Quote } from "@shared/schema";
 
-export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState("overview");
+export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen, showOnlySidebar, activeTab: externalActiveTab, setActiveTab: externalSetActiveTab }: { mobileSidebarOpen?: boolean; setMobileSidebarOpen?: (open: boolean) => void; showOnlySidebar?: boolean; activeTab?: string; setActiveTab?: (tab: string) => void }) {
+  const [internalActiveTab, setInternalActiveTab] = useState("overview");
+  const activeTab = externalActiveTab ?? internalActiveTab;
+  const setActiveTab = externalSetActiveTab ?? setInternalActiveTab;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -106,6 +108,9 @@ export default function AdminDashboard() {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
     setSidebarOpen(false); // Close mobile sidebar when tab changes
+    if (setMobileSidebarOpen) {
+      setMobileSidebarOpen(false); // Close parent mobile sidebar when tab changes
+    }
   };
 
   // Filter quotes based on search and status
@@ -224,25 +229,19 @@ export default function AdminDashboard() {
 
   // Sidebar component for both desktop and mobile
   const SidebarContent = () => (
-    <>
-      <div className="p-4 sm:p-6">
-        <div className="flex items-center gap-2 mb-6 sm:mb-8">
+    <div className="flex flex-col h-full">
+      <div className="p-4 sm:p-6 lg:hidden flex-shrink-0">
+        <div className="flex items-center gap-2 mb-2">
           <Building className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
           <div>
             <h1 className="text-lg sm:text-xl font-bold text-foreground">CMS Admin</h1>
             <p className="text-xs sm:text-sm text-muted-foreground">Perth Solar Warehouse</p>
           </div>
         </div>
-        
-        {/* User Info */}
-        <div className="mb-6 sm:mb-8 p-3 bg-muted rounded-lg">
-          <p className="text-sm font-medium text-foreground" data-testid="user-username">{user?.username}</p>
-          <p className="text-xs text-muted-foreground capitalize" data-testid="user-role">{userRole}</p>
-        </div>
       </div>
 
       {/* Main Navigation */}
-      <nav className="px-3 space-y-1 sm:space-y-2">
+      <nav className="px-3 space-y-0.5 flex-1 overflow-y-auto pb-4">
         <button
           onClick={() => handleTabChange("overview")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
@@ -400,15 +399,179 @@ export default function AdminDashboard() {
           </>
         )}
       </nav>
-    </>
+    </div>
   );
+
+  // If showOnlySidebar is true, only render the sidebar navigation
+  if (showOnlySidebar) {
+    return (
+      <nav className="px-3 space-y-0.5 flex-1 overflow-y-auto pb-4">
+        <button
+          onClick={() => handleTabChange("overview")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "overview" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-overview"
+        >
+          <BarChart3 className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Overview</span>
+        </button>
+        
+        <button
+          onClick={() => handleTabChange("quotes")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "quotes" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-quotes"
+        >
+          <FileText className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Quotes</span>
+          <Badge className="ml-auto" variant="secondary">
+            {quotes.length}
+          </Badge>
+        </button>
+
+        <button
+          onClick={() => handleTabChange("email-logs")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "email-logs" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-email-logs"
+        >
+          <Mail className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Email Logs</span>
+        </button>
+
+        <button
+          onClick={() => handleTabChange("embed")}
+          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "embed" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+          data-testid="nav-embed"
+        >
+          <Code className="h-5 w-5 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Embed Code</span>
+        </button>
+
+        {/* CMS Section */}
+        {(userRole === 'admin' || userRole === 'editor') && (
+          <>
+            <div className="pt-4 pb-2">
+              <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Content Management
+              </h3>
+            </div>
+            
+            <button
+              onClick={() => handleTabChange("theme")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "theme" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-theme"
+            >
+              <Palette className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Theme</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("pages")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "pages" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-pages"
+            >
+              <FileEdit className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Pages</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("forms")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "forms" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-forms"
+            >
+              <Building className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Forms</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("media")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "media" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-media"
+            >
+              <Image className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Media</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("products")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "products" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-products"
+            >
+              <Plus className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Products</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("analytics")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "analytics" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-analytics"
+            >
+              <BarChart3 className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Analytics</span>
+            </button>
+          </>
+        )}
+
+        {/* User Management Section */}
+        {userRole === 'admin' && (
+          <>
+            <div className="pt-4 pb-2">
+              <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                User Management
+              </h3>
+            </div>
+            
+            <button
+              onClick={() => handleTabChange("users")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "users" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-users"
+            >
+              <Users className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Users</span>
+            </button>
+            
+            <button
+              onClick={() => handleTabChange("settings")}
+              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "settings" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-settings"
+            >
+              <SettingsIcon className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Settings</span>
+            </button>
+          </>
+        )}
+      </nav>
+    );
+  }
 
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900" data-testid="admin-dashboard">
-        <div className="flex h-screen">
+        <div className="flex h-screen overflow-hidden">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:flex lg:w-64 lg:flex-col lg:bg-white lg:dark:bg-gray-800 lg:shadow-sm lg:border-r lg:border-border">
+        <div className="hidden lg:flex lg:w-64 lg:flex-col lg:bg-white lg:dark:bg-gray-800 lg:shadow-sm lg:border-r lg:border-border lg:fixed lg:left-0 lg:top-20 lg:h-[calc(100vh-5rem)] lg:z-30">
           <SidebarContent />
         </div>
 
@@ -440,13 +603,13 @@ export default function AdminDashboard() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col lg:overflow-hidden">
-          <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
+        <div className="flex-1 flex flex-col lg:ml-64 overflow-hidden">
+          <div className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8">
             {activeTab === "overview" && (
               <div className="max-w-7xl">
                 {/* Header */}
-                <div className="mb-8">
-                  <h1 className="text-3xl font-outfit font-bold text-foreground mb-2">Dashboard</h1>
+                <div className="mb-6 md:mb-8">
+                  <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Dashboard</h1>
                   <p className="text-muted-foreground">Welcome back! Here's what's happening with your solar quotes today.</p>
                 </div>
 
@@ -585,8 +748,8 @@ export default function AdminDashboard() {
             {activeTab === "quotes" && (
               <div className="max-w-7xl">
                 {/* Header */}
-                <div className="mb-6">
-                  <h1 className="text-3xl font-outfit font-bold text-foreground mb-2">Quotes</h1>
+                <div className="mb-6 md:mb-8">
+                  <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Quotes</h1>
                   <p className="text-muted-foreground">Review and manage customer quote requests</p>
                 </div>
 
@@ -723,9 +886,9 @@ export default function AdminDashboard() {
 
             {/* Embed Code */}
             {activeTab === "embed" && (
-              <div className="space-y-6">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Embed Quote Form</h1>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="mb-6 md:mb-8">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Embed Quote Form</h1>
                   <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
                 </div>
                 <EmbedCodeGenerator />
@@ -745,9 +908,9 @@ export default function AdminDashboard() {
             
             {/* User Management */}
             {activeTab === "users" && userRole === 'admin' && (
-              <div className="space-y-6">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">User Management</h1>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="mb-6 md:mb-8">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">User Management</h1>
                   <p className="text-sm sm:text-base text-muted-foreground">Manage user accounts and permissions</p>
                 </div>
                 <Card>

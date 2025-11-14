@@ -16,15 +16,23 @@ import { generateQuotePDF } from "./pdfGenerator";
 import {
   ObjectStorageService,
   ObjectNotFoundError,
+  objectStorageClient,
 } from "./objectStorage";
+import { randomUUID } from "crypto";
 import { ObjectPermission } from "./objectAcl";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import type { Request, Response, NextFunction } from "express";
 import multer from "multer";
 
-// Multer for parsing multipart/form-data (fields only, no file storage)
-const upload = multer();
+// Multer for parsing multipart/form-data
+// Use memory storage for file uploads
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+});
 
 // Rate limiters for specific endpoints
 const authLimiter = rateLimit({
@@ -565,7 +573,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Create a new quote
-  app.post("/api/quotes", quoteLimiter, upload.none(), async (req, res) => {
+  app.post("/api/quotes", quoteLimiter, upload.single('switchboardPhoto'), async (req, res) => {
     try {
       // Parse JSON stringified arrays from FormData
       const requestBody = { ...req.body };
@@ -581,6 +589,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       const validatedData = insertQuoteSchema.parse(requestBody);
+      
+      // Handle switchboard photo upload if present
+      if (req.file) {
+        try {
+          const privateObjectDir = process.env.PRIVATE_OBJECT_DIR;
+          
+          // Check if we're in a Replit environment (sidecar available)
+          const isReplitEnv = process.env.REPL_ID !== undefined || 
+                              process.env.REPL_SLUG !== undefined;
+          
+          if (privateObjectDir && isReplitEnv) {
+            const fileExtension = req.file.originalname.split('.').pop() || 'jpg';
+            const fileName = `switchboard-${randomUUID()}.${fileExtension}`;
+            const objectPath = `${privateObjectDir}/quotes/${fileName}`;
+            
+            // Parse object path (bucket/object format)
+            const pathParts = objectPath.startsWith('/') ? objectPath.slice(1).split('/') : objectPath.split('/');
+            if (pathParts.length < 2) {
+              throw new Error('Invalid object path');
+            }
+            const bucketName = pathParts[0];
+            const objectName = pathParts.slice(1).join('/');
+            
+            const bucket = objectStorageClient.bucket(bucketName);
+            const file = bucket.file(objectName);
+            
+            // Upload file to Google Cloud Storage
+            await file.save(req.file.buffer, {
+              metadata: {
+                contentType: req.file.mimetype,
+              },
+            });
+            
+            // Make file publicly accessible or set appropriate ACL
+            await file.makePublic();
+            
+            // Get public URL
+            const publicUrl = `https://storage.googleapis.com/${bucketName}/${objectName}`;
+            validatedData.switchboardPhotoUrl = publicUrl;
+          } else {
+            if (!privateObjectDir) {
+              console.warn('PRIVATE_OBJECT_DIR not set, skipping file upload');
+            } else if (!isReplitEnv) {
+              console.warn('Not running in Replit environment, skipping file upload (object storage requires Replit sidecar)');
+            }
+            // Continue without photo URL - quote will be created without it
+          }
+        } catch (error) {
+          console.error('Error uploading switchboard photo:', error);
+          // Continue without photo if upload fails - don't break quote creation
+        }
+      }
       
       // Calculate pricing from the selected products using pricing-data.json
       const phaseType: 'single_phase' | 'three_phase' = validatedData.powerSupply === '3-phase' ? 'three_phase' : 'single_phase';
@@ -672,8 +732,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       validatedData.totalPrice = totalPrice.toFixed(2);
       validatedData.rebateAmount = totalRebates.toFixed(2);
       validatedData.finalPrice = totalPrice.toFixed(2); // Price is already after rebates
-      
-      // Note: File uploads now handled via secure object storage endpoints
 
       const quote = await storage.createQuote(validatedData);
 
@@ -703,7 +761,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ quote, emailSent, insightlyLeadId });
     } catch (error) {
       console.error("Error creating quote:", error);
-      res.status(400).json({ error: "Failed to create quote" });
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      console.error("Error details:", errorMessage);
+      res.status(400).json({ 
+        error: "Failed to create quote",
+        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      });
     }
   });
 

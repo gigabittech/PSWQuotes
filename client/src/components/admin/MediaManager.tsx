@@ -126,6 +126,12 @@ export default function MediaManager() {
 
   return (
     <div className="space-y-4 sm:space-y-6" data-testid="media-manager">
+      {/* Header */}
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Media Manager</h1>
+        <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">Upload and manage media files for your website</p>
+      </div>
+
       {/* Upload Section */}
       <Card>
         <CardHeader>

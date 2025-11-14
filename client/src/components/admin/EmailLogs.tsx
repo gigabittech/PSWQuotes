@@ -33,8 +33,8 @@ export default function EmailLogs() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight">Email Logs</h2>
+      <div className="mb-6 md:mb-8">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">Email Logs</h2>
         <p className="text-muted-foreground">
           Track all email sending attempts and delivery status
         </p>
