@@ -140,49 +140,130 @@ export function Settings() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('business');
   const [visibleSecrets, setVisibleSecrets] = useState<Set<string>>(new Set());
+  const [unsavedChanges, setUnsavedChanges] = useState<Record<string, any>>({});
 
   const { data: settings = [], isLoading } = useQuery<Setting[]>({
     queryKey: ['/api/settings'],
     queryFn: async () => {
-      const response = await fetch('/api/settings');
-      if (!response.ok) throw new Error('Failed to fetch settings');
+      const response = await apiRequest('GET', '/api/settings');
       return response.json();
     }
   });
 
-  const updateSettingMutation = useMutation({
-    mutationFn: async ({ key, value }: { key: string; value: any }) => {
-      const response = await fetch(`/api/settings/${key}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value })
+  const saveSettingsMutation = useMutation({
+    mutationFn: async (changes: Record<string, any>) => {
+      const promises = Object.entries(changes).map(([key, value]) => {
+        return apiRequest('PUT', `/api/settings/${key}`, { value }).then(res => res.json());
       });
-      if (!response.ok) throw new Error('Failed to update setting');
-      return response.json();
+      await Promise.all(promises);
+      return changes;
     },
-    onSuccess: (_, { key }) => {
+    onSuccess: (changes) => {
       queryClient.invalidateQueries({ queryKey: ['/api/settings'] });
+      setUnsavedChanges({});
       toast({
-        title: "Setting Updated",
-        description: `Successfully updated ${key}`,
+        title: "Settings Saved",
+        description: `Successfully saved ${Object.keys(changes).length} setting(s)`,
       });
     },
-    onError: (error: any) => {
+    onError: async (error: any) => {
+      let errorMessage = "Failed to save settings";
+      try {
+        if (error?.message) {
+          const match = error.message.match(/\d+:\s*({.*})/);
+          if (match) {
+            const errorData = JSON.parse(match[1]);
+            errorMessage = errorData.error || errorMessage;
+          } else {
+            errorMessage = error.message;
+          }
+        }
+      } catch {
+        errorMessage = error?.message || errorMessage;
+      }
       toast({
         title: "Error",
-        description: error.message || "Failed to update setting",
+        description: errorMessage,
         variant: "destructive",
       });
     }
   });
 
   const getSettingValue = (key: string, defaultValue: any = ''): any => {
+    // Check if there's an unsaved change first
+    if (key in unsavedChanges) {
+      return unsavedChanges[key];
+    }
     const setting = settings.find(s => s.key === key);
     return setting?.value ?? defaultValue;
   };
 
-  const handleSettingUpdate = (key: string, value: any) => {
-    updateSettingMutation.mutate({ key, value });
+  const handleSettingChange = (key: string, value: any) => {
+    // Prevent saving [REDACTED] as a value
+    if (value === '[REDACTED]') {
+      toast({
+        title: "Invalid Value",
+        description: "Cannot save redacted value. Please enter a new value.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // For sensitive fields, if the current value is redacted and new value is empty, don't update
+    const config = Object.values(settingsConfig)
+      .flatMap(c => Object.values(c.sections))
+      .flatMap(s => Object.entries(s.settings))
+      .find(([k]) => k === key)?.[1];
+    
+    if (config?.sensitive) {
+      const currentValue = getSettingValue(key);
+      if (currentValue === '[REDACTED]' && (!value || value === '')) {
+        toast({
+          title: "Cannot Clear",
+          description: "Cannot clear sensitive field. Enter a new value to update.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    // Get the original value from database
+    const originalValue = settings.find(s => s.key === key)?.value ?? 
+      Object.values(settingsConfig)
+        .flatMap(c => Object.values(c.sections))
+        .flatMap(s => Object.entries(s.settings))
+        .find(([k]) => k === key)?.[1]?.value ?? '';
+
+    // Only add to unsaved changes if it's different from original
+    if (JSON.stringify(value) !== JSON.stringify(originalValue)) {
+      setUnsavedChanges(prev => ({ ...prev, [key]: value }));
+    } else {
+      // Remove from unsaved changes if it matches original
+      setUnsavedChanges(prev => {
+        const newChanges = { ...prev };
+        delete newChanges[key];
+        return newChanges;
+      });
+    }
+  };
+
+  const handleSave = () => {
+    if (Object.keys(unsavedChanges).length === 0) {
+      toast({
+        title: "No Changes",
+        description: "No changes to save",
+      });
+      return;
+    }
+    saveSettingsMutation.mutate(unsavedChanges);
+  };
+
+  const handleReset = () => {
+    setUnsavedChanges({});
+    toast({
+      title: "Changes Reset",
+      description: "All unsaved changes have been discarded",
+    });
   };
 
   const toggleSecretVisibility = (key: string) => {
@@ -234,7 +315,7 @@ export function Settings() {
           <div className="flex items-center space-x-2">
             <Switch
               checked={Boolean(currentValue)}
-              onCheckedChange={(checked) => handleSettingUpdate(key, checked)}
+              onCheckedChange={(checked) => handleSettingChange(key, checked)}
               data-testid={`switch-${key}`}
             />
             <span className="text-sm">{currentValue ? 'Enabled' : 'Disabled'}</span>
@@ -242,7 +323,7 @@ export function Settings() {
         ) : config.type === 'select' ? (
           <Select 
             value={currentValue || config.value} 
-            onValueChange={(value) => handleSettingUpdate(key, value)}
+            onValueChange={(value) => handleSettingChange(key, value)}
           >
             <SelectTrigger data-testid={`select-${key}`}>
               <SelectValue />
@@ -259,7 +340,7 @@ export function Settings() {
           <Textarea
             value={showValue ? currentValue : ''}
             placeholder={isRedacted ? '[REDACTED]' : ''}
-            onChange={(e) => handleSettingUpdate(key, e.target.value)}
+            onChange={(e) => handleSettingChange(key, e.target.value)}
             className="min-h-[80px]"
             data-testid={`textarea-${key}`}
           />
@@ -270,7 +351,7 @@ export function Settings() {
             placeholder={isRedacted ? '[REDACTED]' : ''}
             onChange={(e) => {
               const value = config.type === 'number' ? Number(e.target.value) : e.target.value;
-              handleSettingUpdate(key, value);
+              handleSettingChange(key, value);
             }}
             data-testid={`input-${key}`}
           />
@@ -288,8 +369,8 @@ export function Settings() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between mb-6 md:mb-8">
+    <div className="space-y-6 relative pb-20">
+      <div className="flex items-start justify-between mb-6 md:mb-8">
         <div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
             Settings
@@ -298,8 +379,13 @@ export function Settings() {
             Configure your application settings and preferences
           </p>
         </div>
-        <div className="flex items-center space-x-2">
-          {updateSettingMutation.isPending && (
+        <div className="flex items-center gap-2">
+          {Object.keys(unsavedChanges).length > 0 && (
+            <Badge variant="outline" className="text-amber-600 border-amber-600">
+              {Object.keys(unsavedChanges).length} unsaved change(s)
+            </Badge>
+          )}
+          {saveSettingsMutation.isPending && (
             <div className="flex items-center space-x-2 text-blue-600">
               <Loader2 className="h-4 w-4 animate-spin" />
               <span className="text-sm">Saving...</span>
@@ -353,6 +439,38 @@ export function Settings() {
           </TabsContent>
         ))}
       </Tabs>
+
+      {/* Fixed Save/Reset Buttons at Bottom Right */}
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-background border rounded-lg shadow-lg p-3">
+        {Object.keys(unsavedChanges).length > 0 && (
+          <Button 
+            variant="outline" 
+            onClick={handleReset} 
+            disabled={saveSettingsMutation.isPending}
+            size="sm"
+          >
+            Reset
+          </Button>
+        )}
+        <Button 
+          onClick={handleSave} 
+          disabled={saveSettingsMutation.isPending || Object.keys(unsavedChanges).length === 0} 
+          className="gap-2"
+          size="sm"
+        >
+          {saveSettingsMutation.isPending ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <Save className="h-4 w-4" />
+              Save Changes
+            </>
+          )}
+        </Button>
+      </div>
     </div>
   );
 }

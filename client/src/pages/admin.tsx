@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -11,11 +11,27 @@ import { Loader2, Building, Lock, Sun, Zap, Shield, Menu } from "lucide-react";
 import AdminDashboard from "@/components/AdminDashboard";
 import type { User } from "@shared/schema";
 
+const ADMIN_TAB_STORAGE_KEY = "admin_active_tab";
+
 export default function Admin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
+  
+  // Load activeTab from localStorage on mount, default to "overview"
+  const [activeTab, setActiveTab] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(ADMIN_TAB_STORAGE_KEY) || "overview";
+    }
+    return "overview";
+  });
+
+  // Save activeTab to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(ADMIN_TAB_STORAGE_KEY, activeTab);
+    }
+  }, [activeTab]);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 

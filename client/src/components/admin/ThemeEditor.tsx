@@ -22,22 +22,22 @@ interface ColorPickerProps {
 
 function ColorPicker({ label, value, onChange, description }: ColorPickerProps) {
   return (
-    <div className="space-y-2">
-      <Label className="text-sm font-medium">{label}</Label>
+    <div className="space-y-1.5 sm:space-y-2">
+      <Label className="text-sm sm:text-base font-medium">{label}</Label>
       {description && <p className="text-xs text-muted-foreground">{description}</p>}
       <div className="flex gap-2 items-center">
         <Input
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-12 h-8 p-1 rounded border cursor-pointer"
+          className="w-10 h-8 sm:w-12 sm:h-8 p-1 rounded border cursor-pointer flex-shrink-0"
           data-testid={`color-picker-${label.toLowerCase().replace(/\s+/g, '-')}`}
         />
         <Input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 font-mono text-sm"
+          className="flex-1 font-mono text-xs sm:text-sm"
           placeholder="#000000"
           data-testid={`color-input-${label.toLowerCase().replace(/\s+/g, '-')}`}
         />
@@ -197,37 +197,35 @@ export default function ThemeEditor() {
 
   return (
     <div className="space-y-4 sm:space-y-6" data-testid="theme-editor">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-6 md:mb-8">
-        <div>
-          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 sm:mb-2">Theme Editor</h2>
+      <div className="mb-6 md:mb-8">
+        <h2 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Theme Editor</h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
           <p className="text-muted-foreground text-sm sm:text-base">
             Customize your website's appearance and branding
           </p>
-        </div>
-        <div className="flex gap-2">
-          <Badge variant={theme?.status === "published" ? "default" : "secondary"}>
+          <Badge variant={theme?.status === "published" ? "default" : "secondary"} className="w-fit">
             {theme?.status || "draft"}
           </Badge>
         </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
-          <TabsTrigger value="colors" data-testid="tab-colors" className="text-xs sm:text-sm">Colors</TabsTrigger>
-          <TabsTrigger value="branding" data-testid="tab-branding" className="text-xs sm:text-sm">Branding</TabsTrigger>
-          <TabsTrigger value="typography" data-testid="tab-typography" className="text-xs sm:text-sm">Typography</TabsTrigger>
-          <TabsTrigger value="content" data-testid="tab-content" className="text-xs sm:text-sm">Content</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-2">
+          <TabsTrigger value="colors" data-testid="tab-colors" className="text-xs sm:text-sm px-2 sm:px-4">Colors</TabsTrigger>
+          <TabsTrigger value="branding" data-testid="tab-branding" className="text-xs sm:text-sm px-2 sm:px-4">Branding</TabsTrigger>
+          <TabsTrigger value="typography" data-testid="tab-typography" className="text-xs sm:text-sm px-2 sm:px-4">Typography</TabsTrigger>
+          <TabsTrigger value="content" data-testid="tab-content" className="text-xs sm:text-sm px-2 sm:px-4">Content</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="colors" className="space-y-6">
+        <TabsContent value="colors" className="space-y-4 sm:space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Palette className="h-5 w-5" />
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <Palette className="h-4 w-4 sm:h-5 sm:w-5" />
                 Color Scheme
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 sm:space-y-6">
+            <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <ColorPicker
                   label="Primary Color"
@@ -264,69 +262,76 @@ export default function ThemeEditor() {
               </div>
               
               {/* Color Preview */}
-              <div className="mt-6 p-4 border rounded-lg bg-muted">
-                <h4 className="font-medium mb-3">Color Preview</h4>
+              <div className="mt-4 sm:mt-6 p-3 sm:p-4 border rounded-lg bg-muted">
+                <h4 className="font-medium mb-2 sm:mb-3 text-sm sm:text-base">Color Preview</h4>
                 <div 
-                  className="p-4 rounded-lg"
+                  className="p-3 sm:p-4 rounded-lg"
                   style={{
                     backgroundColor: formData.backgroundColor,
                     color: formData.textColor,
                     border: `1px solid ${formData.secondaryColor}`
                   }}
                 >
-                  <h3 style={{ color: formData.primaryColor }} className="text-lg font-semibold mb-2">
+                  <h3 style={{ color: formData.primaryColor }} className="text-base sm:text-lg font-semibold mb-2">
                     Sample Heading
                   </h3>
-                  <p className="mb-3">
+                  <p className="mb-3 text-sm sm:text-base">
                     This is how your text will appear with the current color scheme.
                   </p>
-                  <Button 
-                    style={{ 
-                      backgroundColor: formData.primaryColor,
-                      color: formData.backgroundColor 
-                    }}
-                    className="mr-2"
-                  >
-                    Primary Button
-                  </Button>
-                  <Button 
-                    style={{ 
-                      backgroundColor: formData.accentColor,
-                      color: formData.backgroundColor 
-                    }}
-                  >
-                    Accent Button
-                  </Button>
+                  <div className="flex flex-wrap gap-2">
+                    <Button 
+                      style={{ 
+                        backgroundColor: formData.primaryColor,
+                        color: formData.backgroundColor 
+                      }}
+                      size="sm"
+                      className="text-xs sm:text-sm"
+                    >
+                      Primary Button
+                    </Button>
+                    <Button 
+                      style={{ 
+                        backgroundColor: formData.accentColor,
+                        color: formData.backgroundColor 
+                      }}
+                      size="sm"
+                      className="text-xs sm:text-sm"
+                    >
+                      Accent Button
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="branding" className="space-y-6">
+        <TabsContent value="branding" className="space-y-4 sm:space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Site Branding</CardTitle>
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-base sm:text-lg">Site Branding</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
               <div>
-                <Label htmlFor="siteName">Site Name</Label>
+                <Label htmlFor="siteName" className="text-sm sm:text-base">Site Name</Label>
                 <Input
                   id="siteName"
                   value={formData.siteName}
                   onChange={(e) => handleInputChange("siteName", e.target.value)}
                   placeholder="Your Company Name"
+                  className="text-sm sm:text-base"
                   data-testid="input-site-name"
                 />
               </div>
               
               <div>
-                <Label htmlFor="logoUrl">Logo URL</Label>
+                <Label htmlFor="logoUrl" className="text-sm sm:text-base">Logo URL</Label>
                 <Input
                   id="logoUrl"
                   value={formData.logoUrl}
                   onChange={(e) => handleInputChange("logoUrl", e.target.value)}
                   placeholder="https://example.com/logo.png"
+                  className="text-sm sm:text-base"
                   data-testid="input-logo-url"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
@@ -335,24 +340,25 @@ export default function ThemeEditor() {
               </div>
               
               <div>
-                <Label htmlFor="faviconUrl">Favicon URL</Label>
+                <Label htmlFor="faviconUrl" className="text-sm sm:text-base">Favicon URL</Label>
                 <Input
                   id="faviconUrl"
                   value={formData.faviconUrl}
                   onChange={(e) => handleInputChange("faviconUrl", e.target.value)}
                   placeholder="https://example.com/favicon.ico"
+                  className="text-sm sm:text-base"
                   data-testid="input-favicon-url"
                 />
               </div>
 
               {/* Logo Preview */}
               {formData.logoUrl && (
-                <div className="mt-4 p-4 border rounded-lg bg-muted">
-                  <h4 className="font-medium mb-3">Logo Preview</h4>
+                <div className="mt-4 p-3 sm:p-4 border rounded-lg bg-muted">
+                  <h4 className="font-medium mb-2 sm:mb-3 text-sm sm:text-base">Logo Preview</h4>
                   <img 
                     src={formData.logoUrl} 
                     alt="Logo preview" 
-                    className="max-h-16 max-w-48 object-contain"
+                    className="max-h-12 sm:max-h-16 max-w-full sm:max-w-48 object-contain"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
@@ -363,43 +369,45 @@ export default function ThemeEditor() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="typography" className="space-y-6">
+        <TabsContent value="typography" className="space-y-4 sm:space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Typography Settings</CardTitle>
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-base sm:text-lg">Typography Settings</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
               <div>
-                <Label htmlFor="headingFont">Heading Font</Label>
+                <Label htmlFor="headingFont" className="text-sm sm:text-base">Heading Font</Label>
                 <Input
                   id="headingFont"
                   value={formData.headingFont}
                   onChange={(e) => handleInputChange("headingFont", e.target.value)}
                   placeholder="Inter, Arial, sans-serif"
+                  className="text-sm sm:text-base"
                   data-testid="input-heading-font"
                 />
               </div>
               
               <div>
-                <Label htmlFor="bodyFont">Body Font</Label>
+                <Label htmlFor="bodyFont" className="text-sm sm:text-base">Body Font</Label>
                 <Input
                   id="bodyFont"
                   value={formData.bodyFont}
                   onChange={(e) => handleInputChange("bodyFont", e.target.value)}
                   placeholder="Inter, Arial, sans-serif"
+                  className="text-sm sm:text-base"
                   data-testid="input-body-font"
                 />
               </div>
               
               <div>
-                <Label htmlFor="customCss">Custom CSS</Label>
+                <Label htmlFor="customCss" className="text-sm sm:text-base">Custom CSS</Label>
                 <Textarea
                   id="customCss"
                   value={formData.customCss}
                   onChange={(e) => handleInputChange("customCss", e.target.value)}
                   placeholder="/* Add your custom CSS here */"
-                  rows={10}
-                  className="font-mono text-sm"
+                  rows={8}
+                  className="font-mono text-xs sm:text-sm"
                   data-testid="textarea-custom-css"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
@@ -410,20 +418,21 @@ export default function ThemeEditor() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="content" className="space-y-6">
+        <TabsContent value="content" className="space-y-4 sm:space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Header & Footer Content</CardTitle>
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-base sm:text-lg">Header & Footer Content</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
               <div>
-                <Label htmlFor="headerContent">Header Content</Label>
+                <Label htmlFor="headerContent" className="text-sm sm:text-base">Header Content</Label>
                 <Textarea
                   id="headerContent"
                   value={formData.headerContent}
                   onChange={(e) => handleInputChange("headerContent", e.target.value)}
                   placeholder="Additional header content (HTML allowed)"
                   rows={4}
+                  className="text-sm sm:text-base"
                   data-testid="textarea-header-content"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
@@ -432,13 +441,14 @@ export default function ThemeEditor() {
               </div>
               
               <div>
-                <Label htmlFor="footerContent">Footer Content</Label>
+                <Label htmlFor="footerContent" className="text-sm sm:text-base">Footer Content</Label>
                 <Textarea
                   id="footerContent"
                   value={formData.footerContent}
                   onChange={(e) => handleInputChange("footerContent", e.target.value)}
                   placeholder="Footer content (HTML allowed)"
                   rows={6}
+                  className="text-sm sm:text-base"
                   data-testid="textarea-footer-content"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
@@ -450,18 +460,20 @@ export default function ThemeEditor() {
         </TabsContent>
       </Tabs>
 
-      <Separator />
+      <Separator className="my-4 sm:my-6" />
 
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+        <div className="text-xs sm:text-sm text-muted-foreground">
           {theme?.status === "published" ? "Theme is currently live" : "Theme changes are saved as draft"}
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
           <Button
             variant="outline"
             onClick={handleSave}
             disabled={saveThemeMutation.isPending}
             data-testid="button-save-theme"
+            className="w-full sm:w-auto"
+            size="sm"
           >
             {saveThemeMutation.isPending ? (
               <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
@@ -474,6 +486,8 @@ export default function ThemeEditor() {
             onClick={handlePublish}
             disabled={saveThemeMutation.isPending || publishThemeMutation.isPending}
             data-testid="button-publish-theme"
+            className="w-full sm:w-auto"
+            size="sm"
           >
             {publishThemeMutation.isPending ? (
               <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
