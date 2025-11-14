@@ -23,9 +23,12 @@ export interface IStorage {
   // User management
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUsers(): Promise<User[]>;
   createUser(user: InsertUser): Promise<User>;
   createUserWithRole(user: InsertUserWithRole): Promise<User>;
   updateUserRole(id: string, role: string): Promise<User | undefined>;
+  updateUser(id: string, updates: { role?: string; password?: string }): Promise<User | undefined>;
+  deleteUser(id: string): Promise<boolean>;
   
   // Quote management
   createQuote(quote: InsertQuote): Promise<Quote>;
@@ -114,6 +117,10 @@ export class DatabaseStorage implements IStorage {
     return user || undefined;
   }
 
+  async getUsers(): Promise<User[]> {
+    return await db.select().from(users).orderBy(desc(users.createdAt));
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
@@ -137,6 +144,22 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, id))
       .returning();
     return user || undefined;
+  }
+
+  async updateUser(id: string, updates: { role?: string; password?: string }): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set(updates)
+      .where(eq(users.id, id))
+      .returning();
+    return user || undefined;
+  }
+
+  async deleteUser(id: string): Promise<boolean> {
+    const result = await db
+      .delete(users)
+      .where(eq(users.id, id));
+    return true;
   }
 
   async createQuote(insertQuote: InsertQuote): Promise<Quote> {

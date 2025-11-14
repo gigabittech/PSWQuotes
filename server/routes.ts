@@ -373,6 +373,163 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get all users (admin only)
+  app.get("/api/users", requireAuth, async (req, res) => {
+    try {
+      // Check if user is admin
+      if (req.session.userRole !== 'admin') {
+        return res.status(403).json({ error: "Forbidden: Admin access required" });
+      }
+
+      const users = await storage.getUsers();
+      // Don't send password hashes to client
+      const safeUsers = users.map(user => ({
+        id: user.id,
+        username: user.username,
+        role: user.role,
+        createdAt: user.createdAt
+      }));
+
+      res.json({ users: safeUsers });
+    } catch (error) {
+      console.error("Get users error:", error);
+      res.status(500).json({ error: "Failed to fetch users" });
+    }
+  });
+
+  // Create user (admin only)
+  app.post("/api/users", requireAuth, async (req, res) => {
+    try {
+      // Check if user is admin
+      if (req.session.userRole !== 'admin') {
+        return res.status(403).json({ error: "Forbidden: Admin access required" });
+      }
+
+      const { username, password, role = 'viewer' } = req.body;
+
+      if (!username || !password) {
+        return res.status(400).json({ error: "Username and password are required" });
+      }
+
+      // Validate role
+      if (!['admin', 'editor', 'viewer'].includes(role)) {
+        return res.status(400).json({ error: "Invalid role. Must be admin, editor, or viewer" });
+      }
+
+      // Check if user already exists
+      const existingUser = await storage.getUserByUsername(username);
+      if (existingUser) {
+        return res.status(400).json({ error: "Username already exists" });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = await storage.createUserWithRole({
+        username,
+        password: hashedPassword,
+        role
+      });
+
+      res.json({
+        user: {
+          id: newUser.id,
+          username: newUser.username,
+          role: newUser.role,
+          createdAt: newUser.createdAt
+        }
+      });
+    } catch (error) {
+      console.error("Create user error:", error);
+      res.status(500).json({ error: "Failed to create user" });
+    }
+  });
+
+  // Update user (admin only)
+  app.put("/api/users/:id", requireAuth, async (req, res) => {
+    try {
+      // Check if user is admin
+      if (req.session.userRole !== 'admin') {
+        return res.status(403).json({ error: "Forbidden: Admin access required" });
+      }
+
+      const { id } = req.params;
+      const { role, password } = req.body;
+
+      // Check if user exists
+      const existingUser = await storage.getUser(id);
+      if (!existingUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Prevent deleting yourself
+      if (id === req.session.userId) {
+        return res.status(400).json({ error: "Cannot modify your own account" });
+      }
+
+      const updates: { role?: string; password?: string } = {};
+      
+      if (role !== undefined) {
+        if (!['admin', 'editor', 'viewer'].includes(role)) {
+          return res.status(400).json({ error: "Invalid role. Must be admin, editor, or viewer" });
+        }
+        updates.role = role;
+      }
+
+      if (password !== undefined && password.trim() !== '') {
+        updates.password = await bcrypt.hash(password, 10);
+      }
+
+      if (Object.keys(updates).length === 0) {
+        return res.status(400).json({ error: "No valid updates provided" });
+      }
+
+      const updatedUser = await storage.updateUser(id, updates);
+      if (!updatedUser) {
+        return res.status(500).json({ error: "Failed to update user" });
+      }
+
+      res.json({
+        user: {
+          id: updatedUser.id,
+          username: updatedUser.username,
+          role: updatedUser.role,
+          createdAt: updatedUser.createdAt
+        }
+      });
+    } catch (error) {
+      console.error("Update user error:", error);
+      res.status(500).json({ error: "Failed to update user" });
+    }
+  });
+
+  // Delete user (admin only)
+  app.delete("/api/users/:id", requireAuth, async (req, res) => {
+    try {
+      // Check if user is admin
+      if (req.session.userRole !== 'admin') {
+        return res.status(403).json({ error: "Forbidden: Admin access required" });
+      }
+
+      const { id } = req.params;
+
+      // Prevent deleting yourself
+      if (id === req.session.userId) {
+        return res.status(400).json({ error: "Cannot delete your own account" });
+      }
+
+      // Check if user exists
+      const existingUser = await storage.getUser(id);
+      if (!existingUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      await storage.deleteUser(id);
+      res.json({ message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Delete user error:", error);
+      res.status(500).json({ error: "Failed to delete user" });
+    }
+  });
+
   // Get all products
   app.get("/api/products", async (req, res) => {
     try {

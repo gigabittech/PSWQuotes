@@ -50,6 +50,11 @@ import ProductManager from "@/components/admin/ProductManager";
 import EmailLogs from "@/components/admin/EmailLogs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+import { Trash2 } from "lucide-react";
 import type { User, Quote } from "@shared/schema";
 
 export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen, showOnlySidebar, activeTab: externalActiveTab, setActiveTab: externalSetActiveTab }: { mobileSidebarOpen?: boolean; setMobileSidebarOpen?: (open: boolean) => void; showOnlySidebar?: boolean; activeTab?: string; setActiveTab?: (tab: string) => void }) {
@@ -59,7 +64,13 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [userFormData, setUserFormData] = useState({ username: "", password: "", role: "viewer" as "admin" | "editor" | "viewer" });
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const { data: authResponse, refetch: refetchUser } = useQuery<{user: User}>({
     queryKey: ['/api/auth/me'],
@@ -69,10 +80,18 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
   
   // Extract user from response structure
   const user = authResponse?.user;
+  const userRole = user?.role || 'viewer';
 
   const { data: quotes = [], isLoading } = useQuery<Quote[]>({
     queryKey: ['/api/quotes'],
   });
+
+  const { data: usersResponse, isLoading: isLoadingUsers } = useQuery<{users: User[]}>({
+    queryKey: ['/api/users'],
+    enabled: userRole === 'admin' && activeTab === 'users',
+  });
+
+  const users = usersResponse?.users || [];
 
   const updateStatusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
@@ -81,6 +100,119 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/quotes'] });
+    },
+  });
+
+  const createUserMutation = useMutation({
+    mutationFn: async (data: { username: string; password: string; role: string }) => {
+      const response = await apiRequest('POST', '/api/users', data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/users'] });
+      setIsUserDialogOpen(false);
+      setUserFormData({ username: "", password: "", role: "viewer" });
+      setEditingUser(null);
+      toast({
+        title: "User created",
+        description: "User has been created successfully.",
+      });
+    },
+    onError: async (error: any) => {
+      let errorMessage = "Failed to create user";
+      try {
+        if (error?.message) {
+          const match = error.message.match(/\d+:\s*({.*})/);
+          if (match) {
+            const errorData = JSON.parse(match[1]);
+            errorMessage = errorData.error || errorMessage;
+          } else {
+            errorMessage = error.message;
+          }
+        }
+      } catch {
+        errorMessage = error?.message || errorMessage;
+      }
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const updateUserMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: { role?: string; password?: string } }) => {
+      const response = await apiRequest('PUT', `/api/users/${id}`, data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/users'] });
+      setIsUserDialogOpen(false);
+      setUserFormData({ username: "", password: "", role: "viewer" });
+      setEditingUser(null);
+      toast({
+        title: "User updated",
+        description: "User has been updated successfully.",
+      });
+    },
+    onError: async (error: any) => {
+      let errorMessage = "Failed to update user";
+      try {
+        if (error?.message) {
+          const match = error.message.match(/\d+:\s*({.*})/);
+          if (match) {
+            const errorData = JSON.parse(match[1]);
+            errorMessage = errorData.error || errorMessage;
+          } else {
+            errorMessage = error.message;
+          }
+        }
+      } catch {
+        errorMessage = error?.message || errorMessage;
+      }
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await apiRequest('DELETE', `/api/users/${id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/users'] });
+      setIsDeleteDialogOpen(false);
+      setUserToDelete(null);
+      toast({
+        title: "User deleted",
+        description: "User has been deleted successfully.",
+      });
+    },
+    onError: async (error: any) => {
+      let errorMessage = "Failed to delete user";
+      try {
+        if (error?.message) {
+          const match = error.message.match(/\d+:\s*({.*})/);
+          if (match) {
+            const errorData = JSON.parse(match[1]);
+            errorMessage = errorData.error || errorMessage;
+          } else {
+            errorMessage = error.message;
+          }
+        }
+      } catch {
+        errorMessage = error?.message || errorMessage;
+      }
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
     },
   });
 
@@ -103,13 +235,77 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
     updateStatusMutation.mutate({ id, status });
   };
 
-  const userRole = user?.role || 'viewer';
-
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
     setSidebarOpen(false); // Close mobile sidebar when tab changes
     if (setMobileSidebarOpen) {
       setMobileSidebarOpen(false); // Close parent mobile sidebar when tab changes
+    }
+  };
+
+  const handleCreateUser = () => {
+    setEditingUser(null);
+    setUserFormData({ username: "", password: "", role: "viewer" });
+    setIsUserDialogOpen(true);
+  };
+
+  const handleEditUser = (user: User) => {
+    setEditingUser(user);
+    setUserFormData({ username: user.username, password: "", role: user.role as "admin" | "editor" | "viewer" });
+    setIsUserDialogOpen(true);
+  };
+
+  const handleDeleteUser = (user: User) => {
+    setUserToDelete(user);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleSubmitUser = () => {
+    if (!userFormData.username.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Username is required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (editingUser) {
+      // Update user
+      const updateData: { role?: string; password?: string } = {};
+      if (userFormData.role !== editingUser.role) {
+        updateData.role = userFormData.role;
+      }
+      if (userFormData.password.trim()) {
+        updateData.password = userFormData.password;
+      }
+      
+      if (Object.keys(updateData).length === 0) {
+        toast({
+          title: "No changes",
+          description: "No changes to save",
+        });
+        return;
+      }
+
+      updateUserMutation.mutate({ id: editingUser.id, data: updateData });
+    } else {
+      // Create user
+      if (!userFormData.password.trim()) {
+        toast({
+          title: "Validation Error",
+          description: "Password is required",
+          variant: "destructive",
+        });
+        return;
+      }
+      createUserMutation.mutate(userFormData);
+    }
+  };
+
+  const confirmDeleteUser = () => {
+    if (userToDelete) {
+      deleteUserMutation.mutate(userToDelete.id);
     }
   };
 
@@ -257,6 +453,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
           data-testid="nav-overview"
         >
           <BarChart3 className="h-5 w-5 flex-shrink-0" />
+          
           <span className="text-sm sm:text-base">Dashboard</span>
         </button>
         
@@ -915,19 +1112,188 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             
             {/* User Management */}
             {activeTab === "users" && userRole === 'admin' && (
-              <div className="space-y-4 sm:space-y-6">
-                <div className="mb-6 md:mb-8">
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">User Management</h1>
-                  <p className="text-sm sm:text-base text-muted-foreground">Manage user accounts and permissions</p>
+              <div className="max-w-7xl">
+                <div className="mb-6 md:mb-8 flex items-start justify-between">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">User Management</h1>
+                    <p className="text-muted-foreground">Manage user accounts and permissions</p>
+                  </div>
+                  <Button onClick={handleCreateUser} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Create User
+                  </Button>
                 </div>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Users</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">User management functionality coming soon...</p>
-                  </CardContent>
-                </Card>
+
+                {isLoadingUsers ? (
+                  <Card>
+                    <CardContent className="p-6">
+                      <div className="space-y-3">
+                        {[...Array(3)].map((_, i) => (
+                          <Skeleton key={i} className="h-16 w-full" />
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Users ({users.length})</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {users.length === 0 ? (
+                        <div className="text-center py-12 text-muted-foreground">
+                          <Users className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                          <p className="text-sm">No users found.</p>
+                        </div>
+                      ) : (
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="border-b">
+                                <th className="text-left py-3 px-4 font-semibold text-sm text-muted-foreground">Username</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm text-muted-foreground">Role</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm text-muted-foreground">Created</th>
+                                <th className="text-right py-3 px-4 font-semibold text-sm text-muted-foreground">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {users.map((user) => (
+                                <tr key={user.id} className="border-b hover:bg-muted/50 transition-colors">
+                                  <td className="py-3 px-4">
+                                    <div className="flex items-center gap-2">
+                                      <Users className="h-4 w-4 text-muted-foreground" />
+                                      <span className="font-medium">{user.username}</span>
+                                    </div>
+                                  </td>
+                                  <td className="py-3 px-4">
+                                    <Badge 
+                                      variant={user.role === 'admin' ? 'default' : user.role === 'editor' ? 'secondary' : 'outline'}
+                                      className="capitalize"
+                                    >
+                                      {user.role}
+                                    </Badge>
+                                  </td>
+                                  <td className="py-3 px-4 text-sm text-muted-foreground">
+                                    {new Date(user.createdAt).toLocaleDateString('en-AU', {
+                                      year: 'numeric',
+                                      month: 'short',
+                                      day: 'numeric'
+                                    })}
+                                  </td>
+                                  <td className="py-3 px-4">
+                                    <div className="flex justify-end">
+                                      <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                            <MoreVertical className="h-4 w-4" />
+                                          </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                          <DropdownMenuItem onClick={() => handleEditUser(user)}>
+                                            <Edit className="h-4 w-4 mr-2" />
+                                            Edit
+                                          </DropdownMenuItem>
+                                          <DropdownMenuItem 
+                                            onClick={() => handleDeleteUser(user)}
+                                            className="text-destructive focus:text-destructive"
+                                          >
+                                            <Trash2 className="h-4 w-4 mr-2" />
+                                            Delete
+                                          </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                      </DropdownMenu>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Create/Edit User Dialog */}
+                <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{editingUser ? "Edit User" : "Create New User"}</DialogTitle>
+                      <DialogDescription>
+                        {editingUser ? "Update user role or password." : "Create a new user account with a username, password, and role."}
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Username</label>
+                        <Input
+                          value={userFormData.username}
+                          onChange={(e) => setUserFormData({ ...userFormData, username: e.target.value })}
+                          placeholder="Enter username"
+                          disabled={!!editingUser}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Password</label>
+                        <Input
+                          type="password"
+                          value={userFormData.password}
+                          onChange={(e) => setUserFormData({ ...userFormData, password: e.target.value })}
+                          placeholder={editingUser ? "Leave blank to keep current password" : "Enter password"}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Role</label>
+                        <Select
+                          value={userFormData.role}
+                          onValueChange={(value) => setUserFormData({ ...userFormData, role: value as "admin" | "editor" | "viewer" })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="viewer">Viewer</SelectItem>
+                            <SelectItem value="editor">Editor</SelectItem>
+                            <SelectItem value="admin">Admin</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button variant="outline" onClick={() => setIsUserDialogOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={handleSubmitUser}
+                        disabled={createUserMutation.isPending || updateUserMutation.isPending}
+                      >
+                        {editingUser ? "Update" : "Create"}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+
+                {/* Delete Confirmation Dialog */}
+                <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the user account for <strong>{userToDelete?.username}</strong>.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={confirmDeleteUser}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        disabled={deleteUserMutation.isPending}
+                      >
+                        {deleteUserMutation.isPending ? "Deleting..." : "Delete"}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             )}
 
