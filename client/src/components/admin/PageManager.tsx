@@ -10,9 +10,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { FileText, Plus, Edit, Trash2, Eye, Save, RefreshCw } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { FileText, Plus, Edit, Trash2, Eye, Save, RefreshCw, MoreVertical } from "lucide-react";
 import type { CmsPage } from "@shared/schema";
 
 interface PageFormData {
@@ -41,8 +41,18 @@ export default function PageManager() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [selectedPage, setSelectedPage] = useState<CmsPage | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("list");
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 432);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const [formData, setFormData] = useState<PageFormData>({
     slug: "",
@@ -67,7 +77,6 @@ export default function PageManager() {
         description: "New page has been created successfully.",
       });
       queryClient.invalidateQueries({ queryKey: ['/api/cms/pages'] });
-      setIsDialogOpen(false);
       resetForm();
     },
     onError: () => {
@@ -236,15 +245,15 @@ export default function PageManager() {
   }
 
   return (
-    <div className="space-y-6" data-testid="page-manager">
-      <div className="flex items-center justify-between mb-6 md:mb-8">
+    <div className="space-y-4 sm:space-y-6" data-testid="page-manager">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-8">
         <div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2">Page Management</h2>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Create and manage your website pages and content
           </p>
         </div>
-        <Button onClick={handleNewPage} data-testid="button-new-page">
+        <Button onClick={handleNewPage} data-testid="button-new-page" className="w-full sm:w-auto" size="sm">
           <Plus className="h-4 w-4 mr-2" />
           New Page
         </Button>
@@ -252,49 +261,49 @@ export default function PageManager() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="list" data-testid="tab-page-list">Page List</TabsTrigger>
-          <TabsTrigger value="editor" data-testid="tab-page-editor">
+          <TabsTrigger value="list" data-testid="tab-page-list" className="text-xs sm:text-sm">Page List</TabsTrigger>
+          <TabsTrigger value="editor" data-testid="tab-page-editor" className="text-xs sm:text-sm">
             {selectedPage ? 'Edit Page' : 'New Page'}
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="list" className="space-y-4">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
                 All Pages
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6">
               {pages.length === 0 ? (
-                <div className="text-center py-8">
-                  <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium mb-2">No pages created yet</h3>
-                  <p className="text-muted-foreground mb-4">
+                <div className="text-center py-6 sm:py-8">
+                  <FileText className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mx-auto mb-3 sm:mb-4" />
+                  <h3 className="text-base sm:text-lg font-medium mb-2">No pages created yet</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground mb-4">
                     Create your first page to get started with content management.
                   </p>
-                  <Button onClick={handleNewPage}>
+                  <Button onClick={handleNewPage} size="sm">
                     <Plus className="h-4 w-4 mr-2" />
                     Create First Page
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {pages.map((page) => (
-                    <div key={page.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50" data-testid={`page-row-${page.slug}`}>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="font-medium">{page.title}</h3>
+                    <div key={page.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 p-3 sm:p-4 border rounded-lg hover:bg-muted/50" data-testid={`page-row-${page.slug}`}>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                          <h3 className="font-medium text-sm sm:text-base truncate">{page.title}</h3>
                           <Badge className={getStatusColor(page.status)}>
                             {page.status}
                           </Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-1">
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-1">
                           Slug: /{page.slug}
                         </p>
                         {(page.seo as { metaDescription?: string })?.metaDescription && (
-                          <p className="text-sm text-muted-foreground line-clamp-2">
+                          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
                             {(page.seo as { metaDescription?: string }).metaDescription}
                           </p>
                         )}
@@ -302,35 +311,81 @@ export default function PageManager() {
                           Updated: {new Date(page.updatedAt).toLocaleDateString()}
                         </p>
                       </div>
-                      <div className="flex gap-2">
-                        {page.status === 'draft' && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => publishPageMutation.mutate(page.id)}
-                            disabled={publishPageMutation.isPending}
-                            data-testid={`button-publish-${page.slug}`}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
+                      <div className="flex gap-2 sm:flex-shrink-0">
+                        {isSmallScreen ? (
+                          /* Three-dot menu for screens less than 432px */
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                data-testid={`button-actions-menu-${page.slug}`}
+                              >
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              {page.status === 'draft' && (
+                                <DropdownMenuItem
+                                  onClick={() => publishPageMutation.mutate(page.id)}
+                                  disabled={publishPageMutation.isPending}
+                                  data-testid={`menu-publish-${page.slug}`}
+                                >
+                                  <Eye className="h-4 w-4 mr-2" />
+                                  Publish
+                                </DropdownMenuItem>
+                              )}
+                              <DropdownMenuItem
+                                onClick={() => handleEditPage(page)}
+                                data-testid={`menu-edit-${page.slug}`}
+                              >
+                                <Edit className="h-4 w-4 mr-2" />
+                                Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleDeletePage(page)}
+                                disabled={deletePageMutation.isPending}
+                                data-testid={`menu-delete-${page.slug}`}
+                                className="text-destructive focus:text-destructive"
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        ) : (
+                          // Individual buttons for screens 432px and above
+                          <>
+                            {page.status === 'draft' && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => publishPageMutation.mutate(page.id)}
+                                disabled={publishPageMutation.isPending}
+                                data-testid={`button-publish-${page.slug}`}
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            )}
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleEditPage(page)}
+                              data-testid={`button-edit-${page.slug}`}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleDeletePage(page)}
+                              disabled={deletePageMutation.isPending}
+                              data-testid={`button-delete-${page.slug}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </>
                         )}
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleEditPage(page)}
-                          data-testid={`button-edit-${page.slug}`}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleDeletePage(page)}
-                          disabled={deletePageMutation.isPending}
-                          data-testid={`button-delete-${page.slug}`}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
                       </div>
                     </div>
                   ))}
@@ -340,33 +395,35 @@ export default function PageManager() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="editor" className="space-y-6">
+        <TabsContent value="editor" className="space-y-4 sm:space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-base sm:text-lg">
                 {selectedPage ? `Edit Page: ${selectedPage.title}` : 'Create New Page'}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+            <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <Label htmlFor="title">Page Title</Label>
+                  <Label htmlFor="title" className="text-sm sm:text-base">Page Title</Label>
                   <Input
                     id="title"
                     value={formData.title}
                     onChange={(e) => handleInputChange("title", e.target.value)}
                     placeholder="About Us"
                     data-testid="input-page-title"
+                    className="mt-1.5 sm:mt-2 text-sm sm:text-base"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="slug">Page Slug</Label>
+                  <Label htmlFor="slug" className="text-sm sm:text-base">Page Slug</Label>
                   <Input
                     id="slug"
                     value={formData.slug}
                     onChange={(e) => handleInputChange("slug", e.target.value)}
                     placeholder="about-us"
                     data-testid="input-page-slug"
+                    className="mt-1.5 sm:mt-2 text-sm sm:text-base"
                   />
                   <p className="text-xs text-muted-foreground mt-1">
                     URL path: /{formData.slug}
@@ -375,7 +432,7 @@ export default function PageManager() {
               </div>
 
               <div>
-                <Label htmlFor="metaDescription">Meta Description</Label>
+                <Label htmlFor="metaDescription" className="text-sm sm:text-base">Meta Description</Label>
                 <Textarea
                   id="metaDescription"
                   value={formData.metaDescription}
@@ -383,6 +440,7 @@ export default function PageManager() {
                   placeholder="Brief description for search engines (150-160 characters)"
                   rows={3}
                   data-testid="textarea-meta-description"
+                  className="mt-1.5 sm:mt-2 text-sm sm:text-base"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
                   {formData.metaDescription.length}/160 characters
@@ -390,14 +448,14 @@ export default function PageManager() {
               </div>
 
               <div>
-                <Label htmlFor="content">Page Content</Label>
+                <Label htmlFor="content" className="text-sm sm:text-base">Page Content</Label>
                 <Textarea
                   id="content"
                   value={formData.content}
                   onChange={(e) => handleInputChange("content", e.target.value)}
                   placeholder="Write your page content here. HTML is supported."
-                  rows={15}
-                  className="font-mono text-sm"
+                  rows={12}
+                  className="font-mono text-xs sm:text-sm mt-1.5 sm:mt-2"
                   data-testid="textarea-page-content"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
@@ -406,9 +464,9 @@ export default function PageManager() {
               </div>
 
               <div>
-                <Label htmlFor="status">Page Status</Label>
+                <Label htmlFor="status" className="text-sm sm:text-base">Page Status</Label>
                 <Select value={formData.status} onValueChange={(value) => handleInputChange("status", value)}>
-                  <SelectTrigger data-testid="select-page-status">
+                  <SelectTrigger data-testid="select-page-status" className="mt-1.5 sm:mt-2 text-sm sm:text-base">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -422,11 +480,11 @@ export default function PageManager() {
 
           <Separator />
 
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-muted-foreground">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+            <div className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
               {selectedPage ? "Editing existing page" : "Creating new page"}
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
               <Button
                 variant="outline"
                 onClick={() => {
@@ -435,6 +493,8 @@ export default function PageManager() {
                   setActiveTab("list");
                 }}
                 data-testid="button-cancel-page"
+                size="sm"
+                className="w-full sm:w-auto"
               >
                 Cancel
               </Button>
@@ -442,6 +502,8 @@ export default function PageManager() {
                 onClick={handleSavePage}
                 disabled={createPageMutation.isPending || updatePageMutation.isPending || !formData.title || !formData.slug}
                 data-testid="button-save-page"
+                size="sm"
+                className="w-full sm:w-auto"
               >
                 {(createPageMutation.isPending || updatePageMutation.isPending) ? (
                   <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
