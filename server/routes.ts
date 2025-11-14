@@ -1504,12 +1504,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const settings = await storage.getSettings();
       // Redact sensitive values for security
-      const redactedSettings = settings.map(setting => ({
-        ...setting,
-        value: setting.key.includes('password') || setting.key.includes('key') || setting.key.includes('secret') 
-          ? '[REDACTED]' 
-          : setting.value
-      }));
+      const redactedSettings = settings.map(setting => {
+        const isSensitive = setting.key.includes('password') || setting.key.includes('key') || setting.key.includes('secret') || setting.key.includes('api_key');
+        return {
+          ...setting,
+          value: isSensitive ? '[REDACTED]' : setting.value
+        };
+      });
       res.json(redactedSettings);
     } catch (error) {
       console.error("Error fetching settings:", error);
@@ -1527,10 +1528,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Redact sensitive values
-      const isSecret = key.includes('password') || key.includes('key') || key.includes('secret');
+      const isSensitive = key.includes('password') || key.includes('key') || key.includes('secret') || key.includes('api_key');
       res.json({
         ...setting,
-        value: isSecret ? '[REDACTED]' : setting.value
+        value: isSensitive ? '[REDACTED]' : setting.value
       });
     } catch (error) {
       console.error("Error fetching setting:", error);
@@ -1548,20 +1549,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Value is required" });
       }
       
+      // Ensure value is properly formatted for JSONB storage
+      // JSONB can store any valid JSON value (string, number, boolean, object, array, null)
       const setting = await storage.upsertSetting(key, value);
       
       // Log setting changes for audit trail
       console.log(`Setting updated: ${key} by user ${req.session.userId}`);
       
+      // Check if this is a sensitive field
+      const isSensitive = key.includes('password') || key.includes('key') || key.includes('secret') || key.includes('api_key');
+      
       res.json({
         ...setting,
-        value: key.includes('password') || key.includes('key') || key.includes('secret') 
-          ? '[REDACTED]' 
-          : setting.value
+        value: isSensitive ? '[REDACTED]' : setting.value
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating setting:", error);
-      res.status(400).json({ error: "Failed to update setting" });
+      const errorMessage = error?.message || "Failed to update setting";
+      res.status(400).json({ error: errorMessage });
     }
   });
 
