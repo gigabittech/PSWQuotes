@@ -214,12 +214,13 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               <div
                 key={option.id}
                 className={cn(
-                  "group relative glass-card border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 touch-manipulation min-h-[120px]",
-                  "active:scale-[0.98]",
+                  "group relative rounded-xl p-6 cursor-pointer transition-all duration-300 touch-manipulation min-h-[120px]",
+                  "active:scale-[0.98] border-2",
                   data.powerSupply === option.id
-                    ? "border-primary bg-primary/10 scale-[1.02] shadow-xl -translate-y-3 hover:-translate-y-4 hover:shadow-2xl hover:bg-primary/15"
-                    : "border-border hover:border-primary hover:-translate-y-1 hover:shadow-xl"
+                    ? "bg-primary/10 scale-[1.02] shadow-xl -translate-y-3 hover:-translate-y-4 hover:shadow-2xl hover:bg-primary/15 glass-card"
+                    : "border-border hover:border-primary hover:-translate-y-1 hover:shadow-xl glass-card"
                 )}
+                style={data.powerSupply === option.id ? { border: '2px solid var(--primary)' } : undefined}
                 onClick={() => handlePowerSupplyChange(option.id)}
                 data-testid={`power-supply-${option.id}`}
               >
