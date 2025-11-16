@@ -152,20 +152,20 @@ export default function ProductManager() {
       </div>
 
       {/* Form Card */}
-      <Card className="border border-border bg-card p-6 sm:p-8 lg:p-10 max-w-4xl mx-auto shadow-sm">
+      <Card className="border border-border bg-card p-8 max-w-3xl mx-auto">
         {/* Step 1: Phase Selection */}
         {step === 1 && (
-          <div className="space-y-8">
-            <div className="text-center space-y-3">
-              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
                 Select Phase Type
               </h3>
-              <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
+              <p className="text-sm text-muted-foreground">
                 Choose the electrical phase for this product
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               {[
                 { id: 'single_phase' as Phase, title: 'Single Phase', desc: 'Most residential properties' },
                 { id: 'three_phase' as Phase, title: 'Three Phase', desc: 'Commercial & larger properties' },
@@ -174,19 +174,19 @@ export default function ProductManager() {
                   key={option.id}
                   onClick={() => updateFormData('phase', option.id)}
                   className={cn(
-                    "relative p-6 rounded-lg cursor-pointer transition-all duration-200 border",
-                    "hover:border-primary/50 hover:bg-muted/50",
+                    "relative p-5 rounded-md cursor-pointer transition-all border-2",
+                    "hover:border-primary/30",
                     formData.phase === option.id
-                      ? "border-primary bg-primary/5 shadow-sm"
-                      : "border-border bg-card"
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:bg-muted/30"
                   )}
                 >
                   {formData.phase === option.id && (
-                    <div className="absolute top-4 right-4 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                    <div className="absolute top-3 right-3 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                       <Check className="w-3 h-3 text-white" />
                     </div>
                   )}
-                  <h4 className="font-semibold text-lg mb-2">{option.title}</h4>
+                  <h4 className="font-medium text-base mb-1">{option.title}</h4>
                   <p className="text-sm text-muted-foreground">{option.desc}</p>
                 </div>
               ))}
@@ -196,17 +196,17 @@ export default function ProductManager() {
 
         {/* Step 2: Product Type Selection */}
         {step === 2 && (
-          <div className="space-y-8">
-            <div className="text-center space-y-3">
-              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
                 Select Product Type
               </h3>
-              <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
+              <p className="text-sm text-muted-foreground">
                 What type of product are you adding?
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               {[
                 { id: 'solar' as ProductType, title: 'Solar Panels', icon: Sun },
                 { id: 'battery' as ProductType, title: 'Battery Storage', icon: Battery },
@@ -219,26 +219,26 @@ export default function ProductManager() {
                     key={option.id}
                     onClick={() => updateFormData('productType', option.id)}
                     className={cn(
-                      "relative p-6 rounded-lg cursor-pointer transition-all duration-200 border",
-                      "hover:border-primary/50 hover:bg-muted/50",
+                      "relative p-5 rounded-md cursor-pointer transition-all border-2",
+                      "hover:border-primary/30",
                       formData.productType === option.id
-                        ? "border-primary bg-primary/5 shadow-sm"
-                        : "border-border bg-card"
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:bg-muted/30"
                     )}
                   >
                     {formData.productType === option.id && (
-                      <div className="absolute top-4 right-4 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                      <div className="absolute top-3 right-3 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                         <Check className="w-3 h-3 text-white" />
                       </div>
                     )}
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-3">
                       <div className={cn(
-                        "w-10 h-10 rounded-lg flex items-center justify-center",
+                        "w-9 h-9 rounded-md flex items-center justify-center",
                         formData.productType === option.id ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
                       )}>
-                        <IconComponent className="w-5 h-5" />
+                        <IconComponent className="w-4 h-4" />
                       </div>
-                      <h4 className="font-semibold text-lg">{option.title}</h4>
+                      <h4 className="font-medium text-base">{option.title}</h4>
                     </div>
                   </div>
                 );
@@ -249,39 +249,37 @@ export default function ProductManager() {
 
         {/* Step 3: Product Details */}
         {step === 3 && (
-          <div className="space-y-8">
-            <div className="text-center space-y-3">
-              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
                 Product Details
               </h3>
-              <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
+              <p className="text-sm text-muted-foreground">
                 Enter the specifications for this {formData.productType?.replace('_', ' ')}
               </p>
             </div>
 
-            <div className="space-y-6 mt-8">
+            <div className="space-y-6 mt-6">
               {/* Common Fields */}
-              <div className="border border-border rounded-lg p-6 space-y-4 bg-card">
-                <h4 className="font-semibold text-base text-foreground mb-4 uppercase tracking-wide text-xs">Basic Information</h4>
+              <div className="space-y-4">
+                <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Basic Information</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="brand" className="text-sm font-medium">Brand *</Label>
+                    <Label htmlFor="brand" className="text-sm">Brand *</Label>
                     <Input
                       id="brand"
                       value={formData.brand}
                       onChange={(e) => updateFormData('brand', e.target.value)}
                       placeholder="e.g., Jinko, Tesla"
-                      className="h-11"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="model" className="text-sm font-medium">Model/Series *</Label>
+                    <Label htmlFor="model" className="text-sm">Model/Series *</Label>
                     <Input
                       id="model"
                       value={formData.model}
                       onChange={(e) => updateFormData('model', e.target.value)}
                       placeholder="e.g., Tiger Neo, Powerwall"
-                      className="h-11"
                     />
                   </div>
                 </div>
@@ -289,11 +287,11 @@ export default function ProductManager() {
 
               {/* Solar Specific Fields */}
               {formData.productType === 'solar' && (
-                <div className="border border-border rounded-lg p-6 space-y-4 bg-card">
-                  <h4 className="font-semibold text-base text-foreground mb-4 uppercase tracking-wide text-xs">Solar Specifications</h4>
+                <div className="space-y-4">
+                  <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Solar Specifications</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="sizeKw" className="text-sm font-medium">System Size (kW)</Label>
+                      <Label htmlFor="sizeKw" className="text-sm">System Size (kW)</Label>
                       <Input
                         id="sizeKw"
                         type="number"
@@ -301,41 +299,37 @@ export default function ProductManager() {
                         value={formData.sizeKw || ''}
                         onChange={(e) => updateFormData('sizeKw', parseFloat(e.target.value))}
                         placeholder="6.6"
-                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="panels" className="text-sm font-medium">Number of Panels</Label>
+                      <Label htmlFor="panels" className="text-sm">Number of Panels</Label>
                       <Input
                         id="panels"
                         type="number"
                         value={formData.panels || ''}
                         onChange={(e) => updateFormData('panels', parseInt(e.target.value))}
                         placeholder="16"
-                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="wattage" className="text-sm font-medium">Panel Wattage (W)</Label>
+                      <Label htmlFor="wattage" className="text-sm">Panel Wattage (W)</Label>
                       <Input
                         id="wattage"
                         type="number"
                         value={formData.wattage || ''}
                         onChange={(e) => updateFormData('wattage', parseInt(e.target.value))}
                         placeholder="420"
-                        className="h-11"
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="priceAfterRebate" className="text-sm font-medium">Price After Rebate ($)</Label>
+                    <Label htmlFor="priceAfterRebate" className="text-sm">Price After Rebate ($)</Label>
                     <Input
                       id="priceAfterRebate"
                       type="number"
                       value={formData.priceAfterRebate || ''}
                       onChange={(e) => updateFormData('priceAfterRebate', parseFloat(e.target.value))}
                       placeholder="3290"
-                      className="h-11"
                     />
                   </div>
                 </div>
@@ -343,11 +337,11 @@ export default function ProductManager() {
 
               {/* Battery Specific Fields */}
               {formData.productType === 'battery' && (
-                <div className="border border-border rounded-lg p-6 space-y-4 bg-card">
-                  <h4 className="font-semibold text-base text-foreground mb-4 uppercase tracking-wide text-xs">Battery Specifications</h4>
+                <div className="space-y-4">
+                  <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Battery Specifications</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="capacityKwh" className="text-sm font-medium">Capacity (kWh)</Label>
+                      <Label htmlFor="capacityKwh" className="text-sm">Capacity (kWh)</Label>
                       <Input
                         id="capacityKwh"
                         type="number"
@@ -355,11 +349,10 @@ export default function ProductManager() {
                         value={formData.capacityKwh || ''}
                         onChange={(e) => updateFormData('capacityKwh', parseFloat(e.target.value))}
                         placeholder="13.5"
-                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="powerKw" className="text-sm font-medium">Power (kW)</Label>
+                      <Label htmlFor="powerKw" className="text-sm">Power (kW)</Label>
                       <Input
                         id="powerKw"
                         type="number"
@@ -367,30 +360,27 @@ export default function ProductManager() {
                         value={formData.powerKw || ''}
                         onChange={(e) => updateFormData('powerKw', parseFloat(e.target.value))}
                         placeholder="5.0"
-                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="rrp" className="text-sm font-medium">RRP ($)</Label>
+                      <Label htmlFor="rrp" className="text-sm">RRP ($)</Label>
                       <Input
                         id="rrp"
                         type="number"
                         value={formData.rrp || ''}
                         onChange={(e) => updateFormData('rrp', parseFloat(e.target.value))}
                         placeholder="15000"
-                        className="h-11"
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="priceAfterRebate" className="text-sm font-medium">Price After Rebate ($)</Label>
+                    <Label htmlFor="priceAfterRebate" className="text-sm">Price After Rebate ($)</Label>
                     <Input
                       id="priceAfterRebate"
                       type="number"
                       value={formData.priceAfterRebate || ''}
                       onChange={(e) => updateFormData('priceAfterRebate', parseFloat(e.target.value))}
                       placeholder="12490"
-                      className="h-11"
                     />
                   </div>
                 </div>
@@ -398,11 +388,11 @@ export default function ProductManager() {
 
               {/* EV Charger Specific Fields */}
               {formData.productType === 'ev_charger' && (
-                <div className="border border-border rounded-lg p-6 space-y-4 bg-card">
-                  <h4 className="font-semibold text-base text-foreground mb-4 uppercase tracking-wide text-xs">EV Charger Specifications</h4>
+                <div className="space-y-4">
+                  <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">EV Charger Specifications</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="powerKw" className="text-sm font-medium">Power (kW)</Label>
+                      <Label htmlFor="powerKw" className="text-sm">Power (kW)</Label>
                       <Input
                         id="powerKw"
                         type="number"
@@ -410,55 +400,50 @@ export default function ProductManager() {
                         value={formData.powerKw || ''}
                         onChange={(e) => updateFormData('powerKw', parseFloat(e.target.value))}
                         placeholder="7.0"
-                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="cableType" className="text-sm font-medium">Cable Type</Label>
+                      <Label htmlFor="cableType" className="text-sm">Cable Type</Label>
                       <Input
                         id="cableType"
                         value={formData.cableType || ''}
                         onChange={(e) => updateFormData('cableType', e.target.value)}
                         placeholder="Tethered"
-                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="cableLength" className="text-sm font-medium">Cable Length (m)</Label>
+                      <Label htmlFor="cableLength" className="text-sm">Cable Length (m)</Label>
                       <Input
                         id="cableLength"
                         type="number"
                         value={formData.cableLength || ''}
                         onChange={(e) => updateFormData('cableLength', parseFloat(e.target.value))}
                         placeholder="5"
-                        className="h-11"
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="installedPrice" className="text-sm font-medium">Installed Price ($)</Label>
+                    <Label htmlFor="installedPrice" className="text-sm">Installed Price ($)</Label>
                     <Input
                       id="installedPrice"
                       type="number"
                       value={formData.installedPrice || ''}
                       onChange={(e) => updateFormData('installedPrice', parseFloat(e.target.value))}
                       placeholder="1790"
-                      className="h-11"
                     />
                   </div>
                 </div>
               )}
 
               {/* Common Field: Warranty */}
-              <div className="border border-border rounded-lg p-6 space-y-2 bg-card">
-                <Label htmlFor="warrantyYears" className="text-sm font-medium">Warranty (Years)</Label>
+              <div className="space-y-2">
+                <Label htmlFor="warrantyYears" className="text-sm">Warranty (Years)</Label>
                 <Input
                   id="warrantyYears"
                   type="number"
                   value={formData.warrantyYears || ''}
                   onChange={(e) => updateFormData('warrantyYears', parseInt(e.target.value))}
                   placeholder="10"
-                  className="h-11"
                 />
               </div>
             </div>
@@ -467,48 +452,48 @@ export default function ProductManager() {
 
         {/* Step 4: Review */}
         {step === 4 && (
-          <div className="space-y-8">
-            <div className="text-center space-y-3">
-              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
                 Review & Confirm
               </h3>
-              <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
+              <p className="text-sm text-muted-foreground">
                 Please review the product details before adding
               </p>
             </div>
 
-            <div className="mt-8 border border-border rounded-lg p-6 sm:p-8 space-y-4 bg-card">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center justify-between py-3 border-b border-border">
-                  <span className="text-muted-foreground text-sm font-medium">Phase:</span>
-                  <span className="font-semibold text-foreground">{formData.phase?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+            <div className="mt-6 space-y-0 divide-y divide-border">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Phase:</span>
+                  <span className="text-sm font-medium text-foreground">{formData.phase?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b border-border">
-                  <span className="text-muted-foreground text-sm font-medium">Product Type:</span>
-                  <span className="font-semibold text-foreground">{formData.productType?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Product Type:</span>
+                  <span className="text-sm font-medium text-foreground">{formData.productType?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b border-border">
-                  <span className="text-muted-foreground text-sm font-medium">Brand:</span>
-                  <span className="font-semibold text-foreground">{formData.brand}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Brand:</span>
+                  <span className="text-sm font-medium text-foreground">{formData.brand}</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b border-border">
-                  <span className="text-muted-foreground text-sm font-medium">Model:</span>
-                  <span className="font-semibold text-foreground">{formData.model}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Model:</span>
+                  <span className="text-sm font-medium text-foreground">{formData.model}</span>
                 </div>
               </div>
 
               {formData.productType === 'solar' && (
                 <>
                   {formData.sizeKw && (
-                    <div className="flex items-center justify-between py-3 border-b border-border">
-                      <span className="text-muted-foreground text-sm font-medium">System Size:</span>
-                      <span className="font-semibold text-foreground">{formData.sizeKw} kW</span>
+                    <div className="flex items-center justify-between py-4">
+                      <span className="text-sm text-muted-foreground">System Size:</span>
+                      <span className="text-sm font-medium text-foreground">{formData.sizeKw} kW</span>
                     </div>
                   )}
                   {formData.priceAfterRebate && (
-                    <div className="flex items-center justify-between py-3 border-b border-border">
-                      <span className="text-muted-foreground text-sm font-medium">Price:</span>
-                      <span className="font-semibold text-primary">${formData.priceAfterRebate.toLocaleString()}</span>
+                    <div className="flex items-center justify-between py-4">
+                      <span className="text-sm text-muted-foreground">Price:</span>
+                      <span className="text-sm font-medium text-primary">${formData.priceAfterRebate.toLocaleString()}</span>
                     </div>
                   )}
                 </>
@@ -517,15 +502,15 @@ export default function ProductManager() {
               {formData.productType === 'battery' && (
                 <>
                   {formData.capacityKwh && (
-                    <div className="flex items-center justify-between py-3 border-b border-border">
-                      <span className="text-muted-foreground text-sm font-medium">Capacity:</span>
-                      <span className="font-semibold text-foreground">{formData.capacityKwh} kWh</span>
+                    <div className="flex items-center justify-between py-4">
+                      <span className="text-sm text-muted-foreground">Capacity:</span>
+                      <span className="text-sm font-medium text-foreground">{formData.capacityKwh} kWh</span>
                     </div>
                   )}
                   {formData.priceAfterRebate && (
-                    <div className="flex items-center justify-between py-3 border-b border-border">
-                      <span className="text-muted-foreground text-sm font-medium">Price:</span>
-                      <span className="font-semibold text-primary">${formData.priceAfterRebate.toLocaleString()}</span>
+                    <div className="flex items-center justify-between py-4">
+                      <span className="text-sm text-muted-foreground">Price:</span>
+                      <span className="text-sm font-medium text-primary">${formData.priceAfterRebate.toLocaleString()}</span>
                     </div>
                   )}
                 </>
@@ -534,15 +519,15 @@ export default function ProductManager() {
               {formData.productType === 'ev_charger' && (
                 <>
                   {formData.powerKw && (
-                    <div className="flex items-center justify-between py-3 border-b border-border">
-                      <span className="text-muted-foreground text-sm font-medium">Power:</span>
-                      <span className="font-semibold text-foreground">{formData.powerKw} kW</span>
+                    <div className="flex items-center justify-between py-4">
+                      <span className="text-sm text-muted-foreground">Power:</span>
+                      <span className="text-sm font-medium text-foreground">{formData.powerKw} kW</span>
                     </div>
                   )}
                   {formData.installedPrice && (
-                    <div className="flex items-center justify-between py-3 border-b border-border">
-                      <span className="text-muted-foreground text-sm font-medium">Installed Price:</span>
-                      <span className="font-semibold text-primary">${formData.installedPrice.toLocaleString()}</span>
+                    <div className="flex items-center justify-between py-4">
+                      <span className="text-sm text-muted-foreground">Installed Price:</span>
+                      <span className="text-sm font-medium text-primary">${formData.installedPrice.toLocaleString()}</span>
                     </div>
                   )}
                 </>
@@ -552,13 +537,13 @@ export default function ProductManager() {
         )}
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between items-center mt-10 pt-6 border-t border-border/50">
+        <div className="flex justify-between items-center mt-8 pt-6 border-t">
           {step > 1 ? (
             <Button
               variant="outline"
               onClick={() => setStep(step - 1)}
               disabled={addProductMutation.isPending}
-              className="gap-2 h-11 px-6"
+              className="gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -568,7 +553,7 @@ export default function ProductManager() {
               variant="ghost"
               onClick={resetForm}
               disabled={addProductMutation.isPending}
-              className="gap-2 text-muted-foreground hover:text-foreground h-11 px-6"
+              className="gap-2"
             >
               <X className="w-4 h-4" />
               Cancel
@@ -579,8 +564,7 @@ export default function ProductManager() {
             <Button
               onClick={() => setStep(step + 1)}
               disabled={!canProceed()}
-              size="lg"
-              className="gap-2 h-11 px-8 bg-primary hover:bg-primary/90"
+              className="gap-2"
             >
               Next
               <ArrowRight className="w-4 h-4" />
@@ -589,8 +573,7 @@ export default function ProductManager() {
             <Button
               onClick={handleSubmit}
               disabled={addProductMutation.isPending}
-              size="lg"
-              className="bg-green-600 hover:bg-green-700 gap-2 h-11 px-8 shadow-lg"
+              className="gap-2"
             >
               {addProductMutation.isPending ? (
                 <>
