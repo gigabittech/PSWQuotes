@@ -990,7 +990,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                       placeholder="Search by name, email, or phone..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 focus-visible:ring-gray-300 focus-visible:ring-offset-0"
+                      className="pl-10 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-gray-400"
                       data-testid="search-quotes"
                     />
                   </div>
