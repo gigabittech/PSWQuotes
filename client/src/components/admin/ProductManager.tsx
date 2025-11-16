@@ -98,8 +98,7 @@ export default function ProductManager() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-foreground flex items-center gap-2 sm:gap-3">
-            <Package className="w-8 h-8 text-primary" />
+          <h2 className="text-xl sm:text-2xl lg:text-3xl  flex items-center gap-2 sm:gap-3">
             Product Management
           </h2>
           <p className="text-muted-foreground mt-2 font-inter">
@@ -109,8 +108,8 @@ export default function ProductManager() {
       </div>
 
       {/* Progress Indicator */}
-      <div className="max-w-2xl mx-auto">
-        <div className="relative flex items-center justify-between mb-4">
+      <div className="w-full">
+        <div className="relative flex items-center justify-between mb-4 max-w-4xl mx-auto">
           {/* Connecting Lines */}
           <div className="absolute top-6 left-0 right-0 flex items-center justify-between px-6 pointer-events-none">
             {[1, 2, 3].map((lineIdx) => (
@@ -156,7 +155,7 @@ export default function ProductManager() {
       </div>
 
       {/* Form Card */}
-      <Card className="glass-form-card p-8 max-w-3xl mx-auto flex flex-col min-h-[500px]">
+      <Card className="glass-form-card p-8 w-full flex flex-col min-h-[500px]">
         <div className="flex-1">
         {/* Step 1: Phase Selection */}
         {step === 1 && (
