@@ -45,7 +45,7 @@ export default function StepIndicator({
           <div className="h-full bg-muted/50 backdrop-blur-sm rounded-full" />
           {/* Active progress */}
           <div 
-            className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-500 ease-out shadow-lg shadow-green-500/50"
+            className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-500 ease-out shadow-lg shadow-green-500/80"
             style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
             role="progressbar"
             aria-valuenow={currentStep}
