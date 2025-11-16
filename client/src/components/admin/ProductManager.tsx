@@ -117,7 +117,7 @@ export default function ProductManager() {
                 key={lineIdx}
                 className={cn(
                   "h-0.5 flex-1 transition-all",
-                  lineIdx < step ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"
+                  lineIdx < step ? "bg-primary" : "bg-gray-300 dark:bg-gray-600"
                 )}
               />
             ))}
@@ -137,15 +137,15 @@ export default function ProductManager() {
                   s.num === step
                     ? "bg-primary text-black border-primary shadow-lg scale-110"
                     : s.num < step
-                    ? "bg-green-500 text-white border-green-500"
+                    ? "bg-primary text-black border-primary"
                     : "bg-white dark:bg-gray-800 text-muted-foreground border-gray-300 dark:border-gray-600"
                 )}
               >
-                {s.num < step ? <Check className="w-6 h-6" /> : s.num}
+                {s.num < step ? <Check className="w-6 h-6 text-black" /> : s.num}
               </div>
               <span className={cn(
                 "text-xs mt-2 font-medium text-center whitespace-nowrap",
-                s.num === step ? "text-primary" : s.num < step ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
+                s.num === step ? "text-primary" : s.num < step ? "text-primary" : "text-muted-foreground"
               )}>
                 {s.label}
               </span>
