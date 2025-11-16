@@ -273,8 +273,8 @@ export default function Admin() {
                 </div>
               </div>
               <div className="flex flex-col">
-                <h1 className="text-2xl font-bold text-primary leading-tight">
-                  Perth Solar Warehouserr
+                <h1 className="text-2xl font-bold text-foreground leading-tight">
+                  Perth Solar Warehouse
                 </h1>
                 <span className="text-xs text-muted-foreground font-medium leading-tight">Admin Dashboard</span>
               </div>
