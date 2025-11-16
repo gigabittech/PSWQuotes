@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Package, ArrowRight, ArrowLeft, Check, X, Zap, Battery, Sun, Plug } from "lucide-react";
+import { Package, ArrowRight, ArrowLeft, Check, X, Zap, Battery, Sun, Plug, Building2, Home, FileText, DollarSign, Settings, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Phase = 'single_phase' | 'three_phase';
@@ -167,29 +167,40 @@ export default function ProductManager() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               {[
-                { id: 'single_phase' as Phase, title: 'Single Phase', desc: 'Most residential properties' },
-                { id: 'three_phase' as Phase, title: 'Three Phase', desc: 'Commercial & larger properties' },
-              ].map((option) => (
-                <div
-                  key={option.id}
-                  onClick={() => updateFormData('phase', option.id)}
-                  className={cn(
-                    "relative p-5 rounded-md cursor-pointer transition-all border-2",
-                    "hover:border-primary/30",
-                    formData.phase === option.id
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:bg-muted/30"
+                { id: 'single_phase' as Phase, title: 'Single Phase', desc: 'Most residential properties', icon: Home },
+                { id: 'three_phase' as Phase, title: 'Three Phase', desc: 'Commercial & larger properties', icon: Building2 },
+              ].map((option) => {
+                const IconComponent = option.icon;
+                return (
+                  <div
+                    key={option.id}
+                    onClick={() => updateFormData('phase', option.id)}
+                    className={cn(
+                      "relative p-5 rounded-md cursor-pointer transition-all border-2",
+                      "hover:border-primary/30",
+                      formData.phase === option.id
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:bg-muted/30"
+                    )}
+                  >
+                    {formData.phase === option.id && (
+                      <div className="absolute top-3 right-3 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
                   )}
-                >
-                  {formData.phase === option.id && (
-                    <div className="absolute top-3 right-3 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className={cn(
+                        "w-10 h-10 rounded-md flex items-center justify-center",
+                        formData.phase === option.id ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                      )}>
+                        <IconComponent className="w-5 h-5" />
+                      </div>
+                      <h4 className="font-medium text-base">{option.title}</h4>
                     </div>
-                  )}
-                  <h4 className="font-medium text-base mb-1">{option.title}</h4>
-                  <p className="text-sm text-muted-foreground">{option.desc}</p>
-                </div>
-              ))}
+                    <p className="text-sm text-muted-foreground ml-[52px]">{option.desc}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
@@ -262,7 +273,10 @@ export default function ProductManager() {
             <div className="space-y-6 mt-6">
               {/* Common Fields */}
               <div className="space-y-4">
-                <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Basic Information</h4>
+                <div className="flex items-center gap-2 mb-4">
+                  <FileText className="w-4 h-4 text-muted-foreground" />
+                  <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Basic Information</h4>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="brand" className="text-sm">Brand *</Label>
@@ -288,7 +302,10 @@ export default function ProductManager() {
               {/* Solar Specific Fields */}
               {formData.productType === 'solar' && (
                 <div className="space-y-4">
-                  <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Solar Specifications</h4>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Sun className="w-4 h-4 text-muted-foreground" />
+                    <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Solar Specifications</h4>
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="sizeKw" className="text-sm">System Size (kW)</Label>
@@ -323,7 +340,10 @@ export default function ProductManager() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="priceAfterRebate" className="text-sm">Price After Rebate ($)</Label>
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-muted-foreground" />
+                      <Label htmlFor="priceAfterRebate" className="text-sm">Price After Rebate ($)</Label>
+                    </div>
                     <Input
                       id="priceAfterRebate"
                       type="number"
@@ -338,7 +358,10 @@ export default function ProductManager() {
               {/* Battery Specific Fields */}
               {formData.productType === 'battery' && (
                 <div className="space-y-4">
-                  <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Battery Specifications</h4>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Battery className="w-4 h-4 text-muted-foreground" />
+                    <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Battery Specifications</h4>
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="capacityKwh" className="text-sm">Capacity (kWh)</Label>
@@ -374,7 +397,10 @@ export default function ProductManager() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="priceAfterRebate" className="text-sm">Price After Rebate ($)</Label>
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-muted-foreground" />
+                      <Label htmlFor="priceAfterRebate" className="text-sm">Price After Rebate ($)</Label>
+                    </div>
                     <Input
                       id="priceAfterRebate"
                       type="number"
@@ -389,7 +415,10 @@ export default function ProductManager() {
               {/* EV Charger Specific Fields */}
               {formData.productType === 'ev_charger' && (
                 <div className="space-y-4">
-                  <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">EV Charger Specifications</h4>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Zap className="w-4 h-4 text-muted-foreground" />
+                    <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">EV Charger Specifications</h4>
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="powerKw" className="text-sm">Power (kW)</Label>
@@ -423,7 +452,10 @@ export default function ProductManager() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="installedPrice" className="text-sm">Installed Price ($)</Label>
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-muted-foreground" />
+                      <Label htmlFor="installedPrice" className="text-sm">Installed Price ($)</Label>
+                    </div>
                     <Input
                       id="installedPrice"
                       type="number"
@@ -437,7 +469,10 @@ export default function ProductManager() {
 
               {/* Common Field: Warranty */}
               <div className="space-y-2">
-                <Label htmlFor="warrantyYears" className="text-sm">Warranty (Years)</Label>
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-muted-foreground" />
+                  <Label htmlFor="warrantyYears" className="text-sm">Warranty (Years)</Label>
+                </div>
                 <Input
                   id="warrantyYears"
                   type="number"
