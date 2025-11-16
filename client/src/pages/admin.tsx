@@ -265,16 +265,16 @@ export default function Admin() {
             <div className="flex items-center space-x-3 flex-shrink-0">
               {/* Enhanced Logo in Header */}
               <div className="relative">
-                <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg shadow-md">
-                  <Sun className="h-6 w-6 text-white" />
+                <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg shadow-md">
+                  <Sun className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-                  <Zap className="h-1.5 w-1.5 text-white" />
+                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-primary rounded-full flex items-center justify-center">
+                  <Zap className="h-1.5 w-1.5 text-primary-foreground" />
                 </div>
               </div>
               <div className="flex flex-col">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent leading-tight">
-                  Perth Solar Warehouse
+                <h1 className="text-2xl font-bold text-primary leading-tight">
+                  Perth Solar Warehouserr
                 </h1>
                 <span className="text-xs text-muted-foreground font-medium leading-tight">Admin Dashboard</span>
               </div>
