@@ -10,8 +10,8 @@
   --card-foreground: hsl(222, 84%, 4.9%);
   --popover: hsl(0, 0%, 100%);
   --popover-foreground: hsl(222, 84%, 4.9%);
-  --primary: hsl(208, 100%, 50%);
-  --primary-foreground: hsl(0, 0%, 100%);
+  --primary: #f7c917;
+  --primary-foreground: hsl(0, 0%, 0%);
   --secondary: hsl(43, 96%, 56%);
   --secondary-foreground: hsl(222, 84%, 4.9%);
   --muted: hsl(210, 40%, 96%);
@@ -22,7 +22,7 @@
   --destructive-foreground: hsl(0, 0%, 100%);
   --border: hsl(214, 32%, 91%);
   --input: hsl(214, 32%, 91%);
-  --ring: hsl(208, 100%, 50%);
+  --ring: #f7c917;
   
   /* New professional colors */
   --navy: hsl(220, 13%, 18%);
@@ -65,8 +65,8 @@
   --card-foreground: hsl(0, 0%, 85%);
   --popover: hsl(0, 0%, 0%);
   --popover-foreground: hsl(200, 7%, 91%);
-  --primary: hsl(217, 91%, 60%);
-  --primary-foreground: hsl(210, 20%, 98%);
+  --primary: #f7c917;
+  --primary-foreground: hsl(0, 0%, 0%);
   --secondary: hsl(43, 96%, 56%);
   --secondary-foreground: hsl(222, 84%, 4.9%);
   --muted: hsl(0, 0%, 9%);
@@ -77,7 +77,7 @@
   --destructive-foreground: hsl(210, 20%, 98%);
   --border: hsl(210, 5%, 15%);
   --input: hsl(207, 28%, 18%);
-  --ring: hsl(217, 91%, 60%);
+  --ring: #f7c917;
 }
 
 @layer base {
