@@ -124,7 +124,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               className={cn(
                 "relative rounded-2xl transition-all duration-500",
                 data.systems?.includes(option.id)
-                  ? "p-[2px] bg-primary scale-[1.02] -translate-y-3 hover:shadow-2xl"
+                  ? "p-[3px] bg-primary scale-[1.02] -translate-y-3 hover:shadow-2xl"
                   : ""
               )}
             >
