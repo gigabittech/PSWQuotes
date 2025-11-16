@@ -122,23 +122,15 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
             <div
               key={option.id}
               className={cn(
-                "relative rounded-2xl transition-all duration-500",
+                "group relative glass-card rounded-2xl p-6 cursor-pointer transition-all duration-500 min-h-[320px] sm:min-h-[360px] touch-manipulation",
+                "border-2 active:scale-[0.98]",
                 data.systems?.includes(option.id)
-                  ? "p-[3px] bg-primary scale-[1.02] -translate-y-3 hover:shadow-2xl"
-                  : ""
+                  ? "border-primary bg-primary/10 scale-[1.02] shadow-xl -translate-y-3 hover:shadow-2xl hover:bg-primary/15"
+                  : `border-border ${option.border} hover:-translate-y-3 hover:shadow-xl hover:shadow-2xl`
               )}
+              onClick={() => handleSystemToggle(option.id)}
+              data-testid={`system-option-${option.id}`}
             >
-              <div
-                className={cn(
-                  "group relative glass-card rounded-2xl p-6 cursor-pointer transition-all duration-500 min-h-[320px] sm:min-h-[360px] touch-manipulation w-full h-full",
-                  "border-2 active:scale-[0.98]",
-                  data.systems?.includes(option.id)
-                    ? "border-transparent bg-primary/10 hover:bg-primary/15"
-                    : `border-border ${option.border} hover:-translate-y-3 hover:shadow-xl hover:shadow-2xl`
-                )}
-                onClick={() => handleSystemToggle(option.id)}
-                data-testid={`system-option-${option.id}`}
-              >
               {/* Popular Badge */}
               {option.popular && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
@@ -201,7 +193,6 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                   </div>
                 </div>
               )}
-              </div>
             </div>
           ))}
         </div>
