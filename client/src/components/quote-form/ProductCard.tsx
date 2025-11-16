@@ -85,7 +85,7 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
       {/* Selection indicator */}
       {isSelected && (
         <div className={cn(
-          "absolute top-4 sm:top-5 w-6 h-6 bg-primary rounded-full flex items-center justify-center z-10",
+          "absolute top-3 sm:top-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center z-10",
           badge ? "right-20 sm:right-24" : "right-3"
         )}>
           <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20">
