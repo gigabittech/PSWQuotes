@@ -122,11 +122,11 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
             <div
               key={option.id}
               className={cn(
-                "group relative glass-card rounded-2xl p-6 cursor-pointer transition-all duration-500 hover:shadow-2xl min-h-[320px] sm:min-h-[360px] touch-manipulation",
-                "border-2 hover:-translate-y-3 hover:shadow-xl active:scale-[0.98]",
+                "group relative glass-card rounded-2xl p-6 cursor-pointer transition-all duration-500 min-h-[320px] sm:min-h-[360px] touch-manipulation",
+                "border-2 active:scale-[0.98]",
                 data.systems?.includes(option.id)
                   ? "border-primary bg-primary/10 ring-2 ring-primary/30 scale-[1.02] shadow-xl -translate-y-3"
-                  : `border-border ${option.border}`
+                  : `border-border ${option.border} hover:-translate-y-3 hover:shadow-xl hover:shadow-2xl`
               )}
               onClick={() => handleSystemToggle(option.id)}
               data-testid={`system-option-${option.id}`}
@@ -209,11 +209,11 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               <div
                 key={option.id}
                 className={cn(
-                  "group relative glass-card border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:shadow-xl touch-manipulation min-h-[120px]",
-                  "hover:-translate-y-1 active:scale-[0.98]",
+                  "group relative glass-card border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 touch-manipulation min-h-[120px]",
+                  "active:scale-[0.98]",
                   data.powerSupply === option.id
                     ? "border-primary bg-primary/10 ring-2 ring-primary/30 scale-[1.02] shadow-lg -translate-y-1"
-                    : "border-border hover:border-primary"
+                    : "border-border hover:border-primary hover:-translate-y-1 hover:shadow-xl"
                 )}
                 onClick={() => handlePowerSupplyChange(option.id)}
                 data-testid={`power-supply-${option.id}`}
