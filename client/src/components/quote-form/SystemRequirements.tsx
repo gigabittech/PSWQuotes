@@ -157,7 +157,12 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                   )}>
                     <span className="text-3xl sm:text-4xl drop-shadow-lg">{option.icon}</span>
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+                  <h3 className={cn(
+                    "text-xl sm:text-2xl font-bold mb-3 transition-colors duration-300",
+                    data.systems?.includes(option.id) 
+                      ? "text-primary" 
+                      : "text-foreground group-hover:text-primary"
+                  )}>
                     {option.title}
                   </h3>
                   <p className="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed px-2">
@@ -232,7 +237,12 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                     </div>
                   </div>
                   <div className="flex-1">
-                    <label className="font-bold text-foreground cursor-pointer text-base sm:text-lg block mb-2 group-hover:text-primary transition-colors duration-300">
+                    <label className={cn(
+                      "font-bold cursor-pointer text-base sm:text-lg block mb-2 transition-colors duration-300",
+                      data.powerSupply === option.id
+                        ? "text-primary"
+                        : "text-foreground group-hover:text-primary"
+                    )}>
                       {option.title}
                     </label>
                     <p className="text-sm text-muted-foreground leading-relaxed">
