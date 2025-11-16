@@ -55,8 +55,8 @@ export default function SystemSelection({
       title: "Solar Power",
       description: "Harness the sun's energy with premium solar panel systems",
       icon: "fas fa-sun",
-      iconColor: "text-secondary",
-      bgColor: "bg-secondary/10",
+      iconColor: "text-primary",
+      bgColor: "bg-primary/10",
       price: getPriceDisplay("solar", "after rebates"),
     },
     {
@@ -64,8 +64,8 @@ export default function SystemSelection({
       title: "Hybrid Inverter",
       description: "Smart inverter for solar, battery & backup power management",
       icon: "fas fa-microchip",
-      iconColor: "text-purple-600",
-      bgColor: "bg-purple-600/10",
+      iconColor: "text-primary",
+      bgColor: "bg-primary/10",
       price: getPriceDisplay("inverter", "installed"),
     },
     {
@@ -73,8 +73,8 @@ export default function SystemSelection({
       title: "Battery Storage",
       description: "Store energy for use when you need it most",
       icon: "fas fa-battery-full",
-      iconColor: "text-accent",
-      bgColor: "bg-accent/10",
+      iconColor: "text-primary",
+      bgColor: "bg-primary/10",
       price: getPriceDisplay("battery", "after rebates"),
     },
     {
@@ -150,11 +150,11 @@ export default function SystemSelection({
                   className={cn(
                     "w-20 h-20 rounded-2xl flex items-center justify-center mx-auto",
                     "transition-transform duration-350 group-hover:scale-110",
-                    isSelected ? "bg-primary/10" : option.bgColor,
+                    "bg-primary/10",
                   )}
                 >
                   <i
-                    className={cn(option.icon, isSelected ? "text-primary" : option.iconColor, "text-3xl")}
+                    className={cn(option.icon, "text-primary text-3xl")}
                   ></i>
                 </div>
 
