@@ -204,8 +204,8 @@ app.use((req, res, next) => {
   const server = await registerRoutes(app);
 
   // Serve local uploads for development (when GCS is not available)
-  const uploadsDir = path.join(process.cwd(), 'uploads');
-  app.use('/uploads', express.static(uploadsDir, {
+  const attachedAssetsDir = path.join(process.cwd(), 'attached_assets');
+  app.use('/attached_assets', express.static(attachedAssetsDir, {
     maxAge: '1d', // Cache for 1 day
   }));
 

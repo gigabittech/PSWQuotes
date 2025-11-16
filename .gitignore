@@ -9,3 +9,7 @@ vite.config.ts.*
 .env.*.local
 .env.*
 !.env.example
+
+# User uploaded media files
+attached_assets/uploads/
+uploads/

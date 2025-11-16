@@ -1624,7 +1624,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               console.warn(`GCS not available, using local file storage for ${file.originalname}`);
               
               // Create uploads directory if it doesn't exist
-              const uploadsDir = path.join(process.cwd(), 'uploads', 'media');
+              const uploadsDir = path.join(process.cwd(), 'attached_assets', 'uploads', 'media');
               if (!existsSync(uploadsDir)) {
                 await mkdir(uploadsDir, { recursive: true });
               }
@@ -1634,7 +1634,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               await writeFile(localFilePath, file.buffer);
               
               // Use a path that can be served via static route
-              finalPath = `/uploads/media/${fileName}`;
+              finalPath = `/attached_assets/uploads/media/${fileName}`;
             } else {
               // Re-throw if it's a different error
               throw gcsError;
@@ -1684,7 +1684,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Delete from object storage if possible, or from local storage
       try {
         // Check if it's a local file path
-        if (asset.url.startsWith('/uploads/')) {
+        if (asset.url.startsWith('/attached_assets/uploads/') || asset.url.startsWith('/uploads/')) {
           const localFilePath = path.join(process.cwd(), asset.url);
           if (existsSync(localFilePath)) {
             await unlink(localFilePath);
