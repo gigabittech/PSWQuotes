@@ -22,7 +22,7 @@
   --destructive-foreground: hsl(0, 0%, 100%);
   --border: hsl(214, 32%, 91%);
   --input: hsl(214, 32%, 91%);
-  --ring: #f7c917;
+  --ring: hsl(214, 32%, 91%);
   
   /* New professional colors */
   --navy: hsl(220, 13%, 18%);
@@ -77,7 +77,7 @@
   --destructive-foreground: hsl(210, 20%, 98%);
   --border: hsl(210, 5%, 15%);
   --input: hsl(207, 28%, 18%);
-  --ring: #f7c917;
+  --ring: hsl(214, 32%, 91%);
 }
 
 @layer base {
