@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ export default function MediaManager() {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [filter, setFilter] = useState<string>("all");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -40,6 +41,10 @@ export default function MediaManager() {
       queryClient.invalidateQueries({ queryKey: ['/api/cms/media'] });
       setSelectedFiles(null);
       setUploadProgress(0);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     },
     onError: () => {
       toast({
@@ -147,6 +152,7 @@ export default function MediaManager() {
               multiple
               accept="image/*,video/*,audio/*,.pdf,.doc,.docx"
               onChange={handleFileSelect}
+              ref={fileInputRef}
               data-testid="file-input"
               className="w-full"
             />
