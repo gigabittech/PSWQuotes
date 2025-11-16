@@ -216,6 +216,31 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
     },
   });
 
+  const capitalizeWords = (str: string | null | undefined): string => {
+    if (!str) return '';
+    return str
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
+  const capitalizeFirst = (str: string | null | undefined): string => {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
+  const formatSystemName = (system: string): string => {
+    return capitalizeFirst(system);
+  };
+
+  const formatPowerSupply = (supply: string | null | undefined): string => {
+    if (!supply) return '';
+    if (supply === 'single') return 'Single';
+    if (supply === 'three') return 'Three';
+    if (supply === 'unknown') return "I don't know";
+    return capitalizeFirst(supply);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
@@ -921,7 +946,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                       {[...quotes].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5).map((quote: Quote) => (
                         <div key={quote.id} className="flex items-center justify-between py-3 border-b last:border-0">
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-sm truncate">{quote.firstName} {quote.lastName}</p>
+                            <p className="font-medium text-sm truncate">{capitalizeWords(quote.firstName)} {capitalizeWords(quote.lastName)}</p>
                             <p className="text-xs text-muted-foreground">{new Date(quote.createdAt).toLocaleDateString()} • {quote.email}</p>
                           </div>
                           <div className="flex items-center gap-3 ml-4">
@@ -1029,11 +1054,11 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between mb-3">
                               <div>
-                                <h3 className="text-lg font-semibold text-foreground mb-1">{quote.firstName} {quote.lastName}</h3>
+                                <h3 className="text-lg font-semibold text-foreground mb-1">{capitalizeWords(quote.firstName)} {capitalizeWords(quote.lastName)}</h3>
                                 <div className="space-y-0.5 text-sm text-muted-foreground">
                                   <p>{quote.email}</p>
                                   <p>{quote.phone}</p>
-                                  <p>{quote.address}, {quote.suburb} {quote.state} {quote.postcode}</p>
+                                  <p>{capitalizeWords(quote.address)}, {capitalizeWords(quote.suburb)} {quote.state?.toUpperCase()} {quote.postcode}</p>
                                 </div>
                               </div>
                             </div>
@@ -1042,11 +1067,11 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                             <div className="flex flex-wrap gap-4 text-sm">
                               <div>
                                 <span className="text-muted-foreground">Systems:</span>
-                                <span className="ml-1 font-medium">{quote.selectedSystems?.join(', ') || 'N/A'}</span>
+                                <span className="ml-1 font-medium">{quote.selectedSystems?.map(formatSystemName).join(', ') || 'N/A'}</span>
                               </div>
                               <div>
                                 <span className="text-muted-foreground">Supply:</span>
-                                <span className="ml-1 font-medium">{quote.powerSupply} Phase</span>
+                                <span className="ml-1 font-medium">{formatPowerSupply(quote.powerSupply)} Phase</span>
                               </div>
                             </div>
                           </div>
