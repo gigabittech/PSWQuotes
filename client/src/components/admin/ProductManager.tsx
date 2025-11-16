@@ -179,9 +179,9 @@ export default function ProductManager() {
                   onClick={() => updateFormData('phase', option.id)}
                   className={cn(
                     "relative p-6 rounded-xl cursor-pointer transition-all duration-200 border-2",
-                    "hover:shadow-lg hover:border-primary",
+                    "hover:border-primary hover:bg-primary/10",
                     formData.phase === option.id
-                      ? "border-primary bg-primary/10 shadow-md ring-2 ring-primary/20"
+                      ? "border-primary bg-primary/10"
                       : "border-gray-200 dark:border-gray-700 bg-card"
                   )}
                 >
@@ -222,9 +222,9 @@ export default function ProductManager() {
                   onClick={() => updateFormData('productType', option.id)}
                   className={cn(
                     "relative p-6 rounded-xl cursor-pointer transition-all duration-200 border-2",
-                    "hover:shadow-lg hover:border-primary",
+                    "hover:border-primary hover:bg-primary/10",
                     formData.productType === option.id
-                      ? "border-primary bg-primary/10 shadow-md ring-2 ring-primary/20"
+                      ? "border-primary bg-primary/10"
                       : "border-gray-200 dark:border-gray-700 bg-card"
                   )}
                 >
