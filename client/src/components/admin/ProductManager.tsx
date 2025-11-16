@@ -187,7 +187,7 @@ export default function ProductManager() {
                 >
                   {formData.phase === option.id && (
                     <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                      <Check className="w-4 h-4 text-white" />
+                      <Check className="w-4 h-4 text-black" />
                     </div>
                   )}
                   <h4 className="font-semibold text-lg mb-2">{option.title}</h4>
@@ -230,7 +230,7 @@ export default function ProductManager() {
                 >
                   {formData.productType === option.id && (
                     <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                      <Check className="w-4 h-4 text-white" />
+                      <Check className="w-4 h-4 text-black" />
                     </div>
                   )}
                   <div className="text-4xl mb-3">{option.icon}</div>
