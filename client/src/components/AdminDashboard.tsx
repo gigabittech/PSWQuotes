@@ -994,22 +994,24 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                       data-testid="search-quotes"
                     />
                   </div>
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full sm:w-48">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Statuses</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="contacted">Contacted</SelectItem>
-                      <SelectItem value="converted">Converted</SelectItem>
-                      <SelectItem value="lost">Lost</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button variant="outline" className="gap-2">
-                    <Download className="h-4 w-4" />
-                    Export
-                  </Button>
+                  <div className="flex gap-4 ml-auto">
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                      <SelectTrigger className="w-full sm:w-48">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="contacted">Contacted</SelectItem>
+                        <SelectItem value="converted">Converted</SelectItem>
+                        <SelectItem value="lost">Lost</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button variant="outline" className="gap-2">
+                      <Download className="h-4 w-4" />
+                      Export
+                    </Button>
+                  </div>
                 </div>
                 
                 {/* Results Summary */}
