@@ -131,7 +131,7 @@ export default function SystemSelection({
                 "backdrop-blur-lg border shadow-lg",
                 "hover:scale-105 hover:shadow-2xl",
                 isSelected
-                  ? "bg-white/90 border-primary/50 shadow-primary/20 hover:border-primary/50"
+                  ? "bg-white/90 border-primary shadow-primary/20 hover:border-primary hover:bg-primary/5"
                   : "bg-white/60 border-white/40 hover:border-primary/30",
               )}
               onClick={() => onSystemToggle(option.id)}
@@ -150,17 +150,20 @@ export default function SystemSelection({
                   className={cn(
                     "w-20 h-20 rounded-2xl flex items-center justify-center mx-auto",
                     "transition-transform duration-350 group-hover:scale-110",
-                    option.bgColor,
+                    isSelected ? "bg-primary/10" : option.bgColor,
                   )}
                 >
                   <i
-                    className={cn(option.icon, option.iconColor, "text-3xl")}
+                    className={cn(option.icon, isSelected ? "text-primary" : option.iconColor, "text-3xl")}
                   ></i>
                 </div>
 
                 {/* Content */}
                 <div className="space-y-2">
-                  <h3 className="font-outfit text-2xl font-semibold text-foreground">
+                  <h3 className={cn(
+                    "font-outfit text-2xl font-semibold transition-colors duration-300",
+                    isSelected ? "text-primary" : "text-foreground"
+                  )}>
                     {option.title}
                   </h3>
                   <p className="font-inter text-sm text-muted-foreground leading-relaxed">
