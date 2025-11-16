@@ -244,7 +244,7 @@ export default function AnalyticsView() {
                     <div key={status} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <Badge className={getStatusColor(status)} variant="secondary">
-                          {status}
+                          {status.charAt(0).toUpperCase() + status.slice(1)}
                         </Badge>
                         <span className="text-sm text-muted-foreground">
                           {count} quotes
