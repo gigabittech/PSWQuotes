@@ -110,42 +110,46 @@ export default function ProductManager() {
 
       {/* Progress Indicator */}
       <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-4">
+        <div className="relative flex items-center justify-between mb-4">
+          {/* Connecting Lines */}
+          <div className="absolute top-6 left-0 right-0 flex items-center justify-between px-6 pointer-events-none">
+            {[1, 2, 3].map((lineIdx) => (
+              <div
+                key={lineIdx}
+                className={cn(
+                  "h-0.5 flex-1 transition-all",
+                  lineIdx < step ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"
+                )}
+              />
+            ))}
+          </div>
+          
+          {/* Step Circles and Labels */}
           {[
             { num: 1, label: 'Phase' },
             { num: 2, label: 'Product Type' },
             { num: 3, label: 'Details' },
             { num: 4, label: 'Review' }
-          ].map((s, idx) => (
-            <div key={s.num} className="flex items-center flex-1">
-              <div className="flex flex-col items-center flex-1">
-                <div
-                  className={cn(
-                    "w-12 h-12 rounded-full flex items-center justify-center font-semibold transition-all border-2",
-                    s.num === step
-                      ? "bg-primary text-white border-primary shadow-lg scale-110"
-                      : s.num < step
-                      ? "bg-green-500 text-white border-green-500"
-                      : "bg-white dark:bg-gray-800 text-muted-foreground border-gray-300 dark:border-gray-600"
-                  )}
-                >
-                  {s.num < step ? <Check className="w-6 h-6" /> : s.num}
-                </div>
-                <span className={cn(
-                  "text-xs mt-2 font-medium text-center",
-                  s.num === step ? "text-primary" : s.num < step ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
-                )}>
-                  {s.label}
-                </span>
+          ].map((s) => (
+            <div key={s.num} className="flex flex-col items-center relative z-10 flex-1">
+              <div
+                className={cn(
+                  "w-12 h-12 rounded-full flex items-center justify-center font-semibold transition-all border-2",
+                  s.num === step
+                    ? "bg-primary text-white border-primary shadow-lg scale-110"
+                    : s.num < step
+                    ? "bg-green-500 text-white border-green-500"
+                    : "bg-white dark:bg-gray-800 text-muted-foreground border-gray-300 dark:border-gray-600"
+                )}
+              >
+                {s.num < step ? <Check className="w-6 h-6" /> : s.num}
               </div>
-              {idx < 3 && (
-                <div
-                  className={cn(
-                    "h-0.5 flex-1 mx-2 -mt-6 transition-all",
-                    s.num < step ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"
-                  )}
-                />
-              )}
+              <span className={cn(
+                "text-xs mt-2 font-medium text-center whitespace-nowrap",
+                s.num === step ? "text-primary" : s.num < step ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
+              )}>
+                {s.label}
+              </span>
             </div>
           ))}
         </div>
