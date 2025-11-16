@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Package, ArrowRight, ArrowLeft, Check, X, Zap, Battery, Sun, Plug, Building2, Home, FileText, DollarSign, Settings, Shield } from "lucide-react";
+import { Package, ArrowRight, ArrowLeft, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Phase = 'single_phase' | 'three_phase';
@@ -152,55 +152,45 @@ export default function ProductManager() {
       </div>
 
       {/* Form Card */}
-      <Card className="border border-border bg-card p-8 max-w-3xl mx-auto">
+      <Card className="glass-form-card p-8 max-w-3xl mx-auto flex flex-col min-h-[500px]">
+        <div className="flex-1">
         {/* Step 1: Phase Selection */}
         {step === 1 && (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
+            <div className="text-center space-y-2">
+              <h3 className="font-outfit text-2xl font-semibold text-foreground">
                 Select Phase Type
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground font-inter">
                 Choose the electrical phase for this product
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-8">
               {[
-                { id: 'single_phase' as Phase, title: 'Single Phase', desc: 'Most residential properties', icon: Home },
-                { id: 'three_phase' as Phase, title: 'Three Phase', desc: 'Commercial & larger properties', icon: Building2 },
-              ].map((option) => {
-                const IconComponent = option.icon;
-                return (
-                  <div
-                    key={option.id}
-                    onClick={() => updateFormData('phase', option.id)}
-                    className={cn(
-                      "relative p-5 rounded-md cursor-pointer transition-all border-2",
-                      "hover:border-primary/30",
-                      formData.phase === option.id
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:bg-muted/30"
-                    )}
-                  >
-                    {formData.phase === option.id && (
-                      <div className="absolute top-3 right-3 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                        <Check className="w-3 h-3 text-white" />
-                      </div>
+                { id: 'single_phase' as Phase, title: 'Single Phase', desc: 'Most residential properties' },
+                { id: 'three_phase' as Phase, title: 'Three Phase', desc: 'Commercial & larger properties' },
+              ].map((option) => (
+                <div
+                  key={option.id}
+                  onClick={() => updateFormData('phase', option.id)}
+                  className={cn(
+                    "relative p-6 rounded-xl cursor-pointer transition-all duration-200 border-2",
+                    "hover:shadow-lg hover:border-primary",
+                    formData.phase === option.id
+                      ? "border-primary bg-primary/10 shadow-md ring-2 ring-primary/20"
+                      : "border-gray-200 dark:border-gray-700 bg-card"
                   )}
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className={cn(
-                        "w-10 h-10 rounded-md flex items-center justify-center",
-                        formData.phase === option.id ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-                      )}>
-                        <IconComponent className="w-5 h-5" />
-                      </div>
-                      <h4 className="font-medium text-base">{option.title}</h4>
+                >
+                  {formData.phase === option.id && (
+                    <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                      <Check className="w-4 h-4 text-white" />
                     </div>
-                    <p className="text-sm text-muted-foreground ml-[52px]">{option.desc}</p>
-                  </div>
-                );
-              })}
+                  )}
+                  <h4 className="font-semibold text-lg mb-2">{option.title}</h4>
+                  <p className="text-sm text-muted-foreground">{option.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -208,52 +198,42 @@ export default function ProductManager() {
         {/* Step 2: Product Type Selection */}
         {step === 2 && (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
+            <div className="text-center space-y-2">
+              <h3 className="font-outfit text-2xl font-semibold text-foreground">
                 Select Product Type
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground font-inter">
                 What type of product are you adding?
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-8">
               {[
-                { id: 'solar' as ProductType, title: 'Solar Panels', icon: Sun },
-                { id: 'battery' as ProductType, title: 'Battery Storage', icon: Battery },
-                { id: 'ev_charger' as ProductType, title: 'EV Charger', icon: Zap },
-                { id: 'inverter' as ProductType, title: 'Inverter', icon: Plug },
-              ].map((option) => {
-                const IconComponent = option.icon;
-                return (
-                  <div
-                    key={option.id}
-                    onClick={() => updateFormData('productType', option.id)}
-                    className={cn(
-                      "relative p-5 rounded-md cursor-pointer transition-all border-2",
-                      "hover:border-primary/30",
-                      formData.productType === option.id
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:bg-muted/30"
-                    )}
-                  >
-                    {formData.productType === option.id && (
-                      <div className="absolute top-3 right-3 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                        <Check className="w-3 h-3 text-white" />
-                      </div>
-                    )}
-                    <div className="flex items-center gap-3">
-                      <div className={cn(
-                        "w-9 h-9 rounded-md flex items-center justify-center",
-                        formData.productType === option.id ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-                      )}>
-                        <IconComponent className="w-4 h-4" />
-                      </div>
-                      <h4 className="font-medium text-base">{option.title}</h4>
+                { id: 'solar' as ProductType, title: 'Solar Panels', icon: '☀️' },
+                { id: 'battery' as ProductType, title: 'Battery Storage', icon: '🔋' },
+                { id: 'ev_charger' as ProductType, title: 'EV Charger', icon: '⚡' },
+                { id: 'inverter' as ProductType, title: 'Inverter', icon: '🔌' },
+              ].map((option) => (
+                <div
+                  key={option.id}
+                  onClick={() => updateFormData('productType', option.id)}
+                  className={cn(
+                    "relative p-6 rounded-xl cursor-pointer transition-all duration-200 border-2",
+                    "hover:shadow-lg hover:border-primary",
+                    formData.productType === option.id
+                      ? "border-primary bg-primary/10 shadow-md ring-2 ring-primary/20"
+                      : "border-gray-200 dark:border-gray-700 bg-card"
+                  )}
+                >
+                  {formData.productType === option.id && (
+                    <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                      <Check className="w-4 h-4 text-white" />
                     </div>
-                  </div>
-                );
-              })}
+                  )}
+                  <div className="text-4xl mb-3">{option.icon}</div>
+                  <h4 className="font-semibold text-lg">{option.title}</h4>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -261,54 +241,44 @@ export default function ProductManager() {
         {/* Step 3: Product Details */}
         {step === 3 && (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
+            <div className="text-center space-y-2">
+              <h3 className="font-outfit text-2xl font-semibold text-foreground">
                 Product Details
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground font-inter">
                 Enter the specifications for this {formData.productType?.replace('_', ' ')}
               </p>
             </div>
 
-            <div className="space-y-6 mt-6">
+            <div className="space-y-4 mt-8">
               {/* Common Fields */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 mb-4">
-                  <FileText className="w-4 h-4 text-muted-foreground" />
-                  <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Basic Information</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="brand">Brand *</Label>
+                  <Input
+                    id="brand"
+                    value={formData.brand}
+                    onChange={(e) => updateFormData('brand', e.target.value)}
+                    placeholder="e.g., Jinko, Tesla"
+                  />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="brand" className="text-sm">Brand *</Label>
-                    <Input
-                      id="brand"
-                      value={formData.brand}
-                      onChange={(e) => updateFormData('brand', e.target.value)}
-                      placeholder="e.g., Jinko, Tesla"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="model" className="text-sm">Model/Series *</Label>
-                    <Input
-                      id="model"
-                      value={formData.model}
-                      onChange={(e) => updateFormData('model', e.target.value)}
-                      placeholder="e.g., Tiger Neo, Powerwall"
-                    />
-                  </div>
+                <div>
+                  <Label htmlFor="model">Model/Series *</Label>
+                  <Input
+                    id="model"
+                    value={formData.model}
+                    onChange={(e) => updateFormData('model', e.target.value)}
+                    placeholder="e.g., Tiger Neo, Powerwall"
+                  />
                 </div>
               </div>
 
               {/* Solar Specific Fields */}
               {formData.productType === 'solar' && (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Sun className="w-4 h-4 text-muted-foreground" />
-                    <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Solar Specifications</h4>
-                  </div>
+                <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="sizeKw" className="text-sm">System Size (kW)</Label>
+                    <div>
+                      <Label htmlFor="sizeKw">System Size (kW)</Label>
                       <Input
                         id="sizeKw"
                         type="number"
@@ -318,8 +288,8 @@ export default function ProductManager() {
                         placeholder="6.6"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="panels" className="text-sm">Number of Panels</Label>
+                    <div>
+                      <Label htmlFor="panels">Number of Panels</Label>
                       <Input
                         id="panels"
                         type="number"
@@ -328,8 +298,8 @@ export default function ProductManager() {
                         placeholder="16"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="wattage" className="text-sm">Panel Wattage (W)</Label>
+                    <div>
+                      <Label htmlFor="wattage">Panel Wattage (W)</Label>
                       <Input
                         id="wattage"
                         type="number"
@@ -339,11 +309,8 @@ export default function ProductManager() {
                       />
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4 text-muted-foreground" />
-                      <Label htmlFor="priceAfterRebate" className="text-sm">Price After Rebate ($)</Label>
-                    </div>
+                  <div>
+                    <Label htmlFor="priceAfterRebate">Price After Rebate ($)</Label>
                     <Input
                       id="priceAfterRebate"
                       type="number"
@@ -352,19 +319,15 @@ export default function ProductManager() {
                       placeholder="3290"
                     />
                   </div>
-                </div>
+                </>
               )}
 
               {/* Battery Specific Fields */}
               {formData.productType === 'battery' && (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Battery className="w-4 h-4 text-muted-foreground" />
-                    <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">Battery Specifications</h4>
-                  </div>
+                <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="capacityKwh" className="text-sm">Capacity (kWh)</Label>
+                    <div>
+                      <Label htmlFor="capacityKwh">Capacity (kWh)</Label>
                       <Input
                         id="capacityKwh"
                         type="number"
@@ -374,8 +337,8 @@ export default function ProductManager() {
                         placeholder="13.5"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="powerKw" className="text-sm">Power (kW)</Label>
+                    <div>
+                      <Label htmlFor="powerKw">Power (kW)</Label>
                       <Input
                         id="powerKw"
                         type="number"
@@ -385,8 +348,8 @@ export default function ProductManager() {
                         placeholder="5.0"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="rrp" className="text-sm">RRP ($)</Label>
+                    <div>
+                      <Label htmlFor="rrp">RRP ($)</Label>
                       <Input
                         id="rrp"
                         type="number"
@@ -396,11 +359,8 @@ export default function ProductManager() {
                       />
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4 text-muted-foreground" />
-                      <Label htmlFor="priceAfterRebate" className="text-sm">Price After Rebate ($)</Label>
-                    </div>
+                  <div>
+                    <Label htmlFor="priceAfterRebate">Price After Rebate ($)</Label>
                     <Input
                       id="priceAfterRebate"
                       type="number"
@@ -409,19 +369,15 @@ export default function ProductManager() {
                       placeholder="12490"
                     />
                   </div>
-                </div>
+                </>
               )}
 
               {/* EV Charger Specific Fields */}
               {formData.productType === 'ev_charger' && (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Zap className="w-4 h-4 text-muted-foreground" />
-                    <h4 className="text-sm font-medium text-foreground uppercase tracking-wide">EV Charger Specifications</h4>
-                  </div>
+                <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="powerKw" className="text-sm">Power (kW)</Label>
+                    <div>
+                      <Label htmlFor="powerKw">Power (kW)</Label>
                       <Input
                         id="powerKw"
                         type="number"
@@ -431,8 +387,8 @@ export default function ProductManager() {
                         placeholder="7.0"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="cableType" className="text-sm">Cable Type</Label>
+                    <div>
+                      <Label htmlFor="cableType">Cable Type</Label>
                       <Input
                         id="cableType"
                         value={formData.cableType || ''}
@@ -440,8 +396,8 @@ export default function ProductManager() {
                         placeholder="Tethered"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="cableLength" className="text-sm">Cable Length (m)</Label>
+                    <div>
+                      <Label htmlFor="cableLength">Cable Length (m)</Label>
                       <Input
                         id="cableLength"
                         type="number"
@@ -451,11 +407,8 @@ export default function ProductManager() {
                       />
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4 text-muted-foreground" />
-                      <Label htmlFor="installedPrice" className="text-sm">Installed Price ($)</Label>
-                    </div>
+                  <div>
+                    <Label htmlFor="installedPrice">Installed Price ($)</Label>
                     <Input
                       id="installedPrice"
                       type="number"
@@ -464,15 +417,12 @@ export default function ProductManager() {
                       placeholder="1790"
                     />
                   </div>
-                </div>
+                </>
               )}
 
               {/* Common Field: Warranty */}
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-muted-foreground" />
-                  <Label htmlFor="warrantyYears" className="text-sm">Warranty (Years)</Label>
-                </div>
+              <div>
+                <Label htmlFor="warrantyYears">Warranty (Years)</Label>
                 <Input
                   id="warrantyYears"
                   type="number"
@@ -488,47 +438,45 @@ export default function ProductManager() {
         {/* Step 4: Review */}
         {step === 4 && (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
+            <div className="text-center space-y-2">
+              <h3 className="font-outfit text-2xl font-semibold text-foreground">
                 Review & Confirm
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground font-inter">
                 Please review the product details before adding
               </p>
             </div>
 
-            <div className="mt-6 space-y-0 divide-y divide-border">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Phase:</span>
-                  <span className="text-sm font-medium text-foreground">{formData.phase?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Product Type:</span>
-                  <span className="text-sm font-medium text-foreground">{formData.productType?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Brand:</span>
-                  <span className="text-sm font-medium text-foreground">{formData.brand}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Model:</span>
-                  <span className="text-sm font-medium text-foreground">{formData.model}</span>
-                </div>
+            <div className="mt-8 bg-muted/50 rounded-lg p-6 space-y-3">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Phase:</span>
+                <span className="font-semibold">{formData.phase?.replace('_', ' ')}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Product Type:</span>
+                <span className="font-semibold">{formData.productType?.replace('_', ' ')}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Brand:</span>
+                <span className="font-semibold">{formData.brand}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Model:</span>
+                <span className="font-semibold">{formData.model}</span>
               </div>
 
               {formData.productType === 'solar' && (
                 <>
                   {formData.sizeKw && (
-                    <div className="flex items-center justify-between py-4">
-                      <span className="text-sm text-muted-foreground">System Size:</span>
-                      <span className="text-sm font-medium text-foreground">{formData.sizeKw} kW</span>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">System Size:</span>
+                      <span className="font-semibold">{formData.sizeKw} kW</span>
                     </div>
                   )}
                   {formData.priceAfterRebate && (
-                    <div className="flex items-center justify-between py-4">
-                      <span className="text-sm text-muted-foreground">Price:</span>
-                      <span className="text-sm font-medium text-primary">${formData.priceAfterRebate.toLocaleString()}</span>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Price:</span>
+                      <span className="font-semibold text-primary">${formData.priceAfterRebate.toLocaleString()}</span>
                     </div>
                   )}
                 </>
@@ -537,15 +485,15 @@ export default function ProductManager() {
               {formData.productType === 'battery' && (
                 <>
                   {formData.capacityKwh && (
-                    <div className="flex items-center justify-between py-4">
-                      <span className="text-sm text-muted-foreground">Capacity:</span>
-                      <span className="text-sm font-medium text-foreground">{formData.capacityKwh} kWh</span>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Capacity:</span>
+                      <span className="font-semibold">{formData.capacityKwh} kWh</span>
                     </div>
                   )}
                   {formData.priceAfterRebate && (
-                    <div className="flex items-center justify-between py-4">
-                      <span className="text-sm text-muted-foreground">Price:</span>
-                      <span className="text-sm font-medium text-primary">${formData.priceAfterRebate.toLocaleString()}</span>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Price:</span>
+                      <span className="font-semibold text-primary">${formData.priceAfterRebate.toLocaleString()}</span>
                     </div>
                   )}
                 </>
@@ -554,15 +502,15 @@ export default function ProductManager() {
               {formData.productType === 'ev_charger' && (
                 <>
                   {formData.powerKw && (
-                    <div className="flex items-center justify-between py-4">
-                      <span className="text-sm text-muted-foreground">Power:</span>
-                      <span className="text-sm font-medium text-foreground">{formData.powerKw} kW</span>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Power:</span>
+                      <span className="font-semibold">{formData.powerKw} kW</span>
                     </div>
                   )}
                   {formData.installedPrice && (
-                    <div className="flex items-center justify-between py-4">
-                      <span className="text-sm text-muted-foreground">Installed Price:</span>
-                      <span className="text-sm font-medium text-primary">${formData.installedPrice.toLocaleString()}</span>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Installed Price:</span>
+                      <span className="font-semibold text-primary">${formData.installedPrice.toLocaleString()}</span>
                     </div>
                   )}
                 </>
@@ -570,12 +518,13 @@ export default function ProductManager() {
             </div>
           </div>
         )}
+        </div>
 
         {/* Navigation Buttons */}
         <div className="flex justify-between items-center mt-8 pt-6 border-t">
           {step > 1 ? (
             <Button
-              variant="outline"
+              variant="ghost"
               onClick={() => setStep(step - 1)}
               disabled={addProductMutation.isPending}
               className="gap-2"
@@ -588,7 +537,7 @@ export default function ProductManager() {
               variant="ghost"
               onClick={resetForm}
               disabled={addProductMutation.isPending}
-              className="gap-2"
+              className="gap-2 text-muted-foreground hover:text-foreground"
             >
               <X className="w-4 h-4" />
               Cancel
@@ -599,6 +548,7 @@ export default function ProductManager() {
             <Button
               onClick={() => setStep(step + 1)}
               disabled={!canProceed()}
+              size="lg"
               className="gap-2"
             >
               Next
@@ -608,7 +558,8 @@ export default function ProductManager() {
             <Button
               onClick={handleSubmit}
               disabled={addProductMutation.isPending}
-              className="gap-2"
+              size="lg"
+              className="bg-green-600 hover:bg-green-700 gap-2"
             >
               {addProductMutation.isPending ? (
                 <>
