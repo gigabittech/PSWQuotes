@@ -232,31 +232,53 @@ export default function MediaManager() {
 
           {/* Media Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-            {filteredAssets.map((asset) => (
-              <Card key={asset.id} className="overflow-hidden" data-testid={`media-card-${asset.id}`}>
-                <div className="aspect-video bg-muted flex items-center justify-center">
-                  {asset.mimeType.startsWith('image/') ? (
-                    <img
-                      src={asset.url}
-                      alt={asset.filename}
-                      className="w-full h-full object-cover"
-                      data-testid={`media-image-${asset.id}`}
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                      {getFileIcon(asset.mimeType)}
-                      <span className="text-xs">{getFileTypeLabel(asset.mimeType)}</span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-2 sm:p-3 space-y-1 sm:space-y-2">
-                  <h4 className="font-medium text-xs sm:text-sm truncate" title={asset.filename}>
-                    {asset.filename}
-                  </h4>
+            {filteredAssets.map((asset) => {
+              // Get the full URL for opening in new tab
+              const fileUrl = asset.url.startsWith('http') 
+                ? asset.url 
+                : `${window.location.origin}${asset.url}`;
+              
+              const handleFileClick = (e: React.MouseEvent) => {
+                // Don't open if clicking on buttons
+                if ((e.target as HTMLElement).closest('button')) {
+                  return;
+                }
+                window.open(fileUrl, '_blank', 'noopener,noreferrer');
+              };
+
+              return (
+                <Card 
+                  key={asset.id} 
+                  className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" 
+                  data-testid={`media-card-${asset.id}`}
+                  onClick={handleFileClick}
+                >
+                  <div className="aspect-video bg-muted flex items-center justify-center">
+                    {asset.mimeType.startsWith('image/') ? (
+                      <img
+                        src={asset.url}
+                        alt={asset.filename}
+                        className="w-full h-full object-cover"
+                        data-testid={`media-image-${asset.id}`}
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                        {getFileIcon(asset.mimeType)}
+                        <span className="text-xs">{getFileTypeLabel(asset.mimeType)}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-2 sm:p-3 space-y-1 sm:space-y-2">
+                    <h4 
+                      className="font-medium text-xs sm:text-sm truncate hover:text-primary transition-colors" 
+                      title={asset.filename}
+                    >
+                      {asset.filename}
+                    </h4>
                   <p className="text-xs text-muted-foreground">
                     {formatFileSize(asset.size)}
                   </p>
-                  <div className="flex gap-1">
+                  <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
                     <Button
                       size="sm"
                       variant="outline"
@@ -303,7 +325,8 @@ export default function MediaManager() {
                   </div>
                 </div>
               </Card>
-            ))}
+            );
+            })}
           </div>
 
           {filteredAssets.length === 0 && (
