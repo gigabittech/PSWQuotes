@@ -808,9 +808,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col lg:ml-64 overflow-hidden">
-          <div className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8">
+          <div className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8 w-full">
             {activeTab === "overview" && (
-              <div className="max-w-7xl">
+              <div>
                 {/* Header */}
                 <div className="mb-6 md:mb-8">
                   <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Dashboard</h1>
@@ -950,7 +950,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             )}
             
             {activeTab === "quotes" && (
-              <div className="max-w-7xl">
+              <div>
                 {/* Header */}
                 <div className="mb-6 md:mb-8">
                   <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Quotes</h1>
@@ -1112,7 +1112,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             
             {/* User Management */}
             {activeTab === "users" && userRole === 'admin' && (
-              <div className="max-w-7xl">
+              <div>
                 <div className="mb-6 md:mb-8 flex items-start justify-between">
                   <div>
                     <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">User Management</h1>
