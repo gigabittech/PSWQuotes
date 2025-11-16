@@ -216,6 +216,31 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
     },
   });
 
+  const capitalizeWords = (str: string | null | undefined): string => {
+    if (!str) return '';
+    return str
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
+  const capitalizeFirst = (str: string | null | undefined): string => {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
+  const formatSystemName = (system: string): string => {
+    return capitalizeFirst(system);
+  };
+
+  const formatPowerSupply = (supply: string | null | undefined): string => {
+    if (!supply) return '';
+    if (supply === 'single') return 'Single';
+    if (supply === 'three') return 'Three';
+    if (supply === 'unknown') return "I don't know";
+    return capitalizeFirst(supply);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
@@ -808,9 +833,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col lg:ml-64 overflow-hidden">
-          <div className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8">
+          <div className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8 w-full">
             {activeTab === "overview" && (
-              <div className="max-w-7xl">
+              <div>
                 {/* Header */}
                 <div className="mb-6 md:mb-8">
                   <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Dashboard</h1>
@@ -921,13 +946,13 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                       {[...quotes].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5).map((quote: Quote) => (
                         <div key={quote.id} className="flex items-center justify-between py-3 border-b last:border-0">
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-sm truncate">{quote.firstName} {quote.lastName}</p>
+                            <p className="font-medium text-sm truncate">{capitalizeWords(quote.firstName)} {capitalizeWords(quote.lastName)}</p>
                             <p className="text-xs text-muted-foreground">{new Date(quote.createdAt).toLocaleDateString()} • {quote.email}</p>
                           </div>
                           <div className="flex items-center gap-3 ml-4">
                             <p className="font-semibold text-sm whitespace-nowrap">{formatPrice(parseFloat(quote.finalPrice.toString()))}</p>
                             <Badge variant="outline" className={`text-xs whitespace-nowrap ${getStatusColor(quote.status)}`}>
-                              {quote.status}
+                              {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
                             </Badge>
                           </div>
                         </div>
@@ -950,7 +975,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             )}
             
             {activeTab === "quotes" && (
-              <div className="max-w-7xl">
+              <div>
                 {/* Header */}
                 <div className="mb-6 md:mb-8">
                   <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Quotes</h1>
@@ -959,32 +984,34 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
                 {/* Search and Filter Toolbar */}
                 <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                  <div className="flex-1 relative">
+                  <div className="relative w-full sm:w-80">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder="Search by name, email, or phone..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
+                      className="pl-10 h-11"
                       data-testid="search-quotes"
                     />
                   </div>
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full sm:w-48">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Statuses</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="contacted">Contacted</SelectItem>
-                      <SelectItem value="converted">Converted</SelectItem>
-                      <SelectItem value="lost">Lost</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button variant="outline" className="gap-2">
-                    <Download className="h-4 w-4" />
-                    Export
-                  </Button>
+                  <div className="flex gap-4 ml-auto">
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                      <SelectTrigger className="w-full sm:w-48">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="contacted">Contacted</SelectItem>
+                        <SelectItem value="converted">Converted</SelectItem>
+                        <SelectItem value="lost">Lost</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button variant="outline" className="gap-2">
+                      <Download className="h-4 w-4" />
+                      Export
+                    </Button>
+                  </div>
                 </div>
                 
                 {/* Results Summary */}
@@ -1029,11 +1056,11 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between mb-3">
                               <div>
-                                <h3 className="text-lg font-semibold text-foreground mb-1">{quote.firstName} {quote.lastName}</h3>
+                                <h3 className="text-lg font-semibold text-foreground mb-1">{capitalizeWords(quote.firstName)} {capitalizeWords(quote.lastName)}</h3>
                                 <div className="space-y-0.5 text-sm text-muted-foreground">
                                   <p>{quote.email}</p>
                                   <p>{quote.phone}</p>
-                                  <p>{quote.address}, {quote.suburb} {quote.state} {quote.postcode}</p>
+                                  <p>{capitalizeWords(quote.address)}, {capitalizeWords(quote.suburb)} {quote.state?.toUpperCase()} {quote.postcode}</p>
                                 </div>
                               </div>
                             </div>
@@ -1042,11 +1069,11 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                             <div className="flex flex-wrap gap-4 text-sm">
                               <div>
                                 <span className="text-muted-foreground">Systems:</span>
-                                <span className="ml-1 font-medium">{quote.selectedSystems?.join(', ') || 'N/A'}</span>
+                                <span className="ml-1 font-medium">{quote.selectedSystems?.map(formatSystemName).join(', ') || 'N/A'}</span>
                               </div>
                               <div>
                                 <span className="text-muted-foreground">Supply:</span>
-                                <span className="ml-1 font-medium">{quote.powerSupply} Phase</span>
+                                <span className="ml-1 font-medium">{formatPowerSupply(quote.powerSupply)} Phase</span>
                               </div>
                             </div>
                           </div>
@@ -1112,7 +1139,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             
             {/* User Management */}
             {activeTab === "users" && userRole === 'admin' && (
-              <div className="max-w-7xl">
+              <div>
                 <div className="mb-6 md:mb-8 flex items-start justify-between">
                   <div>
                     <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">User Management</h1>

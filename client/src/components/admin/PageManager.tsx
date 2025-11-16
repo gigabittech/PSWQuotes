@@ -296,7 +296,7 @@ export default function PageManager() {
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                           <h3 className="font-medium text-sm sm:text-base truncate">{page.title}</h3>
                           <Badge className={getStatusColor(page.status)}>
-                            {page.status}
+                            {page.status.charAt(0).toUpperCase() + page.status.slice(1)}
                           </Badge>
                         </div>
                         <p className="text-xs sm:text-sm text-muted-foreground mb-1">

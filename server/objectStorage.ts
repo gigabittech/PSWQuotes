@@ -229,10 +229,24 @@ export class ObjectStorageService {
       'image/png', 
       'image/gif',
       'image/webp',
+      'image/svg+xml',
+      'image/bmp',
       'application/pdf',
       'text/plain',
       'text/csv',
-      'application/json'
+      'application/json',
+      'video/mp4',
+      'video/webm',
+      'video/quicktime',
+      'video/x-msvideo',
+      'audio/mpeg',
+      'audio/wav',
+      'audio/ogg',
+      'audio/webm',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     ];
     return allowedTypes.includes(mimeType);
   }
@@ -244,10 +258,24 @@ export class ObjectStorageService {
       'image/png': '.png',
       'image/gif': '.gif', 
       'image/webp': '.webp',
+      'image/svg+xml': '.svg',
+      'image/bmp': '.bmp',
       'application/pdf': '.pdf',
       'text/plain': '.txt',
       'text/csv': '.csv',
-      'application/json': '.json'
+      'application/json': '.json',
+      'video/mp4': '.mp4',
+      'video/webm': '.webm',
+      'video/quicktime': '.mov',
+      'video/x-msvideo': '.avi',
+      'audio/mpeg': '.mp3',
+      'audio/wav': '.wav',
+      'audio/ogg': '.ogg',
+      'audio/webm': '.webm',
+      'application/msword': '.doc',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+      'application/vnd.ms-excel': '.xls',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
     };
     return extensions[mimeType] || '';
   }

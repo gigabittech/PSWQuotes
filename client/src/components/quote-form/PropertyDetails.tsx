@@ -291,14 +291,14 @@ export default function PropertyDetails({
               disabled={!isValid || isSubmitting}
               data-testid="button-generate-quote"
               className={cn(
-                "group relative bg-gradient-to-r from-green-500 to-emerald-600 hover:from-emerald-600 hover:to-green-500 text-white px-10 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-xl",
+                "group relative bg-primary hover:bg-primary/90 text-black px-10 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-xl",
                 "hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98]",
                 "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-xl"
               )}
             >
               <span className="flex items-center justify-center">
                 <span className="mr-3">
-                  {isSubmitting ? "Generating Quote..." : "Generate Quote"}
+                  {isSubmitting ? "Generating Quote..." : "Generate Quoterrrrrr"}
                 </span>
                 {!isSubmitting && (
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

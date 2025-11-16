@@ -98,8 +98,7 @@ export default function ProductManager() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 md:mb-8">
         <div>
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-foreground flex items-center gap-2 sm:gap-3">
-            <Package className="w-8 h-8 text-primary" />
+          <h2 className="text-xl sm:text-2xl lg:text-3xl  flex items-center gap-2 sm:gap-3">
             Product Management
           </h2>
           <p className="text-muted-foreground mt-2 font-inter">
@@ -109,50 +108,55 @@ export default function ProductManager() {
       </div>
 
       {/* Progress Indicator */}
-      <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-4">
+      <div className="w-full">
+        <div className="relative flex items-center justify-between mb-4 max-w-4xl mx-auto">
+          {/* Connecting Lines */}
+          <div className="absolute top-6 left-0 right-0 flex items-center justify-between px-6 pointer-events-none">
+            {[1, 2, 3].map((lineIdx) => (
+              <div
+                key={lineIdx}
+                className={cn(
+                  "h-0.5 flex-1 transition-all",
+                  lineIdx < step ? "bg-primary" : "bg-gray-300 dark:bg-gray-600"
+                )}
+              />
+            ))}
+          </div>
+          
+          {/* Step Circles and Labels */}
           {[
             { num: 1, label: 'Phase' },
             { num: 2, label: 'Product Type' },
             { num: 3, label: 'Details' },
             { num: 4, label: 'Review' }
-          ].map((s, idx) => (
-            <div key={s.num} className="flex items-center flex-1">
-              <div className="flex flex-col items-center flex-1">
-                <div
-                  className={cn(
-                    "w-12 h-12 rounded-full flex items-center justify-center font-semibold transition-all border-2",
-                    s.num === step
-                      ? "bg-primary text-white border-primary shadow-lg scale-110"
-                      : s.num < step
-                      ? "bg-green-500 text-white border-green-500"
-                      : "bg-white dark:bg-gray-800 text-muted-foreground border-gray-300 dark:border-gray-600"
-                  )}
-                >
-                  {s.num < step ? <Check className="w-6 h-6" /> : s.num}
-                </div>
-                <span className={cn(
-                  "text-xs mt-2 font-medium text-center",
-                  s.num === step ? "text-primary" : s.num < step ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
-                )}>
-                  {s.label}
-                </span>
+          ].map((s) => (
+            <div key={s.num} className="flex flex-col items-center relative z-10 flex-1">
+              <div
+                className={cn(
+                  "w-12 h-12 rounded-full flex items-center justify-center font-semibold transition-all border-2",
+                  s.num === step
+                    ? "bg-primary text-black border-primary shadow-lg scale-110"
+                    : s.num < step
+                    ? "bg-primary text-black border-primary"
+                    : "bg-white dark:bg-gray-800 text-muted-foreground border-gray-300 dark:border-gray-600"
+                )}
+              >
+                {s.num < step ? <Check className="w-6 h-6 text-black" /> : s.num}
               </div>
-              {idx < 3 && (
-                <div
-                  className={cn(
-                    "h-0.5 flex-1 mx-2 -mt-6 transition-all",
-                    s.num < step ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"
-                  )}
-                />
-              )}
+              <span className={cn(
+                "text-xs mt-2 font-medium text-center whitespace-nowrap",
+                s.num === step ? "text-primary" : s.num < step ? "text-primary" : "text-muted-foreground"
+              )}>
+                {s.label}
+              </span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Form Card */}
-      <Card className="glass-form-card p-8 max-w-3xl mx-auto">
+      <Card className="glass-form-card p-8 w-full flex flex-col min-h-[500px]">
+        <div className="flex-1">
         {/* Step 1: Phase Selection */}
         {step === 1 && (
           <div className="space-y-6">
@@ -175,15 +179,15 @@ export default function ProductManager() {
                   onClick={() => updateFormData('phase', option.id)}
                   className={cn(
                     "relative p-6 rounded-xl cursor-pointer transition-all duration-200 border-2",
-                    "hover:shadow-lg hover:border-primary",
+                    "hover:border-primary hover:bg-primary/10",
                     formData.phase === option.id
-                      ? "border-primary bg-primary/10 shadow-md ring-2 ring-primary/20"
+                      ? "border-primary bg-primary/10"
                       : "border-gray-200 dark:border-gray-700 bg-card"
                   )}
                 >
                   {formData.phase === option.id && (
                     <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                      <Check className="w-4 h-4 text-white" />
+                      <Check className="w-4 h-4 text-black" />
                     </div>
                   )}
                   <h4 className="font-semibold text-lg mb-2">{option.title}</h4>
@@ -218,15 +222,15 @@ export default function ProductManager() {
                   onClick={() => updateFormData('productType', option.id)}
                   className={cn(
                     "relative p-6 rounded-xl cursor-pointer transition-all duration-200 border-2",
-                    "hover:shadow-lg hover:border-primary",
+                    "hover:border-primary hover:bg-primary/10",
                     formData.productType === option.id
-                      ? "border-primary bg-primary/10 shadow-md ring-2 ring-primary/20"
+                      ? "border-primary bg-primary/10"
                       : "border-gray-200 dark:border-gray-700 bg-card"
                   )}
                 >
                   {formData.productType === option.id && (
                     <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                      <Check className="w-4 h-4 text-white" />
+                      <Check className="w-4 h-4 text-black" />
                     </div>
                   )}
                   <div className="text-4xl mb-3">{option.icon}</div>
@@ -517,6 +521,7 @@ export default function ProductManager() {
             </div>
           </div>
         )}
+        </div>
 
         {/* Navigation Buttons */}
         <div className="flex justify-between items-center mt-8 pt-6 border-t">

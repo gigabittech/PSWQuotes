@@ -25,8 +25,8 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
         };
       case 'hybrid_inverter':
         return {
-          border: 'hover:border-purple-600',
-          accent: 'text-purple-600',
+          border: 'hover:border-primary',
+          accent: 'text-primary',
           icon: '🔌'
         };
       case 'battery':
@@ -55,13 +55,14 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
   return (
     <div
       className={cn(
-        "group relative glass-card rounded-xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:shadow-xl active:scale-[0.98] flex flex-col justify-between",
+        "group relative rounded-xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:shadow-xl active:scale-[0.98] flex flex-col justify-between",
         "border-2 min-h-[280px] sm:min-h-[320px] touch-manipulation",
         "hover:-translate-y-2 hover:shadow-2xl",
         isSelected
-          ? "border-primary bg-primary/10 ring-2 ring-primary/30 scale-[1.02] shadow-lg"
-          : `border-border ${typeStyles.border}`
+          ? "bg-primary/10 scale-[1.02] shadow-lg glass-card"
+          : `border-border ${typeStyles.border} glass-card`
       )}
+      style={isSelected ? { border: '2px solid var(--primary)' } : undefined}
       onClick={onSelect}
       data-testid={`product-card-${product.id}`}
     >
@@ -78,6 +79,18 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
           )}>
             {badge}
           </span>
+        </div>
+      )}
+
+      {/* Selection indicator */}
+      {isSelected && (
+        <div className={cn(
+          "absolute top-3 sm:top-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center z-10",
+          badge ? "right-20 sm:right-24" : "right-3"
+        )}>
+          <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
         </div>
       )}
       
@@ -146,17 +159,6 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
             <div className="text-sm text-muted-foreground font-medium">Installed price</div>
           )}
         </div>
-
-        {/* Selection indicator */}
-        {isSelected && (
-          <div className="absolute inset-0 border-2 border-primary rounded-xl bg-primary/5 pointer-events-none">
-            <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-              <svg className="w-4 h-4 text-primary-foreground" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

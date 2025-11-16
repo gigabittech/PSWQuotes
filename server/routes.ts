@@ -2,6 +2,9 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import rateLimit from "express-rate-limit";
 import { storage } from "./storage";
+import { writeFile, mkdir, unlink } from "fs/promises";
+import { existsSync } from "fs";
+import path from "path";
 import { 
   insertQuoteSchema, insertProductSchema, insertUserSchemaWithRole,
   insertCmsThemeSchema, insertCmsPageSchema, insertFormSchema,
@@ -1496,6 +1499,217 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching media assets:", error);
       res.status(500).json({ error: "Failed to fetch media assets" });
+    }
+  });
+
+  // Upload media files
+  app.post("/api/cms/media/upload", requireRole(['admin', 'editor']), upload.array('files', 10), async (req, res) => {
+    try {
+      const files = req.files as Express.Multer.File[];
+      if (!files || files.length === 0) {
+        return res.status(400).json({ error: "No files provided" });
+      }
+
+      const userId = req.session.userId;
+      const objectStorageService = new ObjectStorageService();
+      const uploadedFiles = [];
+
+      for (const file of files) {
+        try {
+          // Validate file size (10MB limit)
+          if (file.size > 10 * 1024 * 1024) {
+            console.error(`File ${file.originalname} exceeds size limit`);
+            continue;
+          }
+
+          const privateObjectDir = process.env.PRIVATE_OBJECT_DIR;
+          
+          // Check if we're in a Replit environment (sidecar available)
+          const isReplitEnv = process.env.REPL_ID !== undefined || 
+                              process.env.REPL_SLUG !== undefined;
+          
+          if (!privateObjectDir) {
+            console.error('PRIVATE_OBJECT_DIR not set, cannot upload files');
+            continue;
+          }
+
+          // Get file extension from MIME type or filename
+          const extensionMap: Record<string, string> = {
+            'image/jpeg': '.jpg',
+            'image/png': '.png',
+            'image/gif': '.gif',
+            'image/webp': '.webp',
+            'image/svg+xml': '.svg',
+            'image/bmp': '.bmp',
+            'application/pdf': '.pdf',
+            'text/plain': '.txt',
+            'text/csv': '.csv',
+            'application/json': '.json',
+            'video/mp4': '.mp4',
+            'video/webm': '.webm',
+            'video/quicktime': '.mov',
+            'video/x-msvideo': '.avi',
+            'audio/mpeg': '.mp3',
+            'audio/wav': '.wav',
+            'audio/ogg': '.ogg',
+            'audio/webm': '.webm',
+            'application/msword': '.doc',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+            'application/vnd.ms-excel': '.xls',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+          };
+          
+          // Try to get extension from mimetype, or extract from original filename
+          let extension = file.mimetype ? (extensionMap[file.mimetype] || '') : '';
+          if (!extension && file.originalname) {
+            const lastDot = file.originalname.lastIndexOf('.');
+            if (lastDot > 0) {
+              extension = file.originalname.substring(lastDot);
+            }
+          }
+          
+          const objectId = randomUUID();
+          const fileName = extension ? `${objectId}${extension}` : objectId;
+          const objectPath = `${privateObjectDir}/uploads/${fileName}`;
+          
+          // Parse object path (bucket/object format)
+          const pathParts = objectPath.startsWith('/') ? objectPath.slice(1).split('/') : objectPath.split('/');
+          if (pathParts.length < 2) {
+            console.error(`Invalid object path for ${file.originalname}`);
+            continue;
+          }
+          
+          const bucketName = pathParts[0];
+          const objectName = pathParts.slice(1).join('/');
+          
+          let finalPath: string;
+          
+          // Try to upload to Google Cloud Storage, fallback to local storage
+          try {
+            // Upload file directly to Google Cloud Storage
+            const bucket = objectStorageClient.bucket(bucketName);
+            const storageFile = bucket.file(objectName);
+            
+            await storageFile.save(file.buffer, {
+              metadata: {
+                contentType: file.mimetype,
+              },
+            });
+            
+            // Make file publicly accessible
+            await storageFile.makePublic();
+            
+            // Get public URL
+            const publicUrl = `https://storage.googleapis.com/${bucketName}/${objectName}`;
+            
+            // Set ACL policy if in Replit environment and normalize path
+            finalPath = publicUrl;
+            if (isReplitEnv) {
+              try {
+                finalPath = await objectStorageService.trySetObjectEntityAclPolicy(
+                  publicUrl,
+                  {
+                    owner: userId!,
+                    visibility: "public",
+                  }
+                );
+              } catch (aclError) {
+                console.warn(`Could not set ACL policy for ${file.originalname}, using public URL`);
+                finalPath = publicUrl;
+              }
+            }
+          } catch (gcsError: any) {
+            // Fallback to local file storage for development
+            if (gcsError?.code === 'ECONNREFUSED' || gcsError?.message?.includes('1106')) {
+              console.warn(`GCS not available, using local file storage for ${file.originalname}`);
+              
+              // Create uploads directory if it doesn't exist
+              const uploadsDir = path.join(process.cwd(), 'attached_assets', 'uploads', 'media');
+              if (!existsSync(uploadsDir)) {
+                await mkdir(uploadsDir, { recursive: true });
+              }
+              
+              // Save file locally
+              const localFilePath = path.join(uploadsDir, fileName);
+              await writeFile(localFilePath, file.buffer);
+              
+              // Use a path that can be served via static route
+              finalPath = `/attached_assets/uploads/media/${fileName}`;
+            } else {
+              // Re-throw if it's a different error
+              throw gcsError;
+            }
+          }
+
+          // Create media asset record
+          const mediaAsset = await storage.createMediaAsset({
+            filename: file.originalname,
+            url: finalPath,
+            mimeType: file.mimetype,
+            size: file.size
+          });
+
+          uploadedFiles.push(mediaAsset);
+        } catch (fileError) {
+          console.error(`Error processing file ${file.originalname}:`, fileError);
+          // Continue with other files even if one fails
+        }
+      }
+
+      if (uploadedFiles.length === 0) {
+        return res.status(400).json({ error: "Failed to upload any files" });
+      }
+
+      res.json({
+        uploadedFiles,
+        message: `Successfully uploaded ${uploadedFiles.length} file(s)`
+      });
+    } catch (error) {
+      console.error("Error uploading media files:", error);
+      res.status(500).json({ error: "Failed to upload media files" });
+    }
+  });
+
+  // Delete media asset
+  app.delete("/api/cms/media/:id", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      // Get the media asset to find the file path
+      const asset = await storage.getMediaAsset(id);
+      if (!asset) {
+        return res.status(404).json({ error: "Media asset not found" });
+      }
+
+      // Delete from object storage if possible, or from local storage
+      try {
+        // Check if it's a local file path
+        if (asset.url.startsWith('/attached_assets/uploads/') || asset.url.startsWith('/uploads/')) {
+          const localFilePath = path.join(process.cwd(), asset.url);
+          if (existsSync(localFilePath)) {
+            await unlink(localFilePath);
+          }
+        } else {
+          // Try to delete from object storage
+          const objectStorageService = new ObjectStorageService();
+          const objectFile = await objectStorageService.getObjectEntityFile(asset.url);
+          await objectFile.delete();
+        }
+      } catch (storageError) {
+        // Log but don't fail if file doesn't exist in storage
+        console.warn(`Could not delete file from storage for asset ${id}:`, storageError);
+      }
+
+      // Delete from database
+      const deleted = await storage.deleteMediaAsset(id);
+      if (!deleted) {
+        return res.status(404).json({ error: "Media asset not found" });
+      }
+
+      res.json({ message: "Media asset deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting media asset:", error);
+      res.status(500).json({ error: "Failed to delete media asset" });
     }
   });
 

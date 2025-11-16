@@ -204,7 +204,7 @@ export default function ThemeEditor() {
             Customize your website's appearance and branding
           </p>
           <Badge variant={theme?.status === "published" ? "default" : "secondary"} className="w-fit">
-            {theme?.status || "draft"}
+            {(theme?.status || "draft").charAt(0).toUpperCase() + (theme?.status || "draft").slice(1)}
           </Badge>
         </div>
       </div>

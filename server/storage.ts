@@ -65,6 +65,7 @@ export interface IStorage {
   getMediaAssets(): Promise<MediaAsset[]>;
   createMediaAsset(asset: InsertMediaAsset): Promise<MediaAsset>;
   getMediaAsset(id: string): Promise<MediaAsset | undefined>;
+  deleteMediaAsset(id: string): Promise<boolean>;
   
   // Form management
   getForms(): Promise<Form[]>;
@@ -317,6 +318,11 @@ export class DatabaseStorage implements IStorage {
   async getMediaAsset(id: string): Promise<MediaAsset | undefined> {
     const [asset] = await db.select().from(mediaAssets).where(eq(mediaAssets.id, id));
     return asset || undefined;
+  }
+
+  async deleteMediaAsset(id: string): Promise<boolean> {
+    const result = await db.delete(mediaAssets).where(eq(mediaAssets.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
   }
 
   // Form methods

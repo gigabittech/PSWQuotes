@@ -55,8 +55,8 @@ export default function SystemSelection({
       title: "Solar Power",
       description: "Harness the sun's energy with premium solar panel systems",
       icon: "fas fa-sun",
-      iconColor: "text-secondary",
-      bgColor: "bg-secondary/10",
+      iconColor: "text-primary",
+      bgColor: "bg-primary/10",
       price: getPriceDisplay("solar", "after rebates"),
     },
     {
@@ -64,8 +64,8 @@ export default function SystemSelection({
       title: "Hybrid Inverter",
       description: "Smart inverter for solar, battery & backup power management",
       icon: "fas fa-microchip",
-      iconColor: "text-purple-600",
-      bgColor: "bg-purple-600/10",
+      iconColor: "text-primary",
+      bgColor: "bg-primary/10",
       price: getPriceDisplay("inverter", "installed"),
     },
     {
@@ -73,8 +73,8 @@ export default function SystemSelection({
       title: "Battery Storage",
       description: "Store energy for use when you need it most",
       icon: "fas fa-battery-full",
-      iconColor: "text-accent",
-      bgColor: "bg-accent/10",
+      iconColor: "text-primary",
+      bgColor: "bg-primary/10",
       price: getPriceDisplay("battery", "after rebates"),
     },
     {
@@ -131,7 +131,7 @@ export default function SystemSelection({
                 "backdrop-blur-lg border shadow-lg",
                 "hover:scale-105 hover:shadow-2xl",
                 isSelected
-                  ? "bg-white/90 border-primary/50 shadow-primary/20"
+                  ? "bg-white/90 border-primary shadow-primary/20 hover:border-primary hover:bg-primary/5"
                   : "bg-white/60 border-white/40 hover:border-primary/30",
               )}
               onClick={() => onSystemToggle(option.id)}
@@ -140,7 +140,7 @@ export default function SystemSelection({
               {/* Selection Indicator */}
               {isSelected && (
                 <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-md">
-                  <i className="fas fa-check text-white text-xs"></i>
+                  <i className="fas fa-check text-black text-xs"></i>
                 </div>
               )}
 
@@ -149,18 +149,21 @@ export default function SystemSelection({
                 <div
                   className={cn(
                     "w-20 h-20 rounded-2xl flex items-center justify-center mx-auto",
-                    "transition-transform duration-350 group-hover:scale-110 bg-red-500",
-                    option.bgColor,
+                    "transition-transform duration-350 group-hover:scale-110",
+                    "bg-primary/10",
                   )}
                 >
                   <i
-                    className={cn(option.icon, option.iconColor, "text-3xl")}
+                    className={cn(option.icon, "text-primary text-3xl")}
                   ></i>
                 </div>
 
                 {/* Content */}
                 <div className="space-y-2">
-                  <h3 className="font-outfit text-2xl font-semibold text-foreground">
+                  <h3 className={cn(
+                    "font-outfit text-2xl font-semibold transition-colors duration-300",
+                    isSelected ? "text-primary" : "text-foreground"
+                  )}>
                     {option.title}
                   </h3>
                   <p className="font-inter text-sm text-muted-foreground leading-relaxed">
@@ -204,7 +207,7 @@ export default function SystemSelection({
                   "backdrop-blur-md border",
                   "hover:scale-102 hover:shadow-lg",
                   isSelected
-                    ? "bg-white/80 border-primary/50 shadow-md"
+                    ? "bg-white/80 border-primary/50 shadow-md hover:border-primary/50"
                     : "bg-white/50 border-white/40 hover:border-primary/30",
                 )}
                 onClick={() => onPowerSupplyChange(option.id)}
@@ -249,7 +252,7 @@ export default function SystemSelection({
             "transition-all duration-350 shadow-lg",
             "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100",
             selectedSystems.length > 0 && powerSupply
-              ? "bg-gradient-to-r from-primary to-blue-600 text-white hover:shadow-2xl hover:scale-105"
+              ? "bg-primary hover:bg-primary/90 text-black hover:shadow-2xl hover:scale-105"
               : "bg-muted/50 text-muted-foreground",
           )}
           onClick={onNext}

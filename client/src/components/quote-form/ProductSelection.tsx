@@ -80,7 +80,7 @@ export default function ProductSelection({
                   isSelected={data.hybridInverter === product.id}
                   onSelect={() => handleProductSelect('hybridInverter', product.id)}
                   badge={product.popular ? "SMART CONTROL" : undefined}
-                  badgeColor="bg-purple-600 text-white"
+                  badgeColor="bg-primary text-primary-foreground"
                   productType="hybrid_inverter"
                 />
               ))}
@@ -146,7 +146,7 @@ export default function ProductSelection({
               <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-1">-${pricingData.rebateAmount?.toLocaleString()}</div>
               <div className="text-sm text-muted-foreground">Rebates & Incentives</div>
             </div>
-            <div className="text-center bg-gradient-to-br from-primary/10 to-blue-500/10 rounded-lg p-4 border border-primary/20">
+            <div className="text-center bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-4 border border-primary/20">
               <div className="text-3xl font-bold text-primary mb-1">${pricingData.finalPrice?.toLocaleString()}</div>
               <div className="text-sm font-medium text-primary/80">Your Investment</div>
             </div>
@@ -170,7 +170,7 @@ export default function ProductSelection({
           </button>
           <button
             className={cn(
-              "group relative bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-primary text-white px-10 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-xl",
+              "group relative bg-primary hover:bg-primary/90 text-black px-10 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-xl",
               "hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98]",
               "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-xl"
             )}
@@ -188,7 +188,7 @@ export default function ProductSelection({
                 </svg>
               )}
               {isCalculating && (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
               )}
             </span>
             

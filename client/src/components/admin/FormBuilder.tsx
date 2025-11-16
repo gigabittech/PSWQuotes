@@ -413,7 +413,7 @@ export default function FormBuilder() {
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                           <h3 className="font-medium text-sm sm:text-base truncate">{form.title}</h3>
                           <Badge className={getStatusColor(form.status)}>
-                            {form.status}
+                            {form.status.charAt(0).toUpperCase() + form.status.slice(1)}
                           </Badge>
                         </div>
                         <p className="text-xs sm:text-sm text-muted-foreground mb-1">

@@ -244,7 +244,7 @@ export default function AnalyticsView() {
                     <div key={status} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <Badge className={getStatusColor(status)} variant="secondary">
-                          {status}
+                          {status.charAt(0).toUpperCase() + status.slice(1)}
                         </Badge>
                         <span className="text-sm text-muted-foreground">
                           {count} quotes
@@ -268,7 +268,7 @@ export default function AnalyticsView() {
                   {quotes.slice(0, 5).map((quote) => (
                     <div key={quote.id} className="flex items-center justify-between py-2 border-b last:border-0" data-testid={`recent-quote-${quote.id}`}>
                       <div>
-                        <div className="font-medium text-sm">{quote.firstName} {quote.lastName}</div>
+                        <div className="font-medium text-sm">{quote.firstName?.charAt(0).toUpperCase() + quote.firstName?.slice(1).toLowerCase()} {quote.lastName?.charAt(0).toUpperCase() + quote.lastName?.slice(1).toLowerCase()}</div>
                         <div className="text-xs text-muted-foreground">
                           {new Date(quote.createdAt).toLocaleDateString()}
                         </div>
@@ -278,7 +278,7 @@ export default function AnalyticsView() {
                           {formatCurrency(parseFloat(quote.finalPrice.toString()))}
                         </div>
                         <Badge className={getStatusColor(quote.status)} variant="secondary">
-                          {quote.status}
+                          {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
                         </Badge>
                       </div>
                     </div>
