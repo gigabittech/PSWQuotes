@@ -122,12 +122,13 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
             <div
               key={option.id}
               className={cn(
-                "group relative glass-card rounded-2xl p-6 cursor-pointer transition-all duration-500 min-h-[320px] sm:min-h-[360px] touch-manipulation",
+                "group relative rounded-2xl p-6 cursor-pointer transition-all duration-500 min-h-[320px] sm:min-h-[360px] touch-manipulation",
                 "border-2 active:scale-[0.98]",
                 data.systems?.includes(option.id)
-                  ? "border-primary bg-primary/10 scale-[1.02] shadow-xl -translate-y-3 hover:-translate-y-4 hover:shadow-2xl hover:bg-primary/15"
-                  : `border-border ${option.border} hover:-translate-y-3 hover:shadow-xl hover:shadow-2xl`
+                  ? "bg-primary/10 scale-[1.02] shadow-xl -translate-y-3 hover:-translate-y-4 hover:shadow-2xl hover:bg-primary/15 glass-card"
+                  : `border-border ${option.border} hover:-translate-y-3 hover:shadow-xl hover:shadow-2xl glass-card`
               )}
+              style={data.systems?.includes(option.id) ? { border: '2px solid var(--primary)' } : undefined}
               onClick={() => handleSystemToggle(option.id)}
               data-testid={`system-option-${option.id}`}
             >
@@ -182,15 +183,13 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
 
               {/* Selection indicator */}
               {data.systems?.includes(option.id) && (
-                <div className="absolute inset-0 border-2 border-primary rounded-2xl bg-primary/5 pointer-events-none">
-                  <div className={cn(
-                    "absolute w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-lg z-10",
-                    option.popular ? "top-4 right-4" : "top-4 left-4"
-                  )}>
-                    <svg className="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
+                <div className={cn(
+                  "absolute w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-lg z-10",
+                  option.popular ? "top-4 right-4" : "top-4 left-4"
+                )}>
+                  <svg className="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
                 </div>
               )}
             </div>
