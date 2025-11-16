@@ -135,7 +135,7 @@ export default function ProductManager() {
                 className={cn(
                   "w-12 h-12 rounded-full flex items-center justify-center font-semibold transition-all border-2",
                   s.num === step
-                    ? "bg-primary text-white border-primary shadow-lg scale-110"
+                    ? "bg-primary text-black border-primary shadow-lg scale-110"
                     : s.num < step
                     ? "bg-green-500 text-white border-green-500"
                     : "bg-white dark:bg-gray-800 text-muted-foreground border-gray-300 dark:border-gray-600"
