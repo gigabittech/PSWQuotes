@@ -278,7 +278,7 @@ export default function AnalyticsView() {
                           {formatCurrency(parseFloat(quote.finalPrice.toString()))}
                         </div>
                         <Badge className={getStatusColor(quote.status)} variant="secondary">
-                          {quote.status}
+                          {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
                         </Badge>
                       </div>
                     </div>
