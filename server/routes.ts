@@ -590,6 +590,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
               power: opt.power_kw ? `${opt.power_kw}kW continuous` : 'Varies',
               warranty: `${brandData.warranty_years} years`,
               cellType: brandData.cell_type || 'N/A',
+              rrp: opt.rrp ? opt.rrp.toString() : undefined,
+              priceAfterRebate: opt.price_after_rebate.toString(),
             },
             warranty: `${brandData.warranty_years} years`,
             popular: index === 0, // Mark first option as popular
@@ -681,6 +683,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 power: opt.power_kw ? `${opt.power_kw}kW continuous` : 'Varies',
                 warranty: `${brandData.warranty_years} years`,
                 cellType: brandData.cell_type || 'N/A',
+                rrp: opt.rrp ? opt.rrp.toString() : undefined,
+                priceAfterRebate: opt.price_after_rebate.toString(),
               },
               warranty: `${brandData.warranty_years} years`,
               popular: index === 0,
@@ -998,6 +1002,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching email logs for quote:", error);
       res.status(500).json({ error: "Failed to fetch email logs" });
+    }
+  });
+
+  // Retry sending a failed email (admin)
+  app.post("/api/email-logs/:id/retry", requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      // Get the email log to verify it exists and is failed
+      const emailLog = await storage.getEmailLogById(id);
+      if (!emailLog) {
+        return res.status(404).json({ error: "Email log not found" });
+      }
+
+      if (emailLog.status !== 'failed') {
+        return res.status(400).json({ error: "Can only retry failed emails" });
+      }
+
+      // Retry sending the email
+      const success = await emailService.retryEmail(id);
+      
+      if (success) {
+        res.json({ success: true, message: "Email sent successfully" });
+      } else {
+        res.status(500).json({ error: "Failed to send email" });
+      }
+    } catch (error) {
+      console.error("Error retrying email:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      res.status(500).json({ error: "Failed to retry email", details: errorMessage });
     }
   });
 

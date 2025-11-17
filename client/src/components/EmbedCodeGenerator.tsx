@@ -142,7 +142,7 @@ export default function EmbedCodeGenerator() {
                 href={embedUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:underline"
+                className="hover:underline"
               >
                 Open form in new window →
               </a>

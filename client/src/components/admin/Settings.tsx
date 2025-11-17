@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { queryClient, apiRequest } from '@/lib/queryClient';
+import { cn } from '@/lib/utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -395,14 +396,19 @@ export function Settings() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid grid-cols-4 w-fit">
+        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0 flex-wrap sm:flex-nowrap">
           {Object.entries(settingsConfig).map(([key, config]) => {
             const Icon = config.icon;
             return (
               <TabsTrigger 
                 key={key} 
                 value={key} 
-                className="flex items-center space-x-2"
+                className={cn(
+                  "h-10 flex-1 text-xs sm:text-sm font-medium transition-all border-0",
+                  "rounded-md flex items-center justify-center space-x-2",
+                  "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+                  "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+                )}
                 data-testid={`tab-${key}`}
               >
                 <Icon className="h-4 w-4" />

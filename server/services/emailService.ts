@@ -1,6 +1,7 @@
 import { TransactionalEmailsApi, TransactionalEmailsApiApiKeys } from '@getbrevo/brevo';
 import type { Quote, Product } from '@shared/schema';
 import { storage } from '../storage';
+import { generateQuotePDF } from '../pdfGenerator';
 
 const brevoApi = new TransactionalEmailsApi();
 
@@ -29,6 +30,45 @@ class EmailService {
 
   async sendConfirmationEmail(quote: Quote): Promise<boolean> {
     return this.sendEmail(quote, 'confirmation');
+  }
+
+  async retryEmail(emailLogId: string, pdfBuffer?: Buffer): Promise<boolean> {
+    try {
+      // Get the email log
+      const emailLog = await storage.getEmailLogById(emailLogId);
+      
+      if (!emailLog) {
+        throw new Error('Email log not found');
+      }
+
+      if (!emailLog.quoteId) {
+        throw new Error('Email log does not have an associated quote');
+      }
+
+      // Get the quote
+      const quote = await storage.getQuote(emailLog.quoteId);
+      if (!quote) {
+        throw new Error('Quote not found');
+      }
+
+      // Resend the email based on the email type
+      const emailType = emailLog.emailType as EmailType;
+      
+      if (emailType === 'quote') {
+        // Generate PDF for quote emails if not provided
+        const pdf = pdfBuffer || await generateQuotePDF(quote);
+        return await this.sendEmail(quote, 'quote', pdf);
+      } else if (emailType === 'follow_up') {
+        return await this.sendEmail(quote, 'follow_up');
+      } else if (emailType === 'confirmation') {
+        return await this.sendEmail(quote, 'confirmation');
+      } else {
+        throw new Error(`Unsupported email type for retry: ${emailType}`);
+      }
+    } catch (error) {
+      console.error('Error retrying email:', error);
+      throw error;
+    }
   }
 
   private async sendEmail(quote: Quote, emailType: EmailType, pdfBuffer?: Buffer): Promise<boolean> {

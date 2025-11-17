@@ -39,6 +39,7 @@ import {
   Mail
 } from "lucide-react";
 import { formatPrice } from "../utils/pricingCalculator";
+import { cn } from "@/lib/utils";
 import ThemeEditor from "@/components/admin/ThemeEditor";
 import PageManager from "@/components/admin/PageManager";
 import FormBuilder from "@/components/admin/FormBuilder";
@@ -462,9 +463,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
       </div>
 
       {/* Main Navigation */}
-      <nav className="px-3 space-y-0.5 flex-1 overflow-y-auto pb-4">
+      <nav className="px-3 space-y-0 flex-1 overflow-y-auto pb-4">
         {/* Overview Section */}
-        <div className="pt-4 pb-2">
+        <div className="pt-4 pb-1">
           <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Overview
           </h3>
@@ -472,25 +473,25 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         
         <button
           onClick={() => handleTabChange("overview")}
-          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "overview" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "overview" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-overview"
         >
           <BarChart3 className="h-5 w-5 flex-shrink-0" />
           
-          <span className="text-sm sm:text-base">Dashboard</span>
+          <span className="text-sm">Dashboard</span>
         </button>
         
         <button
           onClick={() => handleTabChange("quotes")}
-          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "quotes" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "quotes" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-quotes"
         >
           <FileText className="h-5 w-5 flex-shrink-0" />
-          <span className="text-sm sm:text-base">Quotes</span>
+          <span className="text-sm">Quotes</span>
           <Badge className="ml-auto" variant="secondary">
             {quotes.length}
           </Badge>
@@ -498,30 +499,30 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
         <button
           onClick={() => handleTabChange("email-logs")}
-          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "email-logs" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "email-logs" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-email-logs"
         >
           <Mail className="h-5 w-5 flex-shrink-0" />
-          <span className="text-sm sm:text-base">Email Logs</span>
+          <span className="text-sm">Email Logs</span>
         </button>
 
         <button
           onClick={() => handleTabChange("embed")}
-          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "embed" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "embed" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-embed"
         >
           <Code className="h-5 w-5 flex-shrink-0" />
-          <span className="text-sm sm:text-base">Embed Code</span>
+          <span className="text-sm">Embed Code</span>
         </button>
 
         {/* CMS Section */}
         {(userRole === 'admin' || userRole === 'editor') && (
           <>
-            <div className="pt-4 pb-2">
+            <div className="pt-4 pb-1">
               <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 Content Management
               </h3>
@@ -529,68 +530,68 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             
             <button
               onClick={() => handleTabChange("theme")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "theme" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "theme" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-theme"
             >
               <Palette className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Theme</span>
+              <span className="text-sm">Theme</span>
             </button>
             
             <button
               onClick={() => handleTabChange("pages")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "pages" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "pages" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-pages"
             >
               <FileEdit className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Pages</span>
+              <span className="text-sm">Pages</span>
             </button>
             
             <button
               onClick={() => handleTabChange("forms")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "forms" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "forms" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-forms"
             >
               <Building className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Forms</span>
+              <span className="text-sm">Forms</span>
             </button>
             
             <button
               onClick={() => handleTabChange("media")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "media" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "media" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-media"
             >
               <Image className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Media</span>
+              <span className="text-sm">Media</span>
             </button>
             
             <button
               onClick={() => handleTabChange("products")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "products" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "products" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-products"
             >
               <Plus className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Products</span>
+              <span className="text-sm">Products</span>
             </button>
             
             <button
               onClick={() => handleTabChange("analytics")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "analytics" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "analytics" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-analytics"
             >
               <BarChart3 className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Analytics</span>
+              <span className="text-sm">Analytics</span>
             </button>
           </>
         )}
@@ -598,7 +599,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         {/* User Management Section */}
         {userRole === 'admin' && (
           <>
-            <div className="pt-4 pb-2">
+            <div className="pt-4 pb-1">
               <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 User Management
               </h3>
@@ -606,24 +607,24 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             
             <button
               onClick={() => handleTabChange("users")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "users" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "users" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-users"
             >
               <Users className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Users</span>
+              <span className="text-sm">Users</span>
             </button>
             
             <button
               onClick={() => handleTabChange("settings")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "settings" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "settings" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-settings"
             >
               <SettingsIcon className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Settings</span>
+              <span className="text-sm">Settings</span>
             </button>
           </>
         )}
@@ -637,24 +638,24 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
       <nav className="px-3 space-y-0.5 flex-1 overflow-y-auto pb-4">
         <button
           onClick={() => handleTabChange("overview")}
-          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "overview" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "overview" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-overview"
         >
           <BarChart3 className="h-5 w-5 flex-shrink-0" />
-          <span className="text-sm sm:text-base">Overview</span>
+          <span className="text-sm">Overview</span>
         </button>
         
         <button
           onClick={() => handleTabChange("quotes")}
-          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "quotes" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "quotes" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-quotes"
         >
           <FileText className="h-5 w-5 flex-shrink-0" />
-          <span className="text-sm sm:text-base">Quotes</span>
+          <span className="text-sm">Quotes</span>
           <Badge className="ml-auto" variant="secondary">
             {quotes.length}
           </Badge>
@@ -662,30 +663,30 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
         <button
           onClick={() => handleTabChange("email-logs")}
-          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "email-logs" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "email-logs" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-email-logs"
         >
           <Mail className="h-5 w-5 flex-shrink-0" />
-          <span className="text-sm sm:text-base">Email Logs</span>
+          <span className="text-sm">Email Logs</span>
         </button>
 
         <button
           onClick={() => handleTabChange("embed")}
-          className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "embed" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+            activeTab === "embed" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-embed"
         >
           <Code className="h-5 w-5 flex-shrink-0" />
-          <span className="text-sm sm:text-base">Embed Code</span>
+          <span className="text-sm">Embed Code</span>
         </button>
 
         {/* CMS Section */}
         {(userRole === 'admin' || userRole === 'editor') && (
           <>
-            <div className="pt-4 pb-2">
+            <div className="pt-4 pb-1">
               <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 Content Management
               </h3>
@@ -693,68 +694,68 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             
             <button
               onClick={() => handleTabChange("theme")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "theme" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "theme" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-theme"
             >
               <Palette className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Theme</span>
+              <span className="text-sm">Theme</span>
             </button>
             
             <button
               onClick={() => handleTabChange("pages")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "pages" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "pages" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-pages"
             >
               <FileEdit className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Pages</span>
+              <span className="text-sm">Pages</span>
             </button>
             
             <button
               onClick={() => handleTabChange("forms")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "forms" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "forms" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-forms"
             >
               <Building className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Forms</span>
+              <span className="text-sm">Forms</span>
             </button>
             
             <button
               onClick={() => handleTabChange("media")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "media" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "media" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-media"
             >
               <Image className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Media</span>
+              <span className="text-sm">Media</span>
             </button>
             
             <button
               onClick={() => handleTabChange("products")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "products" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "products" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-products"
             >
               <Plus className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Products</span>
+              <span className="text-sm">Products</span>
             </button>
             
             <button
               onClick={() => handleTabChange("analytics")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "analytics" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "analytics" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-analytics"
             >
               <BarChart3 className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Analytics</span>
+              <span className="text-sm">Analytics</span>
             </button>
           </>
         )}
@@ -762,7 +763,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         {/* User Management Section */}
         {userRole === 'admin' && (
           <>
-            <div className="pt-4 pb-2">
+            <div className="pt-4 pb-1">
               <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 User Management
               </h3>
@@ -770,24 +771,24 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             
             <button
               onClick={() => handleTabChange("users")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "users" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "users" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-users"
             >
               <Users className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Users</span>
+              <span className="text-sm">Users</span>
             </button>
             
             <button
               onClick={() => handleTabChange("settings")}
-              className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "settings" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              className={`w-full flex items-center gap-3 px-3 py-1.5 sm:py-1.5 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
+                activeTab === "settings" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-settings"
             >
               <SettingsIcon className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Settings</span>
+              <span className="text-sm">Settings</span>
             </button>
           </>
         )}
@@ -854,7 +855,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                         <span className="text-muted-foreground">•</span>
                         <span className="font-semibold text-lg">{stats.todayQuotes}</span>
                         <span className="text-muted-foreground">new {stats.todayQuotes === 1 ? 'quote' : 'quotes'}</span>
-                        <Button variant="link" size="sm" className="ml-auto" onClick={() => handleTabChange("quotes")}>
+                        <Button  size="sm" className="ml-auto" onClick={() => handleTabChange("quotes")}>
                           Review →
                         </Button>
                       </div>
@@ -983,9 +984,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                 </div>
 
                 {/* Search and Filter Toolbar */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                  <div className="relative w-full sm:w-80">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <div className="flex flex-col custom:flex-row gap-4 mb-6 items-start custom:items-center">
+                  <div className="relative w-full custom:w-80">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
                     <Input
                       placeholder="Search by name, email, or phone..."
                       value={searchQuery}
@@ -994,24 +995,67 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                       data-testid="search-quotes"
                     />
                   </div>
-                  <div className="flex gap-4 ml-auto">
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger className="w-full sm:w-48">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Statuses</SelectItem>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="contacted">Contacted</SelectItem>
-                        <SelectItem value="converted">Converted</SelectItem>
-                        <SelectItem value="lost">Lost</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Button variant="outline" className="gap-2">
-                      <Download className="h-4 w-4" />
-                      Export
-                    </Button>
+                  <div className="flex-1 flex flex-wrap custom:flex-nowrap gap-2 w-full custom:w-auto custom:ml-auto custom:justify-end">
+                    <button
+                      onClick={() => setStatusFilter("all")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(33.333%-0.5rem)] custom:min-w-0",
+                        statusFilter === "all"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={() => setStatusFilter("pending")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(33.333%-0.5rem)] custom:min-w-0",
+                        statusFilter === "pending"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      Pending
+                    </button>
+                    <button
+                      onClick={() => setStatusFilter("contacted")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(33.333%-0.5rem)] custom:min-w-0",
+                        statusFilter === "contacted"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      Contacted
+                    </button>
+                    <button
+                      onClick={() => setStatusFilter("converted")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(50%-0.5rem)] custom:min-w-0",
+                        statusFilter === "converted"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      Converted
+                    </button>
+                    <button
+                      onClick={() => setStatusFilter("lost")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(50%-0.5rem)] custom:min-w-0",
+                        statusFilter === "lost"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      Lost
+                    </button>
                   </div>
+                  <Button variant="outline" className="gap-2 w-full custom:w-auto">
+                    <Download className="h-4 w-4" />
+                    Export
+                  </Button>
                 </div>
                 
                 {/* Results Summary */}
