@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -225,11 +226,55 @@ export default function AnalyticsView() {
       </div>
 
       <Tabs value={selectedMetric} onValueChange={setSelectedMetric}>
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
-          <TabsTrigger value="quotes" data-testid="tab-quotes" className="text-xs sm:text-sm">Quotes</TabsTrigger>
-          <TabsTrigger value="forms" data-testid="tab-forms" className="text-xs sm:text-sm">Forms</TabsTrigger>
-          <TabsTrigger value="traffic" data-testid="tab-traffic" className="text-xs sm:text-sm">Traffic</TabsTrigger>
-          <TabsTrigger value="performance" data-testid="tab-performance" className="text-xs sm:text-sm">Performance</TabsTrigger>
+        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0 flex-wrap sm:flex-nowrap">
+          <TabsTrigger 
+            value="quotes" 
+            data-testid="tab-quotes" 
+            className={cn(
+              "h-10 flex-1 text-xs sm:text-sm font-medium transition-all border-0",
+              "rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
+            Quotes
+          </TabsTrigger>
+          <TabsTrigger 
+            value="forms" 
+            data-testid="tab-forms" 
+            className={cn(
+              "h-10 flex-1 text-xs sm:text-sm font-medium transition-all border-0",
+              "rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
+            Forms
+          </TabsTrigger>
+          <TabsTrigger 
+            value="traffic" 
+            data-testid="tab-traffic" 
+            className={cn(
+              "h-10 flex-1 text-xs sm:text-sm font-medium transition-all border-0",
+              "rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
+            Traffic
+          </TabsTrigger>
+          <TabsTrigger 
+            value="performance" 
+            data-testid="tab-performance" 
+            className={cn(
+              "h-10 flex-1 text-xs sm:text-sm font-medium transition-all border-0",
+              "rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
+            Performance
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="quotes" className="space-y-6">

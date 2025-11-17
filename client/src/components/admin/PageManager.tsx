@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -260,9 +261,29 @@ export default function PageManager() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="list" data-testid="tab-page-list" className="text-xs sm:text-sm">Page List</TabsTrigger>
-          <TabsTrigger value="editor" data-testid="tab-page-editor" className="text-xs sm:text-sm">
+        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0">
+          <TabsTrigger 
+            value="list" 
+            data-testid="tab-page-list" 
+            className={cn(
+              "h-10 flex-1 text-xs sm:text-sm font-medium transition-all border-0",
+              "rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
+            Page List
+          </TabsTrigger>
+          <TabsTrigger 
+            value="editor" 
+            data-testid="tab-page-editor" 
+            className={cn(
+              "h-10 flex-1 text-xs sm:text-sm font-medium transition-all border-0",
+              "rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
             {selectedPage ? 'Edit Page' : 'New Page'}
           </TabsTrigger>
         </TabsList>
