@@ -505,43 +505,47 @@ export default function ThemeEditor() {
         </TabsContent>
       </Tabs>
 
-      <Separator className="my-4 sm:my-6" />
-
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
-        <div className="text-xs sm:text-sm text-muted-foreground">
-          {theme?.status === "published" ? "Theme is currently live" : "Theme changes are saved as draft"}
-        </div>
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
-          <Button
-            variant="outline"
-            onClick={handleSave}
-            disabled={saveThemeMutation.isPending}
-            data-testid="button-save-theme"
-            className="w-full sm:w-auto"
-            size="sm"
-          >
-            {saveThemeMutation.isPending ? (
-              <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
-              <Save className="h-4 w-4 mr-2" />
-            )}
-            Save Draft
-          </Button>
-          <Button
-            onClick={handlePublish}
-            disabled={saveThemeMutation.isPending || publishThemeMutation.isPending}
-            data-testid="button-publish-theme"
-            className="w-full sm:w-auto"
-            size="sm"
-          >
-            {publishThemeMutation.isPending ? (
-              <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
-              <Eye className="h-4 w-4 mr-2" />
-            )}
-            Publish Live
-          </Button>
-        </div>
+      {/* Fixed Save/Publish Buttons at Bottom Right */}
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-background border rounded-lg shadow-lg p-3">
+        <Button
+          variant="outline"
+          onClick={handleSave}
+          disabled={saveThemeMutation.isPending}
+          data-testid="button-save-theme"
+          size="sm"
+          className="gap-2"
+        >
+          {saveThemeMutation.isPending ? (
+            <>
+              <RefreshCw className="h-4 w-4 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <Save className="h-4 w-4" />
+              Save Draft
+            </>
+          )}
+        </Button>
+        <Button
+          onClick={handlePublish}
+          disabled={saveThemeMutation.isPending || publishThemeMutation.isPending}
+          data-testid="button-publish-theme"
+          size="sm"
+          className="gap-2"
+        >
+          {publishThemeMutation.isPending ? (
+            <>
+              <RefreshCw className="h-4 w-4 animate-spin" />
+              Publishing...
+            </>
+          ) : (
+            <>
+              <Eye className="h-4 w-4" />
+              Publish Live
+            </>
+          )}
+        </Button>
       </div>
     </div>
   );
