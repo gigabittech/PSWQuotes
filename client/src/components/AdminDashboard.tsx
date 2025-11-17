@@ -474,7 +474,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         <button
           onClick={() => handleTabChange("overview")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "overview" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            activeTab === "overview" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-overview"
         >
@@ -486,7 +486,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         <button
           onClick={() => handleTabChange("quotes")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "quotes" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            activeTab === "quotes" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-quotes"
         >
@@ -500,7 +500,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         <button
           onClick={() => handleTabChange("email-logs")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "email-logs" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            activeTab === "email-logs" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-email-logs"
         >
@@ -511,7 +511,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         <button
           onClick={() => handleTabChange("embed")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "embed" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            activeTab === "embed" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-embed"
         >
@@ -531,7 +531,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("theme")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "theme" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "theme" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-theme"
             >
@@ -542,7 +542,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("pages")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "pages" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "pages" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-pages"
             >
@@ -553,7 +553,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("forms")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "forms" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "forms" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-forms"
             >
@@ -564,7 +564,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("media")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "media" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "media" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-media"
             >
@@ -575,7 +575,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("products")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "products" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "products" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-products"
             >
@@ -586,7 +586,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("analytics")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "analytics" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "analytics" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-analytics"
             >
@@ -608,7 +608,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("users")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "users" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "users" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-users"
             >
@@ -619,7 +619,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("settings")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "settings" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "settings" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-settings"
             >
@@ -639,7 +639,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         <button
           onClick={() => handleTabChange("overview")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "overview" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            activeTab === "overview" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-overview"
         >
@@ -650,7 +650,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         <button
           onClick={() => handleTabChange("quotes")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "quotes" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            activeTab === "quotes" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-quotes"
         >
@@ -664,7 +664,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         <button
           onClick={() => handleTabChange("email-logs")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "email-logs" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            activeTab === "email-logs" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-email-logs"
         >
@@ -675,7 +675,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
         <button
           onClick={() => handleTabChange("embed")}
           className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-            activeTab === "embed" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            activeTab === "embed" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
           data-testid="nav-embed"
         >
@@ -695,7 +695,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("theme")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "theme" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "theme" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-theme"
             >
@@ -706,7 +706,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("pages")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "pages" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "pages" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-pages"
             >
@@ -717,7 +717,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("forms")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "forms" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "forms" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-forms"
             >
@@ -728,7 +728,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("media")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "media" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "media" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-media"
             >
@@ -739,7 +739,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("products")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "products" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "products" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-products"
             >
@@ -750,7 +750,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("analytics")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "analytics" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "analytics" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-analytics"
             >
@@ -772,7 +772,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("users")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "users" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "users" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-users"
             >
@@ -783,7 +783,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             <button
               onClick={() => handleTabChange("settings")}
               className={`w-full flex items-center gap-3 px-3 py-2 sm:py-2 rounded-lg transition-colors touch-manipulation min-h-[44px] ${
-                activeTab === "settings" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                activeTab === "settings" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
               data-testid="nav-settings"
             >
