@@ -508,7 +508,7 @@ export default function FormBuilder() {
         </TabsContent>
 
         <TabsContent value="editor" className="space-y-4 sm:space-y-6">
-          <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
+          <div className={selectedForm ? "grid lg:grid-cols-2 gap-4 sm:gap-6" : "w-full"}>
             {/* Form Settings */}
             <Card>
               <CardHeader className="p-4 sm:p-6">
