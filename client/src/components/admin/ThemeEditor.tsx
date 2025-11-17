@@ -211,13 +211,13 @@ export default function ThemeEditor() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-0 rounded-none border-0">
+        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0">
           <TabsTrigger 
             value="colors" 
             data-testid="tab-colors" 
             className={cn(
               "h-10 flex-1 text-sm font-medium transition-all border-0",
-              "rounded-none data-[state=active]:rounded-md",
+              "rounded-md",
               "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
               "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
             )}
@@ -229,7 +229,7 @@ export default function ThemeEditor() {
             data-testid="tab-branding" 
             className={cn(
               "h-10 flex-1 text-sm font-medium transition-all border-0",
-              "rounded-none data-[state=active]:rounded-md",
+              "rounded-md",
               "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
               "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
             )}
@@ -241,7 +241,7 @@ export default function ThemeEditor() {
             data-testid="tab-typography" 
             className={cn(
               "h-10 flex-1 text-sm font-medium transition-all border-0",
-              "rounded-none data-[state=active]:rounded-md",
+              "rounded-md",
               "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
               "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
             )}
@@ -253,7 +253,7 @@ export default function ThemeEditor() {
             data-testid="tab-content" 
             className={cn(
               "h-10 flex-1 text-sm font-medium transition-all border-0",
-              "rounded-none data-[state=active]:rounded-md",
+              "rounded-md",
               "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
               "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
             )}
