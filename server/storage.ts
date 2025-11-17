@@ -105,6 +105,7 @@ export interface IStorage {
   createEmailLog(log: InsertEmailLog): Promise<EmailLog>;
   getEmailLogs(quoteId?: string): Promise<EmailLog[]>;
   getEmailLogsByQuote(quoteId: string): Promise<EmailLog[]>;
+  getEmailLogById(id: string): Promise<EmailLog | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -506,6 +507,11 @@ export class DatabaseStorage implements IStorage {
 
   async getEmailLogsByQuote(quoteId: string): Promise<EmailLog[]> {
     return await db.select().from(emailLogs).where(eq(emailLogs.quoteId, quoteId)).orderBy(desc(emailLogs.sentAt));
+  }
+
+  async getEmailLogById(id: string): Promise<EmailLog | undefined> {
+    const [log] = await db.select().from(emailLogs).where(eq(emailLogs.id, id)).limit(1);
+    return log;
   }
 }
 

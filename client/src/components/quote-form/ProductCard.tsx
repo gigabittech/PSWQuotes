@@ -10,9 +10,15 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, isSelected, onSelect, badge, badgeColor, productType }: ProductCardProps) {
-  const finalPrice = product.rebateEligible && product.rebateAmount 
-    ? parseFloat(product.price) - parseFloat(product.rebateAmount)
-    : parseFloat(product.price);
+  // Get RRP from specifications if available (for batteries)
+  const rrp = product.specifications?.rrp ? parseFloat(product.specifications.rrp) : null;
+  // Price after rebate is stored in product.price
+  const priceAfterRebate = parseFloat(product.price);
+  // Calculate savings: RRP - Price After Rebate
+  const savings = rrp ? rrp - priceAfterRebate : 0;
+  
+  // Final price to display is the price after rebate
+  const finalPrice = priceAfterRebate;
 
   // Product type styling
   const getProductTypeStyles = () => {
@@ -145,17 +151,27 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
           <div className="text-2xl sm:text-3xl font-bold text-primary mb-2 group-hover:scale-105 transition-transform duration-300">
             ${finalPrice.toLocaleString()}
           </div>
-          {product.rebateEligible && product.rebateAmount && (
+          {rrp && savings > 0 && (
             <>
               <div className="text-sm text-muted-foreground line-through mb-1">
-                Was ${parseFloat(product.price).toLocaleString()}
+                Was ${rrp.toLocaleString()}
+              </div>
+              <div className="text-sm text-green-600 dark:text-green-400 font-semibold bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
+                Save ${savings.toLocaleString()}
+              </div>
+            </>
+          )}
+          {!rrp && product.rebateEligible && product.rebateAmount && parseFloat(product.rebateAmount) > 0 && (
+            <>
+              <div className="text-sm text-muted-foreground line-through mb-1">
+                Was ${(priceAfterRebate + parseFloat(product.rebateAmount)).toLocaleString()}
               </div>
               <div className="text-sm text-green-600 dark:text-green-400 font-semibold bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
                 Save ${parseFloat(product.rebateAmount).toLocaleString()}
               </div>
             </>
           )}
-          {!product.rebateEligible && (
+          {!rrp && (!product.rebateEligible || !product.rebateAmount || parseFloat(product.rebateAmount) === 0) && (
             <div className="text-sm text-muted-foreground font-medium">Installed price</div>
           )}
         </div>

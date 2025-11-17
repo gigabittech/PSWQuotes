@@ -298,7 +298,7 @@ export default function PropertyDetails({
             >
               <span className="flex items-center justify-center">
                 <span className="mr-3">
-                  {isSubmitting ? "Generating Quote..." : "Generate Quoterrrrrr"}
+                  {isSubmitting ? "Generating Quote..." : "Generate Quote"}
                 </span>
                 {!isSubmitting && (
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

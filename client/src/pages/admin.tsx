@@ -268,13 +268,13 @@ export default function Admin() {
                 <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg shadow-md">
                   <Sun className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-primary rounded-full flex items-center justify-center">
+                {/* <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-primary rounded-full flex items-center justify-center">
                   <Zap className="h-1.5 w-1.5 text-primary-foreground" />
-                </div>
+                </div> */}
               </div>
               <div className="flex flex-col">
                 <h1 className="text-2xl font-bold text-foreground leading-tight">
-                  Perth Solar Warehouse
+                  PSW Quotes
                 </h1>
                 <span className="text-xs text-muted-foreground font-medium leading-tight">Admin Dashboard</span>
               </div>
