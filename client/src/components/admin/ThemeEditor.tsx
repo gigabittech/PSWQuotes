@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -210,11 +211,55 @@ export default function ThemeEditor() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-2">
-          <TabsTrigger value="colors" data-testid="tab-colors" className="text-xs sm:text-sm px-2 sm:px-4">Colors</TabsTrigger>
-          <TabsTrigger value="branding" data-testid="tab-branding" className="text-xs sm:text-sm px-2 sm:px-4">Branding</TabsTrigger>
-          <TabsTrigger value="typography" data-testid="tab-typography" className="text-xs sm:text-sm px-2 sm:px-4">Typography</TabsTrigger>
-          <TabsTrigger value="content" data-testid="tab-content" className="text-xs sm:text-sm px-2 sm:px-4">Content</TabsTrigger>
+        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-0 rounded-none border-0">
+          <TabsTrigger 
+            value="colors" 
+            data-testid="tab-colors" 
+            className={cn(
+              "h-10 flex-1 text-sm font-medium transition-all border-0",
+              "rounded-none data-[state=active]:rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
+            Colors
+          </TabsTrigger>
+          <TabsTrigger 
+            value="branding" 
+            data-testid="tab-branding" 
+            className={cn(
+              "h-10 flex-1 text-sm font-medium transition-all border-0",
+              "rounded-none data-[state=active]:rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
+            Branding
+          </TabsTrigger>
+          <TabsTrigger 
+            value="typography" 
+            data-testid="tab-typography" 
+            className={cn(
+              "h-10 flex-1 text-sm font-medium transition-all border-0",
+              "rounded-none data-[state=active]:rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
+            Typography
+          </TabsTrigger>
+          <TabsTrigger 
+            value="content" 
+            data-testid="tab-content" 
+            className={cn(
+              "h-10 flex-1 text-sm font-medium transition-all border-0",
+              "rounded-none data-[state=active]:rounded-md",
+              "data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:shadow-none",
+              "data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700"
+            )}
+          >
+            Content
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="colors" className="space-y-4 sm:space-y-6">
