@@ -39,6 +39,7 @@ import {
   Mail
 } from "lucide-react";
 import { formatPrice } from "../utils/pricingCalculator";
+import { cn } from "@/lib/utils";
 import ThemeEditor from "@/components/admin/ThemeEditor";
 import PageManager from "@/components/admin/PageManager";
 import FormBuilder from "@/components/admin/FormBuilder";
@@ -854,7 +855,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                         <span className="text-muted-foreground">•</span>
                         <span className="font-semibold text-lg">{stats.todayQuotes}</span>
                         <span className="text-muted-foreground">new {stats.todayQuotes === 1 ? 'quote' : 'quotes'}</span>
-                        <Button variant="link" size="sm" className="ml-auto" onClick={() => handleTabChange("quotes")}>
+                        <Button  size="sm" className="ml-auto" onClick={() => handleTabChange("quotes")}>
                           Review →
                         </Button>
                       </div>
@@ -983,9 +984,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                 </div>
 
                 {/* Search and Filter Toolbar */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                  <div className="relative w-full sm:w-80">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <div className="flex flex-col custom:flex-row gap-4 mb-6 items-start custom:items-center">
+                  <div className="relative w-full custom:w-80">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
                     <Input
                       placeholder="Search by name, email, or phone..."
                       value={searchQuery}
@@ -994,24 +995,67 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                       data-testid="search-quotes"
                     />
                   </div>
-                  <div className="flex gap-4 ml-auto">
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger className="w-full sm:w-48">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Statuses</SelectItem>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="contacted">Contacted</SelectItem>
-                        <SelectItem value="converted">Converted</SelectItem>
-                        <SelectItem value="lost">Lost</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Button variant="outline" className="gap-2">
-                      <Download className="h-4 w-4" />
-                      Export
-                    </Button>
+                  <div className="flex-1 flex flex-wrap custom:flex-nowrap gap-2 w-full custom:w-auto custom:ml-auto custom:justify-end">
+                    <button
+                      onClick={() => setStatusFilter("all")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(33.333%-0.5rem)] custom:min-w-0",
+                        statusFilter === "all"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={() => setStatusFilter("pending")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(33.333%-0.5rem)] custom:min-w-0",
+                        statusFilter === "pending"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      Pending
+                    </button>
+                    <button
+                      onClick={() => setStatusFilter("contacted")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(33.333%-0.5rem)] custom:min-w-0",
+                        statusFilter === "contacted"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      Contacted
+                    </button>
+                    <button
+                      onClick={() => setStatusFilter("converted")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(50%-0.5rem)] custom:min-w-0",
+                        statusFilter === "converted"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      Converted
+                    </button>
+                    <button
+                      onClick={() => setStatusFilter("lost")}
+                      className={cn(
+                        "h-11 flex-1 custom:flex-none custom:px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center min-h-[44px] min-w-[calc(50%-0.5rem)] custom:min-w-0",
+                        statusFilter === "lost"
+                          ? "bg-primary text-black"
+                          : "bg-white text-black border border-gray-200 hover:bg-gray-50"
+                      )}
+                    >
+                      Lost
+                    </button>
                   </div>
+                  <Button variant="outline" className="gap-2 w-full custom:w-auto">
+                    <Download className="h-4 w-4" />
+                    Export
+                  </Button>
                 </div>
                 
                 {/* Results Summary */}
