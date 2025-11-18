@@ -89,9 +89,32 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
   const user = authResponse?.user;
   const userRole = user?.role || 'viewer';
 
-  const { data: quotes = [], isLoading } = useQuery<Quote[]>({
-    queryKey: ['/api/quotes'],
+  // Fetch paginated quotes
+  const { data: quotesResponse, isLoading } = useQuery<{ data: Quote[]; total: number; page: number; limit: number; totalPages: number } | Quote[]>({
+    queryKey: ['/api/quotes', currentPage, itemsPerPage, searchQuery, statusFilter],
+    queryFn: async () => {
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: itemsPerPage.toString(),
+      });
+      if (searchQuery) {
+        params.append('search', searchQuery);
+      }
+      if (statusFilter && statusFilter !== 'all') {
+        params.append('status', statusFilter);
+      }
+      const response = await fetch(`/api/quotes?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch quotes');
+      }
+      return response.json();
+    },
   });
+
+  // Handle both paginated response and legacy array response
+  const quotes = Array.isArray(quotesResponse) ? quotesResponse : (quotesResponse?.data || []);
+  const totalQuotes = Array.isArray(quotesResponse) ? quotesResponse.length : (quotesResponse?.total || 0);
+  const totalPages = Array.isArray(quotesResponse) ? Math.ceil(totalQuotes / itemsPerPage) : (quotesResponse?.totalPages || 1);
 
   const { data: usersResponse, isLoading: isLoadingUsers } = useQuery<{users: User[]}>({
     queryKey: ['/api/users'],
@@ -341,31 +364,15 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
     }
   };
 
-  // Filter quotes based on search and status
-  const filteredQuotes = useMemo(() => {
-    return quotes.filter((quote: Quote) => {
-      const matchesSearch = searchQuery === "" || 
-        `${quote.firstName} ${quote.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        quote.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        quote.phone?.includes(searchQuery);
-      
-      const matchesStatus = statusFilter === "all" || quote.status === statusFilter;
-      
-      return matchesSearch && matchesStatus;
-    });
-  }, [quotes, searchQuery, statusFilter]);
-
   // Reset to first page when search or filter changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, statusFilter]);
 
-  // Paginate filtered quotes
-  const totalQuotes = filteredQuotes.length;
-  const totalPages = Math.ceil(totalQuotes / itemsPerPage);
+  // Calculate pagination display values
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedQuotes = filteredQuotes.slice(startIndex, endIndex);
+  const endIndex = Math.min(currentPage * itemsPerPage, totalQuotes);
+  const paginatedQuotes = quotes; // Quotes are already paginated from server
 
   const handleItemsPerPageChange = (value: string) => {
     setItemsPerPage(parseInt(value));
@@ -1085,7 +1092,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                 {(searchQuery || statusFilter !== "all") && (
                   <div className="mb-4 flex items-center justify-between flex-shrink-0">
                     <p className="text-sm text-muted-foreground">
-                      Showing {filteredQuotes.length} of {quotes.length} quotes
+                      Showing {totalQuotes} of {totalQuotes} quotes
                     </p>
                     <Button 
                       variant="ghost" 

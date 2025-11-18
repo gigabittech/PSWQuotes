@@ -934,11 +934,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all quotes (admin)
+  // Get all quotes (admin) - supports pagination
   app.get("/api/quotes", requireRole(['admin', 'editor']), async (req, res) => {
     try {
-      const quotes = await storage.getQuotes();
-      res.json(quotes);
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 20;
+      const search = req.query.search as string | undefined;
+      const status = req.query.status as string | undefined;
+
+      // If pagination parameters are provided, use paginated endpoint
+      if (req.query.page || req.query.limit || req.query.search || req.query.status) {
+        const result = await storage.getQuotesPaginated({
+          page,
+          limit,
+          search,
+          status,
+        });
+        res.json(result);
+      } else {
+        // Backward compatibility: return all quotes if no pagination params
+        const quotes = await storage.getQuotes();
+        res.json(quotes);
+      }
     } catch (error) {
       console.error("Error fetching quotes:", error);
       res.status(500).json({ error: "Failed to fetch quotes" });

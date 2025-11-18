@@ -17,7 +17,7 @@ import {
   type EmailLog, type InsertEmailLog
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, or, count, sql } from "drizzle-orm";
 
 export interface IStorage {
   // User management
@@ -34,6 +34,7 @@ export interface IStorage {
   createQuote(quote: InsertQuote): Promise<Quote>;
   getQuote(id: string): Promise<Quote | undefined>;
   getQuotes(): Promise<Quote[]>;
+  getQuotesPaginated(params: { page: number; limit: number; search?: string; status?: string }): Promise<{ data: Quote[]; total: number; page: number; limit: number; totalPages: number }>;
   updateQuoteStatus(id: string, status: string): Promise<Quote | undefined>;
   updateQuote(id: string, updates: Partial<InsertQuote>): Promise<Quote | undefined>;
   
@@ -179,6 +180,56 @@ export class DatabaseStorage implements IStorage {
 
   async getQuotes(): Promise<Quote[]> {
     return await db.select().from(quotes).orderBy(desc(quotes.createdAt));
+  }
+
+  async getQuotesPaginated(params: { page: number; limit: number; search?: string; status?: string }): Promise<{ data: Quote[]; total: number; page: number; limit: number; totalPages: number }> {
+    const { page, limit, search, status } = params;
+    const offset = (page - 1) * limit;
+
+    // Build where conditions
+    const conditions = [];
+    
+    if (status && status !== "all") {
+      conditions.push(eq(quotes.status, status));
+    }
+
+    if (search) {
+      const searchPattern = `%${search.toLowerCase()}%`;
+      conditions.push(
+        or(
+          sql`LOWER(${quotes.firstName}::text) LIKE ${searchPattern}`,
+          sql`LOWER(${quotes.lastName}::text) LIKE ${searchPattern}`,
+          sql`LOWER(${quotes.email}::text) LIKE ${searchPattern}`,
+          sql`LOWER(COALESCE(${quotes.phone}::text, '')) LIKE ${searchPattern}`
+        )!
+      );
+    }
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+    // Get total count
+    const totalResult = await db
+      .select({ count: count() })
+      .from(quotes)
+      .where(whereClause);
+    const total = totalResult[0]?.count || 0;
+
+    // Get paginated data
+    let query = db.select().from(quotes).orderBy(desc(quotes.createdAt));
+    if (whereClause) {
+      query = query.where(whereClause) as any;
+    }
+    const data = await query.limit(limit).offset(offset);
+
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
 
   async updateQuoteStatus(id: string, status: string): Promise<Quote | undefined> {
