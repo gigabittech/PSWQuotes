@@ -1193,7 +1193,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                         <span className="text-sm text-muted-foreground hidden sm:inline">Show Per Page:</span>
                         <span className="text-sm text-muted-foreground sm:hidden">Per Page:</span>
                         <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
-                          <SelectTrigger className="w-20 h-8 rounded-[4px]">
+                          <SelectTrigger className="w-20 h-8 rounded-md">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -1215,7 +1215,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                           size="sm"
                           onClick={() => setCurrentPage(1)}
                           disabled={currentPage === 1}
-                          className="h-8 w-8 p-0 rounded-[4px] hidden sm:flex"
+                          className="h-8 w-8 p-0 rounded-md hidden sm:flex"
                           title="First page"
                         >
                           <ChevronsLeft className="h-4 w-4" />
@@ -1225,7 +1225,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                           size="sm"
                           onClick={() => setCurrentPage(currentPage - 1)}
                           disabled={currentPage === 1}
-                          className="h-8 w-8 p-0 rounded-[4px]"
+                          className="h-8 w-8 p-0 rounded-md"
                           title="Previous page"
                         >
                           <ChevronLeft className="h-4 w-4" />
@@ -1254,7 +1254,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                                 variant={currentPage === pageNum ? "default" : "outline"}
                                 size="sm"
                                 onClick={() => setCurrentPage(pageNum)}
-                                className={`h-8 w-8 p-0 rounded-[4px] ${
+                                className={`h-8 w-8 p-0 rounded-md ${
                                   currentPage === pageNum 
                                     ? "bg-[#f7c917] text-black" 
                                     : ""
@@ -1286,7 +1286,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                                 variant={currentPage === pageNum ? "default" : "outline"}
                                 size="sm"
                                 onClick={() => setCurrentPage(pageNum)}
-                                className={`h-8 w-8 p-0 rounded-[4px] ${
+                                className={`h-8 w-8 p-0 rounded-md ${
                                   currentPage === pageNum 
                                     ? "bg-[#f7c917] text-black" 
                                     : ""
@@ -1306,7 +1306,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                           size="sm"
                           onClick={() => setCurrentPage(currentPage + 1)}
                           disabled={currentPage === totalPages}
-                          className="h-8 w-8 p-0 rounded-[4px]"
+                          className="h-8 w-8 p-0 rounded-md"
                           title="Next page"
                         >
                           <ChevronRight className="h-4 w-4" />
@@ -1316,7 +1316,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                           size="sm"
                           onClick={() => setCurrentPage(totalPages)}
                           disabled={currentPage === totalPages}
-                          className="h-8 w-8 p-0 rounded-[4px] hidden sm:flex"
+                          className="h-8 w-8 p-0 rounded-md hidden sm:flex"
                           title="Last page"
                         >
                           <ChevronsRight className="h-4 w-4" />
