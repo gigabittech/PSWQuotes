@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,11 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Code,
-  Mail
+  Mail,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight
 } from "lucide-react";
 import { formatPrice } from "../utils/pricingCalculator";
 import { cn } from "@/lib/utils";
@@ -65,6 +69,8 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -348,6 +354,23 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
       return matchesSearch && matchesStatus;
     });
   }, [quotes, searchQuery, statusFilter]);
+
+  // Reset to first page when search or filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter]);
+
+  // Paginate filtered quotes
+  const totalQuotes = filteredQuotes.length;
+  const totalPages = Math.ceil(totalQuotes / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedQuotes = filteredQuotes.slice(startIndex, endIndex);
+
+  const handleItemsPerPageChange = (value: string) => {
+    setItemsPerPage(parseInt(value));
+    setCurrentPage(1); // Reset to page 1 when changing items per page
+  };
 
   // Calculate stats with trends
   const stats = useMemo(() => {
@@ -1070,6 +1093,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                       onClick={() => {
                         setSearchQuery("");
                         setStatusFilter("all");
+                        setCurrentPage(1);
                       }}
                     >
                       Clear filters
@@ -1079,7 +1103,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
                 {/* Quote List */}
                 <div className="space-y-3">
-                  {filteredQuotes.length === 0 ? (
+                  {paginatedQuotes.length === 0 ? (
                     <Card className="p-12">
                       <div className="text-center">
                         <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-20" />
@@ -1092,7 +1116,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                       </div>
                     </Card>
                   ) : (
-                    filteredQuotes.map((quote: Quote) => (
+                    paginatedQuotes.map((quote: Quote) => (
                     <Card key={quote.id} className="hover:shadow-md transition-shadow">
                       <CardContent className="p-6">
                         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
@@ -1156,6 +1180,151 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                   ))
                   )}
                 </div>
+
+                {/* Pagination */}
+                {totalQuotes > 0 && (
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 py-4 mt-6">
+                    {/* Left side - Info and page size selector */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                      <div className="text-sm text-muted-foreground text-center sm:text-left">
+                        Showing {startIndex + 1} to {Math.min(endIndex, totalQuotes)} of {totalQuotes} quotes
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm text-muted-foreground hidden sm:inline">Show Per Page:</span>
+                        <span className="text-sm text-muted-foreground sm:hidden">Per Page:</span>
+                        <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
+                          <SelectTrigger className="w-20 h-8 rounded-[4px]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="10">10</SelectItem>
+                            <SelectItem value="20">20</SelectItem>
+                            <SelectItem value="50">50</SelectItem>
+                            <SelectItem value="100">100</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    {/* Right side - Navigation controls */}
+                    <div className="flex items-center space-x-1 sm:space-x-2">
+                      {/* First and Previous buttons - always visible */}
+                      <div className="flex items-center space-x-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(1)}
+                          disabled={currentPage === 1}
+                          className="h-8 w-8 p-0 rounded-[4px] hidden sm:flex"
+                          title="First page"
+                        >
+                          <ChevronsLeft className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className="h-8 w-8 p-0 rounded-[4px]"
+                          title="Previous page"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      
+                      {/* Page numbers - always show at least page 1 */}
+                      <div className="flex items-center space-x-1">
+                        {/* Mobile: show 3 pages max, Desktop: show 5 pages max */}
+                        <div className="flex items-center space-x-1 sm:hidden">
+                          {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
+                            let pageNum;
+                            if (totalPages <= 3) {
+                              pageNum = i + 1;
+                            } else if (currentPage <= 2) {
+                              pageNum = i + 1;
+                            } else if (currentPage >= totalPages - 1) {
+                              pageNum = totalPages - 2 + i;
+                            } else {
+                              pageNum = currentPage - 1 + i;
+                            }
+                            
+                            return (
+                              <Button
+                                key={pageNum}
+                                variant={currentPage === pageNum ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setCurrentPage(pageNum)}
+                                className={`h-8 w-8 p-0 rounded-[4px] ${
+                                  currentPage === pageNum 
+                                    ? "bg-[#f7c917] text-black" 
+                                    : ""
+                                }`}
+                              >
+                                {pageNum}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                        
+                        {/* Desktop: show 5 pages max */}
+                        <div className="hidden sm:flex items-center space-x-1">
+                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                            let pageNum;
+                            if (totalPages <= 5) {
+                              pageNum = i + 1;
+                            } else if (currentPage <= 3) {
+                              pageNum = i + 1;
+                            } else if (currentPage >= totalPages - 2) {
+                              pageNum = totalPages - 4 + i;
+                            } else {
+                              pageNum = currentPage - 2 + i;
+                            }
+                            
+                            return (
+                              <Button
+                                key={pageNum}
+                                variant={currentPage === pageNum ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setCurrentPage(pageNum)}
+                                className={`h-8 w-8 p-0 rounded-[4px] ${
+                                  currentPage === pageNum 
+                                    ? "bg-[#f7c917] text-black" 
+                                    : ""
+                                }`}
+                              >
+                                {pageNum}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      
+                      {/* Next and Last buttons - always visible */}
+                      <div className="flex items-center space-x-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                          className="h-8 w-8 p-0 rounded-[4px]"
+                          title="Next page"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(totalPages)}
+                          disabled={currentPage === totalPages}
+                          className="h-8 w-8 p-0 rounded-[4px] hidden sm:flex"
+                          title="Last page"
+                        >
+                          <ChevronsRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
