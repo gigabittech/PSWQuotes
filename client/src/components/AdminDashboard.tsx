@@ -857,7 +857,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col lg:ml-64 overflow-hidden">
-          <div className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8 w-full">
+          <div className="flex-1 flex flex-col overflow-hidden px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8 w-full">
             {activeTab === "overview" && (
               <div>
                 {/* Header */}
@@ -999,15 +999,15 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             )}
             
             {activeTab === "quotes" && (
-              <div>
+              <div className="flex flex-col h-full">
                 {/* Header */}
-                <div className="mb-6 md:mb-8">
+                <div className="mb-6 md:mb-8 flex-shrink-0">
                   <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Quotes</h1>
                   <p className="text-muted-foreground">Review and manage customer quote requests</p>
                 </div>
 
                 {/* Search and Filter Toolbar */}
-                <div className="flex flex-col custom:flex-row gap-4 mb-6 items-start custom:items-center">
+                <div className="flex flex-col custom:flex-row gap-4 mb-6 items-start custom:items-center flex-shrink-0">
                   <div className="relative w-full custom:w-80">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
                     <Input
@@ -1083,7 +1083,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                 
                 {/* Results Summary */}
                 {(searchQuery || statusFilter !== "all") && (
-                  <div className="mb-4 flex items-center justify-between">
+                  <div className="mb-4 flex items-center justify-between flex-shrink-0">
                     <p className="text-sm text-muted-foreground">
                       Showing {filteredQuotes.length} of {quotes.length} quotes
                     </p>
@@ -1101,89 +1101,91 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                   </div>
                 )}
 
-                {/* Quote List */}
-                <div className="space-y-3">
-                  {paginatedQuotes.length === 0 ? (
-                    <Card className="p-12">
-                      <div className="text-center">
-                        <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-20" />
-                        <h3 className="text-lg font-semibold mb-2">No Quotes Found</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {searchQuery || statusFilter !== "all" 
-                            ? "No quotes match your current filters" 
-                            : "Quote requests will appear here once customers submit the form"}
-                        </p>
-                      </div>
-                    </Card>
-                  ) : (
-                    paginatedQuotes.map((quote: Quote) => (
-                    <Card key={quote.id} className="hover:shadow-md transition-shadow">
-                      <CardContent className="p-6">
-                        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                          {/* Customer Info */}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-start justify-between mb-3">
-                              <div>
-                                <h3 className="text-lg font-semibold text-foreground mb-1">{capitalizeWords(quote.firstName)} {capitalizeWords(quote.lastName)}</h3>
-                                <div className="space-y-0.5 text-sm text-muted-foreground">
-                                  <p>{quote.email}</p>
-                                  <p>{quote.phone}</p>
-                                  <p>{capitalizeWords(quote.address)}, {capitalizeWords(quote.suburb)} {quote.state?.toUpperCase()} {quote.postcode}</p>
+                {/* Quote List - Scrollable */}
+                <div className="flex-1 overflow-y-auto min-h-0 mb-6">
+                  <div className="space-y-3">
+                    {paginatedQuotes.length === 0 ? (
+                      <Card className="p-12">
+                        <div className="text-center">
+                          <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-20" />
+                          <h3 className="text-lg font-semibold mb-2">No Quotes Found</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {searchQuery || statusFilter !== "all" 
+                              ? "No quotes match your current filters" 
+                              : "Quote requests will appear here once customers submit the form"}
+                          </p>
+                        </div>
+                      </Card>
+                    ) : (
+                      paginatedQuotes.map((quote: Quote) => (
+                      <Card key={quote.id} className="hover:shadow-md transition-shadow">
+                        <CardContent className="p-6">
+                          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                            {/* Customer Info */}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between mb-3">
+                                <div>
+                                  <h3 className="text-lg font-semibold text-foreground mb-1">{capitalizeWords(quote.firstName)} {capitalizeWords(quote.lastName)}</h3>
+                                  <div className="space-y-0.5 text-sm text-muted-foreground">
+                                    <p>{quote.email}</p>
+                                    <p>{quote.phone}</p>
+                                    <p>{capitalizeWords(quote.address)}, {capitalizeWords(quote.suburb)} {quote.state?.toUpperCase()} {quote.postcode}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              {/* Quote Details */}
+                              <div className="flex flex-wrap gap-4 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground">Systems:</span>
+                                  <span className="ml-1 font-medium">{quote.selectedSystems?.map(formatSystemName).join(', ') || 'N/A'}</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Supply:</span>
+                                  <span className="ml-1 font-medium">{formatPowerSupply(quote.powerSupply)} Phase</span>
                                 </div>
                               </div>
                             </div>
                             
-                            {/* Quote Details */}
-                            <div className="flex flex-wrap gap-4 text-sm">
-                              <div>
-                                <span className="text-muted-foreground">Systems:</span>
-                                <span className="ml-1 font-medium">{quote.selectedSystems?.map(formatSystemName).join(', ') || 'N/A'}</span>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground">Supply:</span>
-                                <span className="ml-1 font-medium">{formatPowerSupply(quote.powerSupply)} Phase</span>
-                              </div>
+                            {/* Price & Status */}
+                            <div className="md:text-right">
+                              <p className="text-2xl font-bold mb-2">
+                                {formatPrice(parseFloat(quote.finalPrice.toString()))}
+                              </p>
+                              <p className="text-xs text-muted-foreground mb-3">
+                                {new Date(quote.createdAt).toLocaleDateString('en-AU', {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </p>
+                              <Select
+                                value={quote.status}
+                                onValueChange={(value) => handleStatusUpdate(quote.id, value)}
+                                disabled={updateStatusMutation.isPending}
+                              >
+                                <SelectTrigger className="w-full md:w-36">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="pending">Pending</SelectItem>
+                                  <SelectItem value="contacted">Contacted</SelectItem>
+                                  <SelectItem value="converted">Converted</SelectItem>
+                                  <SelectItem value="lost">Lost</SelectItem>
+                                </SelectContent>
+                              </Select>
                             </div>
                           </div>
-                          
-                          {/* Price & Status */}
-                          <div className="md:text-right">
-                            <p className="text-2xl font-bold mb-2">
-                              {formatPrice(parseFloat(quote.finalPrice.toString()))}
-                            </p>
-                            <p className="text-xs text-muted-foreground mb-3">
-                              {new Date(quote.createdAt).toLocaleDateString('en-AU', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric'
-                              })}
-                            </p>
-                            <Select
-                              value={quote.status}
-                              onValueChange={(value) => handleStatusUpdate(quote.id, value)}
-                              disabled={updateStatusMutation.isPending}
-                            >
-                              <SelectTrigger className="w-full md:w-36">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="pending">Pending</SelectItem>
-                                <SelectItem value="contacted">Contacted</SelectItem>
-                                <SelectItem value="converted">Converted</SelectItem>
-                                <SelectItem value="lost">Lost</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                  )}
+                        </CardContent>
+                      </Card>
+                    ))
+                    )}
+                  </div>
                 </div>
 
                 {/* Pagination */}
                 {totalQuotes > 0 && (
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 py-4 mt-6">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 py-4 flex-shrink-0">
                     {/* Left side - Info and page size selector */}
                     <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
                       <div className="text-sm text-muted-foreground text-center sm:text-left">
