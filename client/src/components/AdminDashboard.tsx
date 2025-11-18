@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,11 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Code,
-  Mail
+  Mail,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight
 } from "lucide-react";
 import { formatPrice } from "../utils/pricingCalculator";
 import { cn } from "@/lib/utils";
@@ -65,6 +69,8 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -83,9 +89,32 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
   const user = authResponse?.user;
   const userRole = user?.role || 'viewer';
 
-  const { data: quotes = [], isLoading } = useQuery<Quote[]>({
-    queryKey: ['/api/quotes'],
+  // Fetch paginated quotes
+  const { data: quotesResponse, isLoading } = useQuery<{ data: Quote[]; total: number; page: number; limit: number; totalPages: number } | Quote[]>({
+    queryKey: ['/api/quotes', currentPage, itemsPerPage, searchQuery, statusFilter],
+    queryFn: async () => {
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: itemsPerPage.toString(),
+      });
+      if (searchQuery) {
+        params.append('search', searchQuery);
+      }
+      if (statusFilter && statusFilter !== 'all') {
+        params.append('status', statusFilter);
+      }
+      const response = await fetch(`/api/quotes?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch quotes');
+      }
+      return response.json();
+    },
   });
+
+  // Handle both paginated response and legacy array response
+  const quotes = Array.isArray(quotesResponse) ? quotesResponse : (quotesResponse?.data || []);
+  const totalQuotes = Array.isArray(quotesResponse) ? quotesResponse.length : (quotesResponse?.total || 0);
+  const totalPages = Array.isArray(quotesResponse) ? Math.ceil(totalQuotes / itemsPerPage) : (quotesResponse?.totalPages || 1);
 
   const { data: usersResponse, isLoading: isLoadingUsers } = useQuery<{users: User[]}>({
     queryKey: ['/api/users'],
@@ -335,19 +364,20 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
     }
   };
 
-  // Filter quotes based on search and status
-  const filteredQuotes = useMemo(() => {
-    return quotes.filter((quote: Quote) => {
-      const matchesSearch = searchQuery === "" || 
-        `${quote.firstName} ${quote.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        quote.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        quote.phone?.includes(searchQuery);
-      
-      const matchesStatus = statusFilter === "all" || quote.status === statusFilter;
-      
-      return matchesSearch && matchesStatus;
-    });
-  }, [quotes, searchQuery, statusFilter]);
+  // Reset to first page when search or filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter]);
+
+  // Calculate pagination display values
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(currentPage * itemsPerPage, totalQuotes);
+  const paginatedQuotes = quotes; // Quotes are already paginated from server
+
+  const handleItemsPerPageChange = (value: string) => {
+    setItemsPerPage(parseInt(value));
+    setCurrentPage(1); // Reset to page 1 when changing items per page
+  };
 
   // Calculate stats with trends
   const stats = useMemo(() => {
@@ -834,7 +864,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col lg:ml-64 overflow-hidden">
-          <div className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8 w-full">
+          <div className="flex-1 flex flex-col overflow-hidden px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-7 lg:py-8 w-full">
             {activeTab === "overview" && (
               <div>
                 {/* Header */}
@@ -976,15 +1006,15 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             )}
             
             {activeTab === "quotes" && (
-              <div>
+              <div className="flex flex-col h-full">
                 {/* Header */}
-                <div className="mb-6 md:mb-8">
+                <div className="mb-6 md:mb-8 flex-shrink-0">
                   <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Quotes</h1>
                   <p className="text-muted-foreground">Review and manage customer quote requests</p>
                 </div>
 
                 {/* Search and Filter Toolbar */}
-                <div className="flex flex-col custom:flex-row gap-4 mb-6 items-start custom:items-center">
+                <div className="flex flex-col custom:flex-row gap-4 mb-6 items-start custom:items-center flex-shrink-0">
                   <div className="relative w-full custom:w-80">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
                     <Input
@@ -1060,9 +1090,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                 
                 {/* Results Summary */}
                 {(searchQuery || statusFilter !== "all") && (
-                  <div className="mb-4 flex items-center justify-between">
+                  <div className="mb-4 flex items-center justify-between flex-shrink-0">
                     <p className="text-sm text-muted-foreground">
-                      Showing {filteredQuotes.length} of {quotes.length} quotes
+                      Showing {totalQuotes} of {totalQuotes} quotes
                     </p>
                     <Button 
                       variant="ghost" 
@@ -1070,6 +1100,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                       onClick={() => {
                         setSearchQuery("");
                         setStatusFilter("all");
+                        setCurrentPage(1);
                       }}
                     >
                       Clear filters
@@ -1077,85 +1108,232 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                   </div>
                 )}
 
-                {/* Quote List */}
-                <div className="space-y-3">
-                  {filteredQuotes.length === 0 ? (
-                    <Card className="p-12">
-                      <div className="text-center">
-                        <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-20" />
-                        <h3 className="text-lg font-semibold mb-2">No Quotes Found</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {searchQuery || statusFilter !== "all" 
-                            ? "No quotes match your current filters" 
-                            : "Quote requests will appear here once customers submit the form"}
-                        </p>
-                      </div>
-                    </Card>
-                  ) : (
-                    filteredQuotes.map((quote: Quote) => (
-                    <Card key={quote.id} className="hover:shadow-md transition-shadow">
-                      <CardContent className="p-6">
-                        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                          {/* Customer Info */}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-start justify-between mb-3">
-                              <div>
-                                <h3 className="text-lg font-semibold text-foreground mb-1">{capitalizeWords(quote.firstName)} {capitalizeWords(quote.lastName)}</h3>
-                                <div className="space-y-0.5 text-sm text-muted-foreground">
-                                  <p>{quote.email}</p>
-                                  <p>{quote.phone}</p>
-                                  <p>{capitalizeWords(quote.address)}, {capitalizeWords(quote.suburb)} {quote.state?.toUpperCase()} {quote.postcode}</p>
+                {/* Quote List - Scrollable */}
+                <div className="flex-1 overflow-y-auto min-h-0 mb-6">
+                  <div className="space-y-3">
+                    {paginatedQuotes.length === 0 ? (
+                      <Card className="p-12">
+                        <div className="text-center">
+                          <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-20" />
+                          <h3 className="text-lg font-semibold mb-2">No Quotes Found</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {searchQuery || statusFilter !== "all" 
+                              ? "No quotes match your current filters" 
+                              : "Quote requests will appear here once customers submit the form"}
+                          </p>
+                        </div>
+                      </Card>
+                    ) : (
+                      paginatedQuotes.map((quote: Quote) => (
+                      <Card key={quote.id} className="hover:shadow-md transition-shadow">
+                        <CardContent className="p-6">
+                          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                            {/* Customer Info */}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between mb-3">
+                                <div>
+                                  <h3 className="text-lg font-semibold text-foreground mb-1">{capitalizeWords(quote.firstName)} {capitalizeWords(quote.lastName)}</h3>
+                                  <div className="space-y-0.5 text-sm text-muted-foreground">
+                                    <p>{quote.email}</p>
+                                    <p>{quote.phone}</p>
+                                    <p>{capitalizeWords(quote.address)}, {capitalizeWords(quote.suburb)} {quote.state?.toUpperCase()} {quote.postcode}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              {/* Quote Details */}
+                              <div className="flex flex-wrap gap-4 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground">Systems:</span>
+                                  <span className="ml-1 font-medium">{quote.selectedSystems?.map(formatSystemName).join(', ') || 'N/A'}</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Supply:</span>
+                                  <span className="ml-1 font-medium">{formatPowerSupply(quote.powerSupply)} Phase</span>
                                 </div>
                               </div>
                             </div>
                             
-                            {/* Quote Details */}
-                            <div className="flex flex-wrap gap-4 text-sm">
-                              <div>
-                                <span className="text-muted-foreground">Systems:</span>
-                                <span className="ml-1 font-medium">{quote.selectedSystems?.map(formatSystemName).join(', ') || 'N/A'}</span>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground">Supply:</span>
-                                <span className="ml-1 font-medium">{formatPowerSupply(quote.powerSupply)} Phase</span>
-                              </div>
+                            {/* Price & Status */}
+                            <div className="md:text-right">
+                              <p className="text-2xl font-bold mb-2">
+                                {formatPrice(parseFloat(quote.finalPrice.toString()))}
+                              </p>
+                              <p className="text-xs text-muted-foreground mb-3">
+                                {new Date(quote.createdAt).toLocaleDateString('en-AU', {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </p>
+                              <Select
+                                value={quote.status}
+                                onValueChange={(value) => handleStatusUpdate(quote.id, value)}
+                                disabled={updateStatusMutation.isPending}
+                              >
+                                <SelectTrigger className="w-full md:w-36">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="pending">Pending</SelectItem>
+                                  <SelectItem value="contacted">Contacted</SelectItem>
+                                  <SelectItem value="converted">Converted</SelectItem>
+                                  <SelectItem value="lost">Lost</SelectItem>
+                                </SelectContent>
+                              </Select>
                             </div>
                           </div>
-                          
-                          {/* Price & Status */}
-                          <div className="md:text-right">
-                            <p className="text-2xl font-bold mb-2">
-                              {formatPrice(parseFloat(quote.finalPrice.toString()))}
-                            </p>
-                            <p className="text-xs text-muted-foreground mb-3">
-                              {new Date(quote.createdAt).toLocaleDateString('en-AU', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric'
-                              })}
-                            </p>
-                            <Select
-                              value={quote.status}
-                              onValueChange={(value) => handleStatusUpdate(quote.id, value)}
-                              disabled={updateStatusMutation.isPending}
-                            >
-                              <SelectTrigger className="w-full md:w-36">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="pending">Pending</SelectItem>
-                                <SelectItem value="contacted">Contacted</SelectItem>
-                                <SelectItem value="converted">Converted</SelectItem>
-                                <SelectItem value="lost">Lost</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                  )}
+                        </CardContent>
+                      </Card>
+                    ))
+                    )}
+                  </div>
                 </div>
+
+                {/* Pagination */}
+                {totalQuotes > 0 && (
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 py-4 flex-shrink-0">
+                    {/* Left side - Info and page size selector */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                      <div className="text-sm text-muted-foreground text-center sm:text-left">
+                        Showing {startIndex + 1} to {Math.min(endIndex, totalQuotes)} of {totalQuotes} quotes
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm text-muted-foreground hidden sm:inline">Show Per Page:</span>
+                        <span className="text-sm text-muted-foreground sm:hidden">Per Page:</span>
+                        <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
+                          <SelectTrigger className="w-20 h-8 rounded-md">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="10">10</SelectItem>
+                            <SelectItem value="20">20</SelectItem>
+                            <SelectItem value="50">50</SelectItem>
+                            <SelectItem value="100">100</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    {/* Right side - Navigation controls */}
+                    <div className="flex items-center space-x-1 sm:space-x-2">
+                      {/* First and Previous buttons - always visible */}
+                      <div className="flex items-center space-x-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(1)}
+                          disabled={currentPage === 1}
+                          className="h-8 w-8 p-0 rounded-md hidden sm:flex"
+                          title="First page"
+                        >
+                          <ChevronsLeft className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className="h-8 w-8 p-0 rounded-md"
+                          title="Previous page"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      
+                      {/* Page numbers - always show at least page 1 */}
+                      <div className="flex items-center space-x-1">
+                        {/* Mobile: show 3 pages max, Desktop: show 5 pages max */}
+                        <div className="flex items-center space-x-1 sm:hidden">
+                          {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
+                            let pageNum;
+                            if (totalPages <= 3) {
+                              pageNum = i + 1;
+                            } else if (currentPage <= 2) {
+                              pageNum = i + 1;
+                            } else if (currentPage >= totalPages - 1) {
+                              pageNum = totalPages - 2 + i;
+                            } else {
+                              pageNum = currentPage - 1 + i;
+                            }
+                            
+                            return (
+                              <Button
+                                key={pageNum}
+                                variant={currentPage === pageNum ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setCurrentPage(pageNum)}
+                                className={`h-8 w-8 p-0 rounded-md ${
+                                  currentPage === pageNum 
+                                    ? "bg-[#f7c917] text-black" 
+                                    : ""
+                                }`}
+                              >
+                                {pageNum}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                        
+                        {/* Desktop: show 5 pages max */}
+                        <div className="hidden sm:flex items-center space-x-1">
+                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                            let pageNum;
+                            if (totalPages <= 5) {
+                              pageNum = i + 1;
+                            } else if (currentPage <= 3) {
+                              pageNum = i + 1;
+                            } else if (currentPage >= totalPages - 2) {
+                              pageNum = totalPages - 4 + i;
+                            } else {
+                              pageNum = currentPage - 2 + i;
+                            }
+                            
+                            return (
+                              <Button
+                                key={pageNum}
+                                variant={currentPage === pageNum ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setCurrentPage(pageNum)}
+                                className={`h-8 w-8 p-0 rounded-md ${
+                                  currentPage === pageNum 
+                                    ? "bg-[#f7c917] text-black" 
+                                    : ""
+                                }`}
+                              >
+                                {pageNum}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      
+                      {/* Next and Last buttons - always visible */}
+                      <div className="flex items-center space-x-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                          className="h-8 w-8 p-0 rounded-md"
+                          title="Next page"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(totalPages)}
+                          disabled={currentPage === totalPages}
+                          className="h-8 w-8 p-0 rounded-md hidden sm:flex"
+                          title="Last page"
+                        >
+                          <ChevronsRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
