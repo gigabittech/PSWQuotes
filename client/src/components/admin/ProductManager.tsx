@@ -6,6 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import {
   Package,
@@ -16,6 +22,7 @@ import {
   Plus,
   Edit,
   Trash2,
+  MoreHorizontal,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
@@ -977,25 +984,30 @@ export default function ProductManager() {
                         </span>
                       </td>
                       <td className="p-4">
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEditProduct(product)}
-                            className="gap-1"
-                          >
-                            <Edit className="w-4 h-4" />
-                            Edit
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteClick(product)}
-                            className="gap-1 text-destructive hover:text-destructive"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete
-                          </Button>
+                        <div className="flex justify-end">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <MoreHorizontal className="h-4 w-4 rotate-90" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-36">
+                              <DropdownMenuItem
+                                onClick={() => handleEditProduct(product)}
+                                className="gap-2"
+                              >
+                                <Edit className="h-4 w-4 rotate-90" />
+                                Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleDeleteClick(product)}
+                                className="gap-2 text-destructive focus:text-destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       </td>
                     </tr>
@@ -1005,28 +1017,32 @@ export default function ProductManager() {
             </div>
           )}
         </div>
-        {totalProducts > 0 && (
-          <div className="border-t px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-              <div className="text-sm text-muted-foreground text-center sm:text-left">
-                Showing {startIndex + 1} to {endIndex} of {totalProducts} products
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-muted-foreground hidden sm:inline">Per Page:</span>
-                <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
-                  <SelectTrigger className="w-24 h-8 rounded-md">
-                    <SelectValue placeholder="Items" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="20">20</SelectItem>
-                    <SelectItem value="50">50</SelectItem>
-                    <SelectItem value="100">100</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+      </Card>
 
+      {totalProducts > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-2 py-0.5 flex-shrink-0 mt-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+            <div className="text-sm text-muted-foreground text-center sm:text-left">
+              Showing {startIndex + 1} to {endIndex} of {totalProducts} products
+            </div>
+            <div className="flex items-center space-x-1.5">
+              <span className="text-sm text-muted-foreground hidden sm:inline">Show Per Page:</span>
+              <span className="text-sm text-muted-foreground sm:hidden">Per Page:</span>
+              <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
+                <SelectTrigger className="w-20 h-8 rounded-md">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value="100">100</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-1 sm:space-x-2">
             <div className="flex items-center space-x-1">
               <Button
                 variant="outline"
@@ -1048,65 +1064,67 @@ export default function ProductManager() {
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
+            </div>
 
-              <div className="flex items-center space-x-1 sm:hidden">
-                {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
-                  let pageNum;
-                  if (totalPages <= 3) {
-                    pageNum = i + 1;
-                  } else if (currentPage <= 2) {
-                    pageNum = i + 1;
-                  } else if (currentPage >= totalPages - 1) {
-                    pageNum = totalPages - 2 + i;
-                  } else {
-                    pageNum = currentPage - 1 + i;
-                  }
+            <div className="flex items-center space-x-1 sm:hidden">
+              {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 2) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 1) {
+                  pageNum = totalPages - 2 + i;
+                } else {
+                  pageNum = currentPage - 1 + i;
+                }
 
-                  return (
-                    <Button
-                      key={pageNum}
-                      variant={currentPage === pageNum ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`h-8 w-8 p-0 rounded-md ${
-                        currentPage === pageNum ? "bg-[#f7c917] text-black" : ""
-                      }`}
-                    >
-                      {pageNum}
-                    </Button>
-                  );
-                })}
-              </div>
+                return (
+                  <Button
+                    key={pageNum}
+                    variant={currentPage === pageNum ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCurrentPage(pageNum)}
+                    className={`h-8 w-8 p-0 rounded-md ${
+                      currentPage === pageNum ? "bg-[#f7c917] text-black" : ""
+                    }`}
+                  >
+                    {pageNum}
+                  </Button>
+                );
+              })}
+            </div>
 
-              <div className="hidden sm:flex items-center space-x-1">
-                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                  let pageNum;
-                  if (totalPages <= 5) {
-                    pageNum = i + 1;
-                  } else if (currentPage <= 3) {
-                    pageNum = i + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNum = totalPages - 4 + i;
-                  } else {
-                    pageNum = currentPage - 2 + i;
-                  }
+            <div className="hidden sm:flex items-center space-x-1">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
 
-                  return (
-                    <Button
-                      key={pageNum}
-                      variant={currentPage === pageNum ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`h-8 w-8 p-0 rounded-md ${
-                        currentPage === pageNum ? "bg-[#f7c917] text-black" : ""
-                      }`}
-                    >
-                      {pageNum}
-                    </Button>
-                  );
-                })}
-              </div>
+                return (
+                  <Button
+                    key={pageNum}
+                    variant={currentPage === pageNum ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCurrentPage(pageNum)}
+                    className={`h-8 w-8 p-0 rounded-md ${
+                      currentPage === pageNum ? "bg-[#f7c917] text-black" : ""
+                    }`}
+                  >
+                    {pageNum}
+                  </Button>
+                );
+              })}
+            </div>
 
+            <div className="flex items-center space-x-1">
               <Button
                 variant="outline"
                 size="sm"
@@ -1129,8 +1147,8 @@ export default function ProductManager() {
               </Button>
             </div>
           </div>
-        )}
-      </Card>
+        </div>
+      )}
 
       <AlertDialog open={!!deleteProductId} onOpenChange={(open) => !open && setDeleteProductId(null)}>
         <AlertDialogContent>
