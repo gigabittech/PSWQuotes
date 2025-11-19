@@ -50,14 +50,6 @@
             "wattage": 475,
             "price_after_rebate": 4490,
             "requires_inverter": true
-          },
-          {
-            "id": "4f6a7dfc-f4df-492f-9054-7c4f97db6aac",
-            "size_kw": 13.3,
-            "panels": 28,
-            "wattage": 475,
-            "price_after_rebate": 5490,
-            "requires_inverter": true
           }
         ]
       },
@@ -182,6 +174,24 @@
             "wattage": 54,
             "price_after_rebate": 3556,
             "rrp": 5000,
+            "requires_inverter": true
+          }
+        ]
+      },
+      "risen_solar": {
+        "brand": "Risen Solar",
+        "model": "N-Type 475W",
+        "technology": "N-Type TOPCon",
+        "warranty_product": 25,
+        "warranty_performance": 30,
+        "packages": [
+          {
+            "id": "4f6a7dfc-f4df-492f-9054-7c4f97db6aac",
+            "size_kw": 13.3,
+            "panels": 28,
+            "wattage": 475,
+            "price_after_rebate": 5490,
+            "rrp": 5490,
             "requires_inverter": true
           }
         ]

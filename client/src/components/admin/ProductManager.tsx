@@ -871,7 +871,7 @@ export default function ProductManager() {
                 onClick={handleSubmit}
                 disabled={addProductMutation.isPending || updateProductMutation.isPending}
                 size="lg"
-                className="bg-green-600 hover:bg-green-700 gap-2"
+                className="gap-2 bg-[#f7c917] text-black hover:bg-[#e6b800]"
               >
                 {(addProductMutation.isPending || updateProductMutation.isPending) ? (
                   <>
