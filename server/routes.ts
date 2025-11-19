@@ -1339,8 +1339,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // CMS Pages Management
   app.get("/api/cms/pages", requireRole(['admin', 'editor']), async (req, res) => {
     try {
-      const pages = await storage.getCmsPages();
-      res.json(pages);
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 20;
+
+      // Always use pagination when page or limit query params are present
+      // Otherwise return all pages for backward compatibility
+      if (req.query.page !== undefined || req.query.limit !== undefined) {
+        const result = await storage.getCmsPagesPaginated({ page, limit });
+        res.json(result);
+      } else {
+        // Backward compatibility: return all pages if no pagination params
+        const pages = await storage.getCmsPages();
+        res.json(pages);
+      }
     } catch (error) {
       console.error("Error fetching pages:", error);
       res.status(500).json({ error: "Failed to fetch pages" });
@@ -1426,8 +1437,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Forms Management
   app.get("/api/cms/forms", requireRole(['admin', 'editor']), async (req, res) => {
     try {
-      const forms = await storage.getForms();
-      res.json(forms);
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 20;
+
+      // Always use pagination when page or limit query params are present
+      // Otherwise return all forms for backward compatibility
+      if (req.query.page !== undefined || req.query.limit !== undefined) {
+        const result = await storage.getFormsPaginated({ page, limit });
+        res.json(result);
+      } else {
+        // Backward compatibility: return all forms if no pagination params
+        const forms = await storage.getForms();
+        res.json(forms);
+      }
     } catch (error) {
       console.error("Error fetching forms:", error);
       res.status(500).json({ error: "Failed to fetch forms" });

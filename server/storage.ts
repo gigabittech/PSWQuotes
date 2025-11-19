@@ -58,6 +58,7 @@ export interface IStorage {
   getCmsPage(slug: string): Promise<CmsPage | undefined>;
   getCmsPageForAdmin(slug: string): Promise<CmsPage | undefined>;
   getCmsPages(): Promise<CmsPage[]>;
+  getCmsPagesPaginated(params: { page: number; limit: number }): Promise<{ data: CmsPage[]; total: number; page: number; limit: number; totalPages: number }>;
   createCmsPage(page: InsertCmsPage): Promise<CmsPage>;
   updateCmsPage(id: string, page: Partial<InsertCmsPage>): Promise<CmsPage | undefined>;
   publishCmsPage(id: string): Promise<CmsPage | undefined>;
@@ -70,6 +71,7 @@ export interface IStorage {
   
   // Form management
   getForms(): Promise<Form[]>;
+  getFormsPaginated(params: { page: number; limit: number }): Promise<{ data: Form[]; total: number; page: number; limit: number; totalPages: number }>;
   getForm(id: string): Promise<Form | undefined>;
   getFormByKey(key: string): Promise<Form | undefined>;
   createForm(form: InsertForm): Promise<Form>;
@@ -329,6 +331,38 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(cmsPages).orderBy(desc(cmsPages.createdAt));
   }
 
+  async getCmsPagesPaginated(params: { page: number; limit: number }): Promise<{ data: CmsPage[]; total: number; page: number; limit: number; totalPages: number }> {
+    const { page, limit } = params;
+    // Ensure page is at least 1
+    const validPage = Math.max(1, page);
+    const validLimit = Math.max(1, limit);
+    const offset = (validPage - 1) * validLimit;
+
+    // Get total count
+    const totalResult = await db
+      .select({ count: count() })
+      .from(cmsPages);
+    const total = totalResult[0]?.count || 0;
+
+    // Get paginated data
+    const data = await db
+      .select()
+      .from(cmsPages)
+      .orderBy(desc(cmsPages.createdAt))
+      .limit(validLimit)
+      .offset(offset);
+
+    const totalPages = Math.ceil(total / validLimit) || 1;
+
+    return {
+      data,
+      total,
+      page: validPage,
+      limit: validLimit,
+      totalPages,
+    };
+  }
+
   async createCmsPage(insertPage: InsertCmsPage): Promise<CmsPage> {
     const [page] = await db
       .insert(cmsPages)
@@ -381,6 +415,38 @@ export class DatabaseStorage implements IStorage {
   // Form methods
   async getForms(): Promise<Form[]> {
     return await db.select().from(forms).orderBy(desc(forms.createdAt));
+  }
+
+  async getFormsPaginated(params: { page: number; limit: number }): Promise<{ data: Form[]; total: number; page: number; limit: number; totalPages: number }> {
+    const { page, limit } = params;
+    // Ensure page is at least 1
+    const validPage = Math.max(1, page);
+    const validLimit = Math.max(1, limit);
+    const offset = (validPage - 1) * validLimit;
+
+    // Get total count
+    const totalResult = await db
+      .select({ count: count() })
+      .from(forms);
+    const total = totalResult[0]?.count || 0;
+
+    // Get paginated data
+    const data = await db
+      .select()
+      .from(forms)
+      .orderBy(desc(forms.createdAt))
+      .limit(validLimit)
+      .offset(offset);
+
+    const totalPages = Math.ceil(total / validLimit) || 1;
+
+    return {
+      data,
+      total,
+      page: validPage,
+      limit: validLimit,
+      totalPages,
+    };
   }
 
   async getForm(id: string): Promise<Form | undefined> {

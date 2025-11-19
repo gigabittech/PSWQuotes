@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { FileText, Plus, Edit, Trash2, Eye, Save, RefreshCw, MoreVertical } from "lucide-react";
+import { FileText, Plus, Edit, Trash2, Eye, Save, RefreshCw, MoreVertical, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import type { CmsPage } from "@shared/schema";
 
 interface PageFormData {
@@ -38,12 +38,22 @@ interface PageApiPayload {
   status: string;
 }
 
+interface PagesResponse {
+  data: CmsPage[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 export default function PageManager() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [selectedPage, setSelectedPage] = useState<CmsPage | null>(null);
   const [activeTab, setActiveTab] = useState("list");
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -63,9 +73,33 @@ export default function PageManager() {
     status: "draft"
   });
 
-  const { data: pages = [], isLoading } = useQuery<CmsPage[]>({
-    queryKey: ['/api/cms/pages'],
+  const { data: pagesResponse, isLoading } = useQuery<PagesResponse | CmsPage[]>({
+    queryKey: ['/api/cms/pages', currentPage, itemsPerPage],
+    queryFn: async () => {
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: itemsPerPage.toString(),
+      });
+      const response = await fetch(`/api/cms/pages?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch pages');
+      }
+      return response.json();
+    },
   });
+
+  // Handle both paginated response and legacy array response
+  const isPaginated = pagesResponse && !Array.isArray(pagesResponse);
+  const pages = isPaginated ? (pagesResponse as PagesResponse).data : (pagesResponse as CmsPage[] || []);
+  const totalPages = isPaginated ? (pagesResponse as PagesResponse).totalPages : Math.ceil(pages.length / itemsPerPage);
+  const totalItems = isPaginated ? (pagesResponse as PagesResponse).total : pages.length;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(currentPage * itemsPerPage, totalItems);
+
+  const handleItemsPerPageChange = (value: string) => {
+    setItemsPerPage(parseInt(value));
+    setCurrentPage(1); // Reset to page 1 when changing items per page
+  };
 
   const createPageMutation = useMutation({
     mutationFn: async (pageData: PageApiPayload) => {
@@ -246,8 +280,8 @@ export default function PageManager() {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6" data-testid="page-manager">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-8">
+    <div className="flex flex-col h-full" data-testid="page-manager">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-8 flex-shrink-0">
         <div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2">Page Management</h2>
           <p className="text-sm sm:text-base text-muted-foreground">
@@ -260,8 +294,8 @@ export default function PageManager() {
         </Button>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
+        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0 flex-shrink-0">
           <TabsTrigger 
             value="list" 
             data-testid="tab-page-list" 
@@ -288,15 +322,15 @@ export default function PageManager() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="list" className="space-y-4">
-          <Card>
-            <CardHeader className="p-4 sm:p-6">
+        <TabsContent value="list" className="flex-1 flex flex-col min-h-0 space-y-4">
+          <Card className="flex-1 flex flex-col min-h-0">
+            <CardHeader className="p-4 sm:p-6 flex-shrink-0">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                 <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
                 All Pages
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-4 sm:p-6">
+            <CardContent className="p-4 sm:p-6 flex-1 overflow-y-auto min-h-0">
               {pages.length === 0 ? (
                 <div className="text-center py-6 sm:py-8">
                   <FileText className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mx-auto mb-3 sm:mb-4" />
@@ -414,6 +448,151 @@ export default function PageManager() {
               )}
             </CardContent>
           </Card>
+
+          {/* Pagination */}
+          {totalItems > 0 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 py-4 flex-shrink-0 mt-6">
+              {/* Left side - Info and page size selector */}
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                <div className="text-sm text-muted-foreground text-center sm:text-left">
+                  Showing {startIndex + 1} to {endIndex} of {totalItems} pages
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-muted-foreground hidden sm:inline">Show Per Page:</span>
+                  <span className="text-sm text-muted-foreground sm:hidden">Per Page:</span>
+                  <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
+                    <SelectTrigger className="w-20 h-8 rounded-md">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="10">10</SelectItem>
+                      <SelectItem value="20">20</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                      <SelectItem value="100">100</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              {/* Right side - Navigation controls */}
+              <div className="flex items-center space-x-1 sm:space-x-2">
+                {/* First and Previous buttons - always visible */}
+                <div className="flex items-center space-x-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(1)}
+                    disabled={currentPage === 1}
+                    className="h-8 w-8 p-0 rounded-md hidden sm:flex"
+                    title="First page"
+                  >
+                    <ChevronsLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="h-8 w-8 p-0 rounded-md"
+                    title="Previous page"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                {/* Page numbers - always show at least page 1 */}
+                <div className="flex items-center space-x-1">
+                  {/* Mobile: show 3 pages max, Desktop: show 5 pages max */}
+                  <div className="flex items-center space-x-1 sm:hidden">
+                    {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 2) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= totalPages - 1) {
+                        pageNum = totalPages - 2 + i;
+                      } else {
+                        pageNum = currentPage - 1 + i;
+                      }
+                      
+                      return (
+                        <Button
+                          key={pageNum}
+                          variant={currentPage === pageNum ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`h-8 w-8 p-0 rounded-md ${
+                            currentPage === pageNum 
+                              ? "bg-[#f7c917] text-black" 
+                              : ""
+                          }`}
+                        >
+                          {pageNum}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Desktop: show 5 pages max */}
+                  <div className="hidden sm:flex items-center space-x-1">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+                      
+                      return (
+                        <Button
+                          key={pageNum}
+                          variant={currentPage === pageNum ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`h-8 w-8 p-0 rounded-md ${
+                            currentPage === pageNum 
+                              ? "bg-[#f7c917] text-black" 
+                              : ""
+                          }`}
+                        >
+                          {pageNum}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </div>
+                
+                {/* Next and Last buttons - always visible */}
+                <div className="flex items-center space-x-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="h-8 w-8 p-0 rounded-md"
+                    title="Next page"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(totalPages)}
+                    disabled={currentPage === totalPages}
+                    className="h-8 w-8 p-0 rounded-md hidden sm:flex"
+                    title="Last page"
+                  >
+                    <ChevronsRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="editor" className="space-y-4 sm:space-y-6">

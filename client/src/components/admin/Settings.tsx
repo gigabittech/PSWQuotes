@@ -370,8 +370,8 @@ export function Settings() {
   }
 
   return (
-    <div className="space-y-6 relative pb-20">
-      <div className="flex items-start justify-between mb-6 md:mb-8">
+    <div className="flex flex-col h-full">
+      <div className="flex items-start justify-between mb-6 md:mb-8 flex-shrink-0">
         <div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
             Settings
@@ -395,8 +395,8 @@ export function Settings() {
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0 flex-wrap sm:flex-nowrap">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
+        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0 flex-wrap sm:flex-nowrap flex-shrink-0">
           {Object.entries(settingsConfig).map(([key, config]) => {
             const Icon = config.icon;
             return (
@@ -419,8 +419,8 @@ export function Settings() {
         </TabsList>
 
         {Object.entries(settingsConfig).map(([tabKey, tabConfig]) => (
-          <TabsContent key={tabKey} value={tabKey} className="space-y-6">
-            <Card>
+          <TabsContent key={tabKey} value={tabKey} className="flex-1 overflow-y-auto min-h-0 space-y-6">
+            <Card className="shadow-none">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <tabConfig.icon className="h-5 w-5" />
@@ -431,7 +431,7 @@ export function Settings() {
             </Card>
 
             {Object.entries(tabConfig.sections).map(([sectionKey, section]) => (
-              <Card key={sectionKey}>
+              <Card key={sectionKey} className="shadow-none">
                 <CardHeader>
                   <CardTitle className="text-lg">{section.title}</CardTitle>
                 </CardHeader>

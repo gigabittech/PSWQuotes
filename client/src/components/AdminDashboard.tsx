@@ -1357,9 +1357,17 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
             {/* CMS Components */}
             {activeTab === "theme" && <ThemeEditor />}
-            {activeTab === "pages" && <PageManager />}
+            {activeTab === "pages" && (
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <PageManager />
+              </div>
+            )}
             {activeTab === "products" && <ProductManager />}
-            {activeTab === "forms" && <FormBuilder />}
+            {activeTab === "forms" && (
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <FormBuilder />
+              </div>
+            )}
             {activeTab === "media" && <MediaManager />}
             {activeTab === "analytics" && <AnalyticsView />}
             
