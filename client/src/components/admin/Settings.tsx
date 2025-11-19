@@ -277,6 +277,40 @@ export function Settings() {
     setVisibleSecrets(newVisible);
   };
 
+  const renderActionButtons = () => (
+    <div className="flex flex-col sm:flex-row justify-end sm:items-center gap-2 sm:gap-3 pt-4">
+      {Object.keys(unsavedChanges).length > 0 && (
+        <Button 
+          variant="outline" 
+          onClick={handleReset} 
+          disabled={saveSettingsMutation.isPending}
+          size="sm"
+          className="w-full sm:w-auto"
+        >
+          Reset
+        </Button>
+      )}
+      <Button 
+        onClick={handleSave} 
+        disabled={saveSettingsMutation.isPending || Object.keys(unsavedChanges).length === 0} 
+        className="gap-2 w-full sm:w-auto"
+        size="sm"
+      >
+        {saveSettingsMutation.isPending ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Saving...
+          </>
+        ) : (
+          <>
+            <Save className="h-4 w-4" />
+            Save Changes
+          </>
+        )}
+      </Button>
+    </div>
+  );
+
   const renderSettingField = (key: string, config: SettingValue) => {
     const currentValue = getSettingValue(key, config.value);
     const isRedacted = config.sensitive && currentValue === '[REDACTED]';
@@ -435,48 +469,17 @@ export function Settings() {
                 <CardHeader>
                   <CardTitle className="text-lg">{section.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  {Object.entries(section.settings).map(([settingKey, settingConfig]) =>
-                    renderSettingField(settingKey, settingConfig)
-                  )}
-                </CardContent>
+            <CardContent className="space-y-6">
+              {Object.entries(section.settings).map(([settingKey, settingConfig]) =>
+                renderSettingField(settingKey, settingConfig)
+              )}
+            </CardContent>
               </Card>
             ))}
+        {renderActionButtons()}
           </TabsContent>
         ))}
       </Tabs>
-
-      {/* Fixed Save/Reset Buttons at Bottom Right */}
-      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-background border rounded-lg shadow-lg p-3">
-        {Object.keys(unsavedChanges).length > 0 && (
-          <Button 
-            variant="outline" 
-            onClick={handleReset} 
-            disabled={saveSettingsMutation.isPending}
-            size="sm"
-          >
-            Reset
-          </Button>
-        )}
-        <Button 
-          onClick={handleSave} 
-          disabled={saveSettingsMutation.isPending || Object.keys(unsavedChanges).length === 0} 
-          className="gap-2"
-          size="sm"
-        >
-          {saveSettingsMutation.isPending ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Saving...
-            </>
-          ) : (
-            <>
-              <Save className="h-4 w-4" />
-              Save Changes
-            </>
-          )}
-        </Button>
-      </div>
     </div>
   );
 }

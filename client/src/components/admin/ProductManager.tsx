@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Package, ArrowRight, ArrowLeft, Check, X, Plus, Edit, Trash2 } from "lucide-react";
+import {
+  Package,
+  ArrowRight,
+  ArrowLeft,
+  Check,
+  X,
+  Plus,
+  Edit,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   AlertDialog,
@@ -74,6 +88,8 @@ interface Product {
 export default function ProductManager() {
   const [view, setView] = useState<'list' | 'form'>('list');
   const [step, setStep] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const formatDisplayText = (value?: string | number | null) => {
     if (value === undefined || value === null) return '';
@@ -291,6 +307,23 @@ export default function ProductManager() {
     }
     return 0;
   };
+
+  const handleItemsPerPageChange = (value: string) => {
+    setItemsPerPage(parseInt(value));
+    setCurrentPage(1);
+  };
+
+  const totalProducts = products.length;
+  const totalPages = Math.max(1, Math.ceil(totalProducts / itemsPerPage));
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalProducts);
+  const paginatedProducts = products.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages || 1);
+    }
+  }, [currentPage, totalPages]);
 
   if (view === 'form') {
     return (
@@ -910,7 +943,7 @@ export default function ProductManager() {
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
+                  {paginatedProducts.map((product) => (
                     <tr key={product.id} className="border-b hover:bg-muted/30">
                       <td className="p-4">
                         <div className="font-medium">{getProductDisplayName(product)}</div>
@@ -972,6 +1005,131 @@ export default function ProductManager() {
             </div>
           )}
         </div>
+        {totalProducts > 0 && (
+          <div className="border-t px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+              <div className="text-sm text-muted-foreground text-center sm:text-left">
+                Showing {startIndex + 1} to {endIndex} of {totalProducts} products
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-muted-foreground hidden sm:inline">Per Page:</span>
+                <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
+                  <SelectTrigger className="w-24 h-8 rounded-md">
+                    <SelectValue placeholder="Items" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="20">20</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                    <SelectItem value="100">100</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-1">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+                className="h-8 w-8 p-0 rounded-md hidden sm:flex"
+                title="First page"
+              >
+                <ChevronsLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className="h-8 w-8 p-0 rounded-md"
+                title="Previous page"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+
+              <div className="flex items-center space-x-1 sm:hidden">
+                {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 2) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 1) {
+                    pageNum = totalPages - 2 + i;
+                  } else {
+                    pageNum = currentPage - 1 + i;
+                  }
+
+                  return (
+                    <Button
+                      key={pageNum}
+                      variant={currentPage === pageNum ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`h-8 w-8 p-0 rounded-md ${
+                        currentPage === pageNum ? "bg-[#f7c917] text-black" : ""
+                      }`}
+                    >
+                      {pageNum}
+                    </Button>
+                  );
+                })}
+              </div>
+
+              <div className="hidden sm:flex items-center space-x-1">
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+
+                  return (
+                    <Button
+                      key={pageNum}
+                      variant={currentPage === pageNum ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`h-8 w-8 p-0 rounded-md ${
+                        currentPage === pageNum ? "bg-[#f7c917] text-black" : ""
+                      }`}
+                    >
+                      {pageNum}
+                    </Button>
+                  );
+                })}
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                className="h-8 w-8 p-0 rounded-md"
+                title="Next page"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(totalPages)}
+                disabled={currentPage === totalPages}
+                className="h-8 w-8 p-0 rounded-md hidden sm:flex"
+                title="Last page"
+              >
+                <ChevronsRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </Card>
 
       <AlertDialog open={!!deleteProductId} onOpenChange={(open) => !open && setDeleteProductId(null)}>
