@@ -1339,12 +1339,14 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
             {/* Embed Code */}
             {activeTab === "embed" && (
-              <div className="space-y-4 sm:space-y-6">
-                <div className="mb-6 md:mb-8">
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Embed Quote Form</h1>
-                  <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <div className="flex flex-col h-full">
+                  <div className="mb-6 md:mb-8 flex-shrink-0">
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Embed Quote Form</h1>
+                    <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
+                  </div>
+                  <EmbedCodeGenerator />
                 </div>
-                <EmbedCodeGenerator />
               </div>
             )}
 
@@ -1356,7 +1358,11 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             )}
 
             {/* CMS Components */}
-            {activeTab === "theme" && <ThemeEditor />}
+            {activeTab === "theme" && (
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <ThemeEditor />
+              </div>
+            )}
             {activeTab === "pages" && (
               <div className="flex-1 overflow-y-auto min-h-0">
                 <PageManager />
@@ -1560,7 +1566,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
             {/* Settings */}
             {activeTab === "settings" && userRole === 'admin' && (
-              <Settings />
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <Settings />
+              </div>
             )}
           </div>
         </div>
