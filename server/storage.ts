@@ -105,6 +105,7 @@ export interface IStorage {
   // Email logs
   createEmailLog(log: InsertEmailLog): Promise<EmailLog>;
   getEmailLogs(quoteId?: string): Promise<EmailLog[]>;
+  getEmailLogsPaginated(params: { page: number; limit: number }): Promise<{ data: EmailLog[]; total: number; page: number; limit: number; totalPages: number }>;
   getEmailLogsByQuote(quoteId: string): Promise<EmailLog[]>;
   getEmailLogById(id: string): Promise<EmailLog | undefined>;
 }
@@ -554,6 +555,38 @@ export class DatabaseStorage implements IStorage {
       return await db.select().from(emailLogs).where(eq(emailLogs.quoteId, quoteId)).orderBy(desc(emailLogs.sentAt));
     }
     return await db.select().from(emailLogs).orderBy(desc(emailLogs.sentAt));
+  }
+
+  async getEmailLogsPaginated(params: { page: number; limit: number }): Promise<{ data: EmailLog[]; total: number; page: number; limit: number; totalPages: number }> {
+    const { page, limit } = params;
+    // Ensure page is at least 1
+    const validPage = Math.max(1, page);
+    const validLimit = Math.max(1, limit);
+    const offset = (validPage - 1) * validLimit;
+
+    // Get total count
+    const totalResult = await db
+      .select({ count: count() })
+      .from(emailLogs);
+    const total = totalResult[0]?.count || 0;
+
+    // Get paginated data
+    const data = await db
+      .select()
+      .from(emailLogs)
+      .orderBy(desc(emailLogs.sentAt))
+      .limit(validLimit)
+      .offset(offset);
+
+    const totalPages = Math.ceil(total / validLimit) || 1;
+
+    return {
+      data,
+      total,
+      page: validPage,
+      limit: validLimit,
+      totalPages,
+    };
   }
 
   async getEmailLogsByQuote(quoteId: string): Promise<EmailLog[]> {

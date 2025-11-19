@@ -999,11 +999,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all email logs (admin)
+  // Get all email logs (admin) - supports pagination
   app.get("/api/email-logs", requireRole(['admin', 'editor']), async (req, res) => {
     try {
-      const logs = await storage.getEmailLogs();
-      res.json(logs);
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 20;
+
+      // Always use pagination when page or limit query params are present
+      // Otherwise return all logs for backward compatibility
+      if (req.query.page !== undefined || req.query.limit !== undefined) {
+        const result = await storage.getEmailLogsPaginated({ page, limit });
+        res.json(result);
+      } else {
+        // Backward compatibility: return all logs if no pagination params
+        const logs = await storage.getEmailLogs();
+        res.json(logs);
+      }
     } catch (error) {
       console.error("Error fetching email logs:", error);
       res.status(500).json({ error: "Failed to fetch email logs" });
