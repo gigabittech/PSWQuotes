@@ -595,7 +595,7 @@ export default function PageManager() {
           )}
         </TabsContent>
 
-        <TabsContent value="editor" className="space-y-4 sm:space-y-6">
+        <TabsContent value="editor" className="overflow-y-auto !mt-0 !pt-0">
           <Card>
             <CardHeader className="p-4 sm:p-6">
               <CardTitle className="text-base sm:text-lg">
@@ -680,7 +680,7 @@ export default function PageManager() {
 
           <Separator />
 
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mt-4 sm:mt-6">
             <div className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
               {selectedPage ? "Editing existing page" : "Creating new page"}
             </div>
