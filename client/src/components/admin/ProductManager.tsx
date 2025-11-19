@@ -94,9 +94,9 @@ export default function ProductManager() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 md:mb-8">
+      <div className="flex items-center justify-between mb-4 md:mb-6">
         <div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl  flex items-center gap-2 sm:gap-3">
             Product Management
@@ -155,11 +155,11 @@ export default function ProductManager() {
       </div>
 
       {/* Form Card */}
-      <Card className="glass-form-card p-8 w-full flex flex-col min-h-[500px]">
+      <Card className="glass-form-card p-4 sm:p-6 w-full flex flex-col min-h-[400px]">
         <div className="flex-1">
         {/* Step 1: Phase Selection */}
         {step === 1 && (
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="text-center space-y-2">
               <h3 className="font-outfit text-2xl font-semibold text-foreground">
                 Select Phase Type
@@ -169,7 +169,7 @@ export default function ProductManager() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-4">
               {[
                 { id: 'single_phase' as Phase, title: 'Single Phase', desc: 'Most residential properties' },
                 { id: 'three_phase' as Phase, title: 'Three Phase', desc: 'Commercial & larger properties' },
@@ -200,7 +200,7 @@ export default function ProductManager() {
 
         {/* Step 2: Product Type Selection */}
         {step === 2 && (
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="text-center space-y-2">
               <h3 className="font-outfit text-2xl font-semibold text-foreground">
                 Select Product Type
@@ -210,7 +210,7 @@ export default function ProductManager() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-4">
               {[
                 { id: 'solar' as ProductType, title: 'Solar Panels', icon: '☀️' },
                 { id: 'battery' as ProductType, title: 'Battery Storage', icon: '🔋' },
@@ -243,7 +243,7 @@ export default function ProductManager() {
 
         {/* Step 3: Product Details */}
         {step === 3 && (
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="text-center space-y-2">
               <h3 className="font-outfit text-2xl font-semibold text-foreground">
                 Product Details
@@ -253,7 +253,7 @@ export default function ProductManager() {
               </p>
             </div>
 
-            <div className="space-y-4 mt-8">
+            <div className="space-y-4 mt-4">
               {/* Common Fields */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -440,7 +440,7 @@ export default function ProductManager() {
 
         {/* Step 4: Review */}
         {step === 4 && (
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="text-center space-y-2">
               <h3 className="font-outfit text-2xl font-semibold text-foreground">
                 Review & Confirm
@@ -450,7 +450,7 @@ export default function ProductManager() {
               </p>
             </div>
 
-            <div className="mt-8 bg-muted/50 rounded-lg p-6 space-y-3">
+            <div className="mt-4 bg-muted/50 rounded-lg p-4 sm:p-5 space-y-3">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Phase:</span>
                 <span className="font-semibold">{formData.phase?.replace('_', ' ')}</span>
@@ -524,7 +524,7 @@ export default function ProductManager() {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between items-center mt-8 pt-6 border-t">
+        <div className="flex justify-between items-center mt-4 pt-4 border-t">
           {step > 1 ? (
             <Button
               variant="ghost"

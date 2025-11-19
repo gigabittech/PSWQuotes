@@ -1018,7 +1018,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                   <div className="relative w-full custom:w-80">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
                     <Input
-                      placeholder="Search by name, email, or phone..."
+                      placeholder="Search by name, email, or phone.."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10 h-11"
@@ -1339,23 +1339,41 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
             {/* Embed Code */}
             {activeTab === "embed" && (
-              <div className="space-y-4 sm:space-y-6">
-                <div className="mb-6 md:mb-8">
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Embed Quote Form</h1>
-                  <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <div className="flex flex-col h-full">
+                  <div className="mb-6 md:mb-8 flex-shrink-0">
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Embed Quote Form</h1>
+                    <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
+                  </div>
+                  <EmbedCodeGenerator />
                 </div>
-                <EmbedCodeGenerator />
               </div>
             )}
 
             {/* Email Logs */}
-            {activeTab === "email-logs" && <EmailLogs />}
+            {activeTab === "email-logs" && (
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <EmailLogs />
+              </div>
+            )}
 
             {/* CMS Components */}
-            {activeTab === "theme" && <ThemeEditor />}
-            {activeTab === "pages" && <PageManager />}
+            {activeTab === "theme" && (
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <ThemeEditor />
+              </div>
+            )}
+            {activeTab === "pages" && (
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <PageManager />
+              </div>
+            )}
             {activeTab === "products" && <ProductManager />}
-            {activeTab === "forms" && <FormBuilder />}
+            {activeTab === "forms" && (
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <FormBuilder />
+              </div>
+            )}
             {activeTab === "media" && <MediaManager />}
             {activeTab === "analytics" && <AnalyticsView />}
             
@@ -1548,7 +1566,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
             {/* Settings */}
             {activeTab === "settings" && userRole === 'admin' && (
-              <Settings />
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <Settings />
+              </div>
             )}
           </div>
         </div>

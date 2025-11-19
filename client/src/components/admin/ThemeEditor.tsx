@@ -197,8 +197,8 @@ export default function ThemeEditor() {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6" data-testid="theme-editor">
-      <div className="mb-6 md:mb-8">
+    <div className="flex flex-col h-full" data-testid="theme-editor">
+      <div className="mb-6 md:mb-8 flex-shrink-0">
         <h2 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">Theme Editor</h2>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
           <p className="text-muted-foreground text-sm sm:text-base">
@@ -210,8 +210,8 @@ export default function ThemeEditor() {
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
+        <TabsList className="flex w-full h-10 items-center justify-center bg-transparent p-0 gap-2 rounded-none border-0 flex-shrink-0">
           <TabsTrigger 
             value="colors" 
             data-testid="tab-colors" 
@@ -262,7 +262,7 @@ export default function ThemeEditor() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="colors" className="space-y-4 sm:space-y-6">
+        <TabsContent value="colors" className="flex-1 overflow-y-auto min-h-0 space-y-4 sm:space-y-6">
           <Card>
             <CardHeader className="p-4 sm:p-6">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
@@ -351,7 +351,7 @@ export default function ThemeEditor() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="branding" className="space-y-4 sm:space-y-6">
+        <TabsContent value="branding" className="flex-1 overflow-y-auto min-h-0 space-y-4 sm:space-y-6">
           <Card>
             <CardHeader className="p-4 sm:p-6">
               <CardTitle className="text-base sm:text-lg">Site Branding</CardTitle>
@@ -414,7 +414,7 @@ export default function ThemeEditor() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="typography" className="space-y-4 sm:space-y-6">
+        <TabsContent value="typography" className="flex-1 overflow-y-auto min-h-0 space-y-4 sm:space-y-6">
           <Card>
             <CardHeader className="p-4 sm:p-6">
               <CardTitle className="text-base sm:text-lg">Typography Settings</CardTitle>
@@ -463,7 +463,7 @@ export default function ThemeEditor() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="content" className="space-y-4 sm:space-y-6">
+        <TabsContent value="content" className="flex-1 overflow-y-auto min-h-0 space-y-4 sm:space-y-6">
           <Card>
             <CardHeader className="p-4 sm:p-6">
               <CardTitle className="text-base sm:text-lg">Header & Footer Content</CardTitle>

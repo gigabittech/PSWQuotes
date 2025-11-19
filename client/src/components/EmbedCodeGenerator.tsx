@@ -57,15 +57,15 @@ export default function EmbedCodeGenerator() {
   };
 
   return (
-    <div className="space-y-6">
-      <Card className="glass-card">
-        <CardHeader>
+    <div className="flex-1 flex flex-col min-h-0">
+      <Card className="glass-card flex-1 flex flex-col min-h-0 shadow-none">
+        <CardHeader className="flex-shrink-0">
           <CardTitle>Embed Quote Form</CardTitle>
           <CardDescription>
             Add the solar quote form to your website using one of the methods below
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="flex-1 overflow-y-auto min-h-0 space-y-6">
           {/* Iframe Method */}
           <div>
             <div className="flex items-center justify-between mb-2">
