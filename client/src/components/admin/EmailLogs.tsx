@@ -221,13 +221,13 @@ export default function EmailLogs() {
 
       {/* Pagination */}
       {totalLogs > 0 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 py-4 flex-shrink-0 mt-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-2 py-0.5 flex-shrink-0 mt-2">
           {/* Left side - Info and page size selector */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
             <div className="text-sm text-muted-foreground text-center sm:text-left">
               Showing {startIndex + 1} to {endIndex} of {totalLogs} email logs
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1.5">
               <span className="text-sm text-muted-foreground hidden sm:inline">Show Per Page:</span>
               <span className="text-sm text-muted-foreground sm:hidden">Per Page:</span>
               <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>

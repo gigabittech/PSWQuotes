@@ -188,6 +188,50 @@ export default function ThemeEditor() {
     });
   };
 
+  const renderActions = () => (
+    <div className="flex flex-col sm:flex-row justify-end sm:items-center gap-2 sm:gap-3 pt-4">
+      <Button
+        variant="outline"
+        onClick={handleSave}
+        disabled={saveThemeMutation.isPending}
+        data-testid="button-save-theme"
+        size="sm"
+        className="gap-2 w-full sm:w-auto"
+      >
+        {saveThemeMutation.isPending ? (
+          <>
+            <RefreshCw className="h-4 w-4 animate-spin" />
+            Saving...
+          </>
+        ) : (
+          <>
+            <Save className="h-4 w-4" />
+            Save Draft
+          </>
+        )}
+      </Button>
+      <Button
+        onClick={handlePublish}
+        disabled={saveThemeMutation.isPending || publishThemeMutation.isPending}
+        data-testid="button-publish-theme"
+        size="sm"
+        className="gap-2 w-full sm:w-auto"
+      >
+        {publishThemeMutation.isPending ? (
+          <>
+            <RefreshCw className="h-4 w-4 animate-spin" />
+            Publishing...
+          </>
+        ) : (
+          <>
+            <Eye className="h-4 w-4" />
+            Publish Live
+          </>
+        )}
+      </Button>
+    </div>
+  );
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64" data-testid="theme-editor-loading">
@@ -349,6 +393,7 @@ export default function ThemeEditor() {
               </div>
             </CardContent>
           </Card>
+          {renderActions()}
         </TabsContent>
 
         <TabsContent value="branding" className="flex-1 overflow-y-auto min-h-0 space-y-4 sm:space-y-6">
@@ -412,6 +457,7 @@ export default function ThemeEditor() {
               )}
             </CardContent>
           </Card>
+          {renderActions()}
         </TabsContent>
 
         <TabsContent value="typography" className="flex-1 overflow-y-auto min-h-0 space-y-4 sm:space-y-6">
@@ -461,6 +507,7 @@ export default function ThemeEditor() {
               </div>
             </CardContent>
           </Card>
+          {renderActions()}
         </TabsContent>
 
         <TabsContent value="content" className="flex-1 overflow-y-auto min-h-0 space-y-4 sm:space-y-6">
@@ -502,51 +549,9 @@ export default function ThemeEditor() {
               </div>
             </CardContent>
           </Card>
+          {renderActions()}
         </TabsContent>
       </Tabs>
-
-      {/* Fixed Save/Publish Buttons at Bottom Right */}
-      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-background border rounded-lg shadow-lg p-3">
-        <Button
-          variant="outline"
-          onClick={handleSave}
-          disabled={saveThemeMutation.isPending}
-          data-testid="button-save-theme"
-          size="sm"
-          className="gap-2"
-        >
-          {saveThemeMutation.isPending ? (
-            <>
-              <RefreshCw className="h-4 w-4 animate-spin" />
-              Saving...
-            </>
-          ) : (
-            <>
-              <Save className="h-4 w-4" />
-              Save Draft
-            </>
-          )}
-        </Button>
-        <Button
-          onClick={handlePublish}
-          disabled={saveThemeMutation.isPending || publishThemeMutation.isPending}
-          data-testid="button-publish-theme"
-          size="sm"
-          className="gap-2"
-        >
-          {publishThemeMutation.isPending ? (
-            <>
-              <RefreshCw className="h-4 w-4 animate-spin" />
-              Publishing...
-            </>
-          ) : (
-            <>
-              <Eye className="h-4 w-4" />
-              Publish Live
-            </>
-          )}
-        </Button>
-      </div>
     </div>
   );
 }

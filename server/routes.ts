@@ -1253,6 +1253,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get all products in flat list format (Admin only)
+  app.get("/api/admin/products", requireAuth, requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const products = await pricingDataService.getAllProductsFlat();
+      res.json(products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      res.status(500).json({ error: "Failed to fetch products" });
+    }
+  });
+
   // Add product to pricing-data.json (Admin only)
   app.post("/api/admin/products", requireAuth, requireRole(['admin', 'editor']), async (req, res) => {
     try {
@@ -1274,6 +1285,88 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error adding product:", error);
       res.status(500).json({ error: error instanceof Error ? error.message : "Failed to add product" });
+    }
+  });
+
+  // Update product in pricing-data.json (Admin only)
+  app.put("/api/admin/products/:id", requireAuth, requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const productData = req.body;
+
+      // Log received data for debugging
+      console.log('Update product request:', { productId, productData });
+
+      // Validate required fields
+      if (!productData.phase) {
+        return res.status(400).json({ error: "Missing required field: phase" });
+      }
+      if (!productData.productType) {
+        return res.status(400).json({ error: "Missing required field: productType" });
+      }
+      if (!productData.brand) {
+        return res.status(400).json({ error: "Missing required field: brand" });
+      }
+
+      // Normalize phase format (convert "three phase" to "three_phase" and handle various formats)
+      if (typeof productData.phase === 'string') {
+        const phaseLower = productData.phase.toLowerCase().trim();
+        if (phaseLower === 'three phase' || phaseLower === 'three-phase' || phaseLower === '3-phase') {
+          productData.phase = 'three_phase';
+        } else if (phaseLower === 'single phase' || phaseLower === 'single-phase' || phaseLower === '1-phase') {
+          productData.phase = 'single_phase';
+        }
+        // If it's already "three_phase" or "single_phase", keep it as is
+      }
+
+      // Validate phase is one of the expected values
+      if (productData.phase !== 'single_phase' && productData.phase !== 'three_phase') {
+        return res.status(400).json({ 
+          error: `Invalid phase value: ${productData.phase}. Must be 'single_phase' or 'three_phase'` 
+        });
+      }
+
+      // Update product in pricing data
+      const result = await pricingDataService.updateProduct(productId, productData);
+      
+      res.json({ 
+        success: true, 
+        message: "Product updated successfully",
+        product: result 
+      });
+    } catch (error) {
+      console.error("Error updating product:", error);
+      res.status(500).json({ error: error instanceof Error ? error.message : "Failed to update product" });
+    }
+  });
+
+  // Delete product from pricing-data.json (Admin only)
+  app.delete("/api/admin/products/:id", requireAuth, requireRole(['admin', 'editor']), async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const { phase, productType, brandKey, index } = req.query;
+
+      if (!phase || !productType || !brandKey || index === undefined) {
+        return res.status(400).json({ error: "Missing required query parameters: phase, productType, brandKey, index" });
+      }
+
+      // Delete product from pricing data
+      const result = await pricingDataService.deleteProduct(
+        productId,
+        phase as 'single_phase' | 'three_phase',
+        productType as string,
+        brandKey as string,
+        parseInt(index as string)
+      );
+      
+      res.json({ 
+        success: true, 
+        message: "Product deleted successfully",
+        result 
+      });
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      res.status(500).json({ error: error instanceof Error ? error.message : "Failed to delete product" });
     }
   });
 

@@ -1109,7 +1109,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                 )}
 
                 {/* Quote List - Scrollable */}
-                <div className="flex-1 overflow-y-auto min-h-0 mb-6">
+                <div className="flex-1 overflow-y-auto min-h-0">
                   <div className="space-y-3">
                     {paginatedQuotes.length === 0 ? (
                       <Card className="p-12">
@@ -1192,13 +1192,13 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
                 {/* Pagination */}
                 {totalQuotes > 0 && (
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 py-4 flex-shrink-0">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-2 py-0.5 flex-shrink-0 mt-2">
                     {/* Left side - Info and page size selector */}
-                    <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                    <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
                       <div className="text-sm text-muted-foreground text-center sm:text-left">
                         Showing {startIndex + 1} to {Math.min(endIndex, totalQuotes)} of {totalQuotes} quotes
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-1.5">
                         <span className="text-sm text-muted-foreground hidden sm:inline">Show Per Page:</span>
                         <span className="text-sm text-muted-foreground sm:hidden">Per Page:</span>
                         <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
