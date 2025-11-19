@@ -1349,7 +1349,11 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             )}
 
             {/* Email Logs */}
-            {activeTab === "email-logs" && <EmailLogs />}
+            {activeTab === "email-logs" && (
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <EmailLogs />
+              </div>
+            )}
 
             {/* CMS Components */}
             {activeTab === "theme" && <ThemeEditor />}
