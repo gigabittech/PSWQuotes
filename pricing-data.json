@@ -28,7 +28,7 @@
         "warranty_performance": 30,
         "packages": [
           {
-            "id": "solar-1ph-risen-3.8kw",
+            "id": "691262bd-ce7e-4425-96b3-f4aea0114ad7",
             "size_kw": 3.8,
             "panels": 8,
             "wattage": 475,
@@ -36,7 +36,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-risen-6.6kw",
+            "id": "d7de58dc-2d0c-4e4c-ad94-9559c7b8dfe4",
             "size_kw": 6.6,
             "panels": 14,
             "wattage": 475,
@@ -44,7 +44,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-risen-10.4kw",
+            "id": "4e364686-e9c2-4102-8ee0-5b729d4475f7",
             "size_kw": 10.4,
             "panels": 22,
             "wattage": 475,
@@ -52,7 +52,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-risen-13.3kw",
+            "id": "4f6a7dfc-f4df-492f-9054-7c4f97db6aac",
             "size_kw": 13.3,
             "panels": 28,
             "wattage": 475,
@@ -69,7 +69,7 @@
         "warranty_performance": 30,
         "packages": [
           {
-            "id": "solar-1ph-jinko-3.8kw",
+            "id": "8f10b404-597a-4a27-969a-23d8cac58b25",
             "size_kw": 3.8,
             "panels": 8,
             "wattage": 475,
@@ -77,7 +77,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-jinko-6.6kw",
+            "id": "3a254418-a984-4183-a002-bcc35b7d687b",
             "size_kw": 6.6,
             "panels": 14,
             "wattage": 475,
@@ -85,7 +85,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-jinko-10.4kw",
+            "id": "17899122-a4cc-4012-8539-67730c7e3f6a",
             "size_kw": 10.4,
             "panels": 22,
             "wattage": 475,
@@ -93,7 +93,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-jinko-13.3kw",
+            "id": "512298f7-31d0-4ad1-a99d-4fb2797342aa",
             "size_kw": 13.3,
             "panels": 28,
             "wattage": 475,
@@ -110,7 +110,7 @@
         "warranty_performance": 30,
         "packages": [
           {
-            "id": "solar-1ph-aiko-3.8kw",
+            "id": "1db16467-3df0-47bd-89a4-4273a91301db",
             "size_kw": 3.8,
             "panels": 8,
             "wattage": 475,
@@ -118,7 +118,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-aiko-6.6kw",
+            "id": "5a05ca3c-429c-43b7-a009-2424aa68be4e",
             "size_kw": 6.6,
             "panels": 14,
             "wattage": 475,
@@ -126,7 +126,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-aiko-10.4kw",
+            "id": "408547fd-88f5-459f-bfc7-b161c2c155d9",
             "size_kw": 10.4,
             "panels": 22,
             "wattage": 475,
@@ -134,7 +134,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-aiko-13.3kw",
+            "id": "e0d6b66c-8bb6-44e2-8913-525d2df3fc54",
             "size_kw": 13.3,
             "panels": 28,
             "wattage": 475,
@@ -151,7 +151,7 @@
         "warranty_performance": 25,
         "packages": [
           {
-            "id": "solar-1ph-nayem-15.7kw",
+            "id": "93941465-4b5e-4d3f-8ad5-ccd65b653be4",
             "size_kw": 15.7,
             "panels": 22,
             "wattage": 490,
@@ -159,7 +159,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-1ph-nayem-19kw",
+            "id": "47510e23-4366-43ff-b6ae-c402f3a463da",
             "size_kw": 19,
             "panels": 19,
             "wattage": 990,
@@ -168,36 +168,20 @@
           }
         ]
       },
-      "aasws": {
-        "brand": "aasws",
-        "model": "xdasxasxas",
-        "technology": "Monocrystalline",
-        "warranty_product": 3,
-        "warranty_performance": 25,
-        "packages": [
-          {
-            "id": "solar-1ph-aasws-1.3kw",
-            "size_kw": 1.3,
-            "panels": 12,
-            "wattage": 452,
-            "price_after_rebate": 52,
-            "requires_inverter": true
-          }
-        ]
-      },
       "mahdi": {
         "brand": "Mahdi",
-        "model": "M20",
+        "model": "M22",
         "technology": "Monocrystalline",
-        "warranty_product": 452,
+        "warranty_product": 7,
         "warranty_performance": 25,
         "packages": [
           {
-            "id": "solar-1ph-mahdi-54kw",
-            "size_kw": 54,
-            "panels": 45,
-            "wattage": 545,
-            "price_after_rebate": 4545,
+            "id": "46f971ee-002f-481c-8940-9db929e543d9",
+            "size_kw": 5.9,
+            "panels": 67,
+            "wattage": 54,
+            "price_after_rebate": 3556,
+            "rrp": 5000,
             "requires_inverter": true
           }
         ]
@@ -397,7 +381,7 @@
         "warranty_years": 10,
         "options": [
           {
-            "id": "battery-1ph-tesla-13-5kwh-0",
+            "id": "879295ae-3076-4cc6-8f09-1662714fe96b",
             "model": "Powerwall 3 5kW Retrofit",
             "capacity_kwh": 13.5,
             "power_kw": 5,
@@ -407,7 +391,7 @@
             "type": "retrofit"
           },
           {
-            "id": "battery-1ph-tesla-13-5kwh-1",
+            "id": "f0a4f9c2-2e33-4c49-932f-e9bc0aa4fc53",
             "model": "Powerwall 3 10kW Retrofit",
             "capacity_kwh": 13.5,
             "power_kw": 10,
@@ -417,7 +401,7 @@
             "type": "retrofit"
           },
           {
-            "id": "battery-1ph-tesla-13-5kwh-2",
+            "id": "f5dc2e41-df72-4338-b573-2602351f45b3",
             "model": "Powerwall 3 Expansion",
             "capacity_kwh": 13.5,
             "price_after_rebate": 7490,
@@ -435,35 +419,35 @@
         "max_power_kw": 5,
         "options": [
           {
-            "id": "battery-1ph-alpha_ess-5kwh-0",
+            "id": "86d0ce84-431e-4e2c-a0e3-232775e23560",
             "capacity_kwh": 5,
             "price_after_rebate": 4490,
             "rrp": 6790,
             "stacks": 1
           },
           {
-            "id": "battery-1ph-alpha_ess-10kwh-1",
+            "id": "45047888-99eb-4b34-9920-3c3a1c080c9a",
             "capacity_kwh": 10,
             "price_after_rebate": 4790,
             "rrp": 9290,
             "stacks": 1
           },
           {
-            "id": "battery-1ph-alpha_ess-15kwh-2",
+            "id": "75b6e566-7acd-427c-960d-171fa9d422e3",
             "capacity_kwh": 15,
             "price_after_rebate": 5490,
             "rrp": 11790,
             "stacks": 1
           },
           {
-            "id": "battery-1ph-alpha_ess-20kwh-3",
+            "id": "1172733f-f200-4a56-b7c2-b18881028d67",
             "capacity_kwh": 20,
             "price_after_rebate": 6790,
             "rrp": 14790,
             "stacks": 2
           },
           {
-            "id": "battery-1ph-alpha_ess-25kwh-4",
+            "id": "36fed9c8-59c8-4cd0-aabf-9200a5f49c35",
             "capacity_kwh": 25,
             "price_after_rebate": 7490,
             "rrp": 17290,
@@ -478,31 +462,31 @@
         "requires_controller": true,
         "options": [
           {
-            "id": "battery-1ph-sigenergy_battery-7-8kwh-0",
+            "id": "e2d1d6dd-4b82-48d6-940f-949593bcc470",
             "capacity_kwh": 7.8,
             "price_after_rebate": 2490,
             "rrp": 5990
           },
           {
-            "id": "battery-1ph-sigenergy_battery-15-6kwh-1",
+            "id": "6f7db63e-1804-4539-8823-0d4b74e1e0eb",
             "capacity_kwh": 15.6,
             "price_after_rebate": 5290,
             "rrp": 11790
           },
           {
-            "id": "battery-1ph-sigenergy_battery-23-4kwh-2",
+            "id": "e8f115f9-55e2-4409-9c07-f33689d5e551",
             "capacity_kwh": 23.4,
             "price_after_rebate": 8490,
             "rrp": 17590
           },
           {
-            "id": "battery-1ph-sigenergy_battery-31-2kwh-3",
+            "id": "4bfc3149-70a1-4ea0-93ca-5ccb012986dd",
             "capacity_kwh": 31.2,
             "price_after_rebate": 11790,
             "rrp": 23390
           },
           {
-            "id": "battery-1ph-sigenergy_battery-39kwh-4",
+            "id": "01291d1a-6981-4734-88cf-45fdbd7990af",
             "capacity_kwh": 39,
             "price_after_rebate": 14990,
             "rrp": 29190
@@ -522,37 +506,37 @@
         "requires_hybrid": "Goodwe",
         "options": [
           {
-            "id": "battery-1ph-goodwe_battery-9-6kwh-0",
+            "id": "42777ba6-7edc-46a3-8179-0f51fedb8b29",
             "capacity_kwh": 9.6,
             "price_after_rebate": 3390,
             "rrp": 7990
           },
           {
-            "id": "battery-1ph-goodwe_battery-12-8kwh-1",
+            "id": "89d85e6d-1974-4bd3-874b-566b47bcba21",
             "capacity_kwh": 12.8,
             "price_after_rebate": 4190,
             "rrp": 9990
           },
           {
-            "id": "battery-1ph-goodwe_battery-16kwh-2",
+            "id": "84c3455d-3e83-4923-96e8-2cadf1720bed",
             "capacity_kwh": 16,
             "price_after_rebate": 4890,
             "rrp": 11990
           },
           {
-            "id": "battery-1ph-goodwe_battery-19-2kwh-3",
+            "id": "7a9cd6b5-3414-45c9-b70f-152a932f64f8",
             "capacity_kwh": 19.2,
             "price_after_rebate": 5790,
             "rrp": 13990
           },
           {
-            "id": "battery-1ph-goodwe_battery-22-4kwh-4",
+            "id": "f2906abf-105c-4ccb-b8d7-492759c5feff",
             "capacity_kwh": 22.4,
             "price_after_rebate": 6690,
             "rrp": 15990
           },
           {
-            "id": "battery-1ph-goodwe_battery-25-6kwh-5",
+            "id": "90db7f54-9576-419d-bab5-afa0039fc7e4",
             "capacity_kwh": 25.6,
             "price_after_rebate": 7490,
             "rrp": 17990
@@ -566,35 +550,35 @@
         "requires_hybrid": "Growatt",
         "options": [
           {
-            "id": "battery-1ph-growatt_battery-9kwh-0",
+            "id": "adc8a8a2-73c8-41c1-8e8f-7b4c9e356953",
             "capacity_kwh": 9,
             "price_after_rebate": 3790,
             "rrp": 8990,
             "stacks": 1
           },
           {
-            "id": "battery-1ph-growatt_battery-13-5kwh-1",
+            "id": "b67416ae-2125-478a-904c-7a39a2401caf",
             "capacity_kwh": 13.5,
             "price_after_rebate": 5290,
             "rrp": 11990,
             "stacks": 1
           },
           {
-            "id": "battery-1ph-growatt_battery-18kwh-2",
+            "id": "d3a074d7-d175-4f3d-802b-b320bc0b8308",
             "capacity_kwh": 18,
             "price_after_rebate": 6490,
             "rrp": 14990,
             "stacks": 1
           },
           {
-            "id": "battery-1ph-growatt_battery-22-5kwh-3",
+            "id": "4b5a2fe6-79c7-4f41-b77b-313008de1188",
             "capacity_kwh": 22.5,
             "price_after_rebate": 7990,
             "rrp": 18290,
             "stacks": 2
           },
           {
-            "id": "battery-1ph-growatt_battery-27kwh-4",
+            "id": "46d915fb-6f34-4404-8404-e2c55abf7996",
             "capacity_kwh": 27,
             "price_after_rebate": 9190,
             "rrp": 21290,
@@ -609,19 +593,19 @@
         "requires_hybrid": "iStore",
         "options": [
           {
-            "id": "battery-1ph-istore_battery-5kwh-0",
+            "id": "d2e12e67-d585-4f9a-9dac-7aec66bb0447",
             "capacity_kwh": 5,
             "price_after_rebate": 3990,
             "rrp": 7990
           },
           {
-            "id": "battery-1ph-istore_battery-10kwh-1",
+            "id": "358346ad-54e7-4a33-a3ad-f889484db86c",
             "capacity_kwh": 10,
             "price_after_rebate": 5990,
             "rrp": 12490
           },
           {
-            "id": "battery-1ph-istore_battery-15kwh-2",
+            "id": "2bc157c1-6f12-43a0-adf7-5107a92ad497",
             "capacity_kwh": 15,
             "price_after_rebate": 8490,
             "rrp": 16990
@@ -635,14 +619,14 @@
         "requires_hybrid": "Fronius GEN24",
         "options": [
           {
-            "id": "battery-1ph-fronius_battery-9-4kwh-0",
+            "id": "5eb98228-c37d-4a69-917c-4eeb8712fc77",
             "capacity_kwh": 9.4,
             "price_after_rebate": 5490,
             "rrp": 9990,
             "towers": 1
           },
           {
-            "id": "battery-1ph-fronius_battery-18-8kwh-1",
+            "id": "45a359c4-eea8-447c-969b-3dc2e60bbd1d",
             "capacity_kwh": 18.8,
             "price_after_rebate": 11490,
             "rrp": 19980,
@@ -656,35 +640,35 @@
         "warranty_years": 10,
         "options": [
           {
-            "id": "battery-1ph-byd_hvm-11kwh-0",
+            "id": "09cf47a3-407c-4e08-be13-a1b650d5f0fe",
             "capacity_kwh": 11,
             "price_after_rebate": 6490,
             "rrp": 11490,
             "includes_sensor": false
           },
           {
-            "id": "battery-1ph-byd_hvm-13-8kwh-1",
+            "id": "19d7929b-7cbe-41b2-8925-623a709e8735",
             "capacity_kwh": 13.8,
             "price_after_rebate": 7990,
             "rrp": 14190,
             "includes_sensor": false
           },
           {
-            "id": "battery-1ph-byd_hvm-16-6kwh-2",
+            "id": "fb0a8ac5-6186-4ffe-b4c0-1b1f19b4f62d",
             "capacity_kwh": 16.6,
             "price_after_rebate": 9490,
             "rrp": 16890,
             "includes_sensor": false
           },
           {
-            "id": "battery-1ph-byd_hvm-19-3kwh-3",
+            "id": "0224f17e-c0cc-48a6-abf5-1e9e3a058eaa",
             "capacity_kwh": 19.3,
             "price_after_rebate": 10990,
             "rrp": 19590,
             "includes_sensor": false
           },
           {
-            "id": "battery-1ph-byd_hvm-22-1kwh-4",
+            "id": "428e6796-47fb-4908-8e73-c70d4c933aa2",
             "capacity_kwh": 22.1,
             "price_after_rebate": 12490,
             "rrp": 22290,
@@ -700,37 +684,37 @@
         "requires_hybrid": "Sungrow",
         "options": [
           {
-            "id": "battery-1ph-sungrow_battery-9-6kwh-0",
+            "id": "826d693a-8e2a-48e5-bb1f-f01ebb0c24f0",
             "capacity_kwh": 9.6,
             "price_after_rebate": 5990,
             "rrp": 10990
           },
           {
-            "id": "battery-1ph-sungrow_battery-12-8kwh-1",
+            "id": "59cf5993-c9d2-4160-b5be-60999261fe8d",
             "capacity_kwh": 12.8,
             "price_after_rebate": 7190,
             "rrp": 12490
           },
           {
-            "id": "battery-1ph-sungrow_battery-16kwh-2",
+            "id": "3a79d330-1a32-4883-af51-0ac04cb447c1",
             "capacity_kwh": 16,
             "price_after_rebate": 8490,
             "rrp": 14990
           },
           {
-            "id": "battery-1ph-sungrow_battery-19-2kwh-3",
+            "id": "fe196d6f-3e68-4358-9e3f-aeae15468669",
             "capacity_kwh": 19.2,
             "price_after_rebate": 9990,
             "rrp": 17490
           },
           {
-            "id": "battery-1ph-sungrow_battery-22-4kwh-4",
+            "id": "f222f9ec-a6c8-48ed-a814-7219e39ce21a",
             "capacity_kwh": 22.4,
             "price_after_rebate": 11490,
             "rrp": 19990
           },
           {
-            "id": "battery-1ph-sungrow_battery-25-6kwh-5",
+            "id": "f21e7884-df82-4d4d-ae35-c0c04c1c5f9b",
             "capacity_kwh": 25.6,
             "price_after_rebate": 12990,
             "rrp": 22490
@@ -743,7 +727,7 @@
         "warranty_years": 12,
         "options": [
           {
-            "id": "battery-1ph-nayem-123kwh",
+            "id": "fcd3618e-153b-4edb-ad8f-a2e22d1433a4",
             "capacity_kwh": 123,
             "price_after_rebate": 9123,
             "rrp": 12341,
@@ -751,23 +735,28 @@
           }
         ]
       },
+      "aasws": {
+        "brand": "aasws",
+        "model": "xdasxasxas",
+        "warranty_years": 3,
+        "options": [
+          {
+            "id": "a62188fe-830e-4770-9e4a-979c4a98bf32",
+            "price_after_rebate": 52,
+            "rrp": 52
+          }
+        ]
+      },
       "mahdi": {
         "brand": "Mahdi",
         "model": "M20",
-        "warranty_years": 6,
+        "warranty_years": 452,
         "options": [
           {
-            "id": "battery-1ph-mahdi-12.5kwh",
-            "capacity_kwh": 12.5,
-            "price_after_rebate": 11200,
-            "rrp": 12000,
-            "power_kw": 8
-          },
-          {
-            "id": "battery-1ph-mahdi-14kwh",
-            "capacity_kwh": 14,
-            "price_after_rebate": 13000,
-            "rrp": 15000,
+            "id": "d93826b6-f019-47b9-8146-dc2260c738b4",
+            "capacity_kwh": 14.7,
+            "price_after_rebate": 14900,
+            "rrp": 16000,
             "power_kw": 8
           }
         ]
@@ -780,13 +769,13 @@
         "cable_type": "untethered",
         "options": [
           {
-            "id": "ev-1ph-fronius-7kw",
+            "id": "8801d248-ea23-4817-a33c-33fba4060eb8",
             "power_kw": 7,
             "phase": "1ph",
             "installed_price": 2890
           },
           {
-            "id": "ev-1ph-fronius-22kw",
+            "id": "1f8fcda9-33fb-4f20-a753-b98fbf2d1369",
             "power_kw": 22,
             "phase": "3ph",
             "installed_price": 3190
@@ -800,19 +789,19 @@
         "cable_type": "tethered",
         "options": [
           {
-            "id": "ev-1ph-goodwe-7kw",
+            "id": "255fb90f-7bd4-4b04-81ba-413d09603abe",
             "power_kw": 7,
             "phase": "1ph",
             "installed_price": 1990
           },
           {
-            "id": "ev-1ph-goodwe-11kw",
+            "id": "fe83893c-bf95-4302-957f-60012f20f401",
             "power_kw": 11,
             "phase": "3ph",
             "installed_price": 2390
           },
           {
-            "id": "ev-1ph-goodwe-22kw",
+            "id": "13c8eb3c-768c-4322-80a3-387ee8cd8695",
             "power_kw": 22,
             "phase": "3ph",
             "installed_price": 2490
@@ -826,19 +815,19 @@
         "cable_type": "tethered",
         "options": [
           {
-            "id": "ev-1ph-sigenergy_ac-7kw",
+            "id": "f0c9593e-d858-4654-9100-87372b6f5401",
             "power_kw": 7,
             "phase": "1ph",
             "installed_price": 2490
           },
           {
-            "id": "ev-1ph-sigenergy_ac-11kw",
+            "id": "b9c57feb-87d2-475f-89c3-4aa06dd23210",
             "power_kw": 11,
             "phase": "3ph",
             "installed_price": 2790
           },
           {
-            "id": "ev-1ph-sigenergy_ac-22kw",
+            "id": "6c95ec56-207d-44de-9c24-446cac32ee37",
             "power_kw": 22,
             "phase": "3ph",
             "installed_price": 2990
@@ -853,13 +842,13 @@
         "connector_type": "CCS2",
         "options": [
           {
-            "id": "ev-1ph-sigenergy_dc-12-5kw",
+            "id": "ce6f1f7f-2f1e-4733-82de-d460fbaff8e4",
             "power_kw": 12.5,
             "phase": "DC",
             "installed_price": 4990
           },
           {
-            "id": "ev-1ph-sigenergy_dc-25kw",
+            "id": "07c9c2ee-7de0-4353-b0de-11c880110163",
             "power_kw": 25,
             "phase": "DC",
             "installed_price": 5990
@@ -873,13 +862,13 @@
         "cable_type": "tethered",
         "options": [
           {
-            "id": "ev-1ph-tesla-7kw",
+            "id": "a4147aa3-412a-4987-8401-c39840a98e8d",
             "power_kw": 7,
             "phase": "1ph",
             "installed_price": 1790
           },
           {
-            "id": "ev-1ph-tesla-11kw",
+            "id": "a1f16532-1e7f-4cf9-b741-e44aeffceaac",
             "power_kw": 11,
             "phase": "3ph",
             "installed_price": 2090
@@ -893,7 +882,7 @@
         "cable_length_m": 312,
         "options": [
           {
-            "id": "ev-1ph-nayem-312kw",
+            "id": "6a3a2668-5e94-4aee-9c19-2b47f5625dc4",
             "power_kw": 312,
             "phase": "1-phase",
             "installed_price": 12312
@@ -912,7 +901,7 @@
         "warranty_performance": 30,
         "packages": [
           {
-            "id": "solar-3ph-risen-6.6kw",
+            "id": "96d94ae0-2cef-4861-bea6-74790efa7657",
             "size_kw": 6.6,
             "panels": 14,
             "wattage": 475,
@@ -920,7 +909,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-3ph-risen-10.4kw",
+            "id": "cabd3ab5-89d0-4278-9abf-909ab3871f94",
             "size_kw": 10.4,
             "panels": 22,
             "wattage": 475,
@@ -928,7 +917,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-3ph-risen-13.3kw",
+            "id": "ea780a0b-dc67-4dfe-82a0-bc558f864257",
             "size_kw": 13.3,
             "panels": 28,
             "wattage": 475,
@@ -936,7 +925,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-3ph-risen-19.9kw",
+            "id": "45cc94ed-b1a4-46db-9ea3-de48248438e9",
             "size_kw": 19.9,
             "panels": 42,
             "wattage": 475,
@@ -953,7 +942,7 @@
         "warranty_performance": 30,
         "packages": [
           {
-            "id": "solar-3ph-jinko-6.6kw",
+            "id": "650f3070-cad1-4d5d-821a-8a2449e4683d",
             "size_kw": 6.6,
             "panels": 14,
             "wattage": 475,
@@ -961,7 +950,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-3ph-jinko-10.4kw",
+            "id": "6d7e506e-c0dc-494f-bf03-12bef324585d",
             "size_kw": 10.4,
             "panels": 22,
             "wattage": 475,
@@ -969,7 +958,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-3ph-jinko-13.3kw",
+            "id": "85013460-28be-4c37-b84a-95612a2679e9",
             "size_kw": 13.3,
             "panels": 28,
             "wattage": 475,
@@ -977,7 +966,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-3ph-jinko-19.9kw",
+            "id": "7640c96c-c732-45bb-922f-c7568113f34c",
             "size_kw": 19.9,
             "panels": 42,
             "wattage": 475,
@@ -994,7 +983,7 @@
         "warranty_performance": 30,
         "packages": [
           {
-            "id": "solar-3ph-aiko-6.6kw",
+            "id": "75f56d23-1192-481f-b1c0-eeebdccf2422",
             "size_kw": 6.6,
             "panels": 14,
             "wattage": 475,
@@ -1002,7 +991,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-3ph-aiko-10.4kw",
+            "id": "91459ddd-7177-446d-ada0-626a79b8f677",
             "size_kw": 10.4,
             "panels": 22,
             "wattage": 475,
@@ -1010,7 +999,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-3ph-aiko-13.3kw",
+            "id": "2f285aec-17c8-4240-9a40-47d3229c3fd7",
             "size_kw": 13.3,
             "panels": 28,
             "wattage": 475,
@@ -1018,7 +1007,7 @@
             "requires_inverter": true
           },
           {
-            "id": "solar-3ph-aiko-19.9kw",
+            "id": "543e60da-2d1f-4c40-8018-0ed8f99ad3eb",
             "size_kw": 19.9,
             "panels": 42,
             "wattage": 475,
@@ -1246,7 +1235,7 @@
         "note": "Requires an additional 3-phase inverter for three phase power supply compatibility with Western Power",
         "options": [
           {
-            "id": "battery-3ph-tesla-13-5kwh-0",
+            "id": "b52c5a01-9b2c-40f5-88ed-64644c9c0184",
             "model": "Powerwall 3 5kW Retrofit",
             "capacity_kwh": 13.5,
             "power_kw": 5,
@@ -1256,7 +1245,7 @@
             "type": "retrofit"
           },
           {
-            "id": "battery-3ph-tesla-13-5kwh-1",
+            "id": "fd222728-218b-4655-aa31-3875fce97333",
             "model": "Powerwall 3 10kW Retrofit",
             "capacity_kwh": 13.5,
             "power_kw": 10,
@@ -1266,7 +1255,7 @@
             "type": "retrofit"
           },
           {
-            "id": "battery-3ph-tesla-13-5kwh-2",
+            "id": "178dabf3-b606-4ef7-91d8-30e2eb67c4ef",
             "model": "Powerwall 3 Expansion",
             "capacity_kwh": 13.5,
             "price_after_rebate": 7490,
@@ -1283,31 +1272,31 @@
         "requires_controller": true,
         "options": [
           {
-            "id": "battery-3ph-sigenergy_battery-7-8kwh-0",
+            "id": "c0a209e0-7856-423a-b858-4653ee65d47a",
             "capacity_kwh": 7.8,
             "price_after_rebate": 2490,
             "rrp": 5990
           },
           {
-            "id": "battery-3ph-sigenergy_battery-15-6kwh-1",
+            "id": "394a8d66-f3af-48b1-b69a-100afefc2350",
             "capacity_kwh": 15.6,
             "price_after_rebate": 5290,
             "rrp": 11790
           },
           {
-            "id": "battery-3ph-sigenergy_battery-23-4kwh-2",
+            "id": "eb9ea750-d6cd-460b-a447-8e4bff5a9204",
             "capacity_kwh": 23.4,
             "price_after_rebate": 8490,
             "rrp": 17590
           },
           {
-            "id": "battery-3ph-sigenergy_battery-31-2kwh-3",
+            "id": "aa7ded77-626b-4f11-8d05-0f83deed6bcc",
             "capacity_kwh": 31.2,
             "price_after_rebate": 11790,
             "rrp": 23390
           },
           {
-            "id": "battery-3ph-sigenergy_battery-39kwh-4",
+            "id": "1f7bf46c-cf4e-40a2-8821-5229f6f70052",
             "capacity_kwh": 39,
             "price_after_rebate": 14990,
             "rrp": 29190
@@ -1327,37 +1316,37 @@
         "requires_hybrid": "Goodwe",
         "options": [
           {
-            "id": "battery-3ph-goodwe_battery-9-6kwh-0",
+            "id": "4080070d-ebbe-4b9b-8dd7-d7ddbe9f47f1",
             "capacity_kwh": 9.6,
             "price_after_rebate": 3390,
             "rrp": 7990
           },
           {
-            "id": "battery-3ph-goodwe_battery-12-8kwh-1",
+            "id": "39f1eb02-b16a-445f-ac32-264ed2d02d48",
             "capacity_kwh": 12.8,
             "price_after_rebate": 4190,
             "rrp": 9990
           },
           {
-            "id": "battery-3ph-goodwe_battery-16kwh-2",
+            "id": "d3a2817f-26d6-4e8a-ae09-0d71e83beaa7",
             "capacity_kwh": 16,
             "price_after_rebate": 4890,
             "rrp": 11990
           },
           {
-            "id": "battery-3ph-goodwe_battery-19-2kwh-3",
+            "id": "8e64c851-6c6f-401f-b8cc-101a0233d1be",
             "capacity_kwh": 19.2,
             "price_after_rebate": 5790,
             "rrp": 13990
           },
           {
-            "id": "battery-3ph-goodwe_battery-22-4kwh-4",
+            "id": "a353bf3d-d561-4586-ba1e-10836b93bc6a",
             "capacity_kwh": 22.4,
             "price_after_rebate": 6690,
             "rrp": 15990
           },
           {
-            "id": "battery-3ph-goodwe_battery-25-6kwh-5",
+            "id": "50645e68-8125-4686-a422-2be276612918",
             "capacity_kwh": 25.6,
             "price_after_rebate": 7490,
             "rrp": 17990
@@ -1371,35 +1360,35 @@
         "requires_hybrid": "Growatt",
         "options": [
           {
-            "id": "battery-3ph-growatt_battery-9kwh-0",
+            "id": "b8acba9f-c28b-4b0b-9d20-0266957af0d4",
             "capacity_kwh": 9,
             "price_after_rebate": 3790,
             "rrp": 8990,
             "stacks": 1
           },
           {
-            "id": "battery-3ph-growatt_battery-13-5kwh-1",
+            "id": "5b7b29c7-0894-436c-9a13-07c566dcd131",
             "capacity_kwh": 13.5,
             "price_after_rebate": 5290,
             "rrp": 11990,
             "stacks": 1
           },
           {
-            "id": "battery-3ph-growatt_battery-18kwh-2",
+            "id": "c37f1aea-1339-40b3-b0d6-35fb849e4739",
             "capacity_kwh": 18,
             "price_after_rebate": 6490,
             "rrp": 14990,
             "stacks": 1
           },
           {
-            "id": "battery-3ph-growatt_battery-22-5kwh-3",
+            "id": "fc1cf211-4edb-4775-9b42-a06f5f5cf61a",
             "capacity_kwh": 22.5,
             "price_after_rebate": 7990,
             "rrp": 18290,
             "stacks": 2
           },
           {
-            "id": "battery-3ph-growatt_battery-27kwh-4",
+            "id": "720747af-d2c9-4b18-a02a-2c2d9a90e3fa",
             "capacity_kwh": 27,
             "price_after_rebate": 9190,
             "rrp": 21290,
@@ -1414,19 +1403,19 @@
         "requires_hybrid": "iStore",
         "options": [
           {
-            "id": "battery-3ph-istore_battery-5kwh-0",
+            "id": "6b5ce55d-4c78-40b3-9b5b-48a9dc690d92",
             "capacity_kwh": 5,
             "price_after_rebate": 3990,
             "rrp": 7990
           },
           {
-            "id": "battery-3ph-istore_battery-10kwh-1",
+            "id": "87c5ef9b-651f-4d87-b80b-44a2e411bb84",
             "capacity_kwh": 10,
             "price_after_rebate": 5990,
             "rrp": 12490
           },
           {
-            "id": "battery-3ph-istore_battery-15kwh-2",
+            "id": "e209c86f-29d3-4794-8e9b-870bd6b90c11",
             "capacity_kwh": 15,
             "price_after_rebate": 8490,
             "rrp": 16990
@@ -1440,56 +1429,56 @@
         "requires_hybrid": "Fronius GEN24",
         "options": [
           {
-            "id": "battery-3ph-fronius_battery-9-4kwh-0",
+            "id": "2d53d3db-c6bb-473e-bee1-9748dbc2c18c",
             "capacity_kwh": 9.4,
             "price_after_rebate": 5490,
             "rrp": 9990,
             "towers": 1
           },
           {
-            "id": "battery-3ph-fronius_battery-12-6kwh-1",
+            "id": "22e95720-388a-45d7-a75d-8e9e701dca06",
             "capacity_kwh": 12.6,
             "price_after_rebate": 6690,
             "rrp": 12490,
             "towers": 1
           },
           {
-            "id": "battery-3ph-fronius_battery-15-7kwh-2",
+            "id": "b51ce622-8e9d-4ce1-bc82-7cb178060583",
             "capacity_kwh": 15.7,
             "price_after_rebate": 7890,
             "rrp": 14990,
             "towers": 1
           },
           {
-            "id": "battery-3ph-fronius_battery-18-8kwh-3",
+            "id": "fd2f2e45-c079-4b7f-b23e-e11c8dc9d122",
             "capacity_kwh": 18.8,
             "price_after_rebate": 11490,
             "rrp": 18990,
             "towers": 2
           },
           {
-            "id": "battery-3ph-fronius_battery-21-9kwh-4",
+            "id": "8be75422-d15b-4584-b842-036a944ff371",
             "capacity_kwh": 21.9,
             "price_after_rebate": 12690,
             "rrp": 21490,
             "towers": 2
           },
           {
-            "id": "battery-3ph-fronius_battery-25kwh-5",
+            "id": "d2b1a710-45f6-4b51-9fcd-32c0ec800bf2",
             "capacity_kwh": 25,
             "price_after_rebate": 13890,
             "rrp": 23990,
             "towers": 2
           },
           {
-            "id": "battery-3ph-fronius_battery-28-3kwh-6",
+            "id": "1ce2952b-ad23-4e2e-ba95-7f1705a37492",
             "capacity_kwh": 28.3,
             "price_after_rebate": 15090,
             "rrp": 26490,
             "towers": 2
           },
           {
-            "id": "battery-3ph-fronius_battery-31-4kwh-7",
+            "id": "ab098f2d-43e0-4204-983a-05fc0577555d",
             "capacity_kwh": 31.4,
             "price_after_rebate": 16290,
             "rrp": 28990,
@@ -1503,35 +1492,35 @@
         "warranty_years": 10,
         "options": [
           {
-            "id": "battery-3ph-byd_hvm-11kwh-0",
+            "id": "d0a6d8f8-9fac-46ad-b324-a3e1c3fabe89",
             "capacity_kwh": 11,
             "price_after_rebate": 6490,
             "rrp": 11490,
             "includes_sensor": false
           },
           {
-            "id": "battery-3ph-byd_hvm-13-8kwh-1",
+            "id": "f0e24d64-83f5-49a8-8a92-5b5318d01eae",
             "capacity_kwh": 13.8,
             "price_after_rebate": 7990,
             "rrp": 14190,
             "includes_sensor": false
           },
           {
-            "id": "battery-3ph-byd_hvm-16-6kwh-2",
+            "id": "1a265bdf-fb23-4a16-9f1b-1e85267485ad",
             "capacity_kwh": 16.6,
             "price_after_rebate": 9490,
             "rrp": 16890,
             "includes_sensor": false
           },
           {
-            "id": "battery-3ph-byd_hvm-19-3kwh-3",
+            "id": "387de3ed-d143-467c-8415-031c05b36770",
             "capacity_kwh": 19.3,
             "price_after_rebate": 10990,
             "rrp": 19590,
             "includes_sensor": false
           },
           {
-            "id": "battery-3ph-byd_hvm-22-1kwh-4",
+            "id": "e8516329-c949-4fd9-86a7-c8049b0e68ae",
             "capacity_kwh": 22.1,
             "price_after_rebate": 12490,
             "rrp": 22290,
@@ -1547,40 +1536,54 @@
         "requires_hybrid": "Sungrow",
         "options": [
           {
-            "id": "battery-3ph-sungrow_battery-9-6kwh-0",
+            "id": "4258a864-b5bd-4efe-9066-ccbe882f58ba",
             "capacity_kwh": 9.6,
             "price_after_rebate": 5990,
             "rrp": 10990
           },
           {
-            "id": "battery-3ph-sungrow_battery-12-8kwh-1",
+            "id": "623a5107-59df-408f-8c19-9f005fcb0a9d",
             "capacity_kwh": 12.8,
             "price_after_rebate": 7190,
             "rrp": 12490
           },
           {
-            "id": "battery-3ph-sungrow_battery-16kwh-2",
+            "id": "e6c4b2eb-234b-430f-bf0d-2115ac126082",
             "capacity_kwh": 16,
             "price_after_rebate": 8490,
             "rrp": 14990
           },
           {
-            "id": "battery-3ph-sungrow_battery-19-2kwh-3",
+            "id": "a89f21b4-7213-4193-8c34-a7636171cb3a",
             "capacity_kwh": 19.2,
             "price_after_rebate": 9990,
             "rrp": 17490
           },
           {
-            "id": "battery-3ph-sungrow_battery-22-4kwh-4",
+            "id": "2d1e2610-91a8-4755-8fdd-bcd567cb61d0",
             "capacity_kwh": 22.4,
             "price_after_rebate": 11490,
             "rrp": 19990
           },
           {
-            "id": "battery-3ph-sungrow_battery-25-6kwh-5",
+            "id": "7b451c16-cd86-40bb-a811-da7d43d4e5a8",
             "capacity_kwh": 25.6,
             "price_after_rebate": 12990,
             "rrp": 22490
+          }
+        ]
+      },
+      "mahdi": {
+        "brand": "Mahdi",
+        "model": "M20",
+        "warranty_years": 452,
+        "options": [
+          {
+            "id": "777c6977-903e-4572-9604-93f62a4847c2",
+            "capacity_kwh": 14.5,
+            "price_after_rebate": 11400,
+            "rrp": 12001,
+            "power_kw": 8
           }
         ]
       }
@@ -1592,7 +1595,7 @@
         "cable_type": "untethered",
         "options": [
           {
-            "id": "ev-3ph-fronius-22kw",
+            "id": "9ff41740-50cc-4e08-a7b1-1767153be5ab",
             "power_kw": 22,
             "phase": "3ph",
             "installed_price": 3190
@@ -1606,13 +1609,13 @@
         "cable_type": "tethered",
         "options": [
           {
-            "id": "ev-3ph-goodwe-11kw",
+            "id": "11950090-fd63-45ed-997c-e1a94028d264",
             "power_kw": 11,
             "phase": "3ph",
             "installed_price": 2390
           },
           {
-            "id": "ev-3ph-goodwe-22kw",
+            "id": "b0525cec-d3fd-4872-8f05-d19a087c2cc8",
             "power_kw": 22,
             "phase": "3ph",
             "installed_price": 2490
@@ -1626,13 +1629,13 @@
         "cable_type": "tethered",
         "options": [
           {
-            "id": "ev-3ph-sigenergy_ac-11kw",
+            "id": "2d40afa0-2dfa-449e-8037-df7eec816d42",
             "power_kw": 11,
             "phase": "3ph",
             "installed_price": 2790
           },
           {
-            "id": "ev-3ph-sigenergy_ac-22kw",
+            "id": "2485ea32-02b8-4bb9-bbb8-496b8e9b2fc7",
             "power_kw": 22,
             "phase": "3ph",
             "installed_price": 2990
@@ -1646,7 +1649,7 @@
         "cable_type": "tethered",
         "options": [
           {
-            "id": "ev-3ph-tesla-11kw",
+            "id": "b69e6327-236c-4964-82a0-03f83a3944c9",
             "power_kw": 11,
             "phase": "3ph",
             "installed_price": 2090
