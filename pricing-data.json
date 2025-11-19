@@ -175,6 +175,15 @@
             "price_after_rebate": 3556,
             "rrp": 5000,
             "requires_inverter": true
+          },
+          {
+            "id": "45c5febd-cfbd-455b-8477-63112ebd102f",
+            "size_kw": 5,
+            "panels": 4,
+            "wattage": 453,
+            "price_after_rebate": 3435,
+            "rrp": 6789,
+            "requires_inverter": true
           }
         ]
       },
