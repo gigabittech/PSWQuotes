@@ -1073,14 +1073,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Quote not found" });
       }
 
+      console.log(`Generating PDF for quote ${id}`);
       const pdfBuffer = await generateQuotePDF(quote);
       
+      if (!pdfBuffer || pdfBuffer.length === 0) {
+        console.error("PDF buffer is empty or null");
+        return res.status(500).json({ error: "Failed to generate PDF: empty buffer" });
+      }
+
+      console.log(`PDF generated successfully, size: ${pdfBuffer.length} bytes`);
       res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `attachment; filename="quote-${quote.id}.pdf"`);
+      res.setHeader('Content-Disposition', `attachment; filename="quote-${quote.id.split('-')[0].toUpperCase()}.pdf"`);
+      res.setHeader('Content-Length', pdfBuffer.length.toString());
       res.send(pdfBuffer);
     } catch (error) {
       console.error("Error generating PDF:", error);
-      res.status(500).json({ error: "Failed to generate PDF" });
+      if (error instanceof Error) {
+        console.error("Error details:", error.message, error.stack);
+      }
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Failed to generate PDF", details: error instanceof Error ? error.message : "Unknown error" });
+      }
     }
   });
 

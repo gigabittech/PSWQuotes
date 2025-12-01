@@ -169,6 +169,14 @@ export const emailLogs = pgTable("email_logs", {
   sentAt: timestamp("sent_at").notNull().default(sql`now()`),
 });
 
+export const session = pgTable("session", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  data: jsonb("data"),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
 export const quoteItemRelations = relations(quoteItems, ({ one }) => ({
   quote: one(quotes, {
     fields: [quoteItems.quoteId],

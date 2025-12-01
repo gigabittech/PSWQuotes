@@ -312,5 +312,8 @@ export async function generateQuotePDF(quote: Quote): Promise<Buffer> {
   doc.setFont("helvetica", "normal");
   doc.text("📞 (08) 6171 4111  |  ✉ info@perthsolarwarehouse.com.au  |  🌐 www.perthsolarwarehouse.com.au", 20, 294);
   
-  return Buffer.from(doc.output('arraybuffer'));
+  // Convert jsPDF output to Buffer
+  // jsPDF output('array') returns number[], which Buffer.from() can handle directly
+  const pdfArray = doc.output('array') as number[];
+  return Buffer.from(pdfArray);
 }
