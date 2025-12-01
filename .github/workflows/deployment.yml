@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2️⃣ Install dependencies and build project
+      - name: Install dependencies and build
+        run: |
+          rm -rf dist
+          npm install
+          npm run build   # Builds both frontend (dist/public) and backend (dist/index.js)
+
+      # 3️⃣ Deploy to server via SSH
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            echo "Pulling latest code..."
+            cd /var/www/quote.mypswenergy.com.au
+            git reset --hardphase
+            git pull origin main
+
+            echo "Installing backend dependencies..."
+            npm install --production
+
+            echo "Running database migrations..."
+            npm run db:push
+
+            echo "Restarting backend service..."
+            pm2 restart quote.mypswenergy.com.au || pm2 start dist/index.js --name "quote.mypswenergy.com.au"
+
+            echo "saving pm2 logs..."
+            pm2 save
+
+            echo "Deployment complete!"
