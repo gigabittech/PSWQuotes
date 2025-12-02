@@ -36,77 +36,151 @@ export default function StepIndicator({
     return (stepNumber <= currentStep) && onStepClick && !isLoading;
   };
 
+  // Calculate widths - all steps same size
+  const gapSize = 8;
+  const totalGaps = steps.length - 1;
+  const totalGapWidth = totalGaps * gapSize;
+  const availableWidth = 896 - totalGapWidth;
+  const stepWidth = availableWidth / steps.length; // All steps same width
+  
+  // Calculate positions for connecting lines
+  const getStepWidth = () => {
+    return stepWidth; // All steps same width
+  };
+  
+  const getStepLeftPosition = (index: number) => {
+    return index * (stepWidth + gapSize);
+  };
+
   return (
-    <div className="mb-8 px-2 sm:px-4" role="navigation" aria-label="Quote progress">
-      {/* Steps with connecting progress bar */}
-      <div className="relative flex items-center justify-between max-w-4xl mx-auto gap-1 sm:gap-2">
-        {/* Progress bar background - hidden on mobile, shown on larger screens */}
-        <div className="hidden sm:block absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2 z-0">
-          <div className="h-full bg-muted/50 backdrop-blur-sm rounded-full" />
-          {/* Active progress */}
-          <div 
-            className="absolute top-0 left-0 h-full bg-green-600/10 to-r from-primary to-primary/80 rounded-full transition-all duration-500 ease-out shadow-lg shadow-green-500/80"
-            style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
-            role="progressbar"
-            aria-valuenow={currentStep}
-            aria-valuemin={1}
-            aria-valuemax={steps.length}
-          />
-        </div>
+    <div className="mb-8 flex justify-center" role="navigation" aria-label="Quote progress">
+      {/* Steps Container */}
+      <div 
+        style={{
+          width: '896px',
+          height: '47px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          position: 'relative',
+          opacity: 1,
+          gap: '8px'
+        }}
+      >
+        {/* Connecting lines - positioned between steps */}
+        {steps.map((step, index) => {
+          if (index < steps.length - 1) {
+            // Calculate cumulative left position
+            const cumulativeLeft = (index + 1) * stepWidth + index * gapSize;
+            
+            // Line spans the gap between steps (8px)
+            const lineLeft = cumulativeLeft;
+            const lineWidth = 8;
+            
+            return (
+              <div
+                key={`line-${step.number}`}
+                style={{
+                  position: 'absolute',
+                  left: `${lineLeft}px`,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: `${lineWidth}px`,
+                  height: '1px',
+                  backgroundColor: '#E5E5E5',
+                  zIndex: 1,
+                  pointerEvents: 'none',
+                  opacity: 1
+                }}
+              />
+            );
+          }
+          return null;
+        })}
 
         {/* Step pills */}
-        {steps.map((step) => {
+        {steps.map((step, index) => {
           const state = getStepState(step.number);
+          const isCurrent = state === 'current';
           const hasError = errors[step.number];
           const clickable = isClickable(step.number);
+          const stepWidth = getStepWidth();
           
           return (
             <button
               key={step.number}
               onClick={() => handleStepClick(step.number)}
               disabled={!clickable}
-              className={cn(
-                "relative z-10 flex-1 sm:flex-none px-2 py-1.5 sm:px-4 sm:py-2 md:px-6 md:py-2.5 rounded-full text-xs sm:text-sm md:text-base font-medium",
-                "transition-all duration-300 ease-out",
-                "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
-                "backdrop-blur-md border min-w-0",
-                state === 'current' && [
-                  "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30",
-                  "scale-105"
-                ],
-                state === 'completed' && [
-                  "bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/30",
-                  clickable && "hover:bg-green-500/20 hover:scale-105 cursor-pointer"
-                ],
-                state === 'upcoming' && [
-                  "bg-muted/30 text-muted-foreground border-muted/40",
-                  "opacity-60"
-                ],
-                hasError && "ring-2 ring-red-500 ring-offset-1",
-                !clickable && "cursor-default"
-              )}
+              style={{
+                width: `${stepWidth}px`,
+                height: '47px',
+                paddingTop: '10.55px',
+                paddingRight: '20px',
+                paddingBottom: '10.55px',
+                paddingLeft: '20px',
+                borderRadius: '9999px',
+                background: isCurrent ? '#020817' : '#F8F8F8',
+                color: isCurrent ? '#FFFFFF' : '#787E86',
+                border: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '14px',
+                fontWeight: 400,
+                cursor: clickable ? 'pointer' : 'default',
+                transition: 'all 0.3s ease-out',
+                position: 'relative',
+                zIndex: 2,
+                opacity: 1,
+                whiteSpace: 'nowrap',
+                overflow: 'visible'
+              }}
               data-testid={`step-indicator-${step.number}`}
               aria-label={`${step.title} - ${state}${hasError ? ' (has errors)' : ''}`}
-              aria-current={state === 'current' ? 'step' : undefined}
+              aria-current={isCurrent ? 'step' : undefined}
             >
               {/* Loading spinner */}
-              {state === 'current' && isLoading && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+              {isCurrent && isLoading && (
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <div style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid #FFFFFF',
+                    borderTop: '2px solid transparent',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }} />
                 </div>
               )}
               
               {/* Error indicator */}
               {hasError && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-gray-900" />
+                <div style={{
+                  position: 'absolute',
+                  top: '-4px',
+                  right: '-4px',
+                  width: '12px',
+                  height: '12px',
+                  backgroundColor: '#EF4444',
+                  borderRadius: '50%',
+                  border: '2px solid #FFFFFF'
+                }} />
               )}
               
-              <span className={cn(
-                "block truncate text-center",
-                state === 'current' && isLoading && "opacity-0"
-              )}>
-                <span className="hidden sm:inline">{step.title}</span>
-                <span className="sm:hidden">{step.shortTitle}</span>
+              <span style={{
+                display: 'block',
+                textAlign: 'center',
+                whiteSpace: 'nowrap',
+                opacity: isCurrent && isLoading ? 0 : 1
+              }}>
+                {step.title}
               </span>
             </button>
           );
