@@ -82,7 +82,7 @@ export default function DynamicHero() {
         }}
         data-testid="dynamic-hero"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
           <div className="text-center text-white">
             <h1
               id="hero-title-manrope"
