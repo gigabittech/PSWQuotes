@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import type { CmsPage } from "@shared/schema";
 import pswLogo from "@/assets/psw-logo.png";
+import heroPhoneIcon from "@/assets/hero-phone-icon.png";
+import heroMailIcon from "@/assets/hero-mail-icon.png";
 
 export default function DynamicHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,7 +22,7 @@ export default function DynamicHeader() {
   });
 
   // Fallback to default header if CMS data not available
-  const headerContent = (homepage?.blocks || []).find((block: any) => block.type === 'header')?.content || {
+  const headerContent = (Array.isArray(homepage?.blocks) ? homepage.blocks : []).find((block: any) => block.type === 'header')?.content || {
     logo: 'Perth Solar Warehouse',
     navigation: [
       { text: 'Get Quote', href: '#quote' },
@@ -43,21 +45,19 @@ export default function DynamicHeader() {
   };
 
   return (
-    <header className="bg-black border-b border-gray-800 sticky top-0 z-50 shadow-sm" data-testid="dynamic-header">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-20">
-          {/* Logo */}
-          <div className="flex items-center flex-shrink-0">
-            <img 
-              src={pswLogo} 
-              alt={headerContent.logo || "Perth Solar Warehouse"} 
-              className="h-10 sm:h-12 w-auto object-contain"
+    <header className="absolute top-4 left-1/2 z-40 w-full px-4 -translate-x-1/2" data-testid="dynamic-header">
+      <div className="mx-auto max-w-[1100px] rounded-[45px] border border-white/15" style={{ backgroundColor: "#FFFFFF24" }}>
+        <div className="flex h-[64px] items-center justify-between px-5 sm:px-8 text-white">
+          <div className="flex flex-shrink-0 items-center">
+            <img
+              src={pswLogo}
+              alt={headerContent.logo || "Perth Solar Warehouse"}
+              className="h-10 w-auto object-contain"
               data-testid="header-logo-image"
             />
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8" data-testid="header-navigation">
+          <nav className="hidden lg:flex items-center gap-8 text-base text-white/90" data-testid="header-navigation">
             {headerContent.navigation?.map((item: any, index: number) => (
               <a
                 key={index}
@@ -66,7 +66,7 @@ export default function DynamicHeader() {
                   e.preventDefault();
                   handleNavClick(item.href);
                 }}
-                className="text-white hover:text-blue-400 transition-colors font-medium text-sm xl:text-base px-3 py-2 rounded-lg hover:bg-gray-800"
+                className="transition-colors hover:text-white"
                 data-testid={`nav-link-${item.text.toLowerCase().replace(' ', '-')}`}
               >
                 {item.text}
@@ -74,44 +74,51 @@ export default function DynamicHeader() {
             ))}
           </nav>
 
-          {/* Desktop Contact Info */}
-          <div className="hidden xl:flex items-center space-x-4" data-testid="header-contact">
+          <div className="hidden md:flex items-center gap-4" data-testid="header-contact">
             <a
               href={`tel:${headerContent.contact?.phone}`}
-              className="flex items-center text-white hover:text-blue-400 transition-colors text-sm px-3 py-2 rounded-lg hover:bg-gray-800"
+              className="flex items-center gap-2 text-white/90"
               data-testid="header-phone"
             >
-              <Phone className="h-4 w-4 mr-2" />
-              <span className="hidden 2xl:inline">{headerContent.contact?.phone}</span>
+              <img
+                src={heroPhoneIcon}
+                alt="Phone"
+                className="h-6 w-6 object-contain select-none"
+                draggable={false}
+              />
+              <span className="hidden xl:inline">{headerContent.contact?.phone}</span>
             </a>
             <a
               href={`mailto:${headerContent.contact?.email}`}
-              className="flex items-center text-white hover:text-blue-400 transition-colors text-sm px-3 py-2 rounded-lg hover:bg-gray-800"
+              className="flex items-center gap-2 text-white/90"
               data-testid="header-email"
             >
-              <Mail className="h-4 w-4 mr-2" />
-              <span className="hidden 2xl:inline">{headerContent.contact?.email}</span>
+              <img
+                src={heroMailIcon}
+                alt="Mail"
+                className="h-6 w-6 object-contain select-none"
+                draggable={false}
+              />
+              <span className="hidden xl:inline">{headerContent.contact?.email}</span>
             </a>
           </div>
 
-          {/* Mobile Contact (Phone Only) */}
-          <div className="flex items-center space-x-2 lg:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
             <a
               href={`tel:${headerContent.contact?.phone}`}
-              className="flex items-center justify-center w-10 h-10 text-white hover:text-blue-400 transition-colors rounded-lg hover:bg-gray-800"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 text-white"
               data-testid="header-phone-mobile"
               aria-label="Call us"
             >
               <Phone className="h-5 w-5" />
             </a>
 
-            {/* Mobile Menu Button */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-10 h-10 p-0 lg:hidden"
+                  className="w-10 h-10 p-0 text-white"
                   data-testid="mobile-menu-button"
                   aria-label="Open menu"
                 >
@@ -120,17 +127,16 @@ export default function DynamicHeader() {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[350px]">
                 <SheetHeader>
-                  <SheetTitle className="text-left text-foreground font-bold">
-                    <img 
-                      src={pswLogo} 
-                      alt={headerContent.logo || "Perth Solar Warehouse"} 
+                  <SheetTitle className="text-left font-bold text-foreground">
+                    <img
+                      src={pswLogo}
+                      alt={headerContent.logo || "Perth Solar Warehouse"}
                       className="h-8 w-auto object-contain"
                     />
                   </SheetTitle>
                 </SheetHeader>
-                
-                {/* Mobile Navigation */}
-                <nav className="flex flex-col space-y-4 mt-8" data-testid="mobile-navigation">
+
+                <nav className="mt-8 flex flex-col space-y-4" data-testid="mobile-navigation">
                   {headerContent.navigation?.map((item: any, index: number) => (
                     <a
                       key={index}
@@ -139,7 +145,7 @@ export default function DynamicHeader() {
                         e.preventDefault();
                         handleNavClick(item.href);
                       }}
-                      className="flex items-center text-foreground hover:text-primary transition-colors font-medium text-lg px-4 py-3 rounded-lg hover:bg-muted"
+                      className="flex items-center rounded-lg px-4 py-3 text-lg font-medium text-foreground hover:bg-muted hover:text-primary"
                       data-testid={`mobile-nav-link-${item.text.toLowerCase().replace(' ', '-')}`}
                     >
                       {item.text}
@@ -147,15 +153,14 @@ export default function DynamicHeader() {
                   ))}
                 </nav>
 
-                {/* Mobile Contact Info */}
-                <div className="mt-8 pt-8 border-t border-border space-y-4" data-testid="mobile-contact">
-                  <h3 className="font-semibold text-foreground text-sm uppercase tracking-wide">Contact Us</h3>
+                <div className="mt-8 space-y-4 border-t border-border pt-8" data-testid="mobile-contact">
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Contact Us</h3>
                   <a
                     href={`tel:${headerContent.contact?.phone}`}
-                    className="flex items-center text-foreground hover:text-primary transition-colors px-4 py-3 rounded-lg hover:bg-muted"
+                    className="flex items-center rounded-lg px-4 py-3 text-foreground hover:bg-muted hover:text-primary"
                     data-testid="mobile-phone"
                   >
-                    <Phone className="h-5 w-5 mr-3" />
+                    <Phone className="mr-3 h-5 w-5" />
                     <div>
                       <div className="font-medium">{headerContent.contact?.phone}</div>
                       <div className="text-sm text-muted-foreground">Call now for quote</div>
@@ -163,24 +168,19 @@ export default function DynamicHeader() {
                   </a>
                   <a
                     href={`mailto:${headerContent.contact?.email}`}
-                    className="flex items-center text-foreground hover:text-primary transition-colors px-4 py-3 rounded-lg hover:bg-muted"
+                    className="flex items-center rounded-lg px-4 py-3 text-foreground hover:bg-muted hover:text-primary"
                     data-testid="mobile-email"
                   >
-                    <Mail className="h-5 w-5 mr-3" />
+                    <Mail className="mr-3 h-5 w-5" />
                     <div>
-                      <div className="font-medium break-all">{headerContent.contact?.email}</div>
+                      <div className="break-all font-medium">{headerContent.contact?.email}</div>
                       <div className="text-sm text-muted-foreground">Send us an email</div>
                     </div>
                   </a>
                 </div>
 
-                {/* Call to Action */}
-                <div className="mt-8 pt-8 border-t border-border">
-                  <Button 
-                    className="w-full" 
-                    onClick={() => handleNavClick('#quote')}
-                    data-testid="mobile-cta-button"
-                  >
+                <div className="mt-8 border-t border-border pt-8">
+                  <Button className="w-full" onClick={() => handleNavClick('#quote')} data-testid="mobile-cta-button">
                     Get Free Quote
                   </Button>
                 </div>

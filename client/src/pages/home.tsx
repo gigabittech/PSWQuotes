@@ -148,12 +148,66 @@ export default function Home() {
       <section id="quote" className="py-12 sm:py-16 lg:py-20 glass-backdrop min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6">
-              Get Your Instant Solar Quote
-            </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4 sm:px-0">
-              Follow our simple 3-step process to receive a personalized solar quote tailored to your property and energy needs.
-            </p>
+            <div 
+              style={{
+                width: '1280px',
+                height: '128px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '24px',
+                margin: '0 auto',
+                opacity: 1
+              }}
+            >
+              <div 
+                style={{
+                  width: '100%',
+                  height: '48px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <h2 
+                  style={{
+                    fontFamily: 'Manrope, sans-serif',
+                    fontWeight: 600,
+                    fontStyle: 'normal',
+                    fontSize: '48px',
+                    lineHeight: '48px',
+                    letterSpacing: '-1.2px',
+                    textAlign: 'center',
+                    verticalAlign: 'middle',
+                    color: '#020817',
+                    margin: 0
+                  }}
+                >
+                  Get Your Instant Solar Quote
+                </h2>
+              </div>
+              <p 
+                style={{
+                  width: '744px',
+                  minHeight: '56px',
+                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: 400,
+                  fontStyle: 'normal',
+                  fontSize: '20px',
+                  lineHeight: '28px',
+                  letterSpacing: '0%',
+                  textAlign: 'center',
+                  color: '#787E86',
+                  margin: 0,
+                  paddingTop: '14px',
+                  paddingBottom: '14px'
+                }}
+              >
+                Follow our simple 3-step process to receive a personalized solar quote<br />
+                tailored to your property and energy needs.
+              </p>
+            </div>
           </div>
           
           <StepIndicator currentStep={currentStep} />
