@@ -46,8 +46,8 @@ export default function DynamicHeader() {
 
   return (
     <header className="absolute top-4 left-1/2 z-40 w-full px-4 -translate-x-1/2" data-testid="dynamic-header">
-      <div className="mx-auto max-w-[1269px] rounded-[45px] border border-white/15" style={{ backgroundColor: "#FFFFFF24" }}>
-        <div className="flex h-[70px] items-center justify-between px-6 sm:px-10 text-white">
+      <div className="mx-auto max-w-[1100px] rounded-[45px] border border-white/15" style={{ backgroundColor: "#FFFFFF24" }}>
+        <div className="flex h-[64px] items-center justify-between px-5 sm:px-8 text-white">
           <div className="flex flex-shrink-0 items-center">
             <img
               src={pswLogo}
