@@ -88,19 +88,11 @@ export default function DynamicHero() {
           <div className="text-center text-white">
             <h1
               id="hero-title-manrope"
-              className="mb-6 text-white drop-shadow-2xl text-center text-4xl sm:text-5xl md:text-[60px]"
-              style={{ 
-                fontFamily: 'Manrope',
-                fontWeight: 600,
-                fontStyle: 'normal',
-                lineHeight: '60px',
-                letterSpacing: '-1.5px',
-                textAlign: 'center',
-                verticalAlign: 'middle'
-              }}
+              className="font-manrope mb-6 text-white drop-shadow-2xl text-center text-4xl sm:text-5xl md:text-[60px]"
+             
               data-testid="hero-title"
             >
-              {heroContent.title}
+              {heroContent.title} 
             </h1>
           {/* Primary CTA Button */}
           <div className="mb-6">
@@ -137,21 +129,31 @@ export default function DynamicHero() {
           </div>
           
           <div
-            className="mb-8 text-white drop-shadow-lg mx-auto space-y-1"
+            className="mb-8 text-white drop-shadow-lg mx-auto"
             style={{
-              maxWidth: "729px",
-              textAlign: "center"
+              width: "729px",
+              height: "41px",
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: "0"
             }}
             data-testid="hero-description"
           >
             <p
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontWeight: 500,
+                fontWeight: 400,
+                fontStyle: "normal",
                 fontSize: "18px",
                 lineHeight: "28px",
-                letterSpacing: "0",
-                color: "#FFFFFF"
+                letterSpacing: "0%",
+                textAlign: "center",
+                verticalAlign: "middle",
+                color: "#FFFFFF",
+                margin: 0,
+                whiteSpace: "nowrap"
               }}
             >
               Join{" "}
@@ -160,9 +162,11 @@ export default function DynamicHero() {
                   color: "#E1AE20A1",
                   fontFamily: "Inter, sans-serif",
                   fontWeight: 500,
+                  fontStyle: "normal",
                   fontSize: "18px",
                   lineHeight: "28px",
-                  letterSpacing: "0",
+                  letterSpacing: "0%",
+                  textAlign: "center",
                   verticalAlign: "middle"
                 }}
               >
@@ -174,10 +178,14 @@ export default function DynamicHero() {
               style={{
                 fontFamily: "Inter, sans-serif",
                 fontWeight: 400,
+                fontStyle: "normal",
                 fontSize: "18px",
                 lineHeight: "28px",
-                letterSpacing: "0",
-                color: "#FFFFFF"
+                letterSpacing: "0%",
+                textAlign: "center",
+                verticalAlign: "middle",
+                color: "#FFFFFF",
+                margin: 0
               }}
             >
               Licensed, insured, and backed by Australia's best warranties.
