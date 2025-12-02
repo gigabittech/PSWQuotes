@@ -78,8 +78,10 @@ export default function DynamicHero() {
       <section 
         className="relative bg-cover bg-center bg-no-repeat py-24 lg:py-32"
         style={{ 
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${heroContent.backgroundImage || heroBackground})` 
-        }}
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${heroContent.backgroundImage || heroBackground})`,
+          backgroundPosition: "center 65%",
+        backgroundSize: "cover"
+      }}
         data-testid="dynamic-hero"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
