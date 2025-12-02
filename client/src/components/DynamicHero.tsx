@@ -106,7 +106,6 @@ export default function DynamicHero() {
                 paddingRight: '20px',
                 paddingBottom: '6px',
                 paddingLeft: '20px',
-                gap: '10px',
                 borderRadius: '38px',
                 borderWidth: '1px',
                 borderColor: '#FFFFFF',
@@ -121,8 +120,20 @@ export default function DynamicHero() {
               }}
               data-testid="hero-primary-cta"
             >
-              <span style={{ display: 'inline-flex', marginRight: '10px' }}>
-                <img src={heroTagIcon} alt="Tag icon" className="h-5 w-5 object-contain" />
+              <span style={{ display: 'inline-flex', marginLeft: '5px', marginRight: '6px', flexShrink: 0 }}>
+                <img 
+                  src={heroTagIcon} 
+                  alt="Tag icon" 
+                  style={{ 
+                    width: '23px', 
+                    height: '23px', 
+                    minWidth: '23px',
+                    minHeight: '23px',
+                    objectFit: 'contain',
+                    display: 'block',
+                    flexShrink: 0
+                  }} 
+                />
               </span>
               <span className="text-white font-normal">{heroContent.subtitle || "Get a free solar quote in 2 minutes"}</span>
             </Button>
