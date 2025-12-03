@@ -70,24 +70,72 @@ export default function EmbedCodeGenerator() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <Label className="text-base font-semibold">IFrame Embed Code</Label>
-              <Button
-                variant="outline"
-                size="sm"
+              <button
                 onClick={() => handleCopy(iframeCode, "IFrame")}
-                className="glass-btn"
+                style={{
+                  width: '157px',
+                  height: '40px',
+                  minHeight: '40px',
+                  gap: '8px',
+                  borderRadius: '40px',
+                  border: '1px solid #FFFFFF4D',
+                  paddingTop: '8.5px',
+                  paddingRight: '24px',
+                  paddingBottom: '9.5px',
+                  paddingLeft: '24px',
+                  color: '#FFFFFF',
+                  backgroundColor: '#171716E8',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  fontSize: 'inherit',
+                  boxSizing: 'border-box'
+                }}
               >
                 {copied ? (
                   <>
-                    <Check className="w-4 h-4 mr-2" />
-                    Copied
+                    <Check className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
+                    <span style={{
+                      width: '75px',
+                      height: '20px',
+                      fontFamily: 'Inter',
+                      fontWeight: 600,
+                      fontStyle: 'normal',
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      letterSpacing: '0%',
+                      textAlign: 'center',
+                      verticalAlign: 'middle',
+                      color: '#FFFFFF',
+                      leadingTrim: 'none'
+                    } as React.CSSProperties & { leadingTrim?: string }}>
+                      Copied
+                    </span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Code
+                    <Copy className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
+                    <span style={{
+                      width: '75px',
+                      height: '20px',
+                      fontFamily: 'Inter',
+                      fontWeight: 600,
+                      fontStyle: 'normal',
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      letterSpacing: '0%',
+                      textAlign: 'center',
+                      verticalAlign: 'middle',
+                      color: '#FFFFFF',
+                      leadingTrim: 'none'
+                    } as React.CSSProperties & { leadingTrim?: string }}>
+                      Copy Code
+                    </span>
                   </>
                 )}
-              </Button>
+              </button>
             </div>
             <Textarea
               value={iframeCode}
@@ -104,24 +152,72 @@ export default function EmbedCodeGenerator() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <Label className="text-base font-semibold">JavaScript Embed Code</Label>
-              <Button
-                variant="outline"
-                size="sm"
+              <button
                 onClick={() => handleCopy(scriptCode, "JavaScript")}
-                className="glass-btn"
+                style={{
+                  width: '157px',
+                  height: '40px',
+                  minHeight: '40px',
+                  gap: '8px',
+                  borderRadius: '40px',
+                  border: '1px solid #FFFFFF4D',
+                  paddingTop: '8.5px',
+                  paddingRight: '24px',
+                  paddingBottom: '9.5px',
+                  paddingLeft: '24px',
+                  color: '#FFFFFF',
+                  backgroundColor: '#171716E8',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  fontSize: 'inherit',
+                  boxSizing: 'border-box'
+                }}
               >
                 {copied ? (
                   <>
-                    <Check className="w-4 h-4 mr-2" />
-                    Copied
+                    <Check className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
+                    <span style={{
+                      width: '75px',
+                      height: '20px',
+                      fontFamily: 'Inter',
+                      fontWeight: 600,
+                      fontStyle: 'normal',
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      letterSpacing: '0%',
+                      textAlign: 'center',
+                      verticalAlign: 'middle',
+                      color: '#FFFFFF',
+                      leadingTrim: 'none'
+                    } as React.CSSProperties & { leadingTrim?: string }}>
+                      Copied
+                    </span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Code
+                    <Copy className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
+                    <span style={{
+                      width: '75px',
+                      height: '20px',
+                      fontFamily: 'Inter',
+                      fontWeight: 600,
+                      fontStyle: 'normal',
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      letterSpacing: '0%',
+                      textAlign: 'center',
+                      verticalAlign: 'middle',
+                      color: '#FFFFFF',
+                      leadingTrim: 'none'
+                    } as React.CSSProperties & { leadingTrim?: string }}>
+                      Copy Code
+                    </span>
                   </>
                 )}
-              </Button>
+              </button>
             </div>
             <Textarea
               value={scriptCode}

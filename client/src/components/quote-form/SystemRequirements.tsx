@@ -189,7 +189,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                 width: '293px',
                 height: '366px',
                 minHeight: '360px',
-                backgroundColor: isSelected ? '#020817' : '#FFFFFF',
+                background: isSelected ? 'radial-gradient(102.46% 102.46% at 50% -2.46%, #4E4E4E 0%, #0A0D14 52.79%)' : '#FFFFFF',
                 borderRadius: '16px',
                 paddingTop: option.id === 'solar' ? '40px' : '50px',
                 paddingRight: '24px',
@@ -208,35 +208,56 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
             >
               {/* Badge - Fixed positioning */}
               {option.badge && (
-                <div style={{
-                  position: 'absolute',
-                  top: '-14.5px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: '132px',
-                  height: '29px',
-                  borderRadius: '9999px',
-                  border: isSelected ? '1px solid #C2C2C233' : 'none',
-                  backgroundColor: isSelected ? '#F7C9179E' : '#F5F5F5',
-                  color: '#020817',
-                  padding: '10px 16px',
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  lineHeight: '16px',
-                  letterSpacing: '0.3px',
-                  textTransform: 'uppercase',
-                  whiteSpace: 'nowrap',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxSizing: 'border-box',
-                  verticalAlign: 'middle',
-                  zIndex: 1000,
-                  boxShadow: isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none'
-                }}>
-                  {option.badge}
-                </div>
+                <>
+                  {/* Blurred layer behind badge when selected */}
+                  {isSelected && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '-14.5px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '132px',
+                      height: '29px',
+                      borderRadius: '9999px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      zIndex: 999,
+                      pointerEvents: 'none'
+                    }} />
+                  )}
+                  <div style={{
+                    position: 'absolute',
+                    top: '-14.5px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '132px',
+                    height: '29px',
+                    borderRadius: '9999px',
+                    border: isSelected ? '1px solid #C2C2C233' : 'none',
+                    backgroundColor: isSelected ? '#F7C9179E' : '#F5F5F5',
+                    color: '#020817',
+                    padding: '10px 16px',
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    lineHeight: '16px',
+                    letterSpacing: '0.3px',
+                    textTransform: 'uppercase',
+                    whiteSpace: 'nowrap',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxSizing: 'border-box',
+                    verticalAlign: 'middle',
+                    zIndex: 1000,
+                    boxShadow: isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none',
+                    backdropFilter: isSelected ? 'blur(10px)' : 'none',
+                    WebkitBackdropFilter: isSelected ? 'blur(10px)' : 'none'
+                  }}>
+                    {option.badge}
+                  </div>
+                </>
               )}
 
               {/* Checkbox */}
@@ -580,8 +601,9 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
           data-testid="button-continue-to-products"
         >
           <span style={{ 
-            fontFamily: 'Manrope, sans-serif',
+            fontFamily: 'Manrope',
             fontWeight: 600,
+            fontStyle: 'normal',
             fontSize: '18px',
             lineHeight: '100%',
             letterSpacing: '0%',
@@ -589,8 +611,9 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
             height: '25px',
             color: '#FFFFFF',
             whiteSpace: 'nowrap',
-            display: 'block'
-          }}>Continue to Product Selection</span>
+            display: 'block',
+            leadingTrim: 'none'
+          } as React.CSSProperties & { leadingTrim?: string }}>Continue to Product Selection</span>
           <div style={{
             width: '54px',
             height: '54px',
