@@ -1,17 +1,20 @@
 import { cn } from "@/lib/utils";
+import { ReactNode } from "react";
 
 interface StepIndicatorProps {
   currentStep: number;
   onStepClick?: (stepNumber: number) => void;
   errors?: { [key: number]: boolean };
   isLoading?: boolean;
+  children?: ReactNode;
 }
 
 export default function StepIndicator({ 
   currentStep, 
   onStepClick,
   errors = {},
-  isLoading = false 
+  isLoading = false,
+  children
 }: StepIndicatorProps) {
   const steps = [
     { number: 1, title: "System Requirements", shortTitle: "System" },
@@ -37,7 +40,7 @@ export default function StepIndicator({
   };
 
   // Calculate widths - all steps same size
-  const gapSize = 8;
+  const gapSize = 32;
   const totalGaps = steps.length - 1;
   const totalGapWidth = totalGaps * gapSize;
   const availableWidth = 896 - totalGapWidth;
@@ -53,9 +56,11 @@ export default function StepIndicator({
   };
 
   return (
-    <div className="mb-8 flex justify-center" role="navigation" aria-label="Quote progress">
-      {/* Steps Container */}
+    <div className="mb-8 flex flex-col items-center">
+      {/* Step Indicator Buttons - Above the container */}
       <div 
+        role="navigation" 
+        aria-label="Quote progress"
         style={{
           width: '896px',
           height: '47px',
@@ -64,7 +69,8 @@ export default function StepIndicator({
           justifyContent: 'flex-start',
           position: 'relative',
           opacity: 1,
-          gap: '8px'
+          gap: '32px',
+          marginBottom: '20px'
         }}
       >
         {/* Connecting lines - positioned between steps */}
@@ -73,9 +79,9 @@ export default function StepIndicator({
             // Calculate cumulative left position
             const cumulativeLeft = (index + 1) * stepWidth + index * gapSize;
             
-            // Line spans the gap between steps (8px)
+            // Line spans the gap between steps
             const lineLeft = cumulativeLeft;
-            const lineWidth = 8;
+            const lineWidth = gapSize;
             
             return (
               <div

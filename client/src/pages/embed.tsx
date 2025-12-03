@@ -129,7 +129,7 @@ export default function EmbedPage() {
   };
 
   return (
-    <div className="min-h-screen glass-backdrop py-12">
+    <div className="min-h-screen py-12" style={{ background: '#10B981' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6">
@@ -140,9 +140,7 @@ export default function EmbedPage() {
           </p>
         </div>
         
-        <StepIndicator currentStep={currentStep} />
-        
-        <div className="glass-card overflow-hidden max-w-5xl mx-auto">
+        <StepIndicator currentStep={currentStep}>
           {currentStep === 1 && (
             <SystemRequirements
               data={formData}
@@ -181,7 +179,7 @@ export default function EmbedPage() {
               onStartOver={startOver}
             />
           )}
-        </div>
+        </StepIndicator>
       </div>
     </div>
   );

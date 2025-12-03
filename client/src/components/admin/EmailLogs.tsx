@@ -130,6 +130,8 @@ export default function EmailLogs() {
           <CardDescription className="text-xs sm:text-sm">
             View all email sending attempts with success and failure details
           </CardDescription>
+     
+
         </CardHeader>
         <CardContent className="px-4 sm:px-6 flex-1 overflow-y-auto min-h-0">
           {emailLogs.length === 0 ? (

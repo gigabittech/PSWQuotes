@@ -259,10 +259,23 @@ export default function Home() {
       <section className="py-12 sm:py-16 lg:py-20 glass-backdrop">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+            <h2 style={{
+              width: '832px',
+              height: '40px',
+              fontFamily: 'Manrope',
+              fontWeight: 600,
+              fontStyle: 'normal',
+              fontSize: '36px',
+              lineHeight: '40px',
+              letterSpacing: '-0.9px',
+              textAlign: 'center',
+              verticalAlign: 'middle',
+              color: '#020817',
+              leadingTrim: 'none'
+            } as React.CSSProperties & { leadingTrim?: string }}>
               Embed This Form On Your Website
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto" style={{ marginTop: '16px' }}>
               Copy the code below to add this solar quote form to your website
             </p>
           </div>

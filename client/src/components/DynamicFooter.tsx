@@ -58,79 +58,11 @@ export default function DynamicFooter() {
 
   return (
     <footer className="bg-black border-t border-gray-800" data-testid="dynamic-footer">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div className="lg:col-span-2" data-testid="footer-company">
-            <h3 className="text-xl font-bold text-white mb-4" data-testid="footer-company-name">
-              {footerContent.company?.name}
-            </h3>
-            <p className="text-gray-300 mb-4 leading-relaxed" data-testid="footer-company-description">
-              {footerContent.company?.description}
-            </p>
-            <p className="text-sm text-gray-400 font-medium" data-testid="footer-license">
-              {footerContent.company?.license}
-            </p>
-            
-            {/* Contact Info */}
-            <div className="mt-6 space-y-2" data-testid="footer-contact">
-              <div className="flex items-center text-gray-300">
-                <span className="text-lg mr-3">📞</span>
-                <a href={`tel:${footerContent.contact?.phone}`} className="hover:text-blue-400 transition-colors touch-manipulation py-2" data-testid="footer-phone">
-                  {footerContent.contact?.phone}
-                </a>
-              </div>
-              <div className="flex items-center text-gray-300">
-                <span className="text-lg mr-3">✉️</span>
-                <a href={`mailto:${footerContent.contact?.email}`} className="hover:text-blue-400 transition-colors touch-manipulation py-2" data-testid="footer-email">
-                  {footerContent.contact?.email}
-                </a>
-              </div>
-              {footerContent.contact?.address && (
-                <div className="flex items-start text-gray-300">
-                  <span className="text-lg mr-3">📍</span>
-                  <div data-testid="footer-address">
-                    <div>{footerContent.contact.address.street}</div>
-                    <div>{footerContent.contact.address.suburb}, {footerContent.contact.address.state} {footerContent.contact.address.postcode}</div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Services */}
-          <div data-testid="footer-services">
-            <h3 className="text-lg font-semibold text-white mb-4">Our Services</h3>
-            <ul className="space-y-2">
-              {footerContent.services?.map((service: string, index: number) => (
-                <li key={index}>
-                  <span className="text-gray-300 hover:text-blue-400 transition-colors" data-testid={`footer-service-${index}`}>
-                    {service}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Service Areas */}
-          <div data-testid="footer-service-areas">
-            <h3 className="text-lg font-semibold text-white mb-4">Service Areas</h3>
-            <ul className="space-y-2">
-              {footerContent.serviceAreas?.map((area: string, index: number) => (
-                <li key={index}>
-                  <span className="text-gray-300 hover:text-blue-400 transition-colors" data-testid={`footer-area-${index}`}>
-                    {area}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Bottom Bar */}
-        <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm text-gray-400 mb-4 md:mb-0" data-testid="footer-copyright">
-            © {new Date().getFullYear()} {footerContent.company?.name}. All rights reserved.
+            © {new Date().getFullYear()} {footerContent.company?.name}. All rights reserved. {footerContent.company?.license}
           </div>
           
           {/* Social Links */}
