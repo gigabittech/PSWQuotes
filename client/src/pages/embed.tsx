@@ -140,9 +140,7 @@ export default function EmbedPage() {
           </p>
         </div>
         
-        <StepIndicator currentStep={currentStep} />
-        
-        <div className="glass-card overflow-hidden max-w-5xl mx-auto">
+        <StepIndicator currentStep={currentStep}>
           {currentStep === 1 && (
             <SystemRequirements
               data={formData}
@@ -181,7 +179,7 @@ export default function EmbedPage() {
               onStartOver={startOver}
             />
           )}
-        </div>
+        </StepIndicator>
       </div>
     </div>
   );

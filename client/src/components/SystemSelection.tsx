@@ -109,7 +109,7 @@ export default function SystemSelection({
   return (
     <div className="space-y-10" data-testid="system-selection">
       {/* Header Section */}
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-4 bg-red-500">
         <h2 className="font-outfit text-4xl md:text-5xl font-semibold text-foreground tracking-tight">
           What are you looking for?
         </h2>

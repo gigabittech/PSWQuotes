@@ -107,187 +107,422 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
   const canContinue = (data.systems?.length || 0) > 0 && data.powerSupply;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 lg:p-12" data-testid="system-requirements">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 md:mb-6 text-center">
+    <div 
+      style={{
+        width: '1024px',
+        height: '1083px',
+        maxWidth: '1024px',
+        borderRadius: '65px',
+        background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
+        border: '1px solid #DDE1E775',
+        margin: '0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        boxSizing: 'border-box',
+        overflow: 'hidden',
+        position: 'relative',
+        isolation: 'isolate'
+      }}
+      data-testid="system-requirements"
+    >
+      {/* No inner container with background - just content directly */}
+      <div style={{ 
+        position: 'relative', 
+        zIndex: 1, 
+        width: '100%', 
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        padding: '48px 49px', 
+        gap: '24px', 
+        boxSizing: 'border-box',
+        // Remove any background color from this inner container
+        background: 'transparent'
+      }}>
+      {/* Header Section */}
+      <div style={{ textAlign: 'center', width: '100%' }}>
+        <h2 style={{
+          fontSize: '32px',
+          fontWeight: 'bold',
+          color: '#020817',
+          marginBottom: '16px',
+          marginTop: 0
+        }}>
           What are you looking for?
         </h2>
-        <p className="text-base sm:text-lg text-muted-foreground text-center mb-8 md:mb-12 max-w-2xl mx-auto px-4">
+        <p style={{
+          fontSize: '16px',
+          color: '#787E86',
+          margin: 0,
+          maxWidth: '600px',
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }}>
           Select all the systems you're interested in. We'll create a custom quote based on your needs.
         </p>
+      </div>
 
-        {/* System Options Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
-          {systemOptions.map((option) => (
+      {/* System Options Grid */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '24px',
+        width: '100%',
+        maxWidth: '900px'
+      }}>
+        {systemOptions.map((option) => {
+          const isSelected = data.systems?.includes(option.id);
+          return (
             <div
               key={option.id}
-              className={cn(
-                "group relative rounded-2xl p-6 cursor-pointer transition-all duration-500 min-h-[320px] sm:min-h-[360px] touch-manipulation",
-                "border-2 active:scale-[0.98]",
-                data.systems?.includes(option.id)
-                  ? "bg-primary/10 scale-[1.02] shadow-xl -translate-y-3 hover:-translate-y-4 hover:shadow-2xl hover:bg-primary/15 glass-card"
-                  : `border-border ${option.border} hover:-translate-y-3 hover:shadow-xl hover:shadow-2xl glass-card`
-              )}
-              style={data.systems?.includes(option.id) ? { border: '2px solid var(--primary)' } : undefined}
               onClick={() => handleSystemToggle(option.id)}
+              style={{
+                position: 'relative',
+                width: '293px',
+                height: '366px',
+                minHeight: '360px',
+                backgroundColor: isSelected ? '#020817' : '#FFFFFF',
+                borderRadius: '16px',
+                paddingTop: option.id === 'solar' ? '40px' : '50px',
+                paddingRight: '24px',
+                paddingBottom: '24px',
+                paddingLeft: '24px',
+                cursor: 'pointer',
+                border: isSelected ? '2px solid #FCD34D' : '1px solid #E5E5E5',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                boxSizing: 'border-box'
+              }}
               data-testid={`system-option-${option.id}`}
             >
-              {/* Popular Badge */}
-              {option.popular && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
-                  <span className="bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-lg">
-                    {option.badge}
-                  </span>
+              {/* Badge */}
+              {option.badge && (
+                <div style={{
+                  position: 'absolute',
+                  top: '-14.5px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '132px',
+                  height: '29px',
+                  borderRadius: '9999px',
+                  border: 'none',
+                  backgroundColor: '#F5F5F5',
+                  color: '#020817',
+                  paddingTop: '10px',
+                  paddingRight: '16px',
+                  paddingBottom: '10px',
+                  paddingLeft: '16px',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  lineHeight: '16px',
+                  letterSpacing: '0.3px',
+                  textTransform: 'uppercase',
+                  whiteSpace: 'nowrap',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxSizing: 'border-box',
+                  verticalAlign: 'middle',
+                  zIndex: 100
+                }}>
+                  {option.badge}
                 </div>
               )}
 
-              {/* Other Badges */}
-              {!option.popular && option.badge && (
-                <div className="absolute top-4 right-4">
-                  <span className="bg-primary/90 text-primary-foreground px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-md">
-                    {option.badge}
-                  </span>
-                </div>
-              )}
+              {/* Checkbox */}
+              <div style={{
+                position: 'absolute',
+                top: '2px',
+                left: '2px',
+                width: '12px',
+                height: '12px',
+                border: isSelected ? '2px solid #FCD34D' : '2px solid #D1D5DB',
+                backgroundColor: isSelected ? '#020817' : 'transparent',
+                borderRadius: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                {isSelected && (
+                  <svg width="8" height="8" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="#FCD34D"/>
+                  </svg>
+                )}
+              </div>
 
-              <div className="text-center h-full flex flex-col justify-between">
-                <div className="flex-1">
-                  <div className={cn(
-                    "w-20 h-20 sm:w-24 sm:h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300",
-                    option.iconBg
-                  )}>
-                    <span className="text-3xl sm:text-4xl drop-shadow-lg">{option.icon}</span>
-                  </div>
-                  <h3 className={cn(
-                    "text-xl sm:text-2xl font-bold mb-3 transition-colors duration-300",
-                    data.systems?.includes(option.id) 
-                      ? "text-primary" 
-                      : "text-foreground group-hover:text-primary"
-                  )}>
+              {/* Icon */}
+              <div style={{
+                width: '96px',
+                height: '96px',
+                borderRadius: '24px',
+                border: '1px solid #C2C2C233',
+                backgroundColor: isSelected ? '#19A4201A' : '#EBC9721A',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 24px',
+                marginTop: option.popular ? '8px' : '0px'
+              }}>
+                {option.id === 'solar' ? (
+                  <img 
+                    src="/attached_assets/Solar.png" 
+                    alt="Solar Power" 
+                    style={{
+                      width: '36px',
+                      height: '40px',
+                      objectFit: 'contain',
+                      display: 'block'
+                    }}
+                  />
+                ) : option.id === 'battery' ? (
+                  <img 
+                    src="/attached_assets/Battery.png" 
+                    alt="Battery Storage" 
+                    style={{
+                      width: '36px',
+                      height: '40px',
+                      objectFit: 'contain',
+                      display: 'block'
+                    }}
+                  />
+                ) : option.id === 'ev' ? (
+                  <img 
+                    src="/attached_assets/ev.png" 
+                    alt="EV Charging" 
+                    style={{
+                      width: '36px',
+                      height: '40px',
+                      objectFit: 'contain',
+                      display: 'block'
+                    }}
+                  />
+                ) : (
+                  <span style={{ 
+                    fontSize: '48px', 
+                    lineHeight: '1'
+                  }}>
+                    {option.icon}
+                  </span>
+                )}
+              </div>
+
+              {/* Content */}
+              <div style={{ textAlign: 'center', flex: 1 }}>
+                <h3 style={{
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                  color: isSelected ? '#FFFFFF' : '#020817',
+                  marginBottom: '12px',
+                  marginTop: 0,
+                  fontFamily: 'Manrope, sans-serif'
+                }}>
+                  {option.title}
+                </h3>
+                <p style={{
+                  fontSize: '14px',
+                  color: isSelected ? '#D1D5DB' : '#787E86',
+                  marginBottom: '8px',
+                  lineHeight: '1.5',
+                  fontFamily: 'Manrope, sans-serif'
+                }}>
+                  {option.description}
+                </p>
+              </div>
+
+              {/* Price */}
+              <div style={{
+                borderRadius: '12px',
+                padding: '8px 16px 16px 16px',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  color: isSelected ? '#FCD34D' : '#020817',
+                  marginBottom: '4px',
+                  fontFamily: 'Manrope, sans-serif'
+                }}>
+                  {option.price}
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  color: isSelected ? '#9CA3AF' : '#787E86',
+                  fontFamily: 'Manrope, sans-serif'
+                }}>
+                  {option.afterText}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Power Supply Section */}
+      <div style={{ width: '100%', maxWidth: '900px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '9999px',
+            padding: '12px 24px',
+            marginBottom: '16px'
+          }}>
+            <span style={{ fontSize: '24px', marginRight: '12px' }}>⚡</span>
+            <h3 style={{
+              fontSize: '20px',
+              fontWeight: 'bold',
+              color: '#020817',
+              margin: 0
+            }}>
+              Power Supply Type
+            </h3>
+          </div>
+          <p style={{
+            fontSize: '16px',
+            color: '#787E86',
+            margin: 0,
+            maxWidth: '600px',
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          }}>
+            Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
+          </p>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '16px'
+        }}>
+          {powerOptions.map((option) => {
+            const isSelected = data.powerSupply === option.id;
+            return (
+              <div
+                key={option.id}
+                onClick={() => handlePowerSupplyChange(option.id)}
+                style={{
+                  position: 'relative',
+                  backgroundColor: isSelected ? '#020817' : '#FFFFFF',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  cursor: 'pointer',
+                  border: isSelected ? '2px solid #FCD34D' : '1px solid #E5E5E5',
+                  transition: 'all 0.3s ease',
+                  minHeight: '120px',
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px'
+                }}
+                data-testid={`power-supply-${option.id}`}
+              >
+                {/* Radio Button */}
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  border: isSelected ? '2px solid #FCD34D' : '2px solid #D1D5DB',
+                  backgroundColor: isSelected ? '#020817' : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  marginTop: '2px'
+                }}>
+                  {isSelected && (
+                    <div style={{
+                      width: '12px',
+                      height: '12px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FCD34D'
+                    }} />
+                  )}
+                </div>
+
+                {/* Content */}
+                <div style={{ flex: 1 }}>
+                  <label style={{
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: isSelected ? '#FFFFFF' : '#020817',
+                    display: 'block',
+                    marginBottom: '8px',
+                    cursor: 'pointer'
+                  }}>
                     {option.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed px-2">
+                  </label>
+                  <p style={{
+                    fontSize: '14px',
+                    color: isSelected ? '#D1D5DB' : '#787E86',
+                    margin: 0,
+                    lineHeight: '1.5'
+                  }}>
                     {option.description}
                   </p>
                 </div>
-                
-                <div className="bg-white/60 dark:bg-gray-900/40 rounded-xl p-4 backdrop-blur-sm border border-white/20">
-                  <div className="text-lg sm:text-xl font-bold text-primary mb-1 group-hover:scale-105 transition-transform duration-300">
-                    {option.price}
-                  </div>
-                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">
-                    {option.afterText}
-                  </div>
-                </div>
-              </div>
 
-              {/* Selection indicator */}
-              {data.systems?.includes(option.id) && (
-                <div className={cn(
-                  "absolute w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-lg z-10",
-                  option.popular ? "top-4 right-4" : "top-4 left-4"
-                )}>
-                  <svg className="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Power Supply Section */}
-        <div className="mb-8 md:mb-12">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center glass-card rounded-full px-6 py-3 mb-4">
-              <span className="text-2xl mr-3">⚡</span>
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground">Power Supply Type</h3>
-            </div>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
-              Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
-            {powerOptions.map((option) => (
-              <div
-                key={option.id}
-                className={cn(
-                  "group relative rounded-xl p-6 cursor-pointer transition-all duration-300 touch-manipulation min-h-[120px]",
-                  "active:scale-[0.98] border-2",
-                  data.powerSupply === option.id
-                    ? "bg-primary/10 scale-[1.02] shadow-xl -translate-y-3 hover:-translate-y-4 hover:shadow-2xl hover:bg-primary/15 glass-card"
-                    : "border-border hover:border-primary hover:-translate-y-1 hover:shadow-xl glass-card"
-                )}
-                style={data.powerSupply === option.id ? { border: '2px solid var(--primary)' } : undefined}
-                onClick={() => handlePowerSupplyChange(option.id)}
-                data-testid={`power-supply-${option.id}`}
-              >
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 mt-1">
-                    <div className={cn(
-                      "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200",
-                      data.powerSupply === option.id
-                        ? "border-primary bg-primary"
-                        : "border-gray-300 dark:border-gray-600 group-hover:border-primary"
-                    )}>
-                      {data.powerSupply === option.id && (
-                        <div className="w-3 h-3 bg-white rounded-full"></div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <label className={cn(
-                      "font-bold cursor-pointer text-base sm:text-lg block mb-2 transition-colors duration-300",
-                      data.powerSupply === option.id
-                        ? "text-primary"
-                        : "text-foreground group-hover:text-primary"
-                    )}>
-                      {option.title}
-                    </label>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {option.description}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Selection indicator */}
-                {data.powerSupply === option.id && (
-                  <div className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                {/* Checkmark */}
+                {isSelected && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '12px',
+                    right: '12px',
+                    width: '24px',
+                    height: '24px',
+                    backgroundColor: '#FCD34D',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="#020817"/>
                     </svg>
                   </div>
                 )}
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
+      </div>
 
-        {/* Continue Button */}
-        <div className="flex justify-center px-4">
-          <button
-            className={cn(
-              "group relative bg-primary hover:bg-primary/90 text-black px-10 py-4 text-lg rounded-xl font-bold transition-all duration-300 min-h-[56px] touch-manipulation shadow-xl",
-              "hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98]",
-              "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-xl",
-              canContinue ? "w-full sm:w-auto" : "w-full sm:w-auto"
-            )}
-            onClick={onNext}
-            disabled={!canContinue}
-            data-testid="button-continue-to-products"
-          >
-            <span className="flex items-center justify-center">
-              <span className="mr-3">Continue to Product Selection</span>
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </span>
-            
-            {/* Shine effect on hover */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 rounded-xl"></div>
-          </button>
-        </div>
+      {/* Continue Button */}
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
+        <button
+          onClick={onNext}
+          disabled={!canContinue}
+          style={{
+            background: canContinue 
+              ? 'linear-gradient(135deg, #FCD34D 0%, #FBBF24 100%)'
+              : '#E5E5E5',
+            color: canContinue ? '#020817' : '#9CA3AF',
+            border: 'none',
+            borderRadius: '12px',
+            padding: '16px 32px',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            cursor: canContinue ? 'pointer' : 'not-allowed',
+            opacity: canContinue ? 1 : 0.5,
+            transition: 'all 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            minWidth: '280px',
+            justifyContent: 'center'
+          }}
+          data-testid="button-continue-to-products"
+        >
+          <span>Continue to Product Selection</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
       </div>
     </div>
   );
