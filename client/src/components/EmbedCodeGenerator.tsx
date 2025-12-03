@@ -58,7 +58,10 @@ export default function EmbedCodeGenerator() {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <Card className="glass-card flex-1 flex flex-col min-h-0 shadow-none">
+      <Card 
+        className="glass-card flex-1 flex flex-col min-h-0 shadow-none"
+        style={{ boxShadow: 'none' }}
+      >
         <CardHeader className="flex-shrink-0">
           <CardTitle>Embed Quote Form</CardTitle>
           <CardDescription>

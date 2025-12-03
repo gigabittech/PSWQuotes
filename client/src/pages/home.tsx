@@ -275,7 +275,7 @@ export default function Home() {
             } as React.CSSProperties & { leadingTrim?: string }}>
               Embed This Form On Your Website
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto" style={{ marginTop: '16px' }}>
               Copy the code below to add this solar quote form to your website
             </p>
           </div>
