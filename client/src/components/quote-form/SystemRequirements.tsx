@@ -101,7 +101,12 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
   };
 
   const handlePowerSupplyChange = (powerSupply: string) => {
-    onUpdate({ powerSupply });
+    // Toggle: if already selected, deselect it
+    if (data.powerSupply === powerSupply) {
+      onUpdate({ powerSupply: undefined });
+    } else {
+      onUpdate({ powerSupply });
+    }
   };
 
   const canContinue = (data.systems?.length || 0) > 0 && data.powerSupply;
@@ -120,13 +125,12 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
         flexDirection: 'column',
         alignItems: 'center',
         boxSizing: 'border-box',
-        overflow: 'hidden',
+        overflow: 'visible',
         position: 'relative',
         isolation: 'isolate'
       }}
       data-testid="system-requirements"
     >
-      {/* No inner container with background - just content directly */}
       <div style={{ 
         position: 'relative', 
         zIndex: 1, 
@@ -138,7 +142,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
         padding: '48px 49px', 
         gap: '24px', 
         boxSizing: 'border-box',
-        // Remove any background color from this inner container
+        overflow: 'visible',
         background: 'transparent'
       }}>
       {/* Header Section */}
@@ -170,7 +174,9 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
         gridTemplateColumns: 'repeat(3, 1fr)',
         gap: '24px',
         width: '100%',
-        maxWidth: '900px'
+        maxWidth: '900px',
+        position: 'relative',
+        zIndex: 10
       }}>
         {systemOptions.map((option) => {
           const isSelected = data.systems?.includes(option.id);
@@ -195,11 +201,12 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                overflow: 'visible'
               }}
               data-testid={`system-option-${option.id}`}
             >
-              {/* Badge */}
+              {/* Badge - Fixed positioning */}
               {option.badge && (
                 <div style={{
                   position: 'absolute',
@@ -209,13 +216,10 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                   width: '132px',
                   height: '29px',
                   borderRadius: '9999px',
-                  border: 'none',
-                  backgroundColor: '#F5F5F5',
+                  border: isSelected ? '1px solid #C2C2C233' : 'none',
+                  backgroundColor: isSelected ? '#F7C9179E' : '#F5F5F5',
                   color: '#020817',
-                  paddingTop: '10px',
-                  paddingRight: '16px',
-                  paddingBottom: '10px',
-                  paddingLeft: '16px',
+                  padding: '10px 16px',
                   fontFamily: 'Inter, sans-serif',
                   fontSize: '12px',
                   fontWeight: 600,
@@ -228,7 +232,8 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                   justifyContent: 'center',
                   boxSizing: 'border-box',
                   verticalAlign: 'middle',
-                  zIndex: 100
+                  zIndex: 1000,
+                  boxShadow: isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none'
                 }}>
                   {option.badge}
                 </div>
@@ -237,21 +242,41 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               {/* Checkbox */}
               <div style={{
                 position: 'absolute',
-                top: '2px',
-                left: '2px',
-                width: '12px',
-                height: '12px',
-                border: isSelected ? '2px solid #FCD34D' : '2px solid #D1D5DB',
-                backgroundColor: isSelected ? '#020817' : 'transparent',
+                top: isSelected ? '26px' : '32px',
+                left: isSelected ? '22px' : '26px',
+                width: isSelected ? '24px' : '18px',
+                height: isSelected ? '24px' : '18px',
+                border: 'none',
+                backgroundColor: 'transparent',
                 borderRadius: '4px',
+                boxShadow: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                zIndex: 10
               }}>
-                {isSelected && (
-                  <svg width="8" height="8" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="#FCD34D"/>
-                  </svg>
+                {!isSelected ? (
+                  <img 
+                    src="/attached_assets/_Checkbox base.png" 
+                    alt="Checkbox" 
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block'
+                    }}
+                  />
+                ) : (
+                  <img 
+                    src="/attached_assets/_Checkbox base_selected.png" 
+                    alt="Checkbox Selected" 
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block'
+                    }}
+                  />
                 )}
               </div>
 
@@ -375,10 +400,18 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
           }}>
             <span style={{ fontSize: '24px', marginRight: '12px' }}>⚡</span>
             <h3 style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
+              width: '205px',
+              height: '17px',
+              fontFamily: 'Manrope, sans-serif',
+              fontWeight: 600,
+              fontSize: '24px',
+              lineHeight: '32px',
+              letterSpacing: '-0.6px',
+              textAlign: 'center',
+              verticalAlign: 'middle',
               color: '#020817',
-              margin: 0
+              margin: 0,
+              display: 'block'
             }}>
               Power Supply Type
             </h3>
@@ -408,51 +441,76 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                 onClick={() => handlePowerSupplyChange(option.id)}
                 style={{
                   position: 'relative',
-                  backgroundColor: isSelected ? '#020817' : '#FFFFFF',
-                  borderRadius: '12px',
-                  padding: '20px',
-                  cursor: 'pointer',
-                  border: isSelected ? '2px solid #FCD34D' : '1px solid #E5E5E5',
-                  transition: 'all 0.3s ease',
+                  width: '298px',
+                  height: '120px',
                   minHeight: '120px',
+                  opacity: isSelected ? 0.8 : 1,
+                  background: isSelected ? 'radial-gradient(100% 100% at 93.96% 0%, #4E4E4E 0%, #0A0D14 52.79%)' : '#FFFFFFBF',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  cursor: 'pointer',
+                  border: isSelected ? '1px solid #0208171A' : '1px solid #D5D5D573',
+                  boxShadow: isSelected ? '0px 0px 0px 0px #010EC7' : 'none',
+                  transition: 'all 0.3s ease',
                   display: 'flex',
                   alignItems: 'flex-start',
-                  gap: '12px'
+                  gap: '12px',
+                  boxSizing: 'border-box'
                 }}
                 data-testid={`power-supply-${option.id}`}
               >
-                {/* Radio Button */}
+                {/* Checkbox */}
                 <div style={{
-                  width: '24px',
-                  height: '24px',
-                  borderRadius: '50%',
-                  border: isSelected ? '2px solid #FCD34D' : '2px solid #D1D5DB',
-                  backgroundColor: isSelected ? '#020817' : 'transparent',
+                  position: 'absolute',
+                  top: '28px',
+                  left: '16px',
+                  width: isSelected ? '24px' : '18px',
+                  height: isSelected ? '24px' : '18px',
+                  border: 'none',
+                  backgroundColor: 'transparent',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  flexShrink: 0,
-                  marginTop: '2px'
+                  zIndex: 10
                 }}>
-                  {isSelected && (
-                    <div style={{
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FCD34D'
-                    }} />
+                  {!isSelected ? (
+                    <img 
+                      src="/attached_assets/_Checkbox base.png" 
+                      alt="Checkbox" 
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block'
+                      }}
+                    />
+                  ) : (
+                    <img 
+                      src="/attached_assets/_Checkbox base_selected.png" 
+                      alt="Checkbox Selected" 
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block'
+                      }}
+                    />
                   )}
                 </div>
 
                 {/* Content */}
-                <div style={{ flex: 1 }}>
+                <div style={{ 
+                  flex: 1,
+                  marginLeft: '28px'
+                }}>
                   <label style={{
                     fontSize: '16px',
                     fontWeight: 'bold',
                     color: isSelected ? '#FFFFFF' : '#020817',
                     display: 'block',
-                    marginBottom: '8px',
-                    cursor: 'pointer'
+                    marginBottom: '4px',
+                    cursor: 'pointer',
+                    fontFamily: 'Manrope, sans-serif'
                   }}>
                     {option.title}
                   </label>
@@ -460,31 +518,12 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                     fontSize: '14px',
                     color: isSelected ? '#D1D5DB' : '#787E86',
                     margin: 0,
-                    lineHeight: '1.5'
+                    lineHeight: '1.5',
+                    fontFamily: 'Manrope, sans-serif'
                   }}>
                     {option.description}
                   </p>
                 </div>
-
-                {/* Checkmark */}
-                {isSelected && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '12px',
-                    right: '12px',
-                    width: '24px',
-                    height: '24px',
-                    backgroundColor: '#FCD34D',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
-                      <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="#020817"/>
-                    </svg>
-                  </div>
-                )}
               </div>
             );
           })}
