@@ -196,7 +196,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                 paddingBottom: '24px',
                 paddingLeft: '24px',
                 cursor: 'pointer',
-                border: isSelected ? '2px solid #FCD34D' : '1px solid #E5E5E5',
+                border: '1px solid #E5E5E5',
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
@@ -393,15 +393,31 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
-            backgroundColor: '#FFFFFF',
-            borderRadius: '9999px',
-            padding: '12px 24px',
-            marginBottom: '16px'
+            width: '291px',
+            height: '58px',
+            backgroundColor: '#8E8E8E1A',
+            borderRadius: '40px',
+            border: '1px solid #0208171A',
+            paddingTop: '12px',
+            paddingRight: '24px',
+            paddingBottom: '12px',
+            paddingLeft: '24px',
+            marginBottom: '16px',
+            justifyContent: 'center',
+            gap: '0px',
+            boxSizing: 'border-box'
           }}>
-            <span style={{ fontSize: '24px', marginRight: '12px' }}>⚡</span>
+            <img 
+              src="/attached_assets/ev.png" 
+              alt="EV Charging" 
+              style={{
+                width: '24px',
+                height: '24px',
+                marginRight: '12px',
+                objectFit: 'contain'
+              }}
+            />
             <h3 style={{
-              width: '205px',
-              height: '17px',
               fontFamily: 'Manrope, sans-serif',
               fontWeight: 600,
               fontSize: '24px',
@@ -410,8 +426,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               textAlign: 'center',
               verticalAlign: 'middle',
               color: '#020817',
-              margin: 0,
-              display: 'block'
+              margin: 0
             }}>
               Power Supply Type
             </h3>
@@ -422,7 +437,8 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
             margin: 0,
             maxWidth: '600px',
             marginLeft: 'auto',
-            marginRight: 'auto'
+            marginRight: 'auto',
+            lineHeight: '1.5'
           }}>
             Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
           </p>
@@ -536,13 +552,18 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
           onClick={onNext}
           disabled={!canContinue}
           style={{
+            width: '346px',
+            height: '54px',
             background: canContinue 
-              ? 'linear-gradient(135deg, #FCD34D 0%, #FBBF24 100%)'
+              ? '#E1AE20D4'
               : '#E5E5E5',
-            color: canContinue ? '#020817' : '#9CA3AF',
+            color: canContinue ? '#FFFFFF' : '#9CA3AF',
             border: 'none',
-            borderRadius: '12px',
-            padding: '16px 32px',
+            borderRadius: '100px',
+            paddingRight: '6px',
+            paddingLeft: '26px',
+            paddingTop: '0',
+            paddingBottom: '0',
             fontSize: '18px',
             fontWeight: 'bold',
             cursor: canContinue ? 'pointer' : 'not-allowed',
@@ -550,16 +571,51 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
             transition: 'all 0.3s ease',
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
-            minWidth: '280px',
-            justifyContent: 'center'
+            gap: '0px',
+            justifyContent: 'space-between',
+            boxShadow: canContinue ? '0px 6px 15.3px 0px #0000001A' : 'none',
+            position: 'relative',
+            boxSizing: 'border-box'
           }}
           data-testid="button-continue-to-products"
         >
-          <span>Continue to Product Selection</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
+          <span style={{ 
+            fontFamily: 'Manrope, sans-serif',
+            fontWeight: 600,
+            fontSize: '18px',
+            lineHeight: '100%',
+            letterSpacing: '0%',
+            width: '261px',
+            height: '25px',
+            color: '#FFFFFF',
+            whiteSpace: 'nowrap',
+            display: 'block'
+          }}>Continue to Product Selection</span>
+          <div style={{
+            width: '54px',
+            height: '54px',
+            borderRadius: '100px',
+            padding: '10px',
+            backgroundColor: 'transparent',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            marginLeft: '10px',
+            gap: '10px',
+            boxSizing: 'border-box'
+          }}>
+            <img 
+              src="/attached_assets/arrow_forward.png" 
+              alt="Arrow" 
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          </div>
         </button>
       </div>
       </div>
