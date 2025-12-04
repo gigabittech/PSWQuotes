@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import ProductCard from "./ProductCard";
 import SolarProductCard from "./SolarProductCard";
+import BatteryProductCard from "./BatteryProductCard";
 import type { Product } from "@/types/quote";
 
 interface ProductSelectionProps {
@@ -135,17 +136,59 @@ export default function ProductSelection({
         {/* Battery Selection */}
         {data.systems?.includes('battery') && (
           <div className="mb-6 sm:mb-8">
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 px-2">Battery Storage Systems</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+            {/* Navigation/Filter Element */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '32px'
+            }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '291px',
+                height: '58px',
+                backgroundColor: '#8E8E8E1A',
+                borderRadius: '40px',
+                border: '1px solid #0208171A',
+                paddingTop: '12px',
+                paddingRight: '24px',
+                paddingBottom: '12px',
+                paddingLeft: '24px',
+                justifyContent: 'center',
+                gap: '12px',
+                boxSizing: 'border-box'
+              }}>
+                <img 
+                  src="/attached_assets/Battery.png" 
+                  alt="Battery Storage Systems" 
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    objectFit: 'contain'
+                  }}
+                />
+                <span style={{
+                  fontFamily: 'Manrope, sans-serif',
+                  fontWeight: 600,
+                  fontSize: '18px',
+                  lineHeight: '24px',
+                  color: '#020817',
+                  margin: 0
+                }}>
+                  Battery Storage Systems
+                </span>
+              </div>
+            </div>
+
+            {/* Product Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6">
               {batteryProducts.map((product) => (
-                <ProductCard
+                <BatteryProductCard
                   key={product.id}
                   product={product}
                   isSelected={data.batterySystem === product.id}
                   onSelect={() => handleProductSelect('batterySystem', product.id)}
-                  badge={product.popular ? "VALUE" : product.specifications?.premium ? "PREMIUM" : undefined}
-                  badgeColor="bg-primary text-primary-foreground"
-                  productType="battery"
+                  badge={product.popular ? "VALUE" : undefined}
                 />
               ))}
             </div>
