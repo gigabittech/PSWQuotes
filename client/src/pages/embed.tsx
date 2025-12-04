@@ -151,7 +151,7 @@ export default function EmbedPage() {
           
           {currentStep === 2 && (
             <ProductSelection
-              data={formData}
+              data={{ ...formData, powerSupply: formData.powerSupply }}
               products={products}
               pricingData={pricingData}
               onUpdate={handleFormUpdate}

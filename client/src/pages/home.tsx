@@ -212,7 +212,7 @@ export default function Home() {
           
           <StepIndicator currentStep={currentStep} />
           
-          <div className="glass-card overflow-hidden max-w-5xl mx-auto">
+          <div className="">
             {currentStep === 1 && (
               <SystemRequirements
                 data={formData}
@@ -256,7 +256,7 @@ export default function Home() {
       </section>
 
       {/* Embed Code Section */}
-      <section className="py-12 sm:py-16 lg:py-20 glass-backdrop">
+      <section className="py-12 sm:py-16 lg:py-20 glass-backdrop" style={{ background: '#FFFFFF' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 style={{
@@ -270,7 +270,7 @@ export default function Home() {
               letterSpacing: '-0.9px',
               textAlign: 'center',
               verticalAlign: 'middle',
-              color: '#020817',
+              color: '#020719',
               leadingTrim: 'none'
             } as React.CSSProperties & { leadingTrim?: string }}>
               Embed This Form On Your Website

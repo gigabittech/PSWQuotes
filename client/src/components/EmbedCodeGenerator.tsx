@@ -7,7 +7,8 @@ import { Check, Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function EmbedCodeGenerator() {
-  const [copied, setCopied] = useState(false);
+  const [copiedIframe, setCopiedIframe] = useState(false);
+  const [copiedScript, setCopiedScript] = useState(false);
   const [embedUrl, setEmbedUrl] = useState("");
   const { toast } = useToast();
   
@@ -48,12 +49,17 @@ export default function EmbedCodeGenerator() {
 
   const handleCopy = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
-    setCopied(true);
+    if (type === "IFrame") {
+      setCopiedIframe(true);
+      setTimeout(() => setCopiedIframe(false), 2000);
+    } else {
+      setCopiedScript(true);
+      setTimeout(() => setCopiedScript(false), 2000);
+    }
     toast({
       title: "Copied!",
       description: `${type} code copied to clipboard`,
     });
-    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -97,7 +103,7 @@ export default function EmbedCodeGenerator() {
                   boxSizing: 'border-box'
                 }}
               >
-                {copied ? (
+                {copiedIframe ? (
                   <>
                     <Check className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
                     <span style={{
@@ -179,7 +185,7 @@ export default function EmbedCodeGenerator() {
                   boxSizing: 'border-box'
                 }}
               >
-                {copied ? (
+                {copiedScript ? (
                   <>
                     <Check className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
                     <span style={{
