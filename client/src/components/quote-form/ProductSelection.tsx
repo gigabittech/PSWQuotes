@@ -52,7 +52,9 @@ export default function ProductSelection({
         width: 'calc(100% - 0px)',
         padding: '32px 48px',
         boxSizing: 'border-box',
-        margin: '0'
+        margin: '0',
+        background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
+        border: '1px solid #DDE1E775'
       }}
     >
       <div className="max-w-7xl mx-auto">

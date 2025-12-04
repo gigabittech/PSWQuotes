@@ -212,7 +212,7 @@ export default function Home() {
           
           <StepIndicator currentStep={currentStep} />
           
-          <div className="glass-card overflow-hidden max-w-5xl mx-auto">
+          <div className="">
             {currentStep === 1 && (
               <SystemRequirements
                 data={formData}

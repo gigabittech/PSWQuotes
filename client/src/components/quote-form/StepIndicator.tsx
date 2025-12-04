@@ -199,7 +199,8 @@ export default function StepIndicator({
       
       {/* Children wrapper with 65px border radius */}
       {children && (
-        <div style={{ 
+        <div className="bg-green-500" style={{ 
+          
           borderRadius: '65px', 
           width: '100%',
           maxWidth: '1024px',

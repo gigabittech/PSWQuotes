@@ -65,7 +65,18 @@ export default function PropertyDetails({
   const isValid = data.firstName && data.lastName && data.email && data.address && data.suburb && data.postcode;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8" data-testid="property-details">
+    <div 
+      className="p-4 sm:p-6 md:p-8" 
+      data-testid="property-details"
+      style={{
+        borderRadius: '65px',
+        overflow: 'hidden',
+        background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
+        border: '1px solid #DDE1E775',
+        padding: '32px 48px',
+        boxSizing: 'border-box'
+      }}
+    >
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-6 text-center">
           Property Details
