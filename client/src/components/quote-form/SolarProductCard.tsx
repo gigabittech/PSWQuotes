@@ -30,14 +30,17 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
     <div
       className={cn(
         "group relative rounded-2xl cursor-pointer transition-all duration-300",
-        "border-2 min-h-[500px] flex flex-col",
-        isSelected
-          ? "border-transparent"
-          : "border-[#E5E5E5] bg-white"
+        "min-h-[500px] flex flex-col"
       )}
       style={isSelected ? {
         background: 'radial-gradient(102.46% 102.46% at 50% -2.46%, #4E4E4E 0%, #0A0D14 52.79%)',
-      } : undefined}
+        border: 'none',
+        outline: 'none',
+        boxShadow: 'none'
+      } : {
+        background: '#FFFFFFBF',
+        border: '1px solid #DDE1E775'
+      }}
       onClick={onSelect}
       data-testid={`solar-product-card-${product.id}`}
     >
