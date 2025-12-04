@@ -172,20 +172,16 @@ export default function EVProductCard({ product, isSelected, onSelect, badge }: 
 
       {/* Content */}
       <div style={{
-        width: '243px',
-        height: '282px',
-        paddingTop: '56px',
+        paddingTop: '36px',
         paddingRight: '0px',
         paddingBottom: '0px',
         paddingLeft: '0px',
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'flex-start',
-        gap: '16px',
-        opacity: 1,
-        boxSizing: 'border-box'
+        gap: '12px'
       }}>
         {/* System Name */}
         <div style={{
@@ -380,7 +376,6 @@ export default function EVProductCard({ product, isSelected, onSelect, badge }: 
             </div>
           </div>
         </div>
-
         {/* Price Section */}
         <div style={{
           width: '243px',

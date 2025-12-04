@@ -33,7 +33,7 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
       )}
       style={{
         width: '293px',
-        height: '402px',
+        height: '484px',
         minHeight: '360px',
         borderRadius: '16px',
         paddingTop: '40px',
@@ -114,7 +114,7 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
       {/* Checkbox in top-right */}
       <div style={{
         position: 'absolute',
-        top: '28px',
+        top: '32px',
         right: isSelected ? '22px' : '26px',
         width: isSelected ? '24px' : '18px',
         height: isSelected ? '24px' : '18px',
@@ -181,14 +181,24 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
 
       {/* Content */}
       <div style={{
-        padding: '80px 24px 24px 24px',
+        paddingTop: '34px',
+        paddingRight: '0px',
+        paddingBottom: '0px',
+        paddingLeft: '0px',
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        gap: '0px'
       }}>
         {/* System Name */}
-        <div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          width: '100%'
+        }}>
           <h3 style={{
             width: '229px',
             height: '56px',
@@ -251,7 +261,7 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '12px',
-            marginBottom: '24px'
+            marginBottom: '0px'
           }}>
             {/* Left Column */}
             <div>
@@ -388,7 +398,6 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
             </div>
           </div>
         </div>
-
         {/* Price Section */}
         <div style={{
           width: '243px',
@@ -408,7 +417,9 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
           justifyContent: 'center',
           textAlign: 'center',
           boxSizing: 'border-box',
-          opacity: 1
+          opacity: 1,
+          marginTop: 'auto',
+          marginBottom: 0
         }}>
           <div style={{
             fontFamily: 'Manrope, sans-serif',
