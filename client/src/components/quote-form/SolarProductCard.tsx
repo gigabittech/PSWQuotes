@@ -190,12 +190,18 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
           
           {/* Capacity Label */}
           <p style={{
-            fontSize: '14px',
+            fontSize: '16px',
+            lineHeight: '24px',
+            letterSpacing: '0%',
             color: isSelected ? '#FCD34D' : '#E1AE20',
             marginBottom: '16px',
             marginTop: 0,
-            fontFamily: 'Manrope, sans-serif',
-            fontWeight: 500
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 500,
+            fontStyle: 'normal',
+            display: 'flex',
+            alignItems: 'center',
+            verticalAlign: 'middle'
           }}>
             {capacity} capacity system
           </p>
@@ -203,11 +209,18 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
           {/* Panel Details */}
           {panels && (
             <p style={{
-              fontSize: '14px',
+              fontSize: '16px',
+              lineHeight: '24px',
+              letterSpacing: '0%',
               color: isSelected ? '#D1D5DB' : '#787E86',
               marginBottom: '24px',
               marginTop: 0,
-              fontFamily: 'Manrope, sans-serif'
+              fontFamily: 'Inter, sans-serif',
+              fontWeight: 400,
+              fontStyle: 'normal',
+              display: 'flex',
+              alignItems: 'center',
+              verticalAlign: 'middle'
             }}>
               Panels: {panels}
             </p>
@@ -223,72 +236,132 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
             {/* Left Column */}
             <div>
               <div style={{
-                fontSize: '12px',
+                fontSize: '16px',
+                lineHeight: '24px',
+                letterSpacing: '0%',
                 color: isSelected ? '#9CA3AF' : '#787E86',
                 marginBottom: '4px',
-                fontFamily: 'Manrope, sans-serif'
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 400,
+                fontStyle: 'normal',
+                display: 'flex',
+                alignItems: 'center',
+                verticalAlign: 'middle'
               }}>
                 Capacity:
               </div>
               <div style={{
-                fontSize: '14px',
-                fontWeight: 'bold',
+                fontSize: '16px',
+                lineHeight: '24px',
+                letterSpacing: '0%',
+                fontWeight: 400,
+                fontStyle: 'normal',
                 color: isSelected ? '#FFFFFF' : '#020817',
                 marginBottom: '12px',
-                fontFamily: 'Manrope, sans-serif'
+                fontFamily: 'Inter, sans-serif',
+                display: 'flex',
+                alignItems: 'center',
+                verticalAlign: 'middle',
+                opacity: 1,
+                minHeight: '24px'
               }}>
                 {capacity}
               </div>
               <div style={{
-                fontSize: '12px',
+                fontSize: '16px',
+                lineHeight: '24px',
+                letterSpacing: '0%',
                 color: isSelected ? '#9CA3AF' : '#787E86',
                 marginBottom: '4px',
-                fontFamily: 'Manrope, sans-serif'
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 400,
+                fontStyle: 'normal',
+                display: 'flex',
+                alignItems: 'center',
+                verticalAlign: 'middle'
               }}>
                 Annual:
               </div>
               <div style={{
-                fontSize: '14px',
-                fontWeight: 'bold',
+                fontSize: '16px',
+                lineHeight: '24px',
+                letterSpacing: '0%',
+                fontStyle: 'normal',
                 color: isSelected ? '#FFFFFF' : '#020817',
-                fontFamily: 'Manrope, sans-serif'
+                fontFamily: 'Inter, sans-serif',
+                display: 'flex',
+                alignItems: 'center',
+                verticalAlign: 'middle'
               }}>
-                {annualGeneration}
+                {annualGeneration && annualGeneration.startsWith('~') ? (
+                  <>
+                    <span style={{ fontWeight: 400 }}>~</span>
+                    <span style={{ fontWeight: 500 }}>{annualGeneration.substring(1).replace(/\s+annually/gi, '')}</span>
+                  </>
+                ) : (
+                  <span style={{ fontWeight: 400 }}>{annualGeneration?.replace(/\s+annually/gi, '') || annualGeneration}</span>
+                )}
               </div>
             </div>
 
             {/* Right Column */}
             <div>
               <div style={{
-                fontSize: '12px',
+                fontSize: '16px',
+                lineHeight: '24px',
+                letterSpacing: '0%',
                 color: isSelected ? '#9CA3AF' : '#787E86',
                 marginBottom: '4px',
-                fontFamily: 'Manrope, sans-serif'
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 400,
+                fontStyle: 'normal',
+                display: 'flex',
+                alignItems: 'center',
+                verticalAlign: 'middle'
               }}>
                 Warranty:
               </div>
               <div style={{
-                fontSize: '14px',
-                fontWeight: 'bold',
+                fontSize: '16px',
+                lineHeight: '24px',
+                letterSpacing: '0%',
+                fontWeight: 400,
+                fontStyle: 'normal',
                 color: isSelected ? '#FFFFFF' : '#020817',
                 marginBottom: '12px',
-                fontFamily: 'Manrope, sans-serif'
+                fontFamily: 'Inter, sans-serif',
+                display: 'flex',
+                alignItems: 'center',
+                verticalAlign: 'middle'
               }}>
                 {warranty}
               </div>
               <div style={{
-                fontSize: '12px',
+                fontSize: '16px',
+                lineHeight: '24px',
+                letterSpacing: '0%',
                 color: isSelected ? '#9CA3AF' : '#787E86',
                 marginBottom: '4px',
-                fontFamily: 'Manrope, sans-serif'
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 400,
+                fontStyle: 'normal',
+                display: 'flex',
+                alignItems: 'center',
+                verticalAlign: 'middle'
               }}>
                 Generation:
               </div>
               <div style={{
-                fontSize: '14px',
-                fontWeight: 'bold',
+                fontSize: '16px',
+                lineHeight: '24px',
+                letterSpacing: '0%',
+                fontWeight: 400,
+                fontStyle: 'normal',
                 color: isSelected ? '#FFFFFF' : '#020817',
-                fontFamily: 'Manrope, sans-serif'
+                fontFamily: 'Inter, sans-serif',
+                display: 'flex',
+                alignItems: 'center',
+                verticalAlign: 'middle'
               }}>
                 Annually
               </div>
