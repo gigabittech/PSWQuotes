@@ -173,7 +173,7 @@ export default function BatteryProductCard({ product, isSelected, onSelect, badg
 
       {/* Content */}
       <div style={{
-        paddingTop: '0px',
+        paddingTop: '34px',
         paddingRight: '0px',
         paddingBottom: '0px',
         paddingLeft: '0px',
@@ -182,7 +182,7 @@ export default function BatteryProductCard({ product, isSelected, onSelect, badg
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        gap: '24px'
+        gap: '12px'
       }}>
         {/* System Name */}
         <div style={{
