@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils";
 
-interface SolarProductCardProps {
+interface EVProductCardProps {
   product: any;
   isSelected: boolean;
   onSelect: () => void;
   badge?: string;
 }
 
-export default function SolarProductCard({ product, isSelected, onSelect, badge }: SolarProductCardProps) {
+export default function EVProductCard({ product, isSelected, onSelect, badge }: EVProductCardProps) {
   const priceAfterRebate = parseFloat(product.price);
   
   // Format price as "From $X,XXX"
@@ -24,7 +24,6 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
   const capacity = product.capacity || product.specifications?.capacity || '';
   const annualGeneration = product.specifications?.generation || product.specifications?.annual || '';
   const warranty = product.warranty || product.specifications?.warranty || '';
-  const panels = product.specifications?.panels || '';
 
   return (
     <div
@@ -36,86 +35,78 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
         height: '402px',
         minHeight: '360px',
         borderRadius: '16px',
+        border: isSelected ? 'none' : '1px solid #D5D5D573',
         paddingTop: '40px',
         paddingRight: '24px',
         paddingBottom: '24px',
         paddingLeft: '24px',
         display: 'flex',
         flexDirection: 'column',
-        ...(isSelected ? {
-          background: 'radial-gradient(102.46% 102.46% at 50% -2.46%, #4E4E4E 0%, #0A0D14 52.79%)',
-          border: 'none',
-          outline: 'none',
-          boxShadow: 'none'
-        } : {
-          background: '#FFFFFFBF',
-          border: '1px solid #D5D5D573'
-        }),
+        background: isSelected 
+          ? 'radial-gradient(102.46% 102.46% at 50% -2.46%, #4E4E4E 0%, #0A0D14 52.79%)'
+          : '#FFFFFFBF',
         opacity: 1,
         boxSizing: 'border-box',
+        outline: 'none',
+        boxShadow: 'none',
         transition: 'background 0.2s ease, border 0.2s ease'
       }}
       onClick={onSelect}
-      data-testid={`solar-product-card-${product.id}`}
+      data-testid={`ev-product-card-${product.id}`}
     >
       {/* Badge at top center */}
       {badge && (
-        <>
-          {/* Blurred layer behind badge when selected */}
-          {isSelected && (
-            <div style={{
-              position: 'absolute',
-              top: '-14.5px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '132px',
-              height: '29px',
-              borderRadius: '9999px',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              zIndex: 999,
-              pointerEvents: 'none'
-            }} />
-          )}
-          <div style={{
-            position: 'absolute',
-            top: '-14.5px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '132px',
-            height: '29px',
-            borderRadius: '9999px',
-            border: isSelected ? '1px solid #C2C2C233' : 'none',
-            backgroundColor: isSelected ? '#F7C9179E' : '#F5F5F5',
-            color: '#020817',
-            padding: '10px 16px',
+        <div style={{
+          position: 'absolute',
+          top: '-14.5px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '134px',
+          height: '29px',
+          borderRadius: '9999px',
+          border: '1px solid #C2C2C233',
+          backgroundColor: isSelected ? '#F7C9179E' : '#F5F5F5',
+          paddingTop: '10px',
+          paddingRight: '16px',
+          paddingBottom: '10px',
+          paddingLeft: '16px',
+          opacity: 1,
+          whiteSpace: 'nowrap',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          zIndex: 1000,
+          boxShadow: isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none',
+          backdropFilter: isSelected ? 'blur(10px)' : 'none',
+          WebkitBackdropFilter: isSelected ? 'blur(10px)' : 'none'
+        }}>
+          <span style={{
+            width: '102px',
+            height: '9px',
             fontFamily: 'Inter, sans-serif',
-            fontSize: '12px',
             fontWeight: 600,
+            fontSize: '12px',
             lineHeight: '16px',
             letterSpacing: '0.3px',
             textTransform: 'uppercase',
-            whiteSpace: 'nowrap',
+            verticalAlign: 'middle',
+            color: '#020817',
+            opacity: 1,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            boxSizing: 'border-box',
-            zIndex: 1000,
-            boxShadow: isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none',
-            backdropFilter: isSelected ? 'blur(10px)' : 'none',
-            WebkitBackdropFilter: isSelected ? 'blur(10px)' : 'none'
+            justifyContent: 'center'
           }}>
             {badge}
-          </div>
-        </>
+          </span>
+        </div>
       )}
 
       {/* Checkbox in top-right */}
       <div style={{
         position: 'absolute',
-        top: '28px',
-        right: isSelected ? '22px' : '26px',
+        top: '36px',
+        right: '24px',
         width: isSelected ? '24px' : '18px',
         height: isSelected ? '24px' : '18px',
         border: 'none',
@@ -151,16 +142,16 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
         )}
       </div>
 
-      {/* Sun Icon in top-left */}
+      {/* EV Icon in top-left */}
       <div style={{
         position: 'absolute',
-        top: '24px',
+        top: '32px',
         left: '24px',
         width: '40px',
         height: '40px',
         borderRadius: '40px',
         border: '1px solid #C2C2C233',
-        background: '#EBC9721A',
+        background: isSelected ? '#F7C9171A' : '#FEB60F1A',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -168,8 +159,8 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
         opacity: 1
       }}>
         <img 
-          src="/attached_assets/Solar.png" 
-          alt="Solar" 
+          src="/attached_assets/ev.png" 
+          alt="EV Charger" 
           style={{
             width: '24px',
             height: '24px',
@@ -181,77 +172,78 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
 
       {/* Content */}
       <div style={{
-        padding: '80px 24px 24px 24px',
+        width: '243px',
+        height: '282px',
+        paddingTop: '56px',
+        paddingRight: '0px',
+        paddingBottom: '0px',
+        paddingLeft: '0px',
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        gap: '16px',
+        opacity: 1,
+        boxSizing: 'border-box'
       }}>
         {/* System Name */}
-        <div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          width: '100%'
+        }}>
           <h3 style={{
-            width: '229px',
-            height: '56px',
+            width: '247px',
+            minHeight: '28px',
             fontFamily: 'Manrope, sans-serif',
-            fontWeight: 500,
+            fontWeight: 600,
             fontSize: '22px',
             lineHeight: '28px',
             letterSpacing: '-0.6px',
             color: isSelected ? '#E6E6E6' : '#020817',
             marginBottom: '8px',
             marginTop: 0,
+            marginLeft: 0,
+            paddingLeft: 0,
             opacity: 1,
             display: 'flex',
-            alignItems: 'center',
-            verticalAlign: 'middle'
+            alignItems: 'flex-start',
+            verticalAlign: 'middle',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word'
           }}>
             {product.name}
           </h3>
           
           {/* Capacity Label */}
           <p style={{
-            fontSize: '16px',
+            width: '169px',
+            height: '24px',
+            fontSize: '14px',
             lineHeight: '24px',
             letterSpacing: '0%',
-            color: isSelected ? '#FCD34D' : '#E1AE20',
+            color: '#FEB60F',
             marginBottom: '16px',
             marginTop: 0,
             fontFamily: 'Inter, sans-serif',
-            fontWeight: 500,
+            fontWeight: 400,
             fontStyle: 'normal',
             display: 'flex',
             alignItems: 'center',
-            verticalAlign: 'middle'
+            verticalAlign: 'middle',
+            opacity: 1
           }}>
             {capacity} capacity system
           </p>
-
-          {/* Panel Details */}
-          {panels && (
-            <p style={{
-              fontSize: '16px',
-              lineHeight: '24px',
-              letterSpacing: '0%',
-              color: isSelected ? '#D1D5DB' : '#787E86',
-              marginBottom: '24px',
-              marginTop: 0,
-              fontFamily: 'Inter, sans-serif',
-              fontWeight: 400,
-              fontStyle: 'normal',
-              display: 'flex',
-              alignItems: 'center',
-              verticalAlign: 'middle'
-            }}>
-              Panels: {panels}
-            </p>
-          )}
 
           {/* Specifications Table */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '12px',
-            marginBottom: '24px'
+            marginBottom: '0px'
           }}>
             {/* Left Column */}
             <div>
@@ -319,7 +311,7 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
                     <span style={{ fontWeight: 500 }}>{annualGeneration.substring(1).replace(/\s+annually/gi, '')}</span>
                   </>
                 ) : (
-                  <span style={{ fontWeight: 400 }}>{annualGeneration?.replace(/\s+annually/gi, '') || annualGeneration}</span>
+                  <span style={{ fontWeight: 400 }}>{annualGeneration?.replace(/\s+annually/gi, '') || '~9900 kWh'}</span>
                 )}
               </div>
             </div>
@@ -408,7 +400,10 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
           justifyContent: 'center',
           textAlign: 'center',
           boxSizing: 'border-box',
-          opacity: 1
+          opacity: 1,
+          alignSelf: 'center',
+          marginBottom: 0,
+          marginTop: 'auto'
         }}>
           <div style={{
             fontFamily: 'Manrope, sans-serif',

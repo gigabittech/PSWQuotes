@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import ProductCard from "./ProductCard";
 import SolarProductCard from "./SolarProductCard";
 import BatteryProductCard from "./BatteryProductCard";
+import EVProductCard from "./EVProductCard";
 import type { Product } from "@/types/quote";
 
 interface ProductSelectionProps {
@@ -198,17 +199,59 @@ export default function ProductSelection({
         {/* EV Charger Selection */}
         {data.systems?.includes('ev') && (
           <div className="mb-6 sm:mb-8">
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 px-2">EV Charging Solutions</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+            {/* Navigation/Filter Element */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '32px'
+            }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '291px',
+                height: '58px',
+                backgroundColor: '#8E8E8E1A',
+                borderRadius: '40px',
+                border: '1px solid #0208171A',
+                paddingTop: '12px',
+                paddingRight: '24px',
+                paddingBottom: '12px',
+                paddingLeft: '24px',
+                justifyContent: 'center',
+                gap: '12px',
+                boxSizing: 'border-box'
+              }}>
+                <img 
+                  src="/attached_assets/ev.png" 
+                  alt="EV Charging Solutions" 
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    objectFit: 'contain'
+                  }}
+                />
+                <span style={{
+                  fontFamily: 'Manrope, sans-serif',
+                  fontWeight: 600,
+                  fontSize: '18px',
+                  lineHeight: '24px',
+                  color: '#020817',
+                  margin: 0
+                }}>
+                  EV Charging Solutions
+                </span>
+              </div>
+            </div>
+
+            {/* Product Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6">
               {evProducts.map((product) => (
-                <ProductCard
+                <EVProductCard
                   key={product.id}
                   product={product}
                   isSelected={data.evCharger === product.id}
                   onSelect={() => handleProductSelect('evCharger', product.id)}
                   badge={product.popular ? "FAST CHARGING" : undefined}
-                  badgeColor="bg-primary text-primary-foreground"
-                  productType="ev_charger"
                 />
               ))}
             </div>

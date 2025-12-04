@@ -37,10 +37,10 @@ export default function BatteryProductCard({ product, isSelected, onSelect, badg
       )}
       style={{
         width: '293px',
-        height: '466px',
+        height: '402px',
         minHeight: '360px',
         borderRadius: '16px',
-        border: isSelected ? 'none' : '1px solid #DDE1E775',
+        border: isSelected ? 'none' : '1px solid #D5D5D573',
         paddingTop: '40px',
         paddingRight: '24px',
         paddingBottom: '24px',
