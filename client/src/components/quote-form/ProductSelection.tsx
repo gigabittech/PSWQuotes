@@ -160,7 +160,7 @@ export default function ProductSelection({
                 boxSizing: 'border-box'
               }}>
                 <img 
-                  src="/attached_assets/Battery.png" 
+                  src="/attached_assets/car-battery (1) 1.png" 
                   alt="Battery Storage Systems" 
                   style={{
                     width: '24px',
@@ -169,12 +169,22 @@ export default function ProductSelection({
                   }}
                 />
                 <span style={{
+                  width: '197px',
+                  height: '13px',
                   fontFamily: 'Manrope, sans-serif',
-                  fontWeight: 600,
+                  fontWeight: 500,
                   fontSize: '18px',
-                  lineHeight: '24px',
+                  lineHeight: '32px',
+                  letterSpacing: '-0.6px',
+                  textAlign: 'center',
+                  verticalAlign: 'middle',
                   color: '#020817',
-                  margin: 0
+                  opacity: 1,
+                  margin: 0,
+                  marginTop: '-4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}>
                   Battery Storage Systems
                 </span>
@@ -222,7 +232,7 @@ export default function ProductSelection({
                 boxSizing: 'border-box'
               }}>
                 <img 
-                  src="/attached_assets/ev.png" 
+                  src="/attached_assets/charging-station 1.png" 
                   alt="EV Charging Solutions" 
                   style={{
                     width: '24px',

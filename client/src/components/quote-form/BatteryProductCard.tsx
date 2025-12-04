@@ -61,7 +61,25 @@ export default function BatteryProductCard({ product, isSelected, onSelect, badg
     >
       {/* Badge at top center */}
       {badge && (
-        <div style={{
+        <>
+          {/* Blurred layer behind badge when selected */}
+          {isSelected && (
+            <div style={{
+              position: 'absolute',
+              top: '-14.5px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '73px',
+              height: '29px',
+              borderRadius: '9999px',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              zIndex: 999,
+              pointerEvents: 'none'
+            }} />
+          )}
+          <div style={{
             position: 'absolute',
             top: '-14.5px',
             left: '50%',
@@ -69,8 +87,10 @@ export default function BatteryProductCard({ product, isSelected, onSelect, badg
             width: '73px',
             height: '29px',
             borderRadius: '9999px',
-            border: isSelected ? '1px solid #C2C2C233' : 'none',
-            backgroundColor: isSelected ? '#F7C9179E' : '#F5F5F5',
+            border: isSelected ? '1px solid rgba(247, 201, 23, 0.3)' : '1px solid rgba(245, 245, 245, 0.3)',
+            background: isSelected ? 'rgba(247, 201, 23, 0.6)' : 'rgba(245, 245, 245, 0.4)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
             padding: '10px 16px',
             whiteSpace: 'nowrap',
             display: 'flex',
@@ -78,9 +98,7 @@ export default function BatteryProductCard({ product, isSelected, onSelect, badg
             justifyContent: 'center',
             boxSizing: 'border-box',
             zIndex: 1000,
-            boxShadow: isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none',
-            backdropFilter: isSelected ? 'blur(10px)' : 'none',
-            WebkitBackdropFilter: isSelected ? 'blur(10px)' : 'none'
+            boxShadow: isSelected ? '0px 2px 8px rgba(247, 201, 23, 0.3)' : '0px 2px 8px rgba(0, 0, 0, 0.1)'
           }}>
             <span style={{
               width: '41px',
@@ -101,6 +119,7 @@ export default function BatteryProductCard({ product, isSelected, onSelect, badg
               {badge}
             </span>
           </div>
+        </>
       )}
 
       {/* Checkbox in top-right */}
@@ -465,9 +484,13 @@ export default function BatteryProductCard({ product, isSelected, onSelect, badg
               borderRadius: '28px',
               paddingTop: '2px',
               paddingBottom: '2px',
-              paddingLeft: 0,
-              paddingRight: 0,
-              background: isSelected ? '#96FF9933' : '#D1ECD2',
+              paddingLeft: '12px',
+              paddingRight: '12px',
+              background: isSelected ? 'rgba(150, 255, 153, 0.2)' : '#D1ECD2',
+              backdropFilter: isSelected ? 'blur(10px)' : 'none',
+              WebkitBackdropFilter: isSelected ? 'blur(10px)' : 'none',
+              border: isSelected ? '1px solid rgba(36, 223, 60, 0.3)' : 'none',
+              boxShadow: isSelected ? '0 2px 8px rgba(36, 223, 60, 0.15)' : 'none',
               opacity: 1,
               display: 'flex',
               alignItems: 'center',

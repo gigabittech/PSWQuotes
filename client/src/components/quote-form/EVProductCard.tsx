@@ -56,31 +56,49 @@ export default function EVProductCard({ product, isSelected, onSelect, badge }: 
     >
       {/* Badge at top center */}
       {badge && (
-        <div style={{
-          position: 'absolute',
-          top: '-14.5px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '134px',
-          height: '29px',
-          borderRadius: '9999px',
-          border: '1px solid #C2C2C233',
-          backgroundColor: isSelected ? '#F7C9179E' : '#F5F5F5',
-          paddingTop: '10px',
-          paddingRight: '16px',
-          paddingBottom: '10px',
-          paddingLeft: '16px',
-          opacity: 1,
-          whiteSpace: 'nowrap',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxSizing: 'border-box',
-          zIndex: 1000,
-          boxShadow: isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none',
-          backdropFilter: isSelected ? 'blur(10px)' : 'none',
-          WebkitBackdropFilter: isSelected ? 'blur(10px)' : 'none'
-        }}>
+        <>
+          {/* Blurred layer behind badge when selected */}
+          {isSelected && (
+            <div style={{
+              position: 'absolute',
+              top: '-14.5px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '134px',
+              height: '29px',
+              borderRadius: '9999px',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              zIndex: 999,
+              pointerEvents: 'none'
+            }} />
+          )}
+          <div style={{
+            position: 'absolute',
+            top: '-14.5px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '134px',
+            height: '29px',
+            borderRadius: '9999px',
+            border: isSelected ? '1px solid rgba(247, 201, 23, 0.3)' : '1px solid rgba(245, 245, 245, 0.3)',
+            background: isSelected ? 'rgba(247, 201, 23, 0.6)' : 'rgba(245, 245, 245, 0.4)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            paddingTop: '10px',
+            paddingRight: '16px',
+            paddingBottom: '10px',
+            paddingLeft: '16px',
+            opacity: 1,
+            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxSizing: 'border-box',
+            zIndex: 1000,
+            boxShadow: isSelected ? '0px 2px 8px rgba(247, 201, 23, 0.3)' : '0px 2px 8px rgba(0, 0, 0, 0.1)'
+          }}>
           <span style={{
             width: '102px',
             height: '9px',
@@ -100,6 +118,7 @@ export default function EVProductCard({ product, isSelected, onSelect, badge }: 
             {badge}
           </span>
         </div>
+        </>
       )}
 
       {/* Checkbox in top-right */}
@@ -416,24 +435,39 @@ export default function EVProductCard({ product, isSelected, onSelect, badge }: 
           </div>
           <div style={{
             width: '208.66px',
-            height: isSelected ? '20px' : '24px',
+            height: '24px',
             borderRadius: '28px',
             paddingTop: '2px',
             paddingBottom: '2px',
             paddingLeft: '12px',
             paddingRight: '12px',
-            background: isSelected ? '#96FF9933' : '#D1ECD2',
+            background: isSelected ? 'rgba(150, 255, 153, 0.2)' : '#D1ECD2',
+            backdropFilter: isSelected ? 'blur(10px)' : 'none',
+            WebkitBackdropFilter: isSelected ? 'blur(10px)' : 'none',
+            border: isSelected ? '1px solid rgba(36, 223, 60, 0.3)' : 'none',
+            boxShadow: isSelected ? '0 2px 8px rgba(36, 223, 60, 0.15)' : 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontFamily: isSelected ? 'Inter, sans-serif' : 'Manrope, sans-serif',
-            fontSize: isSelected ? '14px' : '12px',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '14px',
             fontWeight: 500,
-            lineHeight: isSelected ? '20px' : 'normal',
+            lineHeight: '20px',
             letterSpacing: '0%',
-            color: isSelected ? '#24DF3C' : '#228B22'
+            textAlign: 'center',
+            verticalAlign: 'middle',
+            opacity: 1,
+            color: isSelected ? '#24DF3C' : '#1D852A'
           }}>
-            Installed price.
+            <span style={{
+              width: '208.66px',
+              height: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              Installed price.
+            </span>
           </div>
         </div>
       </div>
