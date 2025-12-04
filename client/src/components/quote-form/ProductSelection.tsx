@@ -43,12 +43,52 @@ export default function ProductSelection({
   };
 
   return (
-    <div className="p-4 sm:p-6 md:p-8" data-testid="product-selection">
+    <div 
+      className="" 
+      data-testid="product-selection"
+      style={{ 
+        borderRadius: '65px', 
+        overflow: 'hidden', 
+        width: 'calc(100% - 0px)',
+        padding: '32px 48px',
+        boxSizing: 'border-box',
+        margin: '0'
+      }}
+    >
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-6 text-center">
+        <h2 style={{
+          width: '926px',
+          height: '40px',
+          fontFamily: 'Manrope, sans-serif',
+          fontWeight: 600,
+          fontSize: '36px',
+          lineHeight: '40px',
+          letterSpacing: '-0.9px',
+          textAlign: 'center',
+          verticalAlign: 'middle',
+          color: '#020817',
+          opacity: 1,
+          margin: '0 auto',
+          marginBottom: '16px'
+        }}>
           Choose Your Solar System
         </h2>
-        <p className="text-sm sm:text-base text-muted-foreground text-center mb-6 sm:mb-8 px-4">
+        <p style={{
+          width: '732px',
+          height: '28px',
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: 400,
+          fontSize: '18px',
+          lineHeight: '28px',
+          letterSpacing: '0%',
+          textAlign: 'center',
+          verticalAlign: 'middle',
+          color: '#787E86',
+          opacity: 1,
+          margin: '0 auto',
+          marginBottom: '32px',
+          whiteSpace: 'nowrap'
+        }}>
           Based on your selections, here are our recommended packages with real-time pricing.
         </p>
 
@@ -78,7 +118,7 @@ export default function ProductSelection({
                 boxSizing: 'border-box'
               }}>
                 <img 
-                  src="/attached_assets/Solar.png" 
+                  src="/attached_assets/solar-panel-sun (1) 1.png" 
                   alt="Solar Power Systems" 
                   style={{
                     width: '24px',

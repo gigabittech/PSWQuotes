@@ -56,7 +56,7 @@ export default function StepIndicator({
   };
 
   return (
-    <div className="mb-8 flex flex-col items-center">
+    <div className="mb-8 flex flex-col items-center" style={{ width: '100%' }}>
       {/* Step Indicator Buttons - Above the container */}
       <div 
         role="navigation" 
@@ -83,6 +83,9 @@ export default function StepIndicator({
             const lineLeft = cumulativeLeft;
             const lineWidth = gapSize;
             
+            // Line is green if the step after it is completed
+            const isCompleted = step.number < currentStep;
+            
             return (
               <div
                 key={`line-${step.number}`}
@@ -93,7 +96,7 @@ export default function StepIndicator({
                   transform: 'translateY(-50%)',
                   width: `${lineWidth}px`,
                   height: '1px',
-                  backgroundColor: '#E5E5E5',
+                  backgroundColor: isCompleted ? '#19A42033' : '#E5E5E5',
                   zIndex: 1,
                   pointerEvents: 'none',
                   opacity: 1
@@ -108,6 +111,7 @@ export default function StepIndicator({
         {steps.map((step, index) => {
           const state = getStepState(step.number);
           const isCurrent = state === 'current';
+          const isCompleted = state === 'completed';
           const hasError = errors[step.number];
           const clickable = isClickable(step.number);
           const stepWidth = getStepWidth();
@@ -125,9 +129,9 @@ export default function StepIndicator({
                 paddingBottom: '10.55px',
                 paddingLeft: '20px',
                 borderRadius: '9999px',
-                background: isCurrent ? '#020817' : '#F8F8F8',
-                color: isCurrent ? '#FFFFFF' : '#787E86',
-                border: 'none',
+                background: isCurrent ? '#020817' : isCompleted ? '#19A42033' : '#F8F8F8',
+                color: isCurrent ? '#FFFFFF' : isCompleted ? '#298F36' : '#787E86',
+                border: isCompleted ? '1px solid #298F3633' : 'none',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -192,6 +196,23 @@ export default function StepIndicator({
           );
         })}
       </div>
+      
+      {/* Children wrapper with 65px border radius */}
+      {children && (
+        <div style={{ 
+          borderRadius: '65px', 
+          width: '100%',
+          maxWidth: '1024px',
+          overflow: 'visible',
+          background: '#22c55e',
+          padding: '40px',
+          margin: '0 auto',
+          boxSizing: 'border-box',
+          display: 'block'
+        }}>
+          {children}
+        </div>
+      )}
     </div>
   );
 }
