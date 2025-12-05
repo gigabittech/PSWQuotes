@@ -66,58 +66,33 @@ export default function PropertyDetails({
 
   return (
     <div 
+      className="w-full max-w-6xl mx-auto rounded-2xl sm:rounded-3xl md:rounded-[65px] overflow-hidden p-4 sm:p-6 md:p-8 lg:p-12"
       data-testid="property-details"
       style={{
-        width: '1024px',
-        maxWidth: '1024px',
-        borderRadius: '65px',
-        overflow: 'hidden',
         background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
         border: '1px solid #DDE1E775',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '48px 49px',
-        boxSizing: 'border-box',
-        gap: '24px'
+        boxSizing: 'border-box'
       }}
     >
-      <div style={{ 
-        width: '100%', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center',
-        gap: '24px'
-      }}>
-        <h2 style={{
-          fontSize: '32px',
-          fontWeight: 'bold',
+      <div className="w-full flex flex-col items-center gap-4 sm:gap-6">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-3 sm:mb-4" style={{
           color: '#020817',
-          marginBottom: '16px',
-          marginTop: 0,
-          textAlign: 'center'
+          marginTop: 0
         }}>
           Property Details
         </h2>
-        <p style={{
-          fontSize: '16px',
+        <p className="text-sm sm:text-base md:text-lg text-center max-w-2xl mx-auto mb-4 sm:mb-6" style={{
           color: '#787E86',
-          margin: 0,
-          maxWidth: '600px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          textAlign: 'center',
-          marginBottom: '24px'
+          margin: 0
         }}>
           Help us provide an accurate quote by sharing your property information.
         </p>
 
-        <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '926px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto flex flex-col gap-4 sm:gap-6">
           {/* Contact Information */}
-          <div className="bg-muted/30 rounded-lg  sm:p-0">
+          <div className="bg-muted/30 rounded-lg p-4 sm:p-6">
             <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6 flex items-center">
-              <svg className="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-2 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               Contact Information
@@ -135,7 +110,7 @@ export default function PropertyDetails({
                     onChange={(e) => handleInputChange('firstName', e.target.value)}
                     required
                     data-testid="input-first-name"
-                    className="w-full h-12 text-base"
+                    className="w-full h-10 sm:h-12 text-sm sm:text-base"
                     placeholder="John"
                   />
                 </div>
@@ -150,7 +125,7 @@ export default function PropertyDetails({
                     onChange={(e) => handleInputChange('lastName', e.target.value)}
                     required
                     data-testid="input-last-name"
-                    className="w-full h-12 text-base"
+                    className="w-full h-10 sm:h-12 text-sm sm:text-base"
                     placeholder="Smith"
                   />
                 </div>
@@ -169,7 +144,7 @@ export default function PropertyDetails({
                     required
                     placeholder="your@email.com"
                     data-testid="input-email"
-                    className="w-full h-12 text-base"
+                    className="w-full h-10 sm:h-12 text-sm sm:text-base"
                   />
                 </div>
                 <div>
@@ -183,7 +158,7 @@ export default function PropertyDetails({
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     placeholder="(04) 1234 5678"
                     data-testid="input-phone"
-                    className="w-full h-12 text-base"
+                    className="w-full h-10 sm:h-12 text-sm sm:text-base"
                   />
                 </div>
               </div>
@@ -191,9 +166,9 @@ export default function PropertyDetails({
           </div>
 
           {/* Property Address */}
-          <div className="bg-muted/30 rounded-lg p-0 sm:p-0">
+          <div className="bg-muted/30 rounded-lg p-4 sm:p-6">
             <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6 flex items-center">
-              <svg className="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-2 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
               Installation Address
@@ -211,10 +186,10 @@ export default function PropertyDetails({
                   required
                   placeholder="123 Example Street"
                   data-testid="input-address"
-                  className="w-full h-12 text-base"
+                  className="w-full h-10 sm:h-12 text-sm sm:text-base"
                 />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="suburb" className="block text-sm font-medium text-foreground mb-2">
                     Suburb *
@@ -227,7 +202,7 @@ export default function PropertyDetails({
                     required
                     placeholder="Perth"
                     data-testid="input-suburb"
-                    className="w-full h-12 text-base"
+                    className="w-full h-10 sm:h-12 text-sm sm:text-base"
                   />
                 </div>
                 <div>
@@ -235,7 +210,7 @@ export default function PropertyDetails({
                     State
                   </Label>
                   <Select value={data.state || 'WA'} onValueChange={(value) => handleInputChange('state', value)}>
-                    <SelectTrigger className="h-12" data-testid="select-state">
+                    <SelectTrigger className="h-10 sm:h-12 text-sm sm:text-base" data-testid="select-state">
                       <SelectValue placeholder="Select state" />
                     </SelectTrigger>
                     <SelectContent>
@@ -255,7 +230,7 @@ export default function PropertyDetails({
                   required
                   placeholder="6000"
                   data-testid="input-postcode"
-                  className="w-full"
+                  className="w-full h-10 sm:h-12 text-sm sm:text-base"
                 />
               </div>
             </div>
@@ -264,11 +239,11 @@ export default function PropertyDetails({
 
           {/* Switchboard Photo Upload */}
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-4">Switchboard Photo</h3>
-            <p className="text-sm text-muted-foreground mb-4">
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">Switchboard Photo</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
               Please upload a clear photo of your main switchboard including the electricity meter to help us provide an accurate quote.
             </p>
-            <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+            <div className="border-2 border-dashed border-border rounded-lg p-4 sm:p-6 text-center">
               <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-muted-foreground text-xl">☁️</span>
               </div>
@@ -298,7 +273,7 @@ export default function PropertyDetails({
 
           {/* Additional Information */}
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-4">Additional Information</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">Additional Information</h3>
             <Textarea
               id="additional-info"
               value={data.additionalInfo || ''}
@@ -306,56 +281,32 @@ export default function PropertyDetails({
               rows={4}
               placeholder="Any special requirements, questions, or additional information you'd like us to consider..."
               data-testid="textarea-additional-info"
-              className="w-full"
+              className="w-full text-sm sm:text-base"
             />
           </div>
 
           {/* Navigation Buttons */}
-          <div className="flex flex-col sm:flex-row justify-between gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row justify-between gap-4 mt-6 sm:mt-8 w-full">
             <button
               type="button"
               onClick={onPrev}
               data-testid="button-back"
+              className="w-full sm:w-auto min-w-[107px] h-11 sm:h-12 rounded-full flex items-center justify-center gap-2 sm:gap-3 px-3 sm:px-6 transition-all duration-300"
               style={{
-                width: '107px',
-                height: '45px',
-                borderRadius: '100px',
-                paddingLeft: '6px',
-                paddingRight: '6px',
                 background: '#0B0E15',
-                opacity: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '10px',
                 border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
+                cursor: 'pointer'
               }}
             >
               <img 
                 src="/attached_assets/BackArrow.png" 
                 alt="Back" 
-                style={{
-                  width: 'auto',
-                  height: 'auto',
-                  objectFit: 'contain'
-                }}
+                className="w-4 h-4 sm:w-5 sm:h-5 object-contain"
               />
-              <span style={{
-                width: '41px',
-                height: '25px',
+              <span className="text-base sm:text-lg font-medium whitespace-nowrap" style={{
                 color: '#E9BE18',
                 fontFamily: 'Manrope, sans-serif',
-                fontWeight: 500,
-                fontStyle: 'normal',
-                fontSize: '18px',
-                lineHeight: '100%',
-                letterSpacing: '0%',
-                opacity: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
+                fontWeight: 500
               }}>
                 Back
               </span>
@@ -364,62 +315,32 @@ export default function PropertyDetails({
               type="submit"
               disabled={!isValid || isSubmitting}
               data-testid="button-generate-quote"
+              className="w-full sm:w-auto min-w-[200px] h-11 sm:h-12 rounded-full flex items-center justify-between gap-2 sm:gap-3 px-4 sm:px-6 transition-all duration-300"
               style={{
-                width: 'auto',
-                minWidth: '200px',
-                height: '45px',
-                borderRadius: '100px',
-                paddingLeft: '18px',
-                paddingRight: '18px',
                 background: '#F7C917',
                 opacity: (!isValid || isSubmitting) ? 0.5 : 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '10px',
                 border: 'none',
-                cursor: (!isValid || isSubmitting) ? 'not-allowed' : 'pointer',
-                transition: 'all 0.3s ease'
+                cursor: (!isValid || isSubmitting) ? 'not-allowed' : 'pointer'
               }}
             >
-              <span style={{
+              <span className="text-base sm:text-lg font-semibold whitespace-nowrap" style={{
                 fontFamily: 'Manrope, sans-serif',
                 fontWeight: 600,
-                fontSize: '18px',
-                color: '#000000',
-                whiteSpace: 'nowrap'
+                color: '#000000'
               }}>
                 {isSubmitting ? "Generating Quote..." : "Generate Quote"}
               </span>
               {!isSubmitting && (
-                <div style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '100px',
-                  backgroundColor: '#F7C917',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
+                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{
+                  backgroundColor: '#F7C917'
                 }}>
-                  <svg style={{
-                    width: '20px',
-                    height: '20px',
-                    color: '#000000'
-                  }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#000000' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
               )}
               {isSubmitting && (
-                <div style={{
-                  width: '20px',
-                  height: '20px',
-                  border: '2px solid #000000',
-                  borderTopColor: 'transparent',
-                  borderRadius: '50%',
-                  animation: 'spin 1s linear infinite'
-                }}></div>
+                <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-black border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
               )}
             </button>
           </div>

@@ -44,13 +44,9 @@ export default function ProductSelection({
 
   return (
     <div 
-      className="" 
+      className="w-full rounded-2xl sm:rounded-3xl md:rounded-[65px] overflow-hidden p-4 sm:p-6 md:p-8 lg:p-12"
       data-testid="product-selection"
       style={{ 
-        borderRadius: '65px', 
-        overflow: 'hidden', 
-        width: 'calc(100% - 0px)',
-        padding: '32px 48px',
         boxSizing: 'border-box',
         margin: '0',
         background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
@@ -58,38 +54,18 @@ export default function ProductSelection({
       }}
     >
       <div className="max-w-7xl mx-auto">
-        <h2 style={{
-          width: '926px',
-          height: '40px',
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-3 sm:mb-4" style={{
           fontFamily: 'Manrope, sans-serif',
           fontWeight: 600,
-          fontSize: '36px',
-          lineHeight: '40px',
-          letterSpacing: '-0.9px',
-          textAlign: 'center',
-          verticalAlign: 'middle',
-          color: '#020817',
-          opacity: 1,
-          margin: '0 auto',
-          marginBottom: '16px'
+          letterSpacing: '-0.5px',
+          color: '#020817'
         }}>
           Choose Your Solar System
         </h2>
-        <p style={{
-          width: '732px',
-          height: '28px',
+        <p className="text-sm sm:text-base md:text-lg text-center max-w-3xl mx-auto mb-6 sm:mb-8 px-4" style={{
           fontFamily: 'Inter, sans-serif',
           fontWeight: 400,
-          fontSize: '18px',
-          lineHeight: '28px',
-          letterSpacing: '0%',
-          textAlign: 'center',
-          verticalAlign: 'middle',
-          color: '#787E86',
-          opacity: 1,
-          margin: '0 auto',
-          marginBottom: '32px',
-          whiteSpace: 'nowrap'
+          color: '#787E86'
         }}>
           Based on your selections, here are our recommended packages with real-time pricing.
         </p>
@@ -98,41 +74,21 @@ export default function ProductSelection({
         {data.systems?.includes('solar') && (
           <div className="mb-6 sm:mb-8">
             {/* Navigation/Filter Element */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginBottom: '32px'
-            }}>
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                width: '291px',
-                height: '58px',
+            <div className="flex justify-center mb-6 sm:mb-8">
+              <div className="inline-flex items-center w-full sm:w-auto min-w-[200px] sm:min-w-[250px] md:min-w-[291px] max-w-[291px] h-12 sm:h-14 md:h-16 px-4 sm:px-6 justify-center gap-3" style={{
                 backgroundColor: '#8E8E8E1A',
                 borderRadius: '40px',
                 border: '1px solid #0208171A',
-                paddingTop: '12px',
-                paddingRight: '24px',
-                paddingBottom: '12px',
-                paddingLeft: '24px',
-                justifyContent: 'center',
-                gap: '12px',
                 boxSizing: 'border-box'
               }}>
                 <img 
                   src="/attached_assets/solar-panel-sun (1) 1.png" 
                   alt="Solar Power Systems" 
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    objectFit: 'contain'
-                  }}
+                  className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
                 />
-                <span style={{
+                <span className="text-sm sm:text-base md:text-lg font-semibold" style={{
                   fontFamily: 'Manrope, sans-serif',
                   fontWeight: 600,
-                  fontSize: '18px',
-                  lineHeight: '24px',
                   color: '#020817',
                   margin: 0
                 }}>
@@ -180,53 +136,23 @@ export default function ProductSelection({
         {data.systems?.includes('battery') && (
           <div className="mb-6 sm:mb-8">
             {/* Navigation/Filter Element */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginBottom: '32px'
-            }}>
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                width: '291px',
-                height: '58px',
+            <div className="flex justify-center mb-6 sm:mb-8">
+              <div className="inline-flex items-center w-full sm:w-auto min-w-[200px] sm:min-w-[250px] md:min-w-[291px] max-w-[291px] h-12 sm:h-14 md:h-16 px-4 sm:px-6 justify-center gap-3" style={{
                 backgroundColor: '#8E8E8E1A',
                 borderRadius: '40px',
                 border: '1px solid #0208171A',
-                paddingTop: '12px',
-                paddingRight: '24px',
-                paddingBottom: '12px',
-                paddingLeft: '24px',
-                justifyContent: 'center',
-                gap: '12px',
                 boxSizing: 'border-box'
               }}>
                 <img 
                   src="/attached_assets/car-battery (1) 1.png" 
                   alt="Battery Storage Systems" 
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    objectFit: 'contain'
-                  }}
+                  className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
                 />
-                <span style={{
-                  width: '197px',
-                  height: '13px',
+                <span className="text-sm sm:text-base md:text-lg font-semibold" style={{
                   fontFamily: 'Manrope, sans-serif',
                   fontWeight: 500,
-                  fontSize: '18px',
-                  lineHeight: '32px',
-                  letterSpacing: '-0.6px',
-                  textAlign: 'center',
-                  verticalAlign: 'middle',
                   color: '#020817',
-                  opacity: 1,
-                  margin: 0,
-                  marginTop: '-4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  margin: 0
                 }}>
                   Battery Storage Systems
                 </span>
@@ -252,41 +178,21 @@ export default function ProductSelection({
         {data.systems?.includes('ev') && (
           <div className="mb-6 sm:mb-8">
             {/* Navigation/Filter Element */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginBottom: '32px'
-            }}>
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                width: '291px',
-                height: '58px',
+            <div className="flex justify-center mb-6 sm:mb-8">
+              <div className="inline-flex items-center w-full sm:w-auto min-w-[200px] sm:min-w-[250px] md:min-w-[291px] max-w-[291px] h-12 sm:h-14 md:h-16 px-4 sm:px-6 justify-center gap-3" style={{
                 backgroundColor: '#8E8E8E1A',
                 borderRadius: '40px',
                 border: '1px solid #0208171A',
-                paddingTop: '12px',
-                paddingRight: '24px',
-                paddingBottom: '12px',
-                paddingLeft: '24px',
-                justifyContent: 'center',
-                gap: '12px',
                 boxSizing: 'border-box'
               }}>
                 <img 
                   src="/attached_assets/charging-station 1.png" 
                   alt="EV Charging Solutions" 
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    objectFit: 'contain'
-                  }}
+                  className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
                 />
-                <span style={{
+                <span className="text-sm sm:text-base md:text-lg font-semibold" style={{
                   fontFamily: 'Manrope, sans-serif',
                   fontWeight: 600,
-                  fontSize: '18px',
-                  lineHeight: '24px',
                   color: '#020817',
                   margin: 0
                 }}>

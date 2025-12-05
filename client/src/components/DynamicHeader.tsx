@@ -45,14 +45,14 @@ export default function DynamicHeader() {
   };
 
   return (
-    <header className="absolute top-4 left-1/2 z-40 w-full px-4 -translate-x-1/2" data-testid="dynamic-header">
-      <div className="mx-auto max-w-[1100px] rounded-[45px] border border-white/15" style={{ backgroundColor: "#FFFFFF24" }}>
-        <div className="flex h-[64px] items-center justify-between px-5 sm:px-8 text-white">
+    <header className="absolute top-2 sm:top-4 left-1/2 z-40 w-full px-2 sm:px-4 -translate-x-1/2" data-testid="dynamic-header">
+      <div className="mx-auto max-w-[1100px] rounded-2xl sm:rounded-3xl md:rounded-[45px] border border-white/15" style={{ backgroundColor: "#FFFFFF24" }}>
+        <div className="flex h-12 sm:h-14 md:h-16 items-center justify-between px-3 sm:px-5 md:px-8 text-white">
           <div className="flex flex-shrink-0 items-center">
             <img
               src={pswLogo}
               alt={headerContent.logo || "Perth Solar Warehouse"}
-              className="h-10 w-auto object-contain"
+              className="h-8 w-auto sm:h-10 object-contain"
               data-testid="header-logo-image"
             />
           </div>

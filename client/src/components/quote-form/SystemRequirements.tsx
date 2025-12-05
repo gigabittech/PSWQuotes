@@ -113,14 +113,10 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
 
   return (
     <div 
+      className="w-full max-w-6xl mx-auto rounded-2xl sm:rounded-3xl md:rounded-[65px] my-4 sm:my-6 md:my-8"
       style={{
-        width: '1024px',
-        height: '1083px',
-        maxWidth: '1024px',
-        borderRadius: '65px',
         background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
         border: '1px solid #DDE1E775',
-        margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -131,76 +127,43 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
       }}
       data-testid="system-requirements"
     >
-      <div style={{ 
-        position: 'relative', 
-        zIndex: 1, 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        padding: '48px 49px', 
-        gap: '24px', 
+      <div className="relative z-10 w-full flex flex-col items-center p-4 sm:p-6 md:p-8 lg:p-12 gap-4 sm:gap-6" style={{ 
         boxSizing: 'border-box',
         overflow: 'visible',
         background: 'transparent'
       }}>
       {/* Header Section */}
-      <div style={{ textAlign: 'center', width: '100%' }}>
-        <h2 style={{
-          fontSize: '32px',
-          fontWeight: 'bold',
+      <div className="text-center w-full">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4" style={{
           color: '#020817',
-          marginBottom: '16px',
           marginTop: 0
         }}>
           What are you looking for?
         </h2>
-        <p style={{
-          fontSize: '16px',
+        <p className="text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4" style={{
           color: '#787E86',
-          margin: 0,
-          maxWidth: '600px',
-          marginLeft: 'auto',
-          marginRight: 'auto'
+          margin: 0
         }}>
           Select all the systems you're interested in. We'll create a custom quote based on your needs.
         </p>
       </div>
 
       {/* System Options Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '24px',
-        width: '100%',
-        maxWidth: '900px',
-        position: 'relative',
-        zIndex: 10
-      }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full max-w-5xl relative z-10 px-2 sm:px-4">
         {systemOptions.map((option) => {
           const isSelected = data.systems?.includes(option.id);
           return (
             <div
               key={option.id}
               onClick={() => handleSystemToggle(option.id)}
+              className="relative w-full min-h-[320px] sm:min-h-[360px] rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 flex flex-col justify-between"
               style={{
-                position: 'relative',
-                width: '293px',
-                height: '366px',
-                minHeight: '360px',
                 background: isSelected ? 'radial-gradient(102.46% 102.46% at 50% -2.46%, #4E4E4E 0%, #0A0D14 52.79%)' : '#FFFFFF',
-                borderRadius: '16px',
-                paddingTop: option.id === 'solar' ? '40px' : '50px',
-                paddingRight: '24px',
-                paddingBottom: '24px',
-                paddingLeft: '24px',
-                cursor: 'pointer',
+                paddingTop: option.id === 'solar' ? '2.5rem' : '3rem',
+                paddingRight: '1.5rem',
+                paddingBottom: '1.5rem',
+                paddingLeft: '1.5rem',
                 border: '1px solid #E5E5E5',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
                 boxSizing: 'border-box',
                 overflow: 'visible'
               }}
@@ -211,70 +174,39 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                 <>
                   {/* Blurred layer behind badge when selected */}
                   {isSelected && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '-14.5px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '132px',
-                      height: '29px',
-                      borderRadius: '9999px',
+                    <div className="absolute -top-3 sm:-top-3.5 left-1/2 -translate-x-1/2 w-24 sm:w-28 md:w-32 h-6 sm:h-7 rounded-full pointer-events-none z-[999]" style={{
                       backgroundColor: 'rgba(255, 255, 255, 0.1)',
                       backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
-                      zIndex: 999,
-                      pointerEvents: 'none'
+                      WebkitBackdropFilter: 'blur(10px)'
                     }} />
                   )}
-                  <div style={{
-                    position: 'absolute',
-                    top: '-14.5px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '132px',
-                    height: '29px',
-                    borderRadius: '9999px',
+                  <div className="absolute -top-3 sm:-top-3.5 left-1/2 -translate-x-1/2 w-24 sm:w-28 md:w-32 h-6 sm:h-7 rounded-full flex items-center justify-center z-[1000] px-2 sm:px-3 md:px-4" style={{
                     border: isSelected ? '1px solid #C2C2C233' : 'none',
                     backgroundColor: isSelected ? '#F7C9179E' : '#F5F5F5',
                     color: '#020817',
-                    padding: '10px 16px',
                     fontFamily: 'Inter, sans-serif',
-                    fontSize: '12px',
+                    fontSize: '10px',
                     fontWeight: 600,
-                    lineHeight: '16px',
+                    lineHeight: '1',
                     letterSpacing: '0.3px',
                     textTransform: 'uppercase',
                     whiteSpace: 'nowrap',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
                     boxSizing: 'border-box',
-                    verticalAlign: 'middle',
-                    zIndex: 1000,
                     boxShadow: isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none',
                     backdropFilter: isSelected ? 'blur(10px)' : 'none',
                     WebkitBackdropFilter: isSelected ? 'blur(10px)' : 'none'
                   }}>
-                    {option.badge}
+                    <span className="text-[10px] sm:text-xs">{option.badge}</span>
                   </div>
                 </>
               )}
 
               {/* Checkbox */}
-              <div style={{
-                position: 'absolute',
-                top: isSelected ? '26px' : '32px',
-                left: isSelected ? '22px' : '26px',
-                width: isSelected ? '24px' : '18px',
-                height: isSelected ? '24px' : '18px',
+              <div className="absolute top-4 sm:top-5 md:top-6 left-4 sm:left-5 md:left-6 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center z-10" style={{
                 border: 'none',
                 backgroundColor: 'transparent',
                 borderRadius: '4px',
-                boxShadow: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 10
+                boxShadow: 'none'
               }}>
                 {!isSelected ? (
                   <img 
@@ -302,17 +234,10 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               </div>
 
               {/* Icon */}
-              <div style={{
-                width: '96px',
-                height: '96px',
-                borderRadius: '24px',
+              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6" style={{
                 border: '1px solid #C2C2C233',
                 backgroundColor: isSelected ? '#19A4201A' : '#EBC9721A',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 24px',
-                marginTop: option.popular ? '8px' : '0px'
+                marginTop: option.popular ? '0.5rem' : '0'
               }}>
                 {option.id === 'solar' ? (
                   <img 
@@ -358,22 +283,16 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               </div>
 
               {/* Content */}
-              <div style={{ textAlign: 'center', flex: 1 }}>
-                <h3 style={{
-                  fontSize: '20px',
-                  fontWeight: 'bold',
+              <div className="text-center flex-1">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3" style={{
                   color: isSelected ? '#FFFFFF' : '#020817',
-                  marginBottom: '12px',
                   marginTop: 0,
                   fontFamily: 'Manrope, sans-serif'
                 }}>
                   {option.title}
                 </h3>
-                <p style={{
-                  fontSize: '14px',
+                <p className="text-xs sm:text-sm md:text-base mb-2 leading-relaxed" style={{
                   color: isSelected ? '#D1D5DB' : '#787E86',
-                  marginBottom: '8px',
-                  lineHeight: '1.5',
                   fontFamily: 'Manrope, sans-serif'
                 }}>
                   {option.description}
@@ -381,22 +300,14 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               </div>
 
               {/* Price */}
-              <div style={{
-                borderRadius: '12px',
-                padding: '8px 16px 16px 16px',
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '18px',
-                  fontWeight: 'bold',
+              <div className="rounded-xl sm:rounded-2xl p-2 sm:p-4 text-center">
+                <div className="text-base sm:text-lg md:text-xl font-bold mb-1" style={{
                   color: isSelected ? '#FCD34D' : '#020817',
-                  marginBottom: '4px',
                   fontFamily: 'Manrope, sans-serif'
                 }}>
                   {option.price}
                 </div>
-                <div style={{
-                  fontSize: '12px',
+                <div className="text-xs sm:text-sm" style={{
                   color: isSelected ? '#9CA3AF' : '#787E86',
                   fontFamily: 'Manrope, sans-serif'
                 }}>
@@ -409,106 +320,58 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
       </div>
 
       {/* Power Supply Section */}
-      <div style={{ width: '100%', maxWidth: '900px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            width: '291px',
-            height: '58px',
+      <div className="w-full max-w-5xl px-2 sm:px-4">
+        <div className="text-center mb-4 sm:mb-6">
+          <div className="inline-flex items-center w-full sm:w-auto min-w-[200px] sm:min-w-[291px] max-w-[291px] h-12 sm:h-14 md:h-16 px-4 sm:px-6 mb-3 sm:mb-4 justify-center gap-3" style={{
             backgroundColor: '#8E8E8E1A',
             borderRadius: '40px',
             border: '1px solid #0208171A',
-            paddingTop: '12px',
-            paddingRight: '24px',
-            paddingBottom: '12px',
-            paddingLeft: '24px',
-            marginBottom: '16px',
-            justifyContent: 'center',
-            gap: '0px',
             boxSizing: 'border-box'
           }}>
             <img 
               src="/attached_assets/ev.png" 
               alt="EV Charging" 
-              style={{
-                width: '24px',
-                height: '24px',
-                marginRight: '12px',
-                objectFit: 'contain'
-              }}
+              className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
             />
-            <h3 style={{
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold" style={{
               fontFamily: 'Manrope, sans-serif',
               fontWeight: 600,
-              fontSize: '24px',
-              lineHeight: '32px',
-              letterSpacing: '-0.6px',
-              textAlign: 'center',
-              verticalAlign: 'middle',
+              letterSpacing: '-0.5px',
               color: '#020817',
               margin: 0
             }}>
               Power Supply Type
             </h3>
           </div>
-          <p style={{
-            fontSize: '16px',
+          <p className="text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4 leading-relaxed" style={{
             color: '#787E86',
-            margin: 0,
-            maxWidth: '600px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            lineHeight: '1.5'
+            margin: 0
           }}>
             Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
           </p>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '16px'
-        }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {powerOptions.map((option) => {
             const isSelected = data.powerSupply === option.id;
             return (
               <div
                 key={option.id}
                 onClick={() => handlePowerSupplyChange(option.id)}
+                className="relative w-full min-h-[100px] sm:min-h-[120px] rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 flex items-start gap-3 p-4 sm:p-6"
                 style={{
-                  position: 'relative',
-                  width: '298px',
-                  height: '120px',
-                  minHeight: '120px',
                   opacity: isSelected ? 0.8 : 1,
                   background: isSelected ? 'radial-gradient(100% 100% at 93.96% 0%, #4E4E4E 0%, #0A0D14 52.79%)' : '#FFFFFFBF',
-                  borderRadius: '16px',
-                  padding: '24px',
-                  cursor: 'pointer',
                   border: isSelected ? '1px solid #0208171A' : '1px solid #D5D5D573',
                   boxShadow: isSelected ? '0px 0px 0px 0px #010EC7' : 'none',
-                  transition: 'all 0.3s ease',
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '12px',
                   boxSizing: 'border-box'
                 }}
                 data-testid={`power-supply-${option.id}`}
               >
                 {/* Checkbox */}
-                <div style={{
-                  position: 'absolute',
-                  top: '28px',
-                  left: '16px',
-                  width: isSelected ? '24px' : '18px',
-                  height: isSelected ? '24px' : '18px',
+                <div className="absolute top-5 sm:top-6 md:top-7 left-3 sm:left-4 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center z-10" style={{
                   border: 'none',
-                  backgroundColor: 'transparent',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  zIndex: 10
+                  backgroundColor: 'transparent'
                 }}>
                   {!isSelected ? (
                     <img 
@@ -536,26 +399,16 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
                 </div>
 
                 {/* Content */}
-                <div style={{ 
-                  flex: 1,
-                  marginLeft: '28px'
-                }}>
-                  <label style={{
-                    fontSize: '16px',
-                    fontWeight: 'bold',
+                <div className="flex-1 ml-4 sm:ml-7">
+                  <label className="text-sm sm:text-base md:text-lg font-bold block mb-1 cursor-pointer" style={{
                     color: isSelected ? '#FFFFFF' : '#020817',
-                    display: 'block',
-                    marginBottom: '4px',
-                    cursor: 'pointer',
                     fontFamily: 'Manrope, sans-serif'
                   }}>
                     {option.title}
                   </label>
-                  <p style={{
-                    fontSize: '14px',
+                  <p className="text-xs sm:text-sm md:text-base leading-relaxed" style={{
                     color: isSelected ? '#D1D5DB' : '#787E86',
                     margin: 0,
-                    lineHeight: '1.5',
                     fontFamily: 'Manrope, sans-serif'
                   }}>
                     {option.description}
@@ -568,75 +421,31 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
       </div>
 
       {/* Continue Button */}
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
+      <div className="w-full flex justify-center mt-4 sm:mt-6 px-4">
         <button
           onClick={onNext}
           disabled={!canContinue}
+          className="w-full sm:w-auto min-w-[280px] sm:min-w-[346px] max-w-[346px] h-12 sm:h-14 rounded-full flex items-center justify-between px-4 sm:px-6 md:px-7 text-base sm:text-lg font-bold transition-all duration-300"
           style={{
-            width: '346px',
-            height: '54px',
             background: canContinue 
               ? '#E1AE20D4'
               : '#E5E5E5',
             color: canContinue ? '#FFFFFF' : '#9CA3AF',
             border: 'none',
-            borderRadius: '100px',
-            paddingRight: '6px',
-            paddingLeft: '26px',
-            paddingTop: '0',
-            paddingBottom: '0',
-            fontSize: '18px',
-            fontWeight: 'bold',
             cursor: canContinue ? 'pointer' : 'not-allowed',
             opacity: canContinue ? 1 : 0.5,
-            transition: 'all 0.3s ease',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0px',
-            justifyContent: 'space-between',
             boxShadow: canContinue ? '0px 6px 15.3px 0px #0000001A' : 'none',
-            position: 'relative',
-            boxSizing: 'border-box'
+            fontFamily: 'Manrope, sans-serif',
+            fontWeight: 600
           }}
           data-testid="button-continue-to-products"
         >
-          <span style={{ 
-            fontFamily: 'Manrope',
-            fontWeight: 600,
-            fontStyle: 'normal',
-            fontSize: '18px',
-            lineHeight: '100%',
-            letterSpacing: '0%',
-            width: '261px',
-            height: '25px',
-            color: '#FFFFFF',
-            whiteSpace: 'nowrap',
-            display: 'block',
-            leadingTrim: 'none'
-          } as React.CSSProperties & { leadingTrim?: string }}>Continue to Product Selection</span>
-          <div style={{
-            width: '54px',
-            height: '54px',
-            borderRadius: '100px',
-            padding: '10px',
-            backgroundColor: 'transparent',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            marginLeft: '10px',
-            gap: '10px',
-            boxSizing: 'border-box'
-          }}>
+          <span className="whitespace-nowrap">Continue to Product Selection</span>
+          <div className="w-10 h-10 sm:w-12 sm:h-12 sm:ml-3 flex-shrink-0 flex items-center justify-center">
             <img 
               src="/attached_assets/arrow_forward.png" 
               alt="Arrow" 
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain'
-              }}
+              className="w-full h-full object-contain"
             />
           </div>
         </button>

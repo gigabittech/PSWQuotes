@@ -147,67 +147,30 @@ export default function Home() {
       {/* Quote Form Container */}
       <section id="quote" className="py-12 sm:py-16 lg:py-20 glass-backdrop min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12">
-            <div 
+          <div className="text-center mb-8 sm:mb-12 px-4">
+            <h2 
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6"
               style={{
-                width: '1280px',
-                height: '128px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '24px',
-                margin: '0 auto',
-                opacity: 1
+                fontFamily: 'Manrope, sans-serif',
+                fontWeight: 600,
+                fontStyle: 'normal',
+                letterSpacing: '-0.5px',
+                color: '#020817'
               }}
             >
-              <div 
-                style={{
-                  width: '100%',
-                  height: '48px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <h2 
-                  style={{
-                    fontFamily: 'Manrope, sans-serif',
-                    fontWeight: 600,
-                    fontStyle: 'normal',
-                    fontSize: '48px',
-                    lineHeight: '48px',
-                    letterSpacing: '-1.2px',
-                    textAlign: 'center',
-                    verticalAlign: 'middle',
-                    color: '#020817',
-                    margin: 0
-                  }}
-                >
-                  Get Your Instant Solar Quote
-                </h2>
-              </div>
-              <p 
-                style={{
-                  width: '744px',
-                  minHeight: '56px',
-                  fontFamily: 'Inter, sans-serif',
-                  fontWeight: 400,
-                  fontStyle: 'normal',
-                  fontSize: '20px',
-                  lineHeight: '28px',
-                  letterSpacing: '0%',
-                  textAlign: 'center',
-                  color: '#787E86',
-                  margin: 0,
-                  paddingTop: '14px',
-                  paddingBottom: '14px'
-                }}
-              >
-                Follow our simple 3-step process to receive a personalized solar quote<br />
-                tailored to your property and energy needs.
-              </p>
-            </div>
+              Get Your Instant Solar Quote
+            </h2>
+            <p 
+              className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 400,
+                fontStyle: 'normal',
+                color: '#787E86'
+              }}
+            >
+              Follow our simple 3-step process to receive a personalized solar quote tailored to your property and energy needs.
+            </p>
           </div>
           
           <StepIndicator currentStep={currentStep} />
@@ -258,24 +221,20 @@ export default function Home() {
       {/* Embed Code Section */}
       <section className="py-12 sm:py-16 lg:py-20 glass-backdrop" style={{ background: '#FFFFFF' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 style={{
-              width: '832px',
-              height: '40px',
-              fontFamily: 'Manrope',
-              fontWeight: 600,
-              fontStyle: 'normal',
-              fontSize: '36px',
-              lineHeight: '40px',
-              letterSpacing: '-0.9px',
-              textAlign: 'center',
-              verticalAlign: 'middle',
-              color: '#020719',
-              leadingTrim: 'none'
-            } as React.CSSProperties & { leadingTrim?: string }}>
+          <div className="text-center mb-8 px-4">
+            <h2 
+              className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4"
+              style={{
+                fontFamily: 'Manrope',
+                fontWeight: 600,
+                fontStyle: 'normal',
+                letterSpacing: '-0.5px',
+                color: '#020719'
+              }}
+            >
               Embed This Form On Your Website
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto" style={{ marginTop: '16px' }}>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
               Copy the code below to add this solar quote form to your website
             </p>
           </div>
