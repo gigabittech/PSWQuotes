@@ -113,8 +113,10 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
 
   return (
     <div 
-      className="w-full max-w-6xl mx-auto rounded-2xl sm:rounded-3xl md:rounded-[65px] my-4 sm:my-6 md:my-8"
+      className="mx-auto rounded-2xl sm:rounded-3xl md:rounded-[65px] my-4 sm:my-6 md:my-8"
       style={{
+        width: '1024px',
+        maxWidth: '100%',
         background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
         border: '1px solid #DDE1E775',
         display: 'flex',

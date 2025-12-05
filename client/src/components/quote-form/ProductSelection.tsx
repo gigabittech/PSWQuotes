@@ -150,7 +150,7 @@ export default function ProductSelection({
                   alt="Battery Storage Systems" 
                   className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
                 />
-                <span className="text-sm sm:text-base md:text-lg font-semibold" style={{
+                <span className="text-sm sm:text-base md:text-lg font-semibold whitespace-nowrap" style={{
                   fontFamily: 'Manrope, sans-serif',
                   fontWeight: 500,
                   color: '#020817',
