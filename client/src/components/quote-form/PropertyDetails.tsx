@@ -315,7 +315,7 @@ export default function PropertyDetails({
               type="submit"
               disabled={!isValid || isSubmitting}
               data-testid="button-generate-quote"
-              className="w-full sm:w-auto min-w-[200px] h-11 sm:h-12 rounded-full flex items-center justify-between gap-2 sm:gap-3 px-4 sm:px-6 transition-all duration-300"
+              className="w-full sm:w-auto min-w-[200px] h-11 sm:h-12 rounded-full flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-6 transition-all duration-300"
               style={{
                 background: '#F7C917',
                 opacity: (!isValid || isSubmitting) ? 0.5 : 1,

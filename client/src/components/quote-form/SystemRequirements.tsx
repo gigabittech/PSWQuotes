@@ -333,7 +333,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
               alt="EV Charging" 
               className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
             />
-            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold" style={{
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold whitespace-nowrap" style={{
               fontFamily: 'Manrope, sans-serif',
               fontWeight: 600,
               letterSpacing: '-0.5px',

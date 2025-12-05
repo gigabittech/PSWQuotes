@@ -48,15 +48,22 @@ export default function StepIndicator({
         className="w-full max-w-4xl relative flex items-center justify-between sm:justify-start gap-2 sm:gap-4 md:gap-8 mb-4 sm:mb-6"
       >
         {/* Connecting lines - hidden on mobile, shown on larger screens */}
-        <div className="hidden sm:block absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2 z-0">
-          <div className="flex h-full px-4 md:px-8">
+        {/* Single continuous line behind all buttons */}
+        <div 
+          className="hidden sm:block absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2 z-[1] pointer-events-none"
+          style={{
+            left: '60px',
+            right: '60px'
+          }}
+        >
+          <div className="h-full flex" style={{ gap: '1rem' }}>
             {steps.map((step, index) => {
               if (index < steps.length - 1) {
                 const isCompleted = step.number < currentStep;
                 return (
                   <div
                     key={`line-${step.number}`}
-                    className="flex-1 h-full mr-2"
+                    className="flex-1 h-full"
                     style={{
                       backgroundColor: isCompleted ? '#19A42033' : '#E5E5E5'
                     }}
@@ -81,11 +88,11 @@ export default function StepIndicator({
               key={step.number}
               onClick={() => handleStepClick(step.number)}
               disabled={!clickable}
-              className="flex-1 sm:flex-none min-w-0 sm:min-w-[120px] md:min-w-[160px] lg:min-w-[200px] h-10 sm:h-12 px-2 sm:px-4 md:px-5 rounded-full flex items-center justify-center relative z-10 transition-all duration-300 text-xs sm:text-sm md:text-base"
+              className="flex-1 sm:flex-none min-w-0 sm:min-w-[120px] md:min-w-[160px] lg:min-w-[200px] h-10 sm:h-12 px-2 sm:px-4 md:px-5 rounded-full flex items-center justify-center relative z-[2] transition-all duration-300 text-xs sm:text-sm md:text-base"
               style={{
-                background: isCurrent ? '#020817' : isCompleted ? '#19A42033' : '#F8F8F8',
+                background: isCurrent ? '#020817' : isCompleted ? '#E8F5E9' : '#F8F8F8',
                 color: isCurrent ? '#FFFFFF' : isCompleted ? '#298F36' : '#787E86',
-                border: isCompleted ? '1px solid #298F3633' : 'none',
+                border: isCompleted ? '1px solid #298F3633' : '1px solid transparent',
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 400,
                 cursor: clickable ? 'pointer' : 'default',
@@ -110,7 +117,7 @@ export default function StepIndicator({
               )}
               
               <span 
-                className="block text-center truncate px-1"
+                className="block text-center truncate px-1 relative z-10"
                 style={{
                   opacity: isCurrent && isLoading ? 0 : 1
                 }}

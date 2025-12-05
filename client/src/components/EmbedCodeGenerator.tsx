@@ -63,18 +63,48 @@ export default function EmbedCodeGenerator() {
   };
 
   return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <Card 
-        className="glass-card flex-1 flex flex-col min-h-0 shadow-none"
-        style={{ boxShadow: 'none' }}
+    <div className="flex-1 flex flex-col min-h-0 items-center justify-center w-full py-4" style={{ overflow: 'visible' }}>
+      {/* Gradient Border Wrapper */}
+      <div 
+        className="rounded-[10px] w-full"
+        style={{
+          background: 'linear-gradient(147.33deg, rgba(214, 214, 214, 0.35) 1.11%, rgba(241, 241, 241, 0.161) 50.87%, rgba(101, 101, 101, 0.0315) 106.32%)',
+          maxWidth: '830px',
+          padding: '16px',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'visible',
+          minHeight: 'fit-content',
+          borderRadius: '10px',
+          position: 'relative'
+        }}
       >
-        <CardHeader className="flex-shrink-0">
-          <CardTitle>Embed Quote Form</CardTitle>
-          <CardDescription>
-            Add the solar quote form to your website using one of the methods below
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex-1 overflow-y-auto min-h-0 space-y-6">
+        <Card 
+          className="flex flex-col shadow-none rounded-[10px] w-full"
+          style={{ 
+            boxShadow: 'none',
+            background: '#FFFFFF',
+            width: '100%',
+            minHeight: '1058px',
+            gap: '32px',
+            padding: '32px',
+            boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            height: 'auto',
+            margin: 0,
+            flex: '1 1 auto'
+          }}
+        >
+          <CardHeader className="flex-shrink-0" style={{ padding: 0 }}>
+            <CardTitle style={{ marginBottom: 0 }}>Embed Quote Form</CardTitle>
+            <CardDescription style={{ marginTop: '8px', marginBottom: 0 }}>
+              Add the solar quote form to your website using one of the methods below
+            </CardDescription>
+          </CardHeader>
+        <CardContent className="flex-1 min-h-0" style={{ padding: 0, gap: '32px', display: 'flex', flexDirection: 'column', marginTop: '32px', overflow: 'visible' }}>
           {/* Iframe Method */}
           <div>
             <div className="flex items-center justify-between mb-2">
@@ -266,6 +296,7 @@ export default function EmbedCodeGenerator() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }
