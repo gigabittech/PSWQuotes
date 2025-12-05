@@ -74,7 +74,7 @@ export default function PropertyDetails({
         boxSizing: 'border-box'
       }}
     >
-      <div className="w-full flex flex-col items-center gap-4 sm:gap-6">
+      <div className="w-full flex flex-col items-center ">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-3 sm:mb-4" style={{
           color: '#020817',
           marginTop: 0
@@ -88,9 +88,9 @@ export default function PropertyDetails({
           Help us provide an accurate quote by sharing your property information.
         </p>
 
-        <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto flex flex-col gap-4 sm:gap-6">
+        <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto flex flex-col gap-4 sm:gap-6 py-4 ">
           {/* Contact Information */}
-          <div className="bg-muted/30 rounded-lg p-4 sm:p-6">
+          <div className="bg-muted/30 rounded-lg ">
             <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6 flex items-center">
               <svg className="w-5 h-5 mr-2 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -166,7 +166,7 @@ export default function PropertyDetails({
           </div>
 
           {/* Property Address */}
-          <div className="bg-muted/30 rounded-lg p-4 sm:p-6">
+          <div className="bg-muted/30 rounded-lg ">
             <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6 flex items-center">
               <svg className="w-5 h-5 mr-2 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
