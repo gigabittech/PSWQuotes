@@ -44,16 +44,18 @@ export default function ProductSelection({
 
   return (
     <div 
-      className="w-full rounded-2xl sm:rounded-3xl md:rounded-[65px] overflow-hidden p-4 sm:p-6 md:p-8 lg:p-12"
+      className="rounded-2xl sm:rounded-3xl md:rounded-[65px] overflow-hidden p-4 sm:p-6 md:p-8 lg:p-12 mx-auto"
       data-testid="product-selection"
       style={{ 
         boxSizing: 'border-box',
-        margin: '0',
+        margin: '0 auto',
+        width: '1024px',
+        maxWidth: '100%',
         background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
         border: '1px solid #DDE1E775'
       }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full mx-auto">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-3 sm:mb-4" style={{
           fontFamily: 'Manrope, sans-serif',
           fontWeight: 600,
@@ -98,7 +100,7 @@ export default function ProductSelection({
             </div>
 
             {/* Product Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6 justify-items-center">
               {solarProducts.map((product) => (
                 <SolarProductCard
                   key={product.id}
@@ -116,7 +118,7 @@ export default function ProductSelection({
         {data.systems?.includes('inverter') && (
           <div className="mb-6 sm:mb-8">
             <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 px-2">Hybrid Inverters</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6 justify-items-center">
               {inverterProducts.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -160,7 +162,7 @@ export default function ProductSelection({
             </div>
 
             {/* Product Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6 justify-items-center">
               {batteryProducts.map((product) => (
                 <BatteryProductCard
                   key={product.id}
@@ -202,7 +204,7 @@ export default function ProductSelection({
             </div>
 
             {/* Product Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6 justify-items-center">
               {evProducts.map((product) => (
                 <EVProductCard
                   key={product.id}
@@ -225,7 +227,7 @@ export default function ProductSelection({
             </div>
             <h3 className="text-xl font-bold text-foreground">Current Quote Summary</h3>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 justify-items-center">
             <div className="text-center bg-white/50 dark:bg-gray-900/30 rounded-lg p-4 backdrop-blur-sm">
               <div className="text-2xl font-bold text-foreground mb-1">${pricingData.totalPrice?.toLocaleString()}</div>
               <div className="text-sm text-muted-foreground">Total System Price</div>
