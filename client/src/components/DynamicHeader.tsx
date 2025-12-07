@@ -24,11 +24,11 @@ export default function DynamicHeader() {
   // Fallback to default header if CMS data not available
   const headerContent = (Array.isArray(homepage?.blocks) ? homepage.blocks : []).find((block: any) => block.type === 'header')?.content || {
     logo: 'Perth Solar Warehouse',
-    navigation: [
-      { text: 'Get Quote', href: '#quote' },
-      { text: 'About', href: '#about' },
-      { text: 'Contact', href: '#contact' }
-    ],
+    // navigation: [
+    //   { text: 'Get Quote', href: '#quote' },
+    //   { text: 'About', href: '#about' },
+    //   { text: 'Contact', href: '#contact' }
+    // ],
     contact: {
       phone: '(08) 6171 4111',
       email: 'info@perthsolarwarehouse.com.au'

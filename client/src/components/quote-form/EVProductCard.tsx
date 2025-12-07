@@ -82,7 +82,7 @@ export default function EVProductCard({ product, isSelected, onSelect, badge }: 
             width: '134px',
             height: '29px',
             borderRadius: '9999px',
-            border: isSelected ? '1px solid rgba(247, 201, 23, 0.3)' : '1px solid rgba(245, 245, 245, 0.3)',
+            border: '1px solid #C2C2C233',
             background: isSelected ? 'rgba(247, 201, 23, 0.6)' : 'rgba(245, 245, 245, 0.4)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',

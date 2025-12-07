@@ -145,37 +145,34 @@ export default function Home() {
       <DynamicHero />
 
       {/* Quote Form Container */}
-      <section id="quote" className="py-12 sm:py-16 lg:py-20 glass-backdrop min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12">
-            <div
-          <div className="text-center mb-8 sm:mb-12 px-4">
-            <h2 
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6"
-              style={{
-                fontFamily: 'Manrope, sans-serif',
-                fontWeight: 600,
-                fontStyle: 'normal',
-                letterSpacing: '-0.5px',
-                color: '#020817'
-              }}
-            >
-
-
-              Get Your Instant Solar Quote
-            </h2>
-            <p 
-              className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
-              style={{
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: 400,
-                fontStyle: 'normal',
-                color: '#787E86'
-              }}
-            >
-              Follow our simple 3-step process to receive a personalized solar quote tailored to your property and energy needs.
-            </p>
-          </div>
+    {/* Quote Form Container */}
+<section id="quote" className="py-12 sm:py-16 lg:py-20 glass-backdrop min-h-screen">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-8 sm:mb-12 px-4"> {/* Fixed: removed the extra opening div */}
+      <h2 
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6"
+        style={{
+          fontFamily: 'Manrope, sans-serif',
+          fontWeight: 600,
+          fontStyle: 'normal',
+          letterSpacing: '-0.5px',
+          color: '#020817'
+        }}
+      >
+        Get Your Instant Solar Quote
+      </h2>
+      <p 
+        className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+        style={{
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: 400,
+          fontStyle: 'normal',
+          color: '#787E86'
+        }}
+      >
+        Follow our simple 3-step process to receive a personalized solar quote tailored to your property and energy needs.
+      </p>
+    </div>
 
           <StepIndicator currentStep={currentStep} />
 
