@@ -147,14 +147,11 @@ export default function Home() {
       {/* Quote Form Container */}
       <section id="quote" className="py-12 sm:py-16 lg:py-20 glass-backdrop min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<<<<<<< HEAD
           <div className="text-center mb-8 sm:mb-12">
             <div
-=======
           <div className="text-center mb-8 sm:mb-12 px-4">
             <h2 
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6"
->>>>>>> b58953ce1af4b4461febe3c0a9c0c67a32891fbb
               style={{
                 fontFamily: 'Manrope, sans-serif',
                 fontWeight: 600,
@@ -163,55 +160,8 @@ export default function Home() {
                 color: '#020817'
               }}
             >
-<<<<<<< HEAD
-              <div
-                style={{
-                  width: '100%',
-                  height: '48px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <h2
-                  style={{
-                    fontFamily: 'Manrope, sans-serif',
-                    fontWeight: 600,
-                    fontStyle: 'normal',
-                    fontSize: '48px',
-                    lineHeight: '48px',
-                    letterSpacing: '-1.2px',
-                    textAlign: 'center',
-                    verticalAlign: 'middle',
-                    color: '#020817',
-                    margin: 0
-                  }}
-                >
-                  Get Your Instant Solar Quote
-                </h2>
-              </div>
-              <p
-                style={{
-                  width: '744px',
-                  minHeight: '56px',
-                  fontFamily: 'Inter, sans-serif',
-                  fontWeight: 400,
-                  fontStyle: 'normal',
-                  fontSize: '20px',
-                  lineHeight: '28px',
-                  letterSpacing: '0%',
-                  textAlign: 'center',
-                  color: '#787E86',
-                  margin: 0,
-                  paddingTop: '14px',
-                  paddingBottom: '14px'
-                }}
-              >
-                Follow our simple 3-step process to receive a personalized solar quote<br />
-                tailored to your property and energy needs.
-              </p>
-            </div>
-=======
+
+
               Get Your Instant Solar Quote
             </h2>
             <p 
@@ -225,7 +175,6 @@ export default function Home() {
             >
               Follow our simple 3-step process to receive a personalized solar quote tailored to your property and energy needs.
             </p>
->>>>>>> b58953ce1af4b4461febe3c0a9c0c67a32891fbb
           </div>
 
           <StepIndicator currentStep={currentStep} />
