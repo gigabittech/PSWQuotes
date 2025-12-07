@@ -59,57 +59,67 @@ export default function SolarProductCard({ product, isSelected, onSelect, badge 
       data-testid={`solar-product-card-${product.id}`}
     >
       {/* Badge at top center */}
-      {badge && (
-        <>
-          {/* Blurred layer behind badge when selected */}
-          {isSelected && (
-            <div style={{
-              position: 'absolute',
-              top: '-14.5px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '132px',
-              height: '29px',
-              borderRadius: '9999px',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              zIndex: 999,
-              pointerEvents: 'none'
-            }} />
-          )}
-          <div style={{
-            position: 'absolute',
-            top: '-14.5px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '132px',
-            height: '29px',
-            borderRadius: '9999px',
-            border: isSelected ? '1px solid rgba(247, 201, 23, 0.3)' : '1px solid rgba(245, 245, 245, 0.3)',
-            background: isSelected ? 'rgba(247, 201, 23, 0.6)' : 'rgba(245, 245, 245, 0.4)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            color: '#020817',
-            padding: '10px 16px',
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '12px',
-            fontWeight: 600,
-            lineHeight: '16px',
-            letterSpacing: '0.3px',
-            textTransform: 'uppercase',
-            whiteSpace: 'nowrap',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxSizing: 'border-box',
-            zIndex: 1000,
-            boxShadow: isSelected ? '0px 2px 8px rgba(247, 201, 23, 0.3)' : '0px 2px 8px rgba(0, 0, 0, 0.1)'
-          }}>
-            {badge}
-          </div>
-        </>
-      )}
+    {/* Badge at top center */}
+    {badge && (
+  <>
+    {/* Blurred layer behind badge when selected */}
+    {isSelected && (
+      <div style={{
+        position: 'absolute',
+        top: '-14.5px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '132px',
+        height: '29px',
+        borderRadius: '9999px',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        zIndex: 999,
+        pointerEvents: 'none'
+      }} />
+    )}
+    <div style={{
+      position: 'absolute',
+      top: '-14.5px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: '132px',
+      height: '29px',
+      borderRadius: '9999px',
+      border: '1px solid #C2C2C233',
+      background: isSelected ? 'rgba(247, 201, 23, 0.6)' : 'rgba(245, 245, 245, 0.4)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+      color: '#020817',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '12px',
+      fontWeight: 600,
+      lineHeight: '16px',
+      letterSpacing: '0.3px',
+      textTransform: 'uppercase',
+      whiteSpace: 'nowrap',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxSizing: 'border-box',
+      zIndex: 1000,
+      boxShadow: isSelected ? '0px 2px 8px rgba(247, 201, 23, 0.3)' : '0px 2px 8px rgba(0, 0, 0, 0.1)',
+      // Remove padding and add these:
+      padding: 0,
+      margin: 0
+    }}>
+      <div style={{
+        width: '100%',
+        textAlign: 'center',
+        padding: '6px 0', // Control vertical padding here instead
+        margin: 0
+      }}>
+        {badge}
+      </div>
+    </div>
+  </>
+)}
 
       {/* Checkbox in top-right */}
       <div style={{

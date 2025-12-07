@@ -44,13 +44,11 @@ export default function ProductSelection({
 
   return (
     <div 
-      className="rounded-2xl sm:rounded-3xl md:rounded-[65px] overflow-hidden p-4 sm:p-6 md:p-8 lg:p-12 mx-auto"
+      className="rounded-2xl sm:rounded-3xl md:rounded-[65px] overflow-hidden p-4 sm:p-6 md:p-8 lg:p-12 mx-auto w-full max-w-[1024px]"
       data-testid="product-selection"
       style={{ 
         boxSizing: 'border-box',
         margin: '0 auto',
-        width: '1024px',
-        maxWidth: '100%',
         background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
         border: '1px solid #DDE1E775'
       }}
@@ -245,20 +243,12 @@ export default function ProductSelection({
       )}
 
         {/* Navigation Buttons */}
-        <div className="flex flex-col sm:flex-row justify-between gap-4 px-4 mt-8">
+        <div className="flex flex-col sm:flex-row justify-between gap-4 px-2 sm:px-4 mt-8">
           <button
+            className="w-auto min-w-[107px] h-[45px] rounded-full px-3 flex items-center justify-center gap-2.5"
             style={{
-              width: '107px',
-              height: '45px',
-              borderRadius: '100px',
-              paddingLeft: '6px',
-              paddingRight: '6px',
               background: '#0B0E15',
               opacity: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
               border: 'none',
               cursor: 'pointer',
               transition: 'all 0.3s ease'
@@ -294,18 +284,10 @@ export default function ProductSelection({
             </span>
           </button>
           <button
+            className="w-full sm:w-auto sm:min-w-[327px] h-[45px] rounded-full px-4 sm:px-[18px] flex items-center justify-between gap-2.5"
             style={{
-              width: '327px',
-              height: '45px',
-              borderRadius: '100px',
-              paddingLeft: '18px',
-              paddingRight: '18px',
               background: '#F7C917',
               opacity: isCalculating ? 0.5 : 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '10px',
               border: 'none',
               cursor: isCalculating ? 'not-allowed' : 'pointer',
               transition: 'all 0.3s ease'
@@ -314,10 +296,9 @@ export default function ProductSelection({
             disabled={isCalculating}
             data-testid="button-continue-to-details"
           >
-            <span style={{
+            <span className="text-sm sm:text-lg" style={{
               fontFamily: 'Manrope, sans-serif',
               fontWeight: 600,
-              fontSize: '18px',
               color: '#000000',
               whiteSpace: 'nowrap'
             }}>

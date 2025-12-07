@@ -9,8 +9,8 @@ interface StepIndicatorProps {
   children?: ReactNode;
 }
 
-export default function StepIndicator({ 
-  currentStep, 
+export default function StepIndicator({
+  currentStep,
   onStepClick,
   errors = {},
   isLoading = false,
@@ -45,7 +45,7 @@ export default function StepIndicator({
       <div 
         role="navigation" 
         aria-label="Quote progress"
-        className="w-full max-w-4xl relative flex items-center justify-between sm:justify-start gap-2 sm:gap-4 md:gap-8 mb-4 sm:mb-6"
+        className="w-full max-w-4xl relative flex items-center justify-between sm:justify-start gap-1 sm:gap-2 md:gap-4 lg:gap-8 mb-4 sm:mb-6 overflow-x-auto px-2 sm:px-0 hide-scrollbar"
       >
         {/* Connecting lines - hidden on mobile, shown on larger screens */}
         {/* Single continuous line behind all buttons */}
@@ -82,17 +82,17 @@ export default function StepIndicator({
           const isCompleted = state === 'completed';
           const hasError = errors[step.number];
           const clickable = isClickable(step.number);
-          
+
           return (
             <button
               key={step.number}
               onClick={() => handleStepClick(step.number)}
               disabled={!clickable}
-              className="flex-1 sm:flex-none min-w-0 sm:min-w-[120px] md:min-w-[160px] lg:min-w-[200px] h-10 sm:h-12 px-2 sm:px-4 md:px-5 rounded-full flex items-center justify-center relative z-[2] transition-all duration-300 text-xs sm:text-sm md:text-base"
+              className="flex-1 sm:flex-none min-w-[50px] xs:min-w-[60px] sm:min-w-[100px] md:min-w-[140px] lg:min-w-[180px] max-w-[calc(25%-4px)] sm:max-w-none h-10 sm:h-12 px-1 xs:px-1.5 sm:px-3 md:px-4 lg:px-5 rounded-full flex items-center justify-center relative z-[2] transition-all duration-300 text-[9px] xs:text-[10px] sm:text-sm md:text-base flex-shrink-0"
               style={{
                 background: isCurrent ? '#020817' : isCompleted ? '#E8F5E9' : '#F8F8F8',
                 color: isCurrent ? '#FFFFFF' : isCompleted ? '#298F36' : '#787E86',
-                border: isCompleted ? '1px solid #298F3633' : '1px solid transparent',
+                border: '1px solid #DDE1E7',
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 400,
                 cursor: clickable ? 'pointer' : 'default',
@@ -110,14 +110,14 @@ export default function StepIndicator({
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 </div>
               )}
-              
+
               {/* Error indicator */}
               {hasError && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white z-20" />
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
               )}
-              
+
               <span 
-                className="block text-center truncate px-1 relative z-10"
+                className="block text-center truncate px-0.5 sm:px-1 relative z-10 w-full"
                 style={{
                   opacity: isCurrent && isLoading ? 0 : 1
                 }}
@@ -130,7 +130,7 @@ export default function StepIndicator({
           );
         })}
       </div>
-      
+
       {/* Children wrapper with responsive border radius */}
       {children && (
         <div className="w-full max-w-6xl mx-auto rounded-2xl sm:rounded-3xl md:rounded-[65px] overflow-visible p-4 sm:p-6 md:p-8 lg:p-10" style={{ 

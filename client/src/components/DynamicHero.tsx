@@ -75,13 +75,14 @@ export default function DynamicHero() {
           font-style: normal !important;
         }
       `}</style>
+
       <section 
         className="relative bg-cover bg-center bg-no-repeat py-16 sm:py-20 md:py-24 lg:py-32 min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex items-center"
         style={{ 
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${heroContent.backgroundImage || heroBackground})`,
           backgroundPosition: "center 65%",
-        backgroundSize: "cover"
-      }}
+          backgroundSize: "cover"
+        }}
         data-testid="dynamic-hero"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-16 sm:pt-20 md:pt-24">
@@ -89,11 +90,12 @@ export default function DynamicHero() {
             <h1
               id="hero-title-manrope"
               className="font-manrope mb-6 text-white drop-shadow-2xl text-center text-4xl sm:text-5xl md:text-[60px]"
-             
+
               data-testid="hero-title"
             >
-              {heroContent.title} 
+              {heroContent.title}
             </h1>
+
           {/* Primary CTA Button */}
           <div className="mb-4 sm:mb-6 flex justify-center">
             <Button
