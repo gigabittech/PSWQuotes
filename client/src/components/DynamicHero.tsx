@@ -75,13 +75,13 @@ export default function DynamicHero() {
           font-style: normal !important;
         }
       `}</style>
-      <section 
+      <section
         className="relative bg-cover bg-center bg-no-repeat py-24 lg:py-32"
-        style={{ 
+        style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${heroContent.backgroundImage || heroBackground})`,
           backgroundPosition: "center 65%",
-        backgroundSize: "cover"
-      }}
+          backgroundSize: "cover"
+        }}
         data-testid="dynamic-hero"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
@@ -89,154 +89,63 @@ export default function DynamicHero() {
             <h1
               id="hero-title-manrope"
               className="font-manrope mb-6 text-white drop-shadow-2xl text-center text-4xl sm:text-5xl md:text-[60px]"
-             
+
               data-testid="hero-title"
             >
-              {heroContent.title} 
+              {heroContent.title}
             </h1>
-          {/* Primary CTA Button */}
-          <div className="mb-6">
-            <Button
-              onClick={scrollToQuote}
-              className="text-white border border-white rounded-full font-normal inline-flex items-center justify-center"
-              style={{
-                width: '432px',
-                height: '44px',
-                paddingTop: '6px',
-                paddingRight: '20px',
-                paddingBottom: '6px',
-                paddingLeft: '20px',
-                borderRadius: '38px',
-                borderWidth: '1px',
-                borderColor: '#FFFFFF',
-                borderStyle: 'solid',
-                backgroundColor: 'transparent',
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: 400,
-                fontSize: '22px',
-                lineHeight: '32px',
-                letterSpacing: '0',
-                textAlign: 'center'
-              }}
-              data-testid="hero-primary-cta"
-            >
-              <span style={{ display: 'inline-flex', marginLeft: '5px', marginRight: '6px', flexShrink: 0 }}>
-                <img 
-                  src={heroTagIcon} 
-                  alt="Tag icon" 
-                  style={{ 
-                    width: '23px', 
-                    height: '23px', 
-                    minWidth: '23px',
-                    minHeight: '23px',
-                    objectFit: 'contain',
-                    display: 'block',
-                    flexShrink: 0
-                  }} 
-                />
-              </span>
-              <span className="text-white font-normal">{heroContent.subtitle || "Get a free solar quote in 2 minutes"}</span>
-            </Button>
-          </div>
-          
-          <div
-            className="mb-8 text-white drop-shadow-lg mx-auto"
-            style={{
-              width: "729px",
-              height: "41px",
-              textAlign: "center",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              gap: "0"
-            }}
-            data-testid="hero-description"
-          >
-            <p
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: 400,
-                fontStyle: "normal",
-                fontSize: "18px",
-                lineHeight: "28px",
-                letterSpacing: "0%",
-                textAlign: "center",
-                verticalAlign: "middle",
-                color: "#FFFFFF",
-                margin: 0,
-                whiteSpace: "nowrap"
-              }}
-            >
-              Join{" "}
-              <span
-                style={{
-                  color: "#E1AE20A1",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 500,
-                  fontStyle: "normal",
-                  fontSize: "18px",
-                  lineHeight: "28px",
-                  letterSpacing: "0%",
-                  textAlign: "center",
-                  verticalAlign: "middle"
-                }}
+            {/* Primary CTA Button */}
+            <div className="mb-6 flex justify-center">
+              <Button
+                onClick={scrollToQuote}
+                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-white bg-transparent px-8 py-3 font-inter text-lg sm:text-xl md:text-2xl font-normal text-white transition-all duration-300 hover:bg-white/10 hover:scale-105 w-full max-w-[90%] sm:max-w-md h-auto min-h-[44px]"
+                data-testid="hero-primary-cta"
               >
-                1,500+
-              </span>{" "}
-              happy customers who saved thousands with our premium solar solutions.
-            </p>
-            <p
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: 400,
-                fontStyle: "normal",
-                fontSize: "18px",
-                lineHeight: "28px",
-                letterSpacing: "0%",
-                textAlign: "center",
-                verticalAlign: "middle",
-                color: "#FFFFFF",
-                margin: 0
-              }}
+                <span className="mr-2 flex-shrink-0">
+                  <img
+                    src={heroTagIcon}
+                    alt="Tag icon"
+                    className="h-5 w-5 sm:h-6 sm:w-6 object-contain"
+                  />
+                </span>
+                <span className="text-white font-normal whitespace-normal text-center leading-tight">{heroContent.subtitle || "Get a free solar quote in 2 minutes"}</span>
+              </Button>
+            </div>
+
+            <div
+              className="mb-8 text-white drop-shadow-lg mx-auto w-full max-w-3xl px-4 flex flex-col justify-center gap-2"
+              data-testid="hero-description"
             >
-              Licensed, insured, and backed by Australia's best warranties.
-            </p>
-          </div>
-          
-          {/* Secondary CTA Button */}
-          <Button
-            onClick={scrollToQuote}
-            className="font-semibold text-white shadow-lg"
-            style={{
-              width: "248px",
-              height: "54px",
-              margin: "0 auto",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              paddingLeft: "26px",
-              paddingRight: "6px",
-              borderRadius: "100px",
-              background: "#E1AE20A1",
-              border: "1px solid rgba(255,255,255,0.25)",
-              fontFamily: "Manrope, sans-serif",
-              fontWeight: 600,
-              fontSize: "18px",
-              lineHeight: "100%",
-              letterSpacing: "0"
-            }}
-            data-testid="hero-cta-button"
-          >
-            <span>{heroContent.cta?.text || "Get My Free Quote"}</span>
-            <span style={{ marginLeft: "12px", display: "inline-flex" }}>
-              <img
-                src={heroCtaArrow}
-                alt="Arrow"
-                className="h-9 w-9 object-contain select-none"
-                draggable={false}
-              />
-            </span>
-          </Button>
+              <p className="font-inter font-normal text-base sm:text-lg leading-relaxed text-center text-white m-0">
+                Join{" "}
+                <span className="text-[#E1AE20] font-medium">
+                  1,500+
+                </span>{" "}
+                happy customers who saved thousands with our premium solar solutions.
+              </p>
+              <p className="font-inter font-normal text-base sm:text-lg leading-relaxed text-center text-white m-0">
+                Licensed, insured, and backed by Australia's best warranties.
+              </p>
+            </div>
+
+            {/* Secondary CTA Button */}
+            <div className="flex justify-center">
+              <Button
+                onClick={scrollToQuote}
+                className="font-manrope font-semibold text-white shadow-lg bg-[#E1AE20] hover:bg-[#E1AE20]/90 border border-white/25 rounded-full h-auto min-h-[54px] w-auto min-w-[200px] px-6 py-3 flex items-center justify-between gap-3 text-lg transition-all duration-300 hover:scale-105"
+                data-testid="hero-cta-button"
+              >
+                <span>{heroContent.cta?.text || "Get My Free Quote"}</span>
+                <span className="flex-shrink-0">
+                  <img
+                    src={heroCtaArrow}
+                    alt="Arrow"
+                    className="h-8 w-8 sm:h-9 sm:w-9 object-contain select-none"
+                    draggable={false}
+                  />
+                </span>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

@@ -96,7 +96,7 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
     const newSystems = currentSystems.includes(systemId)
       ? currentSystems.filter(s => s !== systemId)
       : [...currentSystems, systemId];
-    
+
     onUpdate({ systems: newSystems });
   };
 
@@ -112,535 +112,236 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
   const canContinue = (data.systems?.length || 0) > 0 && data.powerSupply;
 
   return (
-    <div 
-      style={{
-        width: '1024px',
-        height: '1083px',
-        maxWidth: '1024px',
-        borderRadius: '65px',
-        background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
-        border: '1px solid #DDE1E775',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        boxSizing: 'border-box',
-        overflow: 'visible',
-        position: 'relative',
-        isolation: 'isolate'
-      }}
+    <div
+      className="w-full max-w-5xl mx-auto rounded-[32px] sm:rounded-[65px] border border-[#DDE1E775] flex flex-col items-center box-border overflow-visible relative isolate bg-gradient-to-br from-white/35 via-[#EAEAEA29] to-[#99999908]"
       data-testid="system-requirements"
     >
-      <div style={{ 
-        position: 'relative', 
-        zIndex: 1, 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        padding: '48px 49px', 
-        gap: '24px', 
-        boxSizing: 'border-box',
-        overflow: 'visible',
-        background: 'transparent'
-      }}>
-      {/* Header Section */}
-      <div style={{ textAlign: 'center', width: '100%' }}>
-        <h2 style={{
-          fontSize: '32px',
-          fontWeight: 'bold',
-          color: '#020817',
-          marginBottom: '16px',
-          marginTop: 0
-        }}>
-          What are you looking for?
-        </h2>
-        <p style={{
-          fontSize: '16px',
-          color: '#787E86',
-          margin: 0,
-          maxWidth: '600px',
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        }}>
-          Select all the systems you're interested in. We'll create a custom quote based on your needs.
-        </p>
-      </div>
-
-      {/* System Options Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '24px',
-        width: '100%',
-        maxWidth: '900px',
-        position: 'relative',
-        zIndex: 10
-      }}>
-        {systemOptions.map((option) => {
-          const isSelected = data.systems?.includes(option.id);
-          return (
-            <div
-              key={option.id}
-              onClick={() => handleSystemToggle(option.id)}
-              style={{
-                position: 'relative',
-                width: '293px',
-                height: '366px',
-                minHeight: '360px',
-                background: isSelected ? 'radial-gradient(102.46% 102.46% at 50% -2.46%, #4E4E4E 0%, #0A0D14 52.79%)' : '#FFFFFF',
-                borderRadius: '16px',
-                paddingTop: option.id === 'solar' ? '40px' : '50px',
-                paddingRight: '24px',
-                paddingBottom: '24px',
-                paddingLeft: '24px',
-                cursor: 'pointer',
-                border: '1px solid #E5E5E5',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                boxSizing: 'border-box',
-                overflow: 'visible'
-              }}
-              data-testid={`system-option-${option.id}`}
-            >
-              {/* Badge - Fixed positioning */}
-              {option.badge && (
-                <>
-                  {/* Blurred layer behind badge when selected */}
-                  {isSelected && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '-14.5px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '132px',
-                      height: '29px',
-                      borderRadius: '9999px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
-                      zIndex: 999,
-                      pointerEvents: 'none'
-                    }} />
-                  )}
-                  <div style={{
-                    position: 'absolute',
-                    top: '-14.5px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '132px',
-                    height: '29px',
-                    borderRadius: '9999px',
-                    border: isSelected ? '1px solid #C2C2C233' : 'none',
-                    backgroundColor: isSelected ? '#F7C9179E' : '#F5F5F5',
-                    color: '#020817',
-                    padding: '10px 16px',
-                    fontFamily: 'Inter, sans-serif',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    lineHeight: '16px',
-                    letterSpacing: '0.3px',
-                    textTransform: 'uppercase',
-                    whiteSpace: 'nowrap',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxSizing: 'border-box',
-                    verticalAlign: 'middle',
-                    zIndex: 1000,
-                    boxShadow: isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none',
-                    backdropFilter: isSelected ? 'blur(10px)' : 'none',
-                    WebkitBackdropFilter: isSelected ? 'blur(10px)' : 'none'
-                  }}>
-                    {option.badge}
-                  </div>
-                </>
-              )}
-
-              {/* Checkbox */}
-              <div style={{
-                position: 'absolute',
-                top: isSelected ? '26px' : '32px',
-                left: isSelected ? '22px' : '26px',
-                width: isSelected ? '24px' : '18px',
-                height: isSelected ? '24px' : '18px',
-                border: 'none',
-                backgroundColor: 'transparent',
-                borderRadius: '4px',
-                boxShadow: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 10
-              }}>
-                {!isSelected ? (
-                  <img 
-                    src="/attached_assets/_Checkbox base.png" 
-                    alt="Checkbox" 
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      display: 'block'
-                    }}
-                  />
-                ) : (
-                  <img 
-                    src="/attached_assets/_Checkbox base_selected.png" 
-                    alt="Checkbox Selected" 
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      display: 'block'
-                    }}
-                  />
-                )}
-              </div>
-
-              {/* Icon */}
-              <div style={{
-                width: '96px',
-                height: '96px',
-                borderRadius: '24px',
-                border: '1px solid #C2C2C233',
-                backgroundColor: isSelected ? '#19A4201A' : '#EBC9721A',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 24px',
-                marginTop: option.popular ? '8px' : '0px'
-              }}>
-                {option.id === 'solar' ? (
-                  <img 
-                    src="/attached_assets/Solar.png" 
-                    alt="Solar Power" 
-                    style={{
-                      width: '36px',
-                      height: '40px',
-                      objectFit: 'contain',
-                      display: 'block'
-                    }}
-                  />
-                ) : option.id === 'battery' ? (
-                  <img 
-                    src="/attached_assets/Battery.png" 
-                    alt="Battery Storage" 
-                    style={{
-                      width: '36px',
-                      height: '40px',
-                      objectFit: 'contain',
-                      display: 'block'
-                    }}
-                  />
-                ) : option.id === 'ev' ? (
-                  <img 
-                    src="/attached_assets/ev.png" 
-                    alt="EV Charging" 
-                    style={{
-                      width: '36px',
-                      height: '40px',
-                      objectFit: 'contain',
-                      display: 'block'
-                    }}
-                  />
-                ) : (
-                  <span style={{ 
-                    fontSize: '48px', 
-                    lineHeight: '1'
-                  }}>
-                    {option.icon}
-                  </span>
-                )}
-              </div>
-
-              {/* Content */}
-              <div style={{ textAlign: 'center', flex: 1 }}>
-                <h3 style={{
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  color: isSelected ? '#FFFFFF' : '#020817',
-                  marginBottom: '12px',
-                  marginTop: 0,
-                  fontFamily: 'Manrope, sans-serif'
-                }}>
-                  {option.title}
-                </h3>
-                <p style={{
-                  fontSize: '14px',
-                  color: isSelected ? '#D1D5DB' : '#787E86',
-                  marginBottom: '8px',
-                  lineHeight: '1.5',
-                  fontFamily: 'Manrope, sans-serif'
-                }}>
-                  {option.description}
-                </p>
-              </div>
-
-              {/* Price */}
-              <div style={{
-                borderRadius: '12px',
-                padding: '8px 16px 16px 16px',
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  color: isSelected ? '#FCD34D' : '#020817',
-                  marginBottom: '4px',
-                  fontFamily: 'Manrope, sans-serif'
-                }}>
-                  {option.price}
-                </div>
-                <div style={{
-                  fontSize: '12px',
-                  color: isSelected ? '#9CA3AF' : '#787E86',
-                  fontFamily: 'Manrope, sans-serif'
-                }}>
-                  {option.afterText}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Power Supply Section */}
-      <div style={{ width: '100%', maxWidth: '900px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            width: '291px',
-            height: '58px',
-            backgroundColor: '#8E8E8E1A',
-            borderRadius: '40px',
-            border: '1px solid #0208171A',
-            paddingTop: '12px',
-            paddingRight: '24px',
-            paddingBottom: '12px',
-            paddingLeft: '24px',
-            marginBottom: '16px',
-            justifyContent: 'center',
-            gap: '0px',
-            boxSizing: 'border-box'
-          }}>
-            <img 
-              src="/attached_assets/ev.png" 
-              alt="EV Charging" 
-              style={{
-                width: '24px',
-                height: '24px',
-                marginRight: '12px',
-                objectFit: 'contain'
-              }}
-            />
-            <h3 style={{
-              fontFamily: 'Manrope, sans-serif',
-              fontWeight: 600,
-              fontSize: '24px',
-              lineHeight: '32px',
-              letterSpacing: '-0.6px',
-              textAlign: 'center',
-              verticalAlign: 'middle',
-              color: '#020817',
-              margin: 0
-            }}>
-              Power Supply Type
-            </h3>
-          </div>
-          <p style={{
-            fontSize: '16px',
-            color: '#787E86',
-            margin: 0,
-            maxWidth: '600px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            lineHeight: '1.5'
-          }}>
-            Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
+      <div className="relative z-[1] w-full h-full flex flex-col items-center p-6 sm:p-12 gap-6 box-border overflow-visible bg-transparent">
+        {/* Header Section */}
+        <div className="text-center w-full">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#020817] mb-4 mt-0">
+            What are you looking for?
+          </h2>
+          <p className="text-sm sm:text-base text-[#787E86] m-0 max-w-xl mx-auto">
+            Select all the systems you're interested in. We'll create a custom quote based on your needs.
           </p>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '16px'
-        }}>
-          {powerOptions.map((option) => {
-            const isSelected = data.powerSupply === option.id;
+        {/* System Options Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl relative z-10">
+          {systemOptions.map((option) => {
+            const isSelected = data.systems?.includes(option.id);
             return (
               <div
                 key={option.id}
-                onClick={() => handlePowerSupplyChange(option.id)}
-                style={{
-                  position: 'relative',
-                  width: '298px',
-                  height: '120px',
-                  minHeight: '120px',
-                  opacity: isSelected ? 0.8 : 1,
-                  background: isSelected ? 'radial-gradient(100% 100% at 93.96% 0%, #4E4E4E 0%, #0A0D14 52.79%)' : '#FFFFFFBF',
-                  borderRadius: '16px',
-                  padding: '24px',
-                  cursor: 'pointer',
-                  border: isSelected ? '1px solid #0208171A' : '1px solid #D5D5D573',
-                  boxShadow: isSelected ? '0px 0px 0px 0px #010EC7' : 'none',
-                  transition: 'all 0.3s ease',
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '12px',
-                  boxSizing: 'border-box'
-                }}
-                data-testid={`power-supply-${option.id}`}
+                onClick={() => handleSystemToggle(option.id)}
+                className={cn(
+                  "relative w-full min-h-[360px] rounded-2xl p-6 cursor-pointer border transition-all duration-300 flex flex-col justify-between box-border overflow-visible",
+                  isSelected ? "bg-[radial-gradient(102.46%_102.46%_at_50%_-2.46%,#4E4E4E_0%,#0A0D14_52.79%)] border-[#E5E5E5]" : "bg-white border-[#E5E5E5] hover:border-primary"
+                )}
+                style={{ paddingTop: option.id === 'solar' ? '40px' : '50px' }}
+                data-testid={`system-option-${option.id}`}
               >
+                {/* Badge - Fixed positioning */}
+                {option.badge && (
+                  <>
+                    {/* Blurred layer behind badge when selected */}
+                    {isSelected && (
+                      <div className="absolute -top-[14.5px] left-1/2 -translate-x-1/2 w-[132px] h-[29px] rounded-full bg-white/10 backdrop-blur-md z-[999] pointer-events-none" />
+                    )}
+                    <div
+                      className={cn(
+                        "absolute -top-[14.5px] left-1/2 -translate-x-1/2 w-[132px] h-[29px] rounded-full flex items-center justify-center px-4 py-2.5 font-inter text-xs font-bold uppercase tracking-wider whitespace-nowrap z-[1000]",
+                        isSelected ? "border border-[#C2C2C233] bg-[#F7C9179E] text-[#020817] shadow-sm backdrop-blur-md" : "bg-[#F5F5F5] text-[#020817]"
+                      )}
+                    >
+                      {option.badge}
+                    </div>
+                  </>
+                )}
+
                 {/* Checkbox */}
-                <div style={{
-                  position: 'absolute',
-                  top: '28px',
-                  left: '16px',
-                  width: isSelected ? '24px' : '18px',
-                  height: isSelected ? '24px' : '18px',
-                  border: 'none',
-                  backgroundColor: 'transparent',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  zIndex: 10
-                }}>
+                <div className={cn(
+                  "absolute flex items-center justify-center z-10",
+                  isSelected ? "top-[26px] left-[22px] w-6 h-6" : "top-8 left-[26px] w-[18px] h-[18px]"
+                )}>
                   {!isSelected ? (
-                    <img 
-                      src="/attached_assets/_Checkbox base.png" 
-                      alt="Checkbox" 
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block'
-                      }}
+                    <img
+                      src="/attached_assets/_Checkbox base.png"
+                      alt="Checkbox"
+                      className="w-full h-full object-cover block"
                     />
                   ) : (
-                    <img 
-                      src="/attached_assets/_Checkbox base_selected.png" 
-                      alt="Checkbox Selected" 
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block'
-                      }}
+                    <img
+                      src="/attached_assets/_Checkbox base_selected.png"
+                      alt="Checkbox Selected"
+                      className="w-full h-full object-cover block"
                     />
+                  )}
+                </div>
+
+                {/* Icon */}
+                <div className={cn(
+                  "w-24 h-24 rounded-3xl border border-[#C2C2C233] flex items-center justify-center mx-auto mb-6",
+                  isSelected ? "bg-[#19A4201A]" : "bg-[#EBC9721A]",
+                  option.popular ? "mt-2" : "mt-0"
+                )}>
+                  {option.id === 'solar' ? (
+                    <img
+                      src="/attached_assets/Solar.png"
+                      alt="Solar Power"
+                      className="w-9 h-10 object-contain block"
+                    />
+                  ) : option.id === 'battery' ? (
+                    <img
+                      src="/attached_assets/Battery.png"
+                      alt="Battery Storage"
+                      className="w-9 h-10 object-contain block"
+                    />
+                  ) : option.id === 'ev' ? (
+                    <img
+                      src="/attached_assets/ev.png"
+                      alt="EV Charging"
+                      className="w-9 h-10 object-contain block"
+                    />
+                  ) : (
+                    <span className="text-5xl leading-none">
+                      {option.icon}
+                    </span>
                   )}
                 </div>
 
                 {/* Content */}
-                <div style={{ 
-                  flex: 1,
-                  marginLeft: '28px'
-                }}>
-                  <label style={{
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    color: isSelected ? '#FFFFFF' : '#020817',
-                    display: 'block',
-                    marginBottom: '4px',
-                    cursor: 'pointer',
-                    fontFamily: 'Manrope, sans-serif'
-                  }}>
+                <div className="text-center flex-1">
+                  <h3 className={cn(
+                    "text-xl font-bold mb-3 mt-0 font-manrope",
+                    isSelected ? "text-white" : "text-[#020817]"
+                  )}>
                     {option.title}
-                  </label>
-                  <p style={{
-                    fontSize: '14px',
-                    color: isSelected ? '#D1D5DB' : '#787E86',
-                    margin: 0,
-                    lineHeight: '1.5',
-                    fontFamily: 'Manrope, sans-serif'
-                  }}>
+                  </h3>
+                  <p className={cn(
+                    "text-sm mb-2 leading-relaxed font-manrope",
+                    isSelected ? "text-gray-300" : "text-[#787E86]"
+                  )}>
                     {option.description}
                   </p>
+                </div>
+
+                {/* Price */}
+                <div className="rounded-xl px-4 pt-2 pb-4 text-center">
+                  <div className={cn(
+                    "text-lg font-bold mb-1 font-manrope",
+                    isSelected ? "text-[#FCD34D]" : "text-[#020817]"
+                  )}>
+                    {option.price}
+                  </div>
+                  <div className={cn(
+                    "text-xs font-manrope",
+                    isSelected ? "text-gray-400" : "text-[#787E86]"
+                  )}>
+                    {option.afterText}
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
-      </div>
 
-      {/* Continue Button */}
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
-        <button
-          onClick={onNext}
-          disabled={!canContinue}
-          style={{
-            width: '346px',
-            height: '54px',
-            background: canContinue 
-              ? '#E1AE20D4'
-              : '#E5E5E5',
-            color: canContinue ? '#FFFFFF' : '#9CA3AF',
-            border: 'none',
-            borderRadius: '100px',
-            paddingRight: '6px',
-            paddingLeft: '26px',
-            paddingTop: '0',
-            paddingBottom: '0',
-            fontSize: '18px',
-            fontWeight: 'bold',
-            cursor: canContinue ? 'pointer' : 'not-allowed',
-            opacity: canContinue ? 1 : 0.5,
-            transition: 'all 0.3s ease',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0px',
-            justifyContent: 'space-between',
-            boxShadow: canContinue ? '0px 6px 15.3px 0px #0000001A' : 'none',
-            position: 'relative',
-            boxSizing: 'border-box'
-          }}
-          data-testid="button-continue-to-products"
-        >
-          <span style={{ 
-            fontFamily: 'Manrope',
-            fontWeight: 600,
-            fontStyle: 'normal',
-            fontSize: '18px',
-            lineHeight: '100%',
-            letterSpacing: '0%',
-            width: '261px',
-            height: '25px',
-            color: '#FFFFFF',
-            whiteSpace: 'nowrap',
-            display: 'block',
-            leadingTrim: 'none'
-          } as React.CSSProperties & { leadingTrim?: string }}>Continue to Product Selection</span>
-          <div style={{
-            width: '54px',
-            height: '54px',
-            borderRadius: '100px',
-            padding: '10px',
-            backgroundColor: 'transparent',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            marginLeft: '10px',
-            gap: '10px',
-            boxSizing: 'border-box'
-          }}>
-            <img 
-              src="/attached_assets/arrow_forward.png" 
-              alt="Arrow" 
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain'
-              }}
-            />
+        {/* Power Supply Section */}
+        <div className="w-full max-w-4xl mt-8">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center justify-center w-auto min-w-[200px] h-[58px] bg-[#8E8E8E1A] rounded-full border border-[#0208171A] px-6 py-3 mb-4 gap-3 box-border">
+              <img
+                src="/attached_assets/ev.png"
+                alt="EV Charging"
+                className="w-6 h-6 object-contain"
+              />
+              <h3 className="font-manrope font-semibold text-xl sm:text-2xl leading-tight text-[#020817] m-0">
+                Power Supply Type
+              </h3>
+            </div>
+            <p className="text-sm sm:text-base text-[#787E86] m-0 max-w-xl mx-auto leading-relaxed">
+              Select your property's electrical supply configuration. Not sure? We can help identify this during our assessment.
+            </p>
           </div>
-        </button>
-      </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {powerOptions.map((option) => {
+              const isSelected = data.powerSupply === option.id;
+              return (
+                <div
+                  key={option.id}
+                  onClick={() => handlePowerSupplyChange(option.id)}
+                  className={cn(
+                    "relative w-full min-h-[120px] rounded-2xl p-6 cursor-pointer border transition-all duration-300 flex items-start gap-3 box-border",
+                    isSelected ? "opacity-80 bg-[radial-gradient(100%_100%_at_93.96%_0%,#4E4E4E_0%,#0A0D14_52.79%)] border-[#0208171A] shadow-[0px_0px_0px_0px_#010EC7]" : "bg-white/75 border-[#D5D5D573]"
+                  )}
+                  data-testid={`power-supply-${option.id}`}
+                >
+                  {/* Checkbox */}
+                  <div className={cn(
+                    "absolute flex items-center justify-center z-10",
+                    isSelected ? "top-7 left-4 w-6 h-6" : "top-7 left-4 w-[18px] h-[18px]"
+                  )}>
+                    {!isSelected ? (
+                      <img
+                        src="/attached_assets/_Checkbox base.png"
+                        alt="Checkbox"
+                        className="w-full h-full object-cover block"
+                      />
+                    ) : (
+                      <img
+                        src="/attached_assets/_Checkbox base_selected.png"
+                        alt="Checkbox Selected"
+                        className="w-full h-full object-cover block"
+                      />
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 ml-7">
+                    <label className={cn(
+                      "text-base font-bold block mb-1 cursor-pointer font-manrope",
+                      isSelected ? "text-white" : "text-[#020817]"
+                    )}>
+                      {option.title}
+                    </label>
+                    <p className={cn(
+                      "text-sm m-0 leading-relaxed font-manrope",
+                      isSelected ? "text-gray-300" : "text-[#787E86]"
+                    )}>
+                      {option.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Continue Button */}
+        <div className="w-full flex justify-center mt-6">
+          <button
+            onClick={onNext}
+            disabled={!canContinue}
+            className={cn(
+              "w-full max-w-[346px] h-[54px] rounded-full flex items-center justify-between px-1.5 pl-6 text-lg font-bold transition-all duration-300 box-border",
+              canContinue ? "bg-[#E1AE20D4] text-white cursor-pointer shadow-lg opacity-100" : "bg-[#E5E5E5] text-gray-400 cursor-not-allowed opacity-50"
+            )}
+            data-testid="button-continue-to-products"
+          >
+            <span className="font-manrope font-semibold text-lg leading-none tracking-normal whitespace-nowrap block">
+              Continue to Product Selection
+            </span>
+            <div className="w-[54px] h-[54px] rounded-full p-2.5 bg-transparent flex items-center justify-center flex-shrink-0 ml-2.5">
+              <img
+                src="/attached_assets/arrow_forward.png"
+                alt="Arrow"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   );

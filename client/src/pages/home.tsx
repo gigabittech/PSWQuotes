@@ -91,15 +91,15 @@ export default function Home() {
     console.log('handleSubmit received finalData:', finalData);
     console.log('Current formData state:', formData);
     console.log('Pricing data:', pricingData);
-    
+
     const submitData = new FormData();
-    
+
     // Add all text fields with proper field mapping
     Object.entries(finalData).forEach(([key, value]) => {
       if (key !== 'switchboardPhoto' && value !== undefined && value !== null) {
         // Map 'systems' to 'selectedSystems' for server compatibility
         const fieldName = key === 'systems' ? 'selectedSystems' : key;
-        
+
         if (Array.isArray(value)) {
           submitData.append(fieldName, JSON.stringify(value));
         } else {
@@ -125,7 +125,7 @@ export default function Home() {
     Array.from(submitData.entries()).forEach(([key, value]) => {
       console.log(key, '=', value);
     });
-    
+
     submitQuote.mutate(submitData);
   };
 
@@ -148,7 +148,7 @@ export default function Home() {
       <section id="quote" className="py-12 sm:py-16 lg:py-20 glass-backdrop min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-12">
-            <div 
+            <div
               style={{
                 width: '1280px',
                 height: '128px',
@@ -161,7 +161,7 @@ export default function Home() {
                 opacity: 1
               }}
             >
-              <div 
+              <div
                 style={{
                   width: '100%',
                   height: '48px',
@@ -170,7 +170,7 @@ export default function Home() {
                   justifyContent: 'center'
                 }}
               >
-                <h2 
+                <h2
                   style={{
                     fontFamily: 'Manrope, sans-serif',
                     fontWeight: 600,
@@ -187,7 +187,7 @@ export default function Home() {
                   Get Your Instant Solar Quote
                 </h2>
               </div>
-              <p 
+              <p
                 style={{
                   width: '744px',
                   minHeight: '56px',
@@ -209,9 +209,9 @@ export default function Home() {
               </p>
             </div>
           </div>
-          
+
           <StepIndicator currentStep={currentStep} />
-          
+
           <div className="">
             {currentStep === 1 && (
               <SystemRequirements
@@ -220,7 +220,7 @@ export default function Home() {
                 onNext={nextStep}
               />
             )}
-            
+
             {currentStep === 2 && (
               <ProductSelection
                 data={formData}
@@ -232,7 +232,7 @@ export default function Home() {
                 isCalculating={calculatePricing.isPending}
               />
             )}
-            
+
             {currentStep === 3 && (
               <PropertyDetails
                 data={formData}
@@ -242,7 +242,7 @@ export default function Home() {
                 isSubmitting={submitQuote.isPending}
               />
             )}
-            
+
             {currentStep === 4 && pricingData && (
               <QuoteSummary
                 data={formData}

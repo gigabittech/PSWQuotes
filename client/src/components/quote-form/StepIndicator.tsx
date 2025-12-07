@@ -9,8 +9,8 @@ interface StepIndicatorProps {
   children?: ReactNode;
 }
 
-export default function StepIndicator({ 
-  currentStep, 
+export default function StepIndicator({
+  currentStep,
   onStepClick,
   errors = {},
   isLoading = false,
@@ -45,67 +45,48 @@ export default function StepIndicator({
   const totalGapWidth = totalGaps * gapSize;
   const availableWidth = 896 - totalGapWidth;
   const stepWidth = availableWidth / steps.length; // All steps same width
-  
+
   // Calculate positions for connecting lines
   const getStepWidth = () => {
     return stepWidth; // All steps same width
   };
-  
+
   const getStepLeftPosition = (index: number) => {
     return index * (stepWidth + gapSize);
   };
 
   return (
-    <div className="mb-8 flex flex-col items-center" style={{ width: '100%' }}>
+    <div className="mb-8 flex flex-col items-center w-full">
       {/* Step Indicator Buttons - Above the container */}
-      <div 
-        role="navigation" 
+      <div
+        role="navigation"
         aria-label="Quote progress"
-        style={{
-          width: '896px',
-          height: '47px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          position: 'relative',
-          opacity: 1,
-          gap: '32px',
-          marginBottom: '20px'
-        }}
+        className="w-full max-w-4xl h-auto min-h-[47px] flex flex-wrap sm:flex-nowrap items-center justify-center sm:justify-between relative gap-2 sm:gap-8 mb-5 px-4"
       >
-        {/* Connecting lines - positioned between steps */}
-        {steps.map((step, index) => {
-          if (index < steps.length - 1) {
-            // Calculate cumulative left position
-            const cumulativeLeft = (index + 1) * stepWidth + index * gapSize;
-            
-            // Line spans the gap between steps
-            const lineLeft = cumulativeLeft;
-            const lineWidth = gapSize;
-            
-            // Line is green if the step after it is completed
-            const isCompleted = step.number < currentStep;
-            
-            return (
-              <div
-                key={`line-${step.number}`}
-                style={{
-                  position: 'absolute',
-                  left: `${lineLeft}px`,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: `${lineWidth}px`,
-                  height: '1px',
-                  backgroundColor: isCompleted ? '#19A42033' : '#E5E5E5',
-                  zIndex: 1,
-                  pointerEvents: 'none',
-                  opacity: 1
-                }}
-              />
-            );
-          }
-          return null;
-        })}
+        {/* Connecting lines - positioned between steps - Hidden on mobile for cleaner look */}
+        <div className="hidden sm:block absolute inset-0 pointer-events-none">
+          {steps.map((step, index) => {
+            if (index < steps.length - 1) {
+              const isCompleted = step.number < currentStep;
+              // Calculate rough position percentages for lines
+              const left = `${(index * 100) / steps.length + 12}%`;
+              const width = `${100 / steps.length - 24}%`;
+
+              return (
+                <div
+                  key={`line-${step.number}`}
+                  className="absolute top-1/2 -translate-y-1/2 h-[1px] z-0 transition-colors duration-300"
+                  style={{
+                    left: left,
+                    width: width,
+                    backgroundColor: isCompleted ? '#19A42033' : '#E5E5E5',
+                  }}
+                />
+              );
+            }
+            return null;
+          })}
+        </div>
 
         {/* Step pills */}
         {steps.map((step, index) => {
@@ -114,103 +95,44 @@ export default function StepIndicator({
           const isCompleted = state === 'completed';
           const hasError = errors[step.number];
           const clickable = isClickable(step.number);
-          const stepWidth = getStepWidth();
-          
+
           return (
             <button
               key={step.number}
               onClick={() => handleStepClick(step.number)}
               disabled={!clickable}
-              style={{
-                width: `${stepWidth}px`,
-                height: '47px',
-                paddingTop: '10.55px',
-                paddingRight: '20px',
-                paddingBottom: '10.55px',
-                paddingLeft: '20px',
-                borderRadius: '9999px',
-                background: isCurrent ? '#020817' : isCompleted ? '#19A42033' : '#F8F8F8',
-                color: isCurrent ? '#FFFFFF' : isCompleted ? '#298F36' : '#787E86',
-                border: isCompleted ? '1px solid #298F3633' : 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '14px',
-                fontWeight: 400,
-                cursor: clickable ? 'pointer' : 'default',
-                transition: 'all 0.3s ease-out',
-                position: 'relative',
-                zIndex: 2,
-                opacity: 1,
-                whiteSpace: 'nowrap',
-                overflow: 'visible'
-              }}
-              data-testid={`step-indicator-${step.number}`}
+              className={cn(
+                "relative z-10 flex items-center justify-center h-[47px] px-5 rounded-full font-inter text-sm transition-all duration-300 w-full sm:w-auto flex-1 sm:flex-none",
+                isCurrent ? "bg-[#020817] text-white" : isCompleted ? "bg-[#19A42033] text-[#298F36] border border-[#298F3633]" : "bg-[#F8F8F8] text-[#787E86]",
+                clickable ? "cursor-pointer" : "cursor-default"
+              )}
               aria-label={`${step.title} - ${state}${hasError ? ' (has errors)' : ''}`}
               aria-current={isCurrent ? 'step' : undefined}
             >
               {/* Loading spinner */}
               {isCurrent && isLoading && (
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <div style={{
-                    width: '16px',
-                    height: '16px',
-                    border: '2px solid #FFFFFF',
-                    borderTop: '2px solid transparent',
-                    borderRadius: '50%',
-                    animation: 'spin 1s linear infinite'
-                  }} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 </div>
               )}
-              
+
               {/* Error indicator */}
               {hasError && (
-                <div style={{
-                  position: 'absolute',
-                  top: '-4px',
-                  right: '-4px',
-                  width: '12px',
-                  height: '12px',
-                  backgroundColor: '#EF4444',
-                  borderRadius: '50%',
-                  border: '2px solid #FFFFFF'
-                }} />
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
               )}
-              
-              <span style={{
-                display: 'block',
-                textAlign: 'center',
-                whiteSpace: 'nowrap',
-                opacity: isCurrent && isLoading ? 0 : 1
-              }}>
-                {step.title}
+
+              <span className={cn("block text-center whitespace-nowrap", isCurrent && isLoading ? "opacity-0" : "opacity-100")}>
+                <span className="hidden sm:inline">{step.title}</span>
+                <span className="sm:hidden">{step.shortTitle}</span>
               </span>
             </button>
           );
         })}
       </div>
-      
-      {/* Children wrapper with 65px border radius */}
+
+      {/* Children wrapper with responsive border radius and padding */}
       {children && (
-        <div className="bg-green-500" style={{ 
-          
-          borderRadius: '65px', 
-          width: '100%',
-          maxWidth: '1024px',
-          overflow: 'visible',
-          background: '#22c55e',
-          padding: '40px',
-          margin: '0 auto',
-          boxSizing: 'border-box',
-          display: 'block'
-        }}>
+        <div className="w-full max-w-5xl mx-auto bg-[#22c55e] rounded-[32px] sm:rounded-[65px] p-6 sm:p-10 box-border block overflow-visible">
           {children}
         </div>
       )}
