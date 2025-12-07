@@ -1110,83 +1110,83 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
 
                 {/* Quote List - Scrollable */}
                 <div className="flex-1 overflow-y-auto min-h-0">
-                  <div className="space-y-3">
+                <div className="space-y-3">
                     {paginatedQuotes.length === 0 ? (
-                      <Card className="p-12">
-                        <div className="text-center">
-                          <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-20" />
-                          <h3 className="text-lg font-semibold mb-2">No Quotes Found</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {searchQuery || statusFilter !== "all" 
-                              ? "No quotes match your current filters" 
-                              : "Quote requests will appear here once customers submit the form"}
-                          </p>
-                        </div>
-                      </Card>
-                    ) : (
+                    <Card className="p-12">
+                      <div className="text-center">
+                        <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-20" />
+                        <h3 className="text-lg font-semibold mb-2">No Quotes Found</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {searchQuery || statusFilter !== "all" 
+                            ? "No quotes match your current filters" 
+                            : "Quote requests will appear here once customers submit the form"}
+                        </p>
+                      </div>
+                    </Card>
+                  ) : (
                       paginatedQuotes.map((quote: Quote) => (
-                      <Card key={quote.id} className="hover:shadow-md transition-shadow">
-                        <CardContent className="p-6">
-                          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                            {/* Customer Info */}
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-start justify-between mb-3">
-                                <div>
+                    <Card key={quote.id} className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-6">
+                        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                          {/* Customer Info */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between mb-3">
+                              <div>
                                   <h3 className="text-lg font-semibold text-foreground mb-1">{capitalizeWords(quote.firstName)} {capitalizeWords(quote.lastName)}</h3>
-                                  <div className="space-y-0.5 text-sm text-muted-foreground">
-                                    <p>{quote.email}</p>
-                                    <p>{quote.phone}</p>
+                                <div className="space-y-0.5 text-sm text-muted-foreground">
+                                  <p>{quote.email}</p>
+                                  <p>{quote.phone}</p>
                                     <p>{capitalizeWords(quote.address)}, {capitalizeWords(quote.suburb)} {quote.state?.toUpperCase()} {quote.postcode}</p>
-                                  </div>
-                                </div>
-                              </div>
-                              
-                              {/* Quote Details */}
-                              <div className="flex flex-wrap gap-4 text-sm">
-                                <div>
-                                  <span className="text-muted-foreground">Systems:</span>
-                                  <span className="ml-1 font-medium">{quote.selectedSystems?.map(formatSystemName).join(', ') || 'N/A'}</span>
-                                </div>
-                                <div>
-                                  <span className="text-muted-foreground">Supply:</span>
-                                  <span className="ml-1 font-medium">{formatPowerSupply(quote.powerSupply)} Phase</span>
                                 </div>
                               </div>
                             </div>
                             
-                            {/* Price & Status */}
-                            <div className="md:text-right">
-                              <p className="text-2xl font-bold mb-2">
-                                {formatPrice(parseFloat(quote.finalPrice.toString()))}
-                              </p>
-                              <p className="text-xs text-muted-foreground mb-3">
-                                {new Date(quote.createdAt).toLocaleDateString('en-AU', {
-                                  year: 'numeric',
-                                  month: 'short',
-                                  day: 'numeric'
-                                })}
-                              </p>
-                              <Select
-                                value={quote.status}
-                                onValueChange={(value) => handleStatusUpdate(quote.id, value)}
-                                disabled={updateStatusMutation.isPending}
-                              >
-                                <SelectTrigger className="w-full md:w-36">
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="pending">Pending</SelectItem>
-                                  <SelectItem value="contacted">Contacted</SelectItem>
-                                  <SelectItem value="converted">Converted</SelectItem>
-                                  <SelectItem value="lost">Lost</SelectItem>
-                                </SelectContent>
-                              </Select>
+                            {/* Quote Details */}
+                            <div className="flex flex-wrap gap-4 text-sm">
+                              <div>
+                                <span className="text-muted-foreground">Systems:</span>
+                                  <span className="ml-1 font-medium">{quote.selectedSystems?.map(formatSystemName).join(', ') || 'N/A'}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Supply:</span>
+                                  <span className="ml-1 font-medium">{formatPowerSupply(quote.powerSupply)} Phase</span>
+                              </div>
                             </div>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))
-                    )}
+                          
+                          {/* Price & Status */}
+                          <div className="md:text-right">
+                            <p className="text-2xl font-bold mb-2">
+                              {formatPrice(parseFloat(quote.finalPrice.toString()))}
+                            </p>
+                            <p className="text-xs text-muted-foreground mb-3">
+                              {new Date(quote.createdAt).toLocaleDateString('en-AU', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                              })}
+                            </p>
+                            <Select
+                              value={quote.status}
+                              onValueChange={(value) => handleStatusUpdate(quote.id, value)}
+                              disabled={updateStatusMutation.isPending}
+                            >
+                              <SelectTrigger className="w-full md:w-36">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="pending">Pending</SelectItem>
+                                <SelectItem value="contacted">Contacted</SelectItem>
+                                <SelectItem value="converted">Converted</SelectItem>
+                                <SelectItem value="lost">Lost</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                  )}
                   </div>
                 </div>
 
@@ -1331,7 +1331,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                           <ChevronsRight className="h-4 w-4" />
                         </Button>
                       </div>
-                    </div>
+                </div>
                   </div>
                 )}
               </div>
@@ -1343,9 +1343,9 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                 <div className="flex flex-col h-full">
                   <div className="mb-6 md:mb-8 flex-shrink-0">
                     <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Embed Quote Form</h1>
-                    <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
-                  </div>
-                  <EmbedCodeGenerator />
+                  <p className="text-sm sm:text-base text-muted-foreground">Generate embed codes to add the quote form to external websites</p>
+                </div>
+                <EmbedCodeGenerator />
                 </div>
               </div>
             )}
@@ -1379,12 +1379,12 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             
             {/* User Management */}
             {activeTab === "users" && userRole === 'admin' && (
-              <div>
+                <div>
                 <div className="mb-6 md:mb-8 flex items-start justify-between">
                   <div>
                     <h1 className="text-2xl sm:text-3xl font-outfit font-bold text-foreground mb-1 sm:mb-2">User Management</h1>
                     <p className="text-muted-foreground">Manage user accounts and permissions</p>
-                  </div>
+                </div>
                   <Button onClick={handleCreateUser} className="gap-2">
                     <Plus className="h-4 w-4" />
                     Create User
@@ -1402,11 +1402,11 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                     </CardContent>
                   </Card>
                 ) : (
-                  <Card>
-                    <CardHeader>
+                <Card>
+                  <CardHeader>
                       <CardTitle>Users ({users.length})</CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                  </CardHeader>
+                  <CardContent>
                       {users.length === 0 ? (
                         <div className="text-center py-12 text-muted-foreground">
                           <Users className="h-12 w-12 mx-auto mb-3 opacity-30" />
@@ -1477,8 +1477,8 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
                           </table>
                         </div>
                       )}
-                    </CardContent>
-                  </Card>
+                  </CardContent>
+                </Card>
                 )}
 
                 {/* Create/Edit User Dialog */}
@@ -1567,7 +1567,7 @@ export default function AdminDashboard({ mobileSidebarOpen, setMobileSidebarOpen
             {/* Settings */}
             {activeTab === "settings" && userRole === 'admin' && (
               <div className="flex-1 overflow-y-auto min-h-0">
-                <Settings />
+              <Settings />
               </div>
             )}
           </div>
