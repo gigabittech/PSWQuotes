@@ -92,8 +92,8 @@ export async function seedProducts() {
         rebateAmount: rebateAmountNumber.toFixed(2),
         specifications,
         warranty,
-        popular: false,
-        active: true,
+      popular: false,
+      active: true,
       } as any;
 
       await storage.createProduct(insertProduct);
