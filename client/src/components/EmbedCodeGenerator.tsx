@@ -7,7 +7,8 @@ import { Check, Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function EmbedCodeGenerator() {
-  const [copied, setCopied] = useState(false);
+  const [copiedIframe, setCopiedIframe] = useState(false);
+  const [copiedScript, setCopiedScript] = useState(false);
   const [embedUrl, setEmbedUrl] = useState("");
   const { toast } = useToast();
   
@@ -48,46 +49,132 @@ export default function EmbedCodeGenerator() {
 
   const handleCopy = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
-    setCopied(true);
+    if (type === "IFrame") {
+      setCopiedIframe(true);
+      setTimeout(() => setCopiedIframe(false), 2000);
+    } else {
+      setCopiedScript(true);
+      setTimeout(() => setCopiedScript(false), 2000);
+    }
     toast({
       title: "Copied!",
       description: `${type} code copied to clipboard`,
     });
-    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <Card className="glass-card flex-1 flex flex-col min-h-0 shadow-none">
-        <CardHeader className="flex-shrink-0">
-          <CardTitle>Embed Quote Form</CardTitle>
-          <CardDescription>
-            Add the solar quote form to your website using one of the methods below
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex-1 overflow-y-auto min-h-0 space-y-6">
+    <div className="flex-1 flex flex-col min-h-0 items-center justify-center w-full py-4" style={{ overflow: 'visible' }}>
+      {/* Gradient Border Wrapper */}
+      <div 
+        className="rounded-[10px] w-full"
+        style={{
+          background: 'linear-gradient(147.33deg, rgba(214, 214, 214, 0.35) 1.11%, rgba(241, 241, 241, 0.161) 50.87%, rgba(101, 101, 101, 0.0315) 106.32%)',
+          maxWidth: '830px',
+          padding: '16px',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'visible',
+          minHeight: 'fit-content',
+          borderRadius: '10px',
+          position: 'relative'
+        }}
+      >
+        <Card 
+          className="flex flex-col shadow-none rounded-[10px] w-full"
+          style={{ 
+            boxShadow: 'none',
+            background: '#FFFFFF',
+            width: '100%',
+            minHeight: '1058px',
+            gap: '32px',
+            padding: '32px',
+            boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            height: 'auto',
+            margin: 0,
+            flex: '1 1 auto'
+          }}
+        >
+          <CardHeader className="flex-shrink-0" style={{ padding: 0 }}>
+            <CardTitle style={{ marginBottom: 0 }}>Embed Quote Form</CardTitle>
+            <CardDescription style={{ marginTop: '8px', marginBottom: 0 }}>
+              Add the solar quote form to your website using one of the methods below
+            </CardDescription>
+          </CardHeader>
+        <CardContent className="flex-1 min-h-0" style={{ padding: 0, gap: '32px', display: 'flex', flexDirection: 'column', marginTop: '32px', overflow: 'visible' }}>
           {/* Iframe Method */}
           <div>
             <div className="flex items-center justify-between mb-2">
               <Label className="text-base font-semibold">IFrame Embed Code</Label>
-              <Button
-                variant="outline"
-                size="sm"
+              <button
                 onClick={() => handleCopy(iframeCode, "IFrame")}
-                className="glass-btn"
+                style={{
+                  width: '157px',
+                  height: '40px',
+                  minHeight: '40px',
+                  gap: '8px',
+                  borderRadius: '40px',
+                  border: '1px solid #FFFFFF4D',
+                  paddingTop: '8.5px',
+                  paddingRight: '24px',
+                  paddingBottom: '9.5px',
+                  paddingLeft: '24px',
+                  color: '#FFFFFF',
+                  backgroundColor: '#171716E8',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  fontSize: 'inherit',
+                  boxSizing: 'border-box'
+                }}
               >
-                {copied ? (
+                {copiedIframe ? (
                   <>
-                    <Check className="w-4 h-4 mr-2" />
-                    Copied
+                    <Check className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
+                    <span style={{
+                      width: '75px',
+                      height: '20px',
+                      fontFamily: 'Inter',
+                      fontWeight: 600,
+                      fontStyle: 'normal',
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      letterSpacing: '0%',
+                      textAlign: 'center',
+                      verticalAlign: 'middle',
+                      color: '#FFFFFF',
+                      leadingTrim: 'none'
+                    } as React.CSSProperties & { leadingTrim?: string }}>
+                      Copied
+                    </span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Code
+                    <Copy className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
+                    <span style={{
+                      width: '75px',
+                      height: '20px',
+                      fontFamily: 'Inter',
+                      fontWeight: 600,
+                      fontStyle: 'normal',
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      letterSpacing: '0%',
+                      textAlign: 'center',
+                      verticalAlign: 'middle',
+                      color: '#FFFFFF',
+                      leadingTrim: 'none'
+                    } as React.CSSProperties & { leadingTrim?: string }}>
+                      Copy Code
+                    </span>
                   </>
                 )}
-              </Button>
+              </button>
             </div>
             <Textarea
               value={iframeCode}
@@ -104,24 +191,72 @@ export default function EmbedCodeGenerator() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <Label className="text-base font-semibold">JavaScript Embed Code</Label>
-              <Button
-                variant="outline"
-                size="sm"
+              <button
                 onClick={() => handleCopy(scriptCode, "JavaScript")}
-                className="glass-btn"
+                style={{
+                  width: '157px',
+                  height: '40px',
+                  minHeight: '40px',
+                  gap: '8px',
+                  borderRadius: '40px',
+                  border: '1px solid #FFFFFF4D',
+                  paddingTop: '8.5px',
+                  paddingRight: '24px',
+                  paddingBottom: '9.5px',
+                  paddingLeft: '24px',
+                  color: '#FFFFFF',
+                  backgroundColor: '#171716E8',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  fontSize: 'inherit',
+                  boxSizing: 'border-box'
+                }}
               >
-                {copied ? (
+                {copiedScript ? (
                   <>
-                    <Check className="w-4 h-4 mr-2" />
-                    Copied
+                    <Check className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
+                    <span style={{
+                      width: '75px',
+                      height: '20px',
+                      fontFamily: 'Inter',
+                      fontWeight: 600,
+                      fontStyle: 'normal',
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      letterSpacing: '0%',
+                      textAlign: 'center',
+                      verticalAlign: 'middle',
+                      color: '#FFFFFF',
+                      leadingTrim: 'none'
+                    } as React.CSSProperties & { leadingTrim?: string }}>
+                      Copied
+                    </span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Code
+                    <Copy className="w-4 h-4" style={{ marginRight: '8px', color: '#FFFFFF' }} />
+                    <span style={{
+                      width: '75px',
+                      height: '20px',
+                      fontFamily: 'Inter',
+                      fontWeight: 600,
+                      fontStyle: 'normal',
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      letterSpacing: '0%',
+                      textAlign: 'center',
+                      verticalAlign: 'middle',
+                      color: '#FFFFFF',
+                      leadingTrim: 'none'
+                    } as React.CSSProperties & { leadingTrim?: string }}>
+                      Copy Code
+                    </span>
                   </>
                 )}
-              </Button>
+              </button>
             </div>
             <Textarea
               value={scriptCode}
@@ -161,6 +296,7 @@ export default function EmbedCodeGenerator() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

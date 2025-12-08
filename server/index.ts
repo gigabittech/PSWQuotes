@@ -29,13 +29,13 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       styleSrc: process.env.NODE_ENV === 'production'
-        ? ["'self'"] // Remove unsafe-inline in production
-        : ["'self'", "'unsafe-inline'"], // Allow unsafe-inline only in dev
+        ? ["'self'", "https://fonts.googleapis.com"] // Allow Google Fonts CSS
+        : ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // Allow unsafe-inline only in dev
       scriptSrc: process.env.NODE_ENV === 'production' 
         ? ["'self'"] 
         : ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Allow unsafe only in dev for Vite
       imgSrc: ["'self'", "data:", "https://storage.googleapis.com"],
-      fontSrc: ["'self'", "https:"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https:"], // Allow Google Fonts
       connectSrc: process.env.NODE_ENV === 'production'
         ? ["'self'", "https://storage.googleapis.com"] 
         : ["'self'", "ws:", "wss:", "https://storage.googleapis.com"], // Add GCS for uploads

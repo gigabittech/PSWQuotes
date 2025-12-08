@@ -79,10 +79,13 @@ export default function ProductCard({ product, isSelected, onSelect, badge, badg
 
       {badge && (
         <div className="absolute top-2 sm:top-3 right-2 sm:right-3">
-          <span className={cn(
-            "px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-md",
-            badgeColor || "bg-gradient-to-r from-yellow-400 to-orange-500 text-white"
-          )}>
+          <span 
+            className={cn(
+              "px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-md",
+              badgeColor || "bg-gradient-to-r from-yellow-400 to-orange-500 text-white"
+            )}
+            style={{ border: '1px solid #C2C2C233' }}
+          >
             {badge}
           </span>
         </div>

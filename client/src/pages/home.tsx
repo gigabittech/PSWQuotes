@@ -91,15 +91,15 @@ export default function Home() {
     console.log('handleSubmit received finalData:', finalData);
     console.log('Current formData state:', formData);
     console.log('Pricing data:', pricingData);
-    
+
     const submitData = new FormData();
-    
+
     // Add all text fields with proper field mapping
     Object.entries(finalData).forEach(([key, value]) => {
       if (key !== 'switchboardPhoto' && value !== undefined && value !== null) {
         // Map 'systems' to 'selectedSystems' for server compatibility
         const fieldName = key === 'systems' ? 'selectedSystems' : key;
-        
+
         if (Array.isArray(value)) {
           submitData.append(fieldName, JSON.stringify(value));
         } else {
@@ -125,7 +125,7 @@ export default function Home() {
     Array.from(submitData.entries()).forEach(([key, value]) => {
       console.log(key, '=', value);
     });
-    
+
     submitQuote.mutate(submitData);
   };
 
@@ -145,20 +145,38 @@ export default function Home() {
       <DynamicHero />
 
       {/* Quote Form Container */}
-      <section id="quote" className="py-12 sm:py-16 lg:py-20 glass-backdrop min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6">
-              Get Your Instant Solar Quote
-            </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4 sm:px-0">
-              Follow our simple 3-step process to receive a personalized solar quote tailored to your property and energy needs.
-            </p>
-          </div>
-          
+    {/* Quote Form Container */}
+<section id="quote" className="py-12 sm:py-16 lg:py-20 glass-backdrop min-h-screen">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-8 sm:mb-12 px-4"> {/* Fixed: removed the extra opening div */}
+      <h2 
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6"
+        style={{
+          fontFamily: 'Manrope, sans-serif',
+          fontWeight: 600,
+          fontStyle: 'normal',
+          letterSpacing: '-0.5px',
+          color: '#020817'
+        }}
+      >
+        Get Your Instant Solar Quote
+      </h2>
+      <p 
+        className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+        style={{
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: 400,
+          fontStyle: 'normal',
+          color: '#787E86'
+        }}
+      >
+        Follow our simple 3-step process to receive a personalized solar quote tailored to your property and energy needs.
+      </p>
+    </div>
+
           <StepIndicator currentStep={currentStep} />
-          
-          <div className="glass-card overflow-hidden max-w-5xl mx-auto">
+
+          <div className="">
             {currentStep === 1 && (
               <SystemRequirements
                 data={formData}
@@ -166,7 +184,7 @@ export default function Home() {
                 onNext={nextStep}
               />
             )}
-            
+
             {currentStep === 2 && (
               <ProductSelection
                 data={formData}
@@ -178,7 +196,7 @@ export default function Home() {
                 isCalculating={calculatePricing.isPending}
               />
             )}
-            
+
             {currentStep === 3 && (
               <PropertyDetails
                 data={formData}
@@ -188,7 +206,7 @@ export default function Home() {
                 isSubmitting={submitQuote.isPending}
               />
             )}
-            
+
             {currentStep === 4 && pricingData && (
               <QuoteSummary
                 data={formData}
@@ -202,13 +220,22 @@ export default function Home() {
       </section>
 
       {/* Embed Code Section */}
-      <section className="py-12 sm:py-16 lg:py-20 glass-backdrop">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+      <section className="py-12 sm:py-16 lg:py-20 glass-backdrop" style={{ background: '#FFFFFF', overflow: 'visible' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ overflow: 'visible' }}>
+          <div className="text-center mb-8 px-4">
+            <h2 
+              className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4"
+              style={{
+                fontFamily: 'Manrope',
+                fontWeight: 600,
+                fontStyle: 'normal',
+                letterSpacing: '-0.5px',
+                color: '#020719'
+              }}
+            >
               Embed This Form On Your Website
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
               Copy the code below to add this solar quote form to your website
             </p>
           </div>

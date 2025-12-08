@@ -1,11 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import ProductCard from "./ProductCard";
+import SolarProductCard from "./SolarProductCard";
+import BatteryProductCard from "./BatteryProductCard";
+import EVProductCard from "./EVProductCard";
 import type { Product } from "@/types/quote";
 
 interface ProductSelectionProps {
   data: {
     systems?: string[];
+    powerSupply?: string;
     solarPackage?: string;
     hybridInverter?: string;
     batterySystem?: string;
@@ -39,29 +43,69 @@ export default function ProductSelection({
   };
 
   return (
-    <div className="p-4 sm:p-6 md:p-8" data-testid="product-selection">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-6 text-center">
+    <div 
+      className="rounded-2xl sm:rounded-3xl md:rounded-[65px] overflow-hidden p-4 sm:p-6 md:p-8 lg:p-12 mx-auto w-full max-w-[1024px]"
+      data-testid="product-selection"
+      style={{ 
+        boxSizing: 'border-box',
+        margin: '0 auto',
+        background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)',
+        border: '1px solid #DDE1E775'
+      }}
+    >
+      <div className="w-full mx-auto">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-3 sm:mb-4" style={{
+          fontFamily: 'Manrope, sans-serif',
+          fontWeight: 600,
+          letterSpacing: '-0.5px',
+          color: '#020817'
+        }}>
           Choose Your Solar System
         </h2>
-        <p className="text-sm sm:text-base text-muted-foreground text-center mb-6 sm:mb-8 px-4">
+        <p className="text-sm sm:text-base md:text-lg text-center max-w-3xl mx-auto mb-6 sm:mb-8 px-4" style={{
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: 400,
+          color: '#787E86'
+        }}>
           Based on your selections, here are our recommended packages with real-time pricing.
         </p>
 
         {/* Solar Package Selection */}
         {data.systems?.includes('solar') && (
           <div className="mb-6 sm:mb-8">
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 px-2">Solar Power Systems</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+            {/* Navigation/Filter Element */}
+            <div className="flex justify-center mb-6 sm:mb-8">
+              <div className="inline-flex items-center w-full sm:w-auto min-w-[200px] sm:min-w-[250px] md:min-w-[291px] max-w-[291px] h-12 sm:h-14 md:h-16 px-4 sm:px-6 justify-center gap-3" style={{
+                backgroundColor: '#8E8E8E1A',
+                borderRadius: '40px',
+                border: '1px solid #0208171A',
+                boxSizing: 'border-box'
+              }}>
+                <img 
+                  src="/attached_assets/solar-panel-sun (1) 1.png" 
+                  alt="Solar Power Systems" 
+                  className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
+                />
+                <span className="text-sm sm:text-base md:text-lg font-semibold" style={{
+                  fontFamily: 'Manrope, sans-serif',
+                  fontWeight: 600,
+                  color: '#020817',
+                  margin: 0
+                }}>
+                  Solar Power Systems
+                </span>
+              </div>
+            </div>
+
+            {/* Product Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6 justify-items-center">
               {solarProducts.map((product) => (
-                <ProductCard
+                <SolarProductCard
                   key={product.id}
                   product={product}
                   isSelected={data.solarPackage === product.id}
                   onSelect={() => handleProductSelect('solarPackage', product.id)}
-                  badge={product.popular ? "POPULAR" : undefined}
-                  badgeColor="bg-primary text-primary-foreground"
-                  productType="solar"
+                  badge={product.popular ? "MOST POPULAR" : undefined}
                 />
               ))}
             </div>
@@ -72,7 +116,7 @@ export default function ProductSelection({
         {data.systems?.includes('inverter') && (
           <div className="mb-6 sm:mb-8">
             <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 px-2">Hybrid Inverters</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6 justify-items-center">
               {inverterProducts.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -91,17 +135,39 @@ export default function ProductSelection({
         {/* Battery Selection */}
         {data.systems?.includes('battery') && (
           <div className="mb-6 sm:mb-8">
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 px-2">Battery Storage Systems</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+            {/* Navigation/Filter Element */}
+            <div className="flex justify-center mb-6 sm:mb-8">
+              <div className="inline-flex items-center w-full sm:w-auto min-w-[200px] sm:min-w-[250px] md:min-w-[291px] max-w-[291px] h-12 sm:h-14 md:h-16 px-4 sm:px-6 justify-center gap-3" style={{
+                backgroundColor: '#8E8E8E1A',
+                borderRadius: '40px',
+                border: '1px solid #0208171A',
+                boxSizing: 'border-box'
+              }}>
+                <img 
+                  src="/attached_assets/car-battery (1) 1.png" 
+                  alt="Battery Storage Systems" 
+                  className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
+                />
+                <span className="text-sm sm:text-base md:text-lg font-semibold whitespace-nowrap" style={{
+                  fontFamily: 'Manrope, sans-serif',
+                  fontWeight: 500,
+                  color: '#020817',
+                  margin: 0
+                }}>
+                  Battery Storage Systems
+                </span>
+              </div>
+            </div>
+
+            {/* Product Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6 justify-items-center">
               {batteryProducts.map((product) => (
-                <ProductCard
+                <BatteryProductCard
                   key={product.id}
                   product={product}
                   isSelected={data.batterySystem === product.id}
                   onSelect={() => handleProductSelect('batterySystem', product.id)}
-                  badge={product.popular ? "VALUE" : product.specifications?.premium ? "PREMIUM" : undefined}
-                  badgeColor="bg-primary text-primary-foreground"
-                  productType="battery"
+                  badge={product.popular ? "VALUE" : undefined}
                 />
               ))}
             </div>
@@ -111,17 +177,39 @@ export default function ProductSelection({
         {/* EV Charger Selection */}
         {data.systems?.includes('ev') && (
           <div className="mb-6 sm:mb-8">
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 px-2">EV Charging Solutions</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+            {/* Navigation/Filter Element */}
+            <div className="flex justify-center mb-6 sm:mb-8">
+              <div className="inline-flex items-center w-full sm:w-auto min-w-[200px] sm:min-w-[250px] md:min-w-[291px] max-w-[291px] h-12 sm:h-14 md:h-16 px-4 sm:px-6 justify-center gap-3" style={{
+                backgroundColor: '#8E8E8E1A',
+                borderRadius: '40px',
+                border: '1px solid #0208171A',
+                boxSizing: 'border-box'
+              }}>
+                <img 
+                  src="/attached_assets/charging-station 1.png" 
+                  alt="EV Charging Solutions" 
+                  className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
+                />
+                <span className="text-sm sm:text-base md:text-lg font-semibold" style={{
+                  fontFamily: 'Manrope, sans-serif',
+                  fontWeight: 600,
+                  color: '#020817',
+                  margin: 0
+                }}>
+                  EV Charging Solutions
+                </span>
+              </div>
+            </div>
+
+            {/* Product Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-4 sm:mb-6 justify-items-center">
               {evProducts.map((product) => (
-                <ProductCard
+                <EVProductCard
                   key={product.id}
                   product={product}
                   isSelected={data.evCharger === product.id}
                   onSelect={() => handleProductSelect('evCharger', product.id)}
                   badge={product.popular ? "FAST CHARGING" : undefined}
-                  badgeColor="bg-primary text-primary-foreground"
-                  productType="ev_charger"
                 />
               ))}
             </div>
@@ -137,7 +225,7 @@ export default function ProductSelection({
             </div>
             <h3 className="text-xl font-bold text-foreground">Current Quote Summary</h3>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 justify-items-center">
             <div className="text-center bg-white/50 dark:bg-gray-900/30 rounded-lg p-4 backdrop-blur-sm">
               <div className="text-2xl font-bold text-foreground mb-1">${pricingData.totalPrice?.toLocaleString()}</div>
               <div className="text-sm text-muted-foreground">Total System Price</div>
@@ -155,46 +243,98 @@ export default function ProductSelection({
       )}
 
         {/* Navigation Buttons */}
-        <div className="flex flex-col sm:flex-row justify-between gap-4 px-4 mt-8">
+        <div className="flex flex-col sm:flex-row justify-between gap-4 px-2 sm:px-4 mt-8">
           <button
-            className="group relative bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-lg hover:shadow-xl hover:-translate-y-1 active:scale-[0.98]"
+            className="w-auto min-w-[107px] h-[45px] rounded-full px-3 flex items-center justify-center gap-2.5"
+            style={{
+              background: '#0B0E15',
+              opacity: 1,
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
             onClick={onPrev}
             data-testid="button-back"
           >
-            <span className="flex items-center justify-center">
-              <svg className="w-5 h-5 mr-3 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-              </svg>
+            <img 
+              src="/attached_assets/BackArrow.png" 
+              alt="Back" 
+              style={{
+                width: 'auto',
+                height: 'auto',
+                objectFit: 'contain'
+              }}
+            />
+            <span style={{
+              width: '41px',
+              height: '25px',
+              color: '#E9BE18',
+              fontFamily: 'Manrope, sans-serif',
+              fontWeight: 500,
+              fontStyle: 'normal',
+              fontSize: '18px',
+              lineHeight: '100%',
+              letterSpacing: '0%',
+              opacity: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
               Back
             </span>
           </button>
           <button
-            className={cn(
-              "group relative bg-primary hover:bg-primary/90 text-black px-10 py-4 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto min-h-[56px] touch-manipulation shadow-xl",
-              "hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98]",
-              "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-xl"
-            )}
+            className="w-full sm:w-auto sm:min-w-[327px] h-[45px] rounded-full px-4 sm:px-[18px] flex items-center justify-between gap-2.5"
+            style={{
+              background: '#F7C917',
+              opacity: isCalculating ? 0.5 : 1,
+              border: 'none',
+              cursor: isCalculating ? 'not-allowed' : 'pointer',
+              transition: 'all 0.3s ease'
+            }}
             onClick={onNext}
             disabled={isCalculating}
             data-testid="button-continue-to-details"
           >
-            <span className="flex items-center justify-center">
-              <span className="mr-3">
-                {isCalculating ? "Calculating..." : "Continue to Property Details"}
-              </span>
-              {!isCalculating && (
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              )}
-              {isCalculating && (
-                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-              )}
+            <span className="text-sm sm:text-lg" style={{
+              fontFamily: 'Manrope, sans-serif',
+              fontWeight: 600,
+              color: '#000000',
+              whiteSpace: 'nowrap'
+            }}>
+              {isCalculating ? "Calculating..." : "Continue to Property Details"}
             </span>
-            
-            {/* Shine effect on hover */}
             {!isCalculating && (
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 rounded-xl"></div>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '100px',
+                backgroundColor: '#F7C917',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <img 
+                  src="/attached_assets/front arrow.png" 
+                  alt="Arrow" 
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain'
+                  }}
+                />
+              </div>
+            )}
+            {isCalculating && (
+              <div style={{
+                width: '20px',
+                height: '20px',
+                border: '2px solid #000000',
+                borderTopColor: 'transparent',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite'
+              }}></div>
             )}
           </button>
         </div>
