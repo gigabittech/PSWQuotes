@@ -21,7 +21,7 @@ interface QuoteSummaryProps {
 }
 
 export default function QuoteSummary({ data, pricingData, products, onStartOver }: QuoteSummaryProps) {
-  
+
   const handleDownloadPDF = () => {
     // This would download the generated PDF
     console.log('Download PDF');
@@ -37,29 +37,51 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
   const getEvProduct = () => products.find(p => p.id === data.evCharger);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 quote-animation" data-testid="quote-summary">
-      <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-6 text-center">
+    <div className="p-4 sm:p-6 lg:p-8 quote-animation border border-[#DDE1E775] rounded-[65px] bg-[ linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(234, 234, 234, 0.161) 50.87%, rgba(153, 153, 153, 0.0315) 106.32%)]" data-testid="quote-summary">
+      <h2 className="text-4xl font-manrope sm:text-4xl font-bold text-foreground mb-4 sm:mb-6 text-center">
         Your Custom Quote
       </h2>
-      <p className="text-sm sm:text-base text-muted-foreground text-center mb-6 sm:mb-8 px-4 sm:px-0">
+      <p className="text-sm sm:text-xl text-muted-foreground text-center mb-6 sm:mb-8 px-4 sm:px-0">
         Here's your personalized solar solution. Your detailed quote has been sent to your email.
       </p>
 
       <div className="max-w-4xl mx-auto">
         {/* Selected Products Summary */}
         <div className="bg-muted/50 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
-          <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">Selected System Components</h3>
-          <div className="space-y-3 sm:space-y-4">
+          <h3 className="text-lg sm:text-xl font-manrope font-semibold text-foreground mb-3 -ml-6 sm:mb-4">Selected System Components</h3>
+          <div className="space-y-3 sm:space-y-4 -ml-6">
             {/* Solar System Summary */}
             {data.systems?.includes('solar') && data.solarPackage && (
-              <div className="flex items-center p-3 sm:p-4 bg-card rounded-lg border border-border">
+              <div 
+                className="w-[891px] h-[82px] flex items-center sm:p-4 rounded-lg border border-border"
+                style={{
+                  background: 'radial-gradient(300% 300% at 47.92% -17.07%, #4E4E4E 0%, #0A0D14 52.79%)'
+                }}
+              >
                 <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-secondary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-secondary">☀️</span>
+                  <div 
+                    className="flex items-center justify-center flex-shrink-0"
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '8px',
+                      border: '1px solid #C2C2C233',
+                      background: '#EBC9721A'
+                    }}
+                  >
+                    <img 
+                      src="/attached_assets/Solar.png" 
+                      alt="Solar" 
+                      style={{
+                        width: '24px',
+                        height: '24px',
+                        objectFit: 'contain'
+                      }}
+                    />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-foreground text-sm sm:text-base">Solar Power System</h4>
-                    <p className="text-xs sm:text-sm text-muted-foreground truncate">{getSolarProduct()?.name || data.solarPackage}</p>
+                  <div className="flex-1 min-w-0 ">
+                    <h4 className="font-semibold text-white text-sm sm:text-base">Solar Power System</h4>
+                    <p className="text-xs sm:text-sm text-yellow-400 truncate">{getSolarProduct()?.name || data.solarPackage}</p>
                   </div>
                 </div>
               </div>
@@ -82,29 +104,83 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
 
             {/* Battery System Summary */}
             {data.systems?.includes('battery') && data.batterySystem && (
-              <div className="flex items-center p-3 sm:p-4 bg-card rounded-lg border border-border">
-                <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-accent">🔋</span>
+   <div 
+   className="w-[891px] h-[82px] flex items-center sm:p-4 rounded-lg border border-border"
+   style={{
+     background: 'radial-gradient(300% 300% at 47.92% -17.07%, #4E4E4E 0%, #0A0D14 52.79%)'
+   }}
+ >
+                  <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
+                  <div 
+                    className="flex items-center justify-center flex-shrink-0"
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '8px',
+                      border: '1px solid #C2C2C233',
+                      background: '#EBC9721A'
+                    }}
+                  >
+                    <img 
+                      src="/attached_assets/Battery.png" 
+                      alt="Battery" 
+                      style={{
+                        width: '24px',
+                        height: '24px',
+                        objectFit: 'contain'
+                      }}
+                    />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-foreground text-sm sm:text-base">Battery Storage</h4>
-                    <p className="text-xs sm:text-sm text-muted-foreground truncate">{getBatteryProduct()?.name || data.batterySystem}</p>
+                 
+
+
+    <div className="flex-1 min-w-0 ">
+                    <h4 className="font-semibold text-white text-sm sm:text-base">Battery Storage</h4>
+                    <p className="text-xs sm:text-sm text-yellow-400 truncate">{getBatteryProduct()?.name || data.batterySystem}</p>
                   </div>
+
+
+
+
+
+
+
                 </div>
               </div>
             )}
 
             {/* EV Charger Summary */}
             {data.systems?.includes('ev') && data.evCharger && (
-              <div className="flex items-center p-3 sm:p-4 bg-card rounded-lg border border-border">
+              <div 
+                className="w-[891px] h-[82px] flex items-center sm:p-4 rounded-lg border border-border"
+                style={{
+                  background: 'radial-gradient(300% 300% at 47.92% -17.07%, #4E4E4E 0%, #0A0D14 52.79%)'
+                }}
+              >
                 <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-primary">⚡</span>
+                  <div 
+                    className="flex items-center justify-center flex-shrink-0"
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '8px',
+                      border: '1px solid #C2C2C233',
+                      background: '#EBC9721A'
+                    }}
+                  >
+                    <img 
+                      src="/attached_assets/ev.png" 
+                      alt="EV Charging" 
+                      style={{
+                        width: '24px',
+                        height: '24px',
+                        objectFit: 'contain'
+                      }}
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-foreground text-sm sm:text-base">EV Charging</h4>
-                    <p className="text-xs sm:text-sm text-muted-foreground truncate">{getEvProduct()?.name || data.evCharger}</p>
+                    <h4 className="font-semibold text-white text-sm sm:text-base">EV Charging</h4>
+                    <p className="text-xs sm:text-sm text-yellow-400 truncate">{getEvProduct()?.name || data.evCharger}</p>
                   </div>
                 </div>
               </div>
@@ -167,7 +243,7 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
                 const solarSize = solarMatch ? parseFloat(solarMatch[1]) : 0;
                 const annualSavings = solarSize * 420;
                 const finalPrice = pricingData.finalPrice;
-                
+
                 if (finalPrice > 0 && annualSavings > 0) {
                   const years = finalPrice / annualSavings;
                   if (years < 1) return '< 1 year';
