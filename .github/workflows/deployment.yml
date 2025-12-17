@@ -32,16 +32,13 @@ jobs:
           script: |
             echo "Pulling latest code..."
             cd /var/www/quote.mypswenergy.com.au
-            git reset --hardphase
+            git reset --hard
             git pull origin main
 
             echo "Installing backend dependencies..."
             npm install --production
 
             echo "Running database migrations..."
-            # First, ensure critical tables exist (like session table)
-            npm run db:fix-tables || echo "Table check completed with warnings..."
-            
             # Try migrations first, fallback to safe push if migrations folder doesn't exist
             if [ -d "migrations" ] && [ "$(ls -A migrations 2>/dev/null)" ]; then
               echo "Running migrations from migrations folder..."
