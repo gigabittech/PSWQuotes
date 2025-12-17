@@ -199,6 +199,28 @@ export const insertQuoteSchema = createInsertSchema(quotes).omit({
   updatedAt: true,
 });
 
+// Schema for quote creation - makes calculated fields optional
+// These fields (totalPrice, rebateAmount, finalPrice) are calculated by the service
+export const createQuoteSchema = insertQuoteSchema.merge(
+  z.object({
+    totalPrice: z.string().optional(),
+    rebateAmount: z.string().optional(),
+    finalPrice: z.string().optional(),
+    status: z.string().optional(),
+    insightlyLeadId: z.string().optional(),
+  })
+);
+
+// Schema for quote preview - only requires product selection (no contact info required)
+export const previewQuoteSchema = z.object({
+  powerSupply: z.enum(['single', 'three', 'unknown']),
+  selectedSystems: z.array(z.enum(['solar', 'battery', 'ev', 'inverter'])),
+  solarPackage: z.string().optional(),
+  hybridInverter: z.string().optional(),
+  batterySystem: z.string().optional(),
+  evCharger: z.string().optional(),
+});
+
 export const insertProductSchema = createInsertSchema(products).omit({
   id: true,
   createdAt: true,

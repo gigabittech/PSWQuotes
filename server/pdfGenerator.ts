@@ -314,6 +314,11 @@ export async function generateQuotePDF(quote: Quote): Promise<Buffer> {
   
   // Convert jsPDF output to Buffer
   // jsPDF output('array') returns number[], which Buffer.from() can handle directly
-  const pdfArray = doc.output('array') as number[];
+  const pdfArray = doc.output('array') as number[] | null;
+  
+  if (!pdfArray || !Array.isArray(pdfArray) || pdfArray.length === 0) {
+    throw new Error('Failed to generate PDF: jsPDF output returned null or empty array');
+  }
+  
   return Buffer.from(pdfArray);
 }

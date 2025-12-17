@@ -9,6 +9,10 @@
     "start": "npx cross-env NODE_ENV=production node dist/index.js",
     "check": "tsc",
     "db:push": "npx drizzle-kit push",
+    "db:push:safe": "tsx scripts/safeDbPush.ts",
+    "db:generate": "npx drizzle-kit generate",
+    "db:migrate": "tsx scripts/runMigrations.ts",
+    "db:fix-tables": "tsx scripts/createMissingTables.ts",
     "db:seed": "tsx server/seedAdmin.ts && tsx server/seedProducts.ts"
   },
   "dependencies": {
