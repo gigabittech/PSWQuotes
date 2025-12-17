@@ -48,21 +48,21 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
         Here's your personalized solar solution. Your detailed quote has been sent to your email.
       </p>
 
-      <div className="max-w-4xl mx-auto">
-        {/* Selected Products Summary */}
+      <div className="w-full px-4 sm:px-6 lg:px-8">
+      {/* Selected Products Summary */}
         <div className="bg-muted/50 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
           <h3 className="text-lg sm:text-xl font-manrope font-semibold text-foreground mb-3 -ml-6 sm:mb-4">Selected System Components</h3>
-          <div className="space-y-3 sm:space-y-4 -ml-6">
+          <div className="space-y-3 sm:space-y-4 -ml-6 -mr-6">
             {/* Solar System Summary */}
             {data.systems?.includes('solar') && data.solarPackage && (
-              <div 
-                className="w-[891px] h-[82px] flex items-center sm:p-4 rounded-lg border border-border"
+              <div
+                className="w-full h-[82px] flex items-center sm:p-4 rounded-lg border border-border"
                 style={{
                   background: 'radial-gradient(300% 300% at 47.92% -17.07%, #4E4E4E 0%, #0A0D14 52.79%)'
                 }}
               >
                 <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
-                  <div 
+                  <div
                     className="flex items-center justify-center flex-shrink-0"
                     style={{
                       width: '50px',
@@ -72,9 +72,9 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
                       background: '#EBC9721A'
                     }}
                   >
-                    <img 
-                      src="/attached_assets/Solar.png" 
-                      alt="Solar" 
+                    <img
+                      src="/attached_assets/Solar.png"
+                      alt="Solar"
                       style={{
                         width: '24px',
                         height: '24px',
@@ -107,14 +107,14 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
 
             {/* Battery System Summary */}
             {data.systems?.includes('battery') && data.batterySystem && (
-   <div 
-   className="w-[891px] h-[82px] flex items-center sm:p-4 rounded-lg border border-border"
-   style={{
-     background: 'radial-gradient(300% 300% at 47.92% -17.07%, #4E4E4E 0%, #0A0D14 52.79%)'
-   }}
- >
-                  <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
-                  <div 
+              <div
+                className="w-full h-[82px] flex items-center sm:p-4 rounded-lg border border-border"
+                style={{
+                  background: 'radial-gradient(300% 300% at 47.92% -17.07%, #4E4E4E 0%, #0A0D14 52.79%)'
+                }}
+              >
+                <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
+                  <div
                     className="flex items-center justify-center flex-shrink-0"
                     style={{
                       width: '50px',
@@ -124,9 +124,9 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
                       background: '#EBC9721A'
                     }}
                   >
-                    <img 
-                      src="/attached_assets/Battery.png" 
-                      alt="Battery" 
+                    <img
+                      src="/attached_assets/Battery.png"
+                      alt="Battery"
                       style={{
                         width: '24px',
                         height: '24px',
@@ -134,10 +134,10 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
                       }}
                     />
                   </div>
-                 
 
 
-    <div className="flex-1 min-w-0 ">
+
+                  <div className="flex-1 min-w-0 ">
                     <h4 className="font-semibold text-white text-sm sm:text-base">Battery Storage</h4>
                     <p className="text-xs sm:text-sm text-[#FEB60F] truncate">{getBatteryProduct()?.name || data.batterySystem}</p>
                   </div>
@@ -154,14 +154,14 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
 
             {/* EV Charger Summary */}
             {data.systems?.includes('ev') && data.evCharger && (
-              <div 
-                className="w-[891px] h-[82px] flex items-center sm:p-4 rounded-lg border border-border"
+              <div
+                className="w-full h-[82px] flex items-center sm:p-4 rounded-lg border border-border"
                 style={{
                   background: 'radial-gradient(300% 300% at 47.92% -17.07%, #4E4E4E 0%, #0A0D14 52.79%)'
                 }}
               >
                 <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
-                  <div 
+                  <div
                     className="flex items-center justify-center flex-shrink-0"
                     style={{
                       width: '50px',
@@ -171,9 +171,9 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
                       background: '#EBC9721A'
                     }}
                   >
-                    <img 
-                      src="/attached_assets/ev.png" 
-                      alt="EV Charging" 
+                    <img
+                      src="/attached_assets/ev.png"
+                      alt="EV Charging"
                       style={{
                         width: '24px',
                         height: '24px',
@@ -208,12 +208,12 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
               <div className="flex justify-between text-lg sm:text-xl font-bold text-[#020817]">
                 <span>Total Investment</span>
                 <span
-  data-testid="text-final-price"
-  className="text-[#EEBD00]"
->
-  $
-  {(pricingData.finalPrice - pricingData.rebateAmount).toLocaleString()}
-</span>
+                  data-testid="text-final-price"
+                  className="text-[#EEBD00]"
+                >
+                  $
+                  {(pricingData.finalPrice - pricingData.rebateAmount).toLocaleString()}
+                </span>
               </div>
               <div className="text-xs sm:text-sm text-[#020817] text-right mt-1">
                 Installed price including GST
@@ -226,7 +226,7 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="text-center p-4 sm:p-6 bg-card rounded-lg border border-border">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                <img src={annualSavingsIcon} alt="Annual Savings" className="w-10 h-10 sm:w-12 sm:h-12" />
+              <img src={annualSavingsIcon} alt="Annual Savings" className="w-10 h-10 sm:w-12 sm:h-12" />
             </div>
             <h4 className="font-semibold font-manrope text-foreground mb-1 sm:mb-2 text-sm sm:text-base">Annual Savings</h4>
             <div className="text-xl sm:text-2xl font-manrope font-bold text-primary">
@@ -291,7 +291,7 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
 
         <h3 className="text-lg sm:text-xl font-manrope font-semibold text-foreground mb-3 sm:mb-4">What happens next?</h3>
 
-        <div 
+        <div
           className="rounded-lg p-6 mb-8"
           style={{
             background: 'linear-gradient(147.33deg, rgba(255, 255, 255, 0.35) 1.11%, rgba(245, 245, 245, 0.182) 50.87%, rgba(153, 153, 153, 0) 106.32%)',
@@ -336,7 +336,7 @@ export default function QuoteSummary({ data, pricingData, products, onStartOver 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mt-6 sm:mt-8">
 
-       
+
 
 
 
