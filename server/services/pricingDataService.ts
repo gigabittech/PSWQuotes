@@ -1,6 +1,11 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { randomUUID } from 'crypto';
+
+// Get the directory of the current file (for ES modules)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 interface PricingData {
   version: string;
@@ -125,7 +130,15 @@ interface EVChargerOption {
 
 class PricingDataService {
   private pricingData: PricingData | null = null;
-  private dataPath = path.join(process.cwd(), 'pricing-data.json');
+  // Resolve path relative to project root (server/services -> project root)
+  private dataPath = path.resolve(__dirname, '../../pricing-data.json');
+
+  /**
+   * Get the pricing data file path
+   */
+  private getDataPath(): string {
+    return this.dataPath;
+  }
 
   async loadPricingData(): Promise<PricingData> {
     if (this.pricingData) {
@@ -510,9 +523,8 @@ class PricingDataService {
     // Save synchronously if any IDs were migrated (so updates work immediately)
     if (needsSave) {
       const fs = await import('fs/promises');
-      const path = await import('path');
       await fs.writeFile(
-        path.join(process.cwd(), 'pricing-data.json'),
+        path.resolve(__dirname, '../../pricing-data.json'),
         JSON.stringify(data, null, 2),
         'utf-8'
       );
@@ -725,9 +737,8 @@ class PricingDataService {
 
     // Write updated data back to file
     const fs = await import('fs/promises');
-    const path = await import('path');
     await fs.writeFile(
-      path.join(process.cwd(), 'pricing-data.json'),
+      path.resolve(__dirname, '../../pricing-data.json'),
       JSON.stringify(data, null, 2),
       'utf-8'
     );
@@ -788,9 +799,8 @@ class PricingDataService {
 
     // Write updated data back to file
     const fs = await import('fs/promises');
-    const path = await import('path');
     await fs.writeFile(
-      path.join(process.cwd(), 'pricing-data.json'),
+      path.resolve(__dirname, '../../pricing-data.json'),
       JSON.stringify(data, null, 2),
       'utf-8'
     );
@@ -891,9 +901,8 @@ class PricingDataService {
 
     // Write updated data back to file
     const fs = await import('fs/promises');
-    const path = await import('path');
     await fs.writeFile(
-      path.join(process.cwd(), 'pricing-data.json'),
+      path.resolve(__dirname, '../../pricing-data.json'),
       JSON.stringify(data, null, 2),
       'utf-8'
     );

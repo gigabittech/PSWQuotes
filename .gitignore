@@ -13,3 +13,4 @@ vite.config.ts.*
 # User uploaded media files
 attached_assets/uploads/
 uploads/
+/backend

@@ -899,7 +899,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const quote = await storage.createQuote(validatedData);
 
-      // Create Insightly lead
+      // Create Insightly lead (optional - don't fail if this fails)
       let insightlyLeadId: string | null = null;
       try {
         insightlyLeadId = await insightlyService.createLead(quote);
@@ -909,20 +909,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.updateQuote(quote.id, { insightlyLeadId });
       } catch (error) {
         console.error("Failed to create Insightly lead:", error);
-        // Continue with quote creation even if Insightly fails
+        // Continue with quote creation even if Insightly fails - it's not mandatory
       }
 
-      // Generate PDF
-      const pdfBuffer = await generateQuotePDF(quote);
+      // Generate PDF (optional - don't fail if this fails)
+      let pdfBuffer: Buffer | null = null;
+      try {
+        pdfBuffer = await generateQuotePDF(quote);
+      } catch (error) {
+        console.error("Failed to generate PDF:", error);
+        // Continue without PDF - quote is still created
+      }
       
-      // Send email with quote and PDF
-      const emailSent = await emailService.sendQuoteEmail(quote, pdfBuffer);
-
-      if (!emailSent) {
-        console.error("Failed to send email to customer");
+      // Send email with quote and PDF (optional - don't fail if this fails)
+      let emailSent = false;
+      if (pdfBuffer) {
+        try {
+          emailSent = await emailService.sendQuoteEmail(quote, pdfBuffer);
+          if (!emailSent) {
+            console.error("Failed to send email to customer");
+          }
+        } catch (error) {
+          console.error("Failed to send email:", error);
+          // Continue - quote is still created
+        }
+      } else {
+        console.warn("Skipping email send - PDF generation failed");
       }
 
-      res.json({ quote, emailSent, insightlyLeadId });
+      // Always return the quote, even if Insightly/PDF/Email failed
+      res.json({ 
+        quote, 
+        emailSent, 
+        insightlyLeadId,
+        pdfGenerated: pdfBuffer !== null
+      });
     } catch (error) {
       console.error("Error creating quote:", error);
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
@@ -1073,14 +1094,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Quote not found" });
       }
 
+      console.log(`Generating PDF for quote ${id}`);
       const pdfBuffer = await generateQuotePDF(quote);
       
+      if (!pdfBuffer || pdfBuffer.length === 0) {
+        console.error("PDF buffer is empty or null");
+        return res.status(500).json({ error: "Failed to generate PDF: empty buffer" });
+      }
+
+      console.log(`PDF generated successfully, size: ${pdfBuffer.length} bytes`);
       res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `attachment; filename="quote-${quote.id}.pdf"`);
+      res.setHeader('Content-Disposition', `attachment; filename="quote-${quote.id.split('-')[0].toUpperCase()}.pdf"`);
+      res.setHeader('Content-Length', pdfBuffer.length.toString());
       res.send(pdfBuffer);
     } catch (error) {
       console.error("Error generating PDF:", error);
-      res.status(500).json({ error: "Failed to generate PDF" });
+      if (error instanceof Error) {
+        console.error("Error details:", error.message, error.stack);
+      }
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Failed to generate PDF", details: error instanceof Error ? error.message : "Unknown error" });
+      }
     }
   });
 
