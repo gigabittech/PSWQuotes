@@ -101,7 +101,7 @@ export default function QuoteSummary({ quoteId, onStartOver }: QuoteSummaryProps
 
         {/* Pricing Summary */}
         <div className="bg-card border border-border rounded-lg p-6 mb-8">
-          <h3 className="text-xl font-semibold text-foreground mb-4">Investment Summary</h3>
+          <h3 className="text-xl font-semibold text-[#020817] mb-4">Investment Summary</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
               <span className="text-foreground">Total System Price</span>
