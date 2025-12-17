@@ -12,6 +12,7 @@
     "db:push:safe": "tsx scripts/safeDbPush.ts",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "tsx scripts/runMigrations.ts",
+    "db:migrate:fresh": "tsx scripts/migrateFresh.ts",
     "db:seed": "tsx server/seedAdmin.ts && tsx server/seedProducts.ts"
   },
   "dependencies": {

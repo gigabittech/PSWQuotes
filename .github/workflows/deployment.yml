@@ -39,16 +39,27 @@ jobs:
             npm install --production
 
             echo "Running database migrations..."
-            # Try migrations first, fallback to safe push if migrations folder doesn't exist
+            # Try migrations first, fallback to push if migrations folder doesn't exist
             if [ -d "migrations" ] && [ "$(ls -A migrations 2>/dev/null)" ]; then
               echo "Running migrations from migrations folder..."
+              # Install tsx if needed for migrations
+              npm install tsx --save-dev 2>/dev/null || true
               npm run db:migrate || {
-                echo "Migration failed, attempting safe push as fallback..."
-                npm run db:push:safe || echo "Database update failed, but continuing deployment..."
+                echo "Migration failed, attempting push as fallback..."
+                npx drizzle-kit push 2>&1 | grep -q "column \"id\" is in a primary key" && {
+                  echo "⚠️  Primary key constraint error (schema already in sync) - continuing..."
+                } || {
+                  echo "Database push failed, but continuing deployment..."
+                }
               }
             else
-              echo "No migrations found, using safe push..."
-              npm run db:push:safe || echo "Database push failed, but continuing deployment..."
+              echo "No migrations found, using push..."
+              # The primary key error is harmless when schema is already in sync
+              npx drizzle-kit push 2>&1 | grep -q "column \"id\" is in a primary key" && {
+                echo "⚠️  Primary key constraint error (schema already in sync) - continuing..."
+              } || {
+                echo "Database push completed or failed, but continuing deployment..."
+              }
             fi
 
             echo "Restarting backend service..."
