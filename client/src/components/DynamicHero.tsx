@@ -1,21 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import type { CmsPage } from "@shared/schema";
 import heroBackground from "@/assets/hero-background.png";
 import heroTagIcon from "@/assets/hero-tag-icon.png";
 import heroCtaArrow from "@/assets/hero-cta-arrow.png";
 
 export default function DynamicHero() {
-  // Fetch homepage data for hero content
-  const { data: homepage } = useQuery<CmsPage>({
-    queryKey: ['/api/cms/pages', 'home'],
-    queryFn: async () => {
-      const response = await fetch('/api/cms/pages/home', { credentials: 'include' });
-      if (!response.ok) throw new Error('Failed to fetch homepage');
-      return response.json();
+  // Use default hero content (no API call)
+  const heroContent = {
+    title: "Perth's #1 Solar Specialists",
+    subtitle: "Get a free solar quote in 2 minutes",
+    description: "Join 1,500+ happy customers who saved thousands with our premium solar solutions. Licensed, insured, and backed by Australia's best warranties.",
+    cta: {
+      text: "Get My Free Quote",
+      href: "#quote"
     },
-  });
+    backgroundImage: heroBackground
+  };
 
   // Force Manrope font to load and apply
   useEffect(() => {
@@ -47,17 +47,6 @@ export default function DynamicHero() {
     setTimeout(applyFont, 1000);
   }, []);
 
-  // Fallback to default hero if CMS data not available
-  const heroContent = (Array.isArray(homepage?.blocks) ? homepage.blocks : []).find((block: any) => block.type === 'hero')?.content || {
-    title: "Perth's #1 Solar Specialists",
-    subtitle: "Get a free solar quote in 2 minutes",
-    description: "Join 1,500+ happy customers who saved thousands with our premium solar solutions. Licensed, insured, and backed by Australia's best warranties.",
-    cta: {
-      text: "Get My Free Quote",
-      href: "#quote"
-    },
-    backgroundImage: heroBackground
-  };
 
   const scrollToQuote = () => {
     const quoteSection = document.getElementById('quote');

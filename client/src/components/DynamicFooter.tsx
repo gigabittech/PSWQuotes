@@ -1,19 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import type { CmsPage } from "@shared/schema";
-
 export default function DynamicFooter() {
-  // Fetch homepage data for footer content
-  const { data: homepage } = useQuery<CmsPage>({
-    queryKey: ['/api/cms/pages', 'home'],
-    queryFn: async () => {
-      const response = await fetch('/api/cms/pages/home', { credentials: 'include' });
-      if (!response.ok) throw new Error('Failed to fetch homepage');
-      return response.json();
-    },
-  });
-
-  // Fallback to default footer if CMS data not available
-  const defaultContent = {
+  // Use default footer content (no API call)
+  const footerContent = {
     company: {
       name: "Perth Solar Warehouse",
       description: "Perth's trusted solar specialists since 2015. Licensed, insured, and committed to helping Western Australian families save on energy costs.",
@@ -50,11 +37,6 @@ export default function DynamicFooter() {
       linkedin: "https://linkedin.com/company/perthsolarwarehouse"
     }
   };
-  
-  const footerBlock = Array.isArray(homepage?.blocks) 
-    ? homepage.blocks.find((block: any) => block.type === 'footer') 
-    : undefined;
-  const footerContent = footerBlock?.content ?? defaultContent;
 
   return (
     <footer className="bg-black border-t border-gray-800" data-testid="dynamic-footer">
