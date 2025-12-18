@@ -81,10 +81,11 @@ export default function EmbedCodeGenerator() {
         }}
       >
         <Card 
-          className="flex flex-col shadow-none rounded-[10px] w-full"
+          className="flex flex-col shadow-none rounded-[10px] w-full !bg-white"
           style={{ 
             boxShadow: 'none',
             background: '#FFFFFF',
+            backgroundColor: '#FFFFFF',
             width: '100%',
             minHeight: '1058px',
             gap: '32px',

@@ -234,7 +234,7 @@ export default function Home() {
       </section>
 
       {/* Embed Code Section */}
-      <section className="py-12 sm:py-16 lg:py-20 glass-backdrop" style={{ background: '#FFFFFF', overflow: 'visible' }}>
+      {/* <section className="py-12 sm:py-16 lg:py-20 glass-backdrop" style={{ background: '#FFFFFF', overflow: 'visible' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ overflow: 'visible' }}>
           <div className="text-center mb-8 px-4">
             <h2 
@@ -255,7 +255,7 @@ export default function Home() {
           </div>
           <EmbedCodeGenerator />
         </div>
-      </section>
+      </section> */}
 
       <DynamicFooter />
     </DynamicLayout>

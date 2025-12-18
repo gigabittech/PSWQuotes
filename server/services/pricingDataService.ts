@@ -1,11 +1,9 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { randomUUID } from 'crypto';
 
-// Get the directory of the current file (for ES modules)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Get the project root directory (where package.json is located)
+const PROJECT_ROOT = path.resolve(process.cwd());
 
 interface PricingData {
   version: string;
@@ -130,8 +128,8 @@ interface EVChargerOption {
 
 class PricingDataService {
   private pricingData: PricingData | null = null;
-  // Resolve path relative to project root (server/services -> project root)
-  private dataPath = path.resolve(__dirname, '../../pricing-data.json');
+  // Resolve path from project root using clean import
+  private dataPath = path.resolve(PROJECT_ROOT, 'pricing-data.json');
 
   /**
    * Get the pricing data file path
@@ -524,7 +522,7 @@ class PricingDataService {
     if (needsSave) {
       const fs = await import('fs/promises');
       await fs.writeFile(
-        path.resolve(__dirname, '../../pricing-data.json'),
+        path.resolve(PROJECT_ROOT, 'pricing-data.json'),
         JSON.stringify(data, null, 2),
         'utf-8'
       );
@@ -738,7 +736,7 @@ class PricingDataService {
     // Write updated data back to file
     const fs = await import('fs/promises');
     await fs.writeFile(
-      path.resolve(__dirname, '../../pricing-data.json'),
+      path.resolve(PROJECT_ROOT, 'pricing-data.json'),
       JSON.stringify(data, null, 2),
       'utf-8'
     );
@@ -800,7 +798,7 @@ class PricingDataService {
     // Write updated data back to file
     const fs = await import('fs/promises');
     await fs.writeFile(
-      path.resolve(__dirname, '../../pricing-data.json'),
+      path.resolve(PROJECT_ROOT, 'pricing-data.json'),
       JSON.stringify(data, null, 2),
       'utf-8'
     );
@@ -902,7 +900,7 @@ class PricingDataService {
     // Write updated data back to file
     const fs = await import('fs/promises');
     await fs.writeFile(
-      path.resolve(__dirname, '../../pricing-data.json'),
+      path.resolve(PROJECT_ROOT, 'pricing-data.json'),
       JSON.stringify(data, null, 2),
       'utf-8'
     );

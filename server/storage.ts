@@ -43,6 +43,8 @@ export interface IStorage {
   getProductsByType(type: string): Promise<Product[]>;
   getProduct(id: string): Promise<Product | undefined>;
   createProduct(product: InsertProduct): Promise<Product>;
+  updateProduct(id: string, updates: Partial<InsertProduct>): Promise<Product | undefined>;
+  deleteProduct(id: string): Promise<boolean>;
   
   // Quote items
   createQuoteItem(item: InsertQuoteItem): Promise<QuoteItem>;
@@ -273,6 +275,22 @@ export class DatabaseStorage implements IStorage {
       .values(insertProduct)
       .returning();
     return product;
+  }
+
+  async updateProduct(id: string, updates: Partial<InsertProduct>): Promise<Product | undefined> {
+    const [updated] = await db
+      .update(products)
+      .set(updates)
+      .where(eq(products.id, id))
+      .returning();
+    return updated || undefined;
+  }
+
+  async deleteProduct(id: string): Promise<boolean> {
+    const result = await db
+      .delete(products)
+      .where(eq(products.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
   }
 
   async createQuoteItem(insertItem: InsertQuoteItem): Promise<QuoteItem> {

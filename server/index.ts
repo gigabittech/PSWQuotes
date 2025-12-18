@@ -29,8 +29,8 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       styleSrc: process.env.NODE_ENV === 'production'
-        ? ["'self'", "https://fonts.googleapis.com"] // Allow Google Fonts CSS
-        : ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // Allow unsafe-inline only in dev
+        ? ["'self'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"] // Allow Google Fonts CSS and Font Awesome
+        : ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"], // Allow unsafe-inline only in dev
       scriptSrc: process.env.NODE_ENV === 'production' 
         ? ["'self'"] 
         : ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Allow unsafe only in dev for Vite

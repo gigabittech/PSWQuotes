@@ -13,7 +13,8 @@
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "tsx scripts/runMigrations.ts",
     "db:migrate:fresh": "tsx scripts/migrateFresh.ts",
-    "db:seed": "tsx server/seedAdmin.ts && tsx server/seedProducts.ts"
+    "db:seed": "tsx server/seedAdmin.ts && tsx server/seedProducts.ts",
+    "db:sync-products": "tsx scripts/syncProducts.ts"
   },
   "dependencies": {
     "@getbrevo/brevo": "^3.0.1",

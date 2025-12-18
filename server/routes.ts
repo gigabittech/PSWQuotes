@@ -14,6 +14,7 @@ import {
 import { emailService } from "./services/emailService";
 import { pricingService } from "./services/pricingService";
 import { pricingDataService } from "./services/pricingDataService";
+import { productService } from "./services/productService";
 import { insightlyService } from "./services/insightlyService";
 import { generateQuotePDF } from "./pdfGenerator";
 import {
@@ -533,98 +534,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all products
+  // Get all products (uses DATA_SOURCE to determine JSON or Database)
   app.get("/api/products", async (req, res) => {
     try {
       const { powerSupply = 'single-phase' } = req.query;
       const phaseType: 'single_phase' | 'three_phase' = powerSupply === '3-phase' ? 'three_phase' : 'single_phase';
       
-      const [solarBrands, batteryBrands, evChargerBrands] = await Promise.all([
-        pricingDataService.getAllSolarBrands(phaseType),
-        pricingDataService.getAllBatteryBrands(phaseType),
-        pricingDataService.getAllEVChargerBrands(phaseType)
-      ]);
-
-      const products: any[] = [];
-
-      // Transform solar panels into Product format
-      Object.entries(solarBrands).forEach(([brandKey, brandData]) => {
-        brandData.packages.forEach((pkg: any, index) => {
-          products.push({
-            id: pkg.id || `solar-${brandKey}-${pkg.size_kw}kw`,
-            name: `${pkg.size_kw}kW ${brandData.brand} Solar System`,
-            type: 'solar',
-            category: 'residential',
-            capacity: `${pkg.size_kw}kW`,
-            price: pkg.price_after_rebate.toString(),
-            rebateEligible: true,
-            rebateAmount: '0',
-            specifications: {
-              panels: `${pkg.panels} × ${pkg.wattage}W ${brandData.brand} ${brandData.model}`,
-              technology: brandData.technology,
-              warranty: `${brandData.warranty_product} years product, ${brandData.warranty_performance} years performance`,
-              generation: `~${Math.round(pkg.size_kw * 1500)} kWh annually`,
-            },
-            warranty: `${brandData.warranty_product} years`,
-            popular: index === 1, // Mark second option (typically 6.6kW) as popular
-            active: true,
-          });
-        });
-      });
-
-      // Transform batteries into Product format
-      Object.entries(batteryBrands).forEach(([brandKey, brandData]) => {
-        brandData.options.forEach((opt: any, index) => {
-          const displayName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
-          products.push({
-            id: opt.id || `battery-${brandKey}-${opt.capacity_kwh}kwh`,
-            name: displayName,
-            type: 'battery',
-            category: brandKey === 'tesla' ? 'premium' : 'value',
-            capacity: `${opt.capacity_kwh}kWh`,
-            price: opt.price_after_rebate.toString(),
-            rebateEligible: brandKey !== 'tesla',
-            rebateAmount: '0',
-            specifications: {
-              capacity: `${opt.capacity_kwh}kWh usable`,
-              power: opt.power_kw ? `${opt.power_kw}kW continuous` : 'Varies',
-              warranty: `${brandData.warranty_years} years`,
-              cellType: brandData.cell_type || 'N/A',
-              rrp: opt.rrp ? opt.rrp.toString() : undefined,
-              priceAfterRebate: opt.price_after_rebate.toString(),
-            },
-            warranty: `${brandData.warranty_years} years`,
-            popular: index === 0, // Mark first option as popular
-            active: true,
-          });
-        });
-      });
-
-      // Transform EV chargers into Product format
-      Object.entries(evChargerBrands).forEach(([brandKey, brandData]) => {
-        brandData.options.forEach((opt: any, index) => {
-          products.push({
-            id: opt.id || `ev-${brandKey}-${opt.power_kw}kw`,
-            name: `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`,
-            type: 'ev_charger',
-            category: 'standard',
-            capacity: `${opt.power_kw}kW`,
-            price: opt.installed_price.toString(),
-            rebateEligible: false,
-            rebateAmount: '0',
-            specifications: {
-              power: `${opt.power_kw}kW`,
-              phase: opt.phase,
-              cableType: brandData.cable_type,
-              cableLength: brandData.cable_length_m ? `${brandData.cable_length_m}m` : 'N/A',
-            },
-            warranty: '2 years',
-            popular: index === 0,
-            active: true,
-          });
-        });
-      });
-
+      const products = await productService.getProducts(phaseType);
       res.json(products);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -632,92 +548,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get products by type
+  // Get products by type (uses DATA_SOURCE)
   app.get("/api/products/:type", async (req, res) => {
     try {
       const { type } = req.params;
       const { powerSupply = 'single-phase' } = req.query;
       const phaseType: 'single_phase' | 'three_phase' = powerSupply === '3-phase' ? 'three_phase' : 'single_phase';
       
-      let products: any[] = [];
-
-      if (type === 'solar') {
-        const solarBrands = await pricingDataService.getAllSolarBrands(phaseType);
-        Object.entries(solarBrands).forEach(([brandKey, brandData]) => {
-          brandData.packages.forEach((pkg: any, index) => {
-            products.push({
-              id: pkg.id || `solar-${brandKey}-${pkg.size_kw}kw`,
-              name: `${pkg.size_kw}kW ${brandData.brand} Solar System`,
-              type: 'solar',
-              category: 'residential',
-              capacity: `${pkg.size_kw}kW`,
-              price: pkg.price_after_rebate.toString(),
-              rebateEligible: true,
-              specifications: {
-                panels: `${pkg.panels} × ${pkg.wattage}W ${brandData.brand} ${brandData.model}`,
-                technology: brandData.technology,
-                warranty: `${brandData.warranty_product} years product, ${brandData.warranty_performance} years performance`,
-                generation: `~${Math.round(pkg.size_kw * 1500)} kWh annually`,
-              },
-              warranty: `${brandData.warranty_product} years`,
-              popular: index === 1,
-              active: true,
-            });
-          });
-        });
-      } else if (type === 'battery') {
-        const batteryBrands = await pricingDataService.getAllBatteryBrands(phaseType);
-        Object.entries(batteryBrands).forEach(([brandKey, brandData]) => {
-          brandData.options.forEach((opt: any, index) => {
-            const displayName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
-            products.push({
-              id: opt.id || `battery-${brandKey}-${opt.capacity_kwh}kwh`,
-              name: displayName,
-              type: 'battery',
-              category: brandKey === 'tesla' ? 'premium' : 'value',
-              capacity: `${opt.capacity_kwh}kWh`,
-              price: opt.price_after_rebate.toString(),
-              rebateEligible: brandKey !== 'tesla',
-              specifications: {
-                capacity: `${opt.capacity_kwh}kWh usable`,
-                power: opt.power_kw ? `${opt.power_kw}kW continuous` : 'Varies',
-                warranty: `${brandData.warranty_years} years`,
-                cellType: brandData.cell_type || 'N/A',
-                rrp: opt.rrp ? opt.rrp.toString() : undefined,
-                priceAfterRebate: opt.price_after_rebate.toString(),
-              },
-              warranty: `${brandData.warranty_years} years`,
-              popular: index === 0,
-              active: true,
-            });
-          });
-        });
-      } else if (type === 'ev_charger') {
-        const evChargerBrands = await pricingDataService.getAllEVChargerBrands(phaseType);
-        Object.entries(evChargerBrands).forEach(([brandKey, brandData]) => {
-          brandData.options.forEach((opt: any, index) => {
-            products.push({
-              id: opt.id || `ev-${brandKey}-${opt.power_kw}kw`,
-              name: `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`,
-              type: 'ev_charger',
-              category: 'standard',
-              capacity: `${opt.power_kw}kW`,
-              price: opt.installed_price.toString(),
-              rebateEligible: false,
-              specifications: {
-                power: `${opt.power_kw}kW`,
-                phase: opt.phase,
-                cableType: brandData.cable_type,
-                cableLength: brandData.cable_length_m ? `${brandData.cable_length_m}m` : 'N/A',
-              },
-              warranty: '2 years',
-              popular: index === 0,
-              active: true,
-            });
-          });
-        });
-      }
-
+      const products = await productService.getProductsByType(type, phaseType);
       res.json(products);
     } catch (error) {
       console.error("Error fetching products by type:", error);
@@ -725,10 +563,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get minimum prices for system selection
+  // Get minimum prices for system selection (uses DATA_SOURCE)
   app.get("/api/minimum-prices", async (req, res) => {
     try {
-      const minPrices = await pricingDataService.getMinimumPrices();
+      const minPrices = await productService.getMinimumPrices();
       res.json(minPrices);
     } catch (error) {
       console.error("Error fetching minimum prices:", error);
@@ -812,83 +650,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let totalPrice = 0;
       let totalRebates = 0;
       
-      // Find and price the solar package
+      // Find and price the solar package (uses DATA_SOURCE)
       if (validatedData.selectedSystems.includes('solar') && validatedData.solarPackage) {
-        const solarBrands = await pricingDataService.getAllSolarBrands(phaseType);
+        const solarProducts = await productService.getProductsByType('solar', phaseType);
+        const matchingProduct = solarProducts.find((p: any) => 
+          p.id === validatedData.solarPackage || 
+          p.name === validatedData.solarPackage ||
+          validatedData.solarPackage?.includes(p.name)
+        );
         
-        // Try to match the product ID or name with a package in pricing data
-        for (const [brandKey, brandData] of Object.entries(solarBrands)) {
-          const matchingPackage = brandData.packages.find((pkg: any) => {
-            // Match by ID if it's an ID format
-            if (pkg.id && validatedData.solarPackage === pkg.id) {
-              return true;
-            }
-            // Otherwise match by name
-            const productName = `${pkg.size_kw}kW ${brandData.brand} Solar System`;
-            return validatedData.solarPackage?.includes(productName) || 
-                   (validatedData.solarPackage?.includes(`${pkg.size_kw}kW`) && 
-                   validatedData.solarPackage?.includes(brandData.brand));
-          });
-          
-          if (matchingPackage) {
-            totalPrice += matchingPackage.price_after_rebate;
-            // STC rebates are already included in price_after_rebate
-            const rebates = await pricingDataService.calculateSolarRebates(matchingPackage.size_kw);
+        if (matchingProduct) {
+          totalPrice += parseFloat(matchingProduct.price.toString());
+          // Calculate rebates if using JSON source
+          if (process.env.DATA_SOURCE?.toLowerCase() === 'json') {
+            const specs = matchingProduct.specifications as any;
+            const sizeKw = specs.sizeKw || parseFloat(matchingProduct.capacity.replace('kW', ''));
+            const rebates = await pricingDataService.calculateSolarRebates(sizeKw);
             totalRebates += rebates.stcRebate;
-            break;
+          } else {
+            totalRebates += parseFloat(matchingProduct.rebateAmount?.toString() || '0');
           }
         }
       }
       
-      // Find and price the battery
+      // Find and price the battery (uses DATA_SOURCE)
       if (validatedData.selectedSystems.includes('battery') && validatedData.batterySystem) {
-        const batteryBrands = await pricingDataService.getAllBatteryBrands(phaseType);
+        const batteryProducts = await productService.getProductsByType('battery', phaseType);
+        const matchingProduct = batteryProducts.find((p: any) => 
+          p.id === validatedData.batterySystem || 
+          p.name === validatedData.batterySystem ||
+          validatedData.batterySystem?.includes(p.name)
+        );
         
-        for (const [brandKey, brandData] of Object.entries(batteryBrands)) {
-          const matchingOption = brandData.options.find((opt: any) => {
-            // Match by ID if it's an ID format
-            if (opt.id && validatedData.batterySystem === opt.id) {
-              return true;
-            }
-            // Otherwise match by name
-            const productName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
-            return validatedData.batterySystem?.includes(productName) ||
-                   (validatedData.batterySystem?.includes(`${opt.capacity_kwh}kWh`) &&
-                   validatedData.batterySystem?.includes(brandData.brand));
-          });
-          
-          if (matchingOption) {
-            totalPrice += matchingOption.price_after_rebate;
-            // Battery rebates are already included in price_after_rebate
-            const isTesla = brandKey === 'tesla';
-            const rebates = await pricingDataService.calculateBatteryRebates(matchingOption.capacity_kwh, isTesla);
+        if (matchingProduct) {
+          totalPrice += parseFloat(matchingProduct.price.toString());
+          // Calculate rebates if using JSON source
+          if (process.env.DATA_SOURCE?.toLowerCase() === 'json') {
+            const specs = matchingProduct.specifications as any;
+            const capacityKwh = parseFloat(matchingProduct.capacity.replace('kWh', ''));
+            const isTesla = specs.brandKey === 'tesla';
+            const rebates = await pricingDataService.calculateBatteryRebates(capacityKwh, isTesla);
             totalRebates += rebates.totalRebate;
-            break;
+          } else {
+            totalRebates += parseFloat(matchingProduct.rebateAmount?.toString() || '0');
           }
         }
       }
       
-      // Find and price the EV charger
+      // Find and price the EV charger (uses DATA_SOURCE)
       if (validatedData.selectedSystems.includes('ev') && validatedData.evCharger) {
-        const evChargerBrands = await pricingDataService.getAllEVChargerBrands(phaseType);
+        const evProducts = await productService.getProductsByType('ev_charger', phaseType);
+        const matchingProduct = evProducts.find((p: any) => 
+          p.id === validatedData.evCharger || 
+          p.name === validatedData.evCharger ||
+          validatedData.evCharger?.includes(p.name)
+        );
         
-        for (const [brandKey, brandData] of Object.entries(evChargerBrands)) {
-          const matchingOption = brandData.options.find((opt: any) => {
-            // Match by ID if it's an ID format
-            if (opt.id && validatedData.evCharger === opt.id) {
-              return true;
-            }
-            // Otherwise match by name
-            const productName = `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`;
-            return validatedData.evCharger?.includes(productName) ||
-                   (validatedData.evCharger?.includes(`${opt.power_kw}kW`) &&
-                   validatedData.evCharger?.includes(brandData.brand));
-          });
-          
-          if (matchingOption) {
-            totalPrice += matchingOption.installed_price;
-            break;
-          }
+        if (matchingProduct) {
+          totalPrice += parseFloat(matchingProduct.price.toString());
         }
       }
       
@@ -1150,86 +969,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
         batteryRebate: 0,
       };
       
-      // Calculate solar pricing by matching product ID or name
+      // Calculate solar pricing by matching product ID or name (uses DATA_SOURCE)
       if (selectedSystems?.includes('solar') && solarPackage) {
-        const solarBrands = await pricingDataService.getAllSolarBrands(phaseType);
+        const solarProducts = await productService.getProductsByType('solar', phaseType);
+        const matchingProduct = solarProducts.find((p: any) => 
+          p.id === solarPackage || 
+          p.name === solarPackage ||
+          solarPackage.includes(p.name)
+        );
         
-        for (const [brandKey, brandData] of Object.entries(solarBrands)) {
-          const matchingPackage = brandData.packages.find((pkg: any) => {
-            // Match by ID if it's an ID format
-            if (pkg.id && solarPackage === pkg.id) {
-              return true;
-            }
-            // Otherwise match by name
-            const productName = `${pkg.size_kw}kW ${brandData.brand} Solar System`;
-            return solarPackage.includes(productName) || 
-                   (solarPackage.includes(`${pkg.size_kw}kW`) && solarPackage.includes(brandData.brand));
-          });
+        if (matchingProduct) {
+          totalPrice += parseFloat(matchingProduct.price.toString());
+          breakdown.solarPrice = parseFloat(matchingProduct.price.toString());
           
-          if (matchingPackage) {
-            totalPrice += matchingPackage.price_after_rebate;
-            breakdown.solarPrice = matchingPackage.price_after_rebate;
-            
-            // Calculate STC rebate (already included in price_after_rebate, for display only)
-            const rebates = await pricingDataService.calculateSolarRebates(matchingPackage.size_kw);
+          // Calculate rebates
+          if (process.env.DATA_SOURCE?.toLowerCase() === 'json') {
+            const specs = matchingProduct.specifications as any;
+            const sizeKw = specs.sizeKw || parseFloat(matchingProduct.capacity.replace('kW', ''));
+            const rebates = await pricingDataService.calculateSolarRebates(sizeKw);
             solarRebate = rebates.stcRebate;
-            breakdown.solarRebate = solarRebate;
-            break;
+          } else {
+            solarRebate = parseFloat(matchingProduct.rebateAmount?.toString() || '0');
           }
+          breakdown.solarRebate = solarRebate;
         }
       }
       
-      // Calculate battery pricing by matching product ID or name
+      // Calculate battery pricing by matching product ID or name (uses DATA_SOURCE)
       if (selectedSystems?.includes('battery') && batterySystem) {
-        const batteryBrands = await pricingDataService.getAllBatteryBrands(phaseType);
+        const batteryProducts = await productService.getProductsByType('battery', phaseType);
+        const matchingProduct = batteryProducts.find((p: any) => 
+          p.id === batterySystem || 
+          p.name === batterySystem ||
+          batterySystem.includes(p.name)
+        );
         
-        for (const [brandKey, brandData] of Object.entries(batteryBrands)) {
-          const matchingOption = brandData.options.find((opt: any) => {
-            // Match by ID if it's an ID format
-            if (opt.id && batterySystem === opt.id) {
-              return true;
-            }
-            // Otherwise match by name
-            const productName = opt.model || `${brandData.brand} ${opt.capacity_kwh}kWh`;
-            return batterySystem.includes(productName) ||
-                   (batterySystem.includes(`${opt.capacity_kwh}kWh`) && batterySystem.includes(brandData.brand));
-          });
+        if (matchingProduct) {
+          totalPrice += parseFloat(matchingProduct.price.toString());
+          breakdown.batteryPrice = parseFloat(matchingProduct.price.toString());
           
-          if (matchingOption) {
-            totalPrice += matchingOption.price_after_rebate;
-            breakdown.batteryPrice = matchingOption.price_after_rebate;
-            
-            // Calculate battery rebates (already included in price_after_rebate, for display only)
-            const isTesla = brandKey === 'tesla';
-            const rebates = await pricingDataService.calculateBatteryRebates(matchingOption.capacity_kwh, isTesla);
+          // Calculate rebates
+          if (process.env.DATA_SOURCE?.toLowerCase() === 'json') {
+            const specs = matchingProduct.specifications as any;
+            const capacityKwh = parseFloat(matchingProduct.capacity.replace('kWh', ''));
+            const isTesla = specs.brandKey === 'tesla';
+            const rebates = await pricingDataService.calculateBatteryRebates(capacityKwh, isTesla);
             batteryRebate = rebates.totalRebate;
-            breakdown.batteryRebate = batteryRebate;
-            break;
+          } else {
+            batteryRebate = parseFloat(matchingProduct.rebateAmount?.toString() || '0');
           }
+          breakdown.batteryRebate = batteryRebate;
         }
       }
       
-      // Calculate EV charger pricing by matching product ID or name
+      // Calculate EV charger pricing by matching product ID or name (uses DATA_SOURCE)
       if (selectedSystems?.includes('ev') && evCharger) {
-        const evChargerBrands = await pricingDataService.getAllEVChargerBrands(phaseType);
+        const evProducts = await productService.getProductsByType('ev_charger', phaseType);
+        const matchingProduct = evProducts.find((p: any) => 
+          p.id === evCharger || 
+          p.name === evCharger ||
+          evCharger.includes(p.name)
+        );
         
-        for (const [brandKey, brandData] of Object.entries(evChargerBrands)) {
-          const matchingOption = brandData.options.find((opt: any) => {
-            // Match by ID if it's an ID format
-            if (opt.id && evCharger === opt.id) {
-              return true;
-            }
-            // Otherwise match by name
-            const productName = `${brandData.brand} ${brandData.model} ${opt.power_kw}kW`;
-            return evCharger.includes(productName) ||
-                   (evCharger.includes(`${opt.power_kw}kW`) && evCharger.includes(brandData.brand));
-          });
-          
-          if (matchingOption) {
-            totalPrice += matchingOption.installed_price;
-            breakdown.evPrice = matchingOption.installed_price;
-            break;
-          }
+        if (matchingProduct) {
+          totalPrice += parseFloat(matchingProduct.price.toString());
+          breakdown.evPrice = parseFloat(matchingProduct.price.toString());
         }
       }
       
@@ -1259,7 +1063,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get available products from pricing-data.json
+  // Get available products (uses DATA_SOURCE)
   app.get("/api/pricing-products/:phaseType", async (req, res) => {
     try {
       const phaseType = req.params.phaseType as 'single_phase' | 'three_phase';
@@ -1269,10 +1073,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const [solarBrands, inverterBrands, batteryBrands, evChargerBrands] = await Promise.all([
-        pricingDataService.getAllSolarBrands(phaseType),
-        pricingDataService.getAllInverterBrands(phaseType),
-        pricingDataService.getAllBatteryBrands(phaseType),
-        pricingDataService.getAllEVChargerBrands(phaseType)
+        productService.getAllSolarBrands(phaseType),
+        productService.getAllInverterBrands(phaseType),
+        productService.getAllBatteryBrands(phaseType),
+        productService.getAllEVChargerBrands(phaseType)
       ]);
 
       res.json({
@@ -1287,10 +1091,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all products in flat list format (Admin only)
+  // Get all products in flat list format (Admin only) - uses DATA_SOURCE
   app.get("/api/admin/products", requireAuth, requireRole(['admin', 'editor']), async (req, res) => {
     try {
-      const products = await pricingDataService.getAllProductsFlat();
+      const products = await productService.getAllProductsFlat();
       res.json(products);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -1298,70 +1102,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Add product to pricing-data.json (Admin only)
+  // Add product (Admin only) - uses DATA_SOURCE
   app.post("/api/admin/products", requireAuth, requireRole(['admin', 'editor']), async (req, res) => {
     try {
       const productData = req.body;
 
-      // Validate required fields
-      if (!productData.phase || !productData.productType || !productData.brand || !productData.model) {
-        return res.status(400).json({ error: "Missing required fields: phase, productType, brand, model" });
-      }
-
-      // Add product to pricing data
-      const result = await pricingDataService.addProduct(productData);
+      // Validate required fields based on data source
+      const dataSource = (process.env.DATA_SOURCE || 'json').toLowerCase();
       
-      res.json({ 
-        success: true, 
-        message: "Product added successfully",
-        product: result 
-      });
+      if (dataSource === 'json') {
+        // JSON source requires phase, productType, brand, model
+        if (!productData.phase || !productData.productType || !productData.brand || !productData.model) {
+          return res.status(400).json({ error: "Missing required fields: phase, productType, brand, model" });
+        }
+        // Pass raw data to productService which will transform it
+        const result = await productService.createProduct(productData);
+        res.json({ 
+          success: true, 
+          message: "Product added successfully",
+          product: result 
+        });
+      } else {
+        // Database source - validate InsertProduct fields
+        if (!productData.type || !productData.category || !productData.name) {
+          return res.status(400).json({ error: "Missing required fields: type, category, name" });
+        }
+        const insertProduct: InsertProduct = {
+          name: productData.name,
+          type: productData.type,
+          category: productData.category,
+          capacity: productData.capacity || 'N/A',
+          price: (productData.price || 0).toFixed(2),
+          rebateEligible: productData.rebateEligible || false,
+          rebateAmount: productData.rebateAmount ? productData.rebateAmount.toFixed(2) : null,
+          specifications: productData.specifications || {},
+          warranty: productData.warranty || 'N/A',
+          popular: productData.popular || false,
+          active: productData.active !== false,
+        };
+        const result = await productService.createProduct(insertProduct);
+        res.json({ 
+          success: true, 
+          message: "Product added successfully",
+          product: result 
+        });
+      }
     } catch (error) {
       console.error("Error adding product:", error);
       res.status(500).json({ error: error instanceof Error ? error.message : "Failed to add product" });
     }
   });
 
-  // Update product in pricing-data.json (Admin only)
+  // Update product (Admin only) - uses DATA_SOURCE
   app.put("/api/admin/products/:id", requireAuth, requireRole(['admin', 'editor']), async (req, res) => {
     try {
       const productId = req.params.id;
       const productData = req.body;
 
-      // Log received data for debugging
-      console.log('Update product request:', { productId, productData });
+      // Transform to Partial<InsertProduct> format
+      const updates: Partial<InsertProduct> = {};
+      if (productData.name) updates.name = productData.name;
+      if (productData.type) updates.type = productData.type;
+      if (productData.category) updates.category = productData.category;
+      if (productData.capacity) updates.capacity = productData.capacity;
+      if (productData.price !== undefined) updates.price = productData.price.toFixed(2);
+      if (productData.rebateEligible !== undefined) updates.rebateEligible = productData.rebateEligible;
+      if (productData.rebateAmount !== undefined) updates.rebateAmount = productData.rebateAmount ? productData.rebateAmount.toFixed(2) : null;
+      if (productData.specifications) updates.specifications = productData.specifications;
+      if (productData.warranty) updates.warranty = productData.warranty;
+      if (productData.popular !== undefined) updates.popular = productData.popular;
+      if (productData.active !== undefined) updates.active = productData.active;
 
-      // Validate required fields
-      if (!productData.phase) {
-        return res.status(400).json({ error: "Missing required field: phase" });
+      // Update product (uses DATA_SOURCE to determine JSON or Database)
+      const result = await productService.updateProduct(productId, updates);
+      
+      if (!result) {
+        return res.status(404).json({ error: "Product not found" });
       }
-      if (!productData.productType) {
-        return res.status(400).json({ error: "Missing required field: productType" });
-      }
-      if (!productData.brand) {
-        return res.status(400).json({ error: "Missing required field: brand" });
-      }
-
-      // Normalize phase format (convert "three phase" to "three_phase" and handle various formats)
-      if (typeof productData.phase === 'string') {
-        const phaseLower = productData.phase.toLowerCase().trim();
-        if (phaseLower === 'three phase' || phaseLower === 'three-phase' || phaseLower === '3-phase') {
-          productData.phase = 'three_phase';
-        } else if (phaseLower === 'single phase' || phaseLower === 'single-phase' || phaseLower === '1-phase') {
-          productData.phase = 'single_phase';
-        }
-        // If it's already "three_phase" or "single_phase", keep it as is
-      }
-
-      // Validate phase is one of the expected values
-      if (productData.phase !== 'single_phase' && productData.phase !== 'three_phase') {
-        return res.status(400).json({ 
-          error: `Invalid phase value: ${productData.phase}. Must be 'single_phase' or 'three_phase'` 
-        });
-      }
-
-      // Update product in pricing data
-      const result = await pricingDataService.updateProduct(productId, productData);
       
       res.json({ 
         success: true, 
@@ -1374,29 +1191,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Delete product from pricing-data.json (Admin only)
+  // Delete product (Admin only) - uses DATA_SOURCE
   app.delete("/api/admin/products/:id", requireAuth, requireRole(['admin', 'editor']), async (req, res) => {
     try {
       const productId = req.params.id;
       const { phase, productType, brandKey, index } = req.query;
 
-      if (!phase || !productType || !brandKey || index === undefined) {
-        return res.status(400).json({ error: "Missing required query parameters: phase, productType, brandKey, index" });
-      }
-
-      // Delete product from pricing data
-      const result = await pricingDataService.deleteProduct(
+      // For JSON source, we need phase/productType/brandKey/index
+      // For database source, we only need the ID
+      const deleted = await productService.deleteProduct(
         productId,
-        phase as 'single_phase' | 'three_phase',
-        productType as string,
-        brandKey as string,
-        parseInt(index as string)
+        phase as string | undefined,
+        productType as string | undefined,
+        brandKey as string | undefined,
+        index !== undefined ? parseInt(index as string) : undefined
       );
+      
+      if (!deleted) {
+        return res.status(404).json({ error: "Product not found" });
+      }
       
       res.json({ 
         success: true, 
-        message: "Product deleted successfully",
-        result 
+        message: "Product deleted successfully"
       });
     } catch (error) {
       console.error("Error deleting product:", error);
