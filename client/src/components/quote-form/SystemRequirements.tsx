@@ -36,6 +36,18 @@ export default function SystemRequirements({ data, onUpdate, onNext }: SystemReq
     return `From ${formatPrice(minPrices[systemType])}`;
   };
 
+  // Show loader while minimum prices are being fetched
+  if (isLoading) {
+    return (
+      <div className="mx-auto rounded-2xl sm:rounded-3xl md:rounded-[65px] my-4 sm:my-6 md:my-8 w-full max-w-[1024px] p-8 sm:p-12">
+        <div className="flex items-center justify-center gap-2 py-8">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+          <span className="text-sm text-muted-foreground">Loading pricing information...</span>
+        </div>
+      </div>
+    );
+  }
+
   const systemOptions = [
     {
       id: 'solar',

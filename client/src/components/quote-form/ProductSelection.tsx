@@ -4,6 +4,7 @@ import ProductCard from "./ProductCard";
 import SolarProductCard from "./SolarProductCard";
 import BatteryProductCard from "./BatteryProductCard";
 import EVProductCard from "./EVProductCard";
+import { InlineLoader } from "@/components/ui/loader";
 import type { Product } from "@/types/quote";
 
 interface ProductSelectionProps {
@@ -21,6 +22,7 @@ interface ProductSelectionProps {
   isCalculating?: boolean;
   pricingData?: any;
   products: Product[];
+  isLoadingProducts?: boolean;
 }
 
 export default function ProductSelection({ 
@@ -30,7 +32,8 @@ export default function ProductSelection({
   onPrev, 
   isCalculating = false,
   pricingData,
-  products 
+  products,
+  isLoadingProducts = false
 }: ProductSelectionProps) {
   
   const solarProducts = products.filter(p => p.type === 'solar');
@@ -41,6 +44,15 @@ export default function ProductSelection({
   const handleProductSelect = (type: string, productId: string) => {
     onUpdate({ [type]: productId });
   };
+
+  // Show loader while products are being fetched
+  if (isLoadingProducts) {
+    return (
+      <div className="mx-auto rounded-2xl sm:rounded-3xl md:rounded-[65px] my-4 sm:my-6 md:my-8 w-full max-w-[1024px] p-8 sm:p-12">
+        <InlineLoader text="Loading products..." />
+      </div>
+    );
+  }
 
   return (
     <div 

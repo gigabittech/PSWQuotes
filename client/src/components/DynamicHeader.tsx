@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { Menu, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import type { CmsPage } from "@shared/schema";
 import pswLogo from "@/assets/psw-logo.png";
 import heroPhoneIcon from "@/assets/hero-phone-icon.png";
 import heroMailIcon from "@/assets/hero-mail-icon.png";
@@ -11,18 +9,8 @@ import heroMailIcon from "@/assets/hero-mail-icon.png";
 export default function DynamicHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Fetch homepage data for header content
-  const { data: homepage } = useQuery<CmsPage>({
-    queryKey: ['/api/cms/pages', 'home'],
-    queryFn: async () => {
-      const response = await fetch('/api/cms/pages/home', { credentials: 'include' });
-      if (!response.ok) throw new Error('Failed to fetch homepage');
-      return response.json();
-    },
-  });
-
-  // Fallback to default header if CMS data not available
-  const headerContent = (Array.isArray(homepage?.blocks) ? homepage.blocks : []).find((block: any) => block.type === 'header')?.content || {
+  // Use default header content (no API call)
+  const headerContent = {
     logo: 'Perth Solar Warehouse',
     // navigation: [
     //   { text: 'Get Quote', href: '#quote' },

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { apiRequest } from "@/lib/queryClient";
 import StepIndicator from "@/components/quote-form/StepIndicator";
 import SystemRequirements from "@/components/quote-form/SystemRequirements";
 import ProductSelection from "@/components/quote-form/ProductSelection";
@@ -22,9 +23,22 @@ export default function QuoteForm() {
   const [pricingData, setPricingData] = useState<EnhancedPricingData | null>(null);
   const { toast } = useToast();
 
-  // Fetch products
-  const { data: products = [] } = useQuery<Product[]>({
-    queryKey: ['/api/products'],
+  // Fetch products only when in step 2 and power supply is selected
+  const { data: products = [], isLoading: isLoadingProducts } = useQuery<Product[]>({
+    queryKey: ['/api/products', formData.powerSupply],
+    queryFn: async () => {
+      // Map frontend power supply values to API format
+      // 'single' -> 'single-phase', 'three' -> '3-phase', 'unknown' -> 'single-phase' (default)
+      const powerSupplyMap: Record<string, string> = {
+        'single': 'single-phase',
+        'three': '3-phase',
+        'unknown': 'single-phase',
+      };
+      const powerSupply = powerSupplyMap[formData.powerSupply || 'single'] || 'single-phase';
+      const response = await apiRequest('GET', `/api/products?powerSupply=${powerSupply}`);
+      return response.json();
+    },
+    enabled: currentStep >= 2 && !!formData.powerSupply, // Only fetch in step 2+ when power supply is selected
   });
 
   // Calculate pricing mutation
@@ -204,6 +218,7 @@ export default function QuoteForm() {
                 onNext={nextStep}
                 onPrev={prevStep}
                 isCalculating={calculatePricing.isPending}
+                isLoadingProducts={isLoadingProducts}
               />
             )}
             
