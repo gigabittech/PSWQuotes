@@ -14,13 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2️⃣ Install dependencies and build project
-      - name: Install dependencies and build
-        run: |
-          rm -rf dist
-          npm install
-          npm run build   # Builds both frontend (dist/public) and backend (dist/index.js)
-
       # 3️⃣ Deploy to server via SSH
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.0
@@ -37,6 +30,7 @@ jobs:
 
             echo "Installing backend dependencies..."
             npm install --production
+            npm run build
 
             echo "Running database migrations..."
             # Try migrations first, fallback to push if migrations folder doesn't exist
