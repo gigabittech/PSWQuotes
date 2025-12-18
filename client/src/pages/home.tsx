@@ -255,6 +255,8 @@ export default function Home() {
           </div>
           <EmbedCodeGenerator />
         </div>
+
+        
       </section> */}
 
       <DynamicFooter />
